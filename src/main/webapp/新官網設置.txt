@@ -1,0 +1,23 @@
+新官網服務器: https://hidealer61.hihosting.hinet.net/
+"user:p89880552
+password: Je_Host1ng$$$$9418"
+
+新官網http://jetec.ehosting.com.tw/user/login
+user2 / 
+jetecuser2@@
+
+
+CSS修改在服務器內 jetec.ehosting.com.tw / httpdocs / themes / custom / execoore / css / skin.css
+檔案的最下面,用覆蓋的方式重寫,未改原檔
+
+head footer 修改 在Content--Site Setting裡面
+    Custom area 內 上方電話按鈕      左下電話按鈕
+    GGG 是footer公司名稱 和 按鈕
+    Footer info  是footer鏈接
+    Footer contact 是 右下 訊息
+    news   是 新訊息
+
+
+
+修改輪播圖顏色 是用js修改 在首頁最下面的Element - text editor裡面
+
