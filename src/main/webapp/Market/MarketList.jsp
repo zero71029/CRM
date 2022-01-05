@@ -60,11 +60,12 @@
                                     </div>
                                 </form>
                             </div>
-                            <div class="col-lg-6 ">
+                            <div class="col-lg-6 "></div>
+                            <div class="col-lg-1 ">
                                 <button class="btn btn-primary me-md-2" type="button" data-bs-toggle="offcanvas"
                                     data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">搜索</button>
                             </div>
-                            <div class="col-lg-6 "></div>
+                            
                         </div>
 
                         <!-- <%-- 中間主體--%> -->

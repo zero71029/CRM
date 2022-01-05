@@ -273,9 +273,7 @@ public class MarketBean {
 				+ "contactemail:'"+contactemail+"',"
 				+ "producttype:'"+producttype+"',"
 				+ "ccc:'"+ccc+"',"
-				+ "ccc:'"+ccc+"',"
-				+ "ccc:'"+ccc+"',"
-				
+			
 				+ "";
 		
 		

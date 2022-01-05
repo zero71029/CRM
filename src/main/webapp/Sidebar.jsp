@@ -42,7 +42,7 @@
                 <button class="list-group-item" onclick="market()">
                     營銷模塊
                 </button>
-                <button class="market" onclick="javascript:location.href='${pageContext.request.contextPath}/Market/PotentialCustomerList'">潛在客戶</button>
+                <button class="market" onclick="javascript:location.href='${pageContext.request.contextPath}/Market/potentialcustomerList.jsp'">潛在客戶</button>
                 <button class="market" onclick="javascript:location.href='${pageContext.request.contextPath}/Market/MarketList'">銷售機會</button>
                 <button class="market" onclick="javascript:location.href='${pageContext.request.contextPath}/work/workList'">工作項目</button>
                 <!-- <button class="market"

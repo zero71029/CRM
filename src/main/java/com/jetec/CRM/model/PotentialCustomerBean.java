@@ -1,5 +1,6 @@
 package com.jetec.CRM.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -55,8 +56,9 @@ public class PotentialCustomerBean {
 	
 	
 	
-	public Date getCreatetime() {
-		return createtime;
+	public String getCreatetime() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+		return sdf.format(createtime);
 	}
 	public void setCreatetime(Date createtime) {
 		this.createtime = createtime;
@@ -90,14 +92,6 @@ public class PotentialCustomerBean {
 	}
 	public void setTrackbean(List<TrackBean> trackbean) {
 		this.trackbean = trackbean;
-	}
-	@Override
-	public String toString() {
-		return "PotentialCustomerBean [customerid=" + customerid + ", name=" + name + ", company=" + company
-				+ ", jobtitle=" + jobtitle + ", email=" + email + ", phone=" + phone + ", moblie=" + moblie + ", fax="
-				+ fax + ", department=" + department + ", director=" + director + ", industry=" + industry
-				+ ", companynum=" + companynum + ", source=" + source + ", fromactivity=" + fromactivity + ", user="
-				+ user + ", contacttime=" + contacttime + ", status=" + status + ", address=" + address +  "]";
 	}
 	public Integer getCustomerid() {
 		return customerid;
@@ -254,6 +248,16 @@ public class PotentialCustomerBean {
 	}
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+	@Override
+	public String toString() {
+		return " [customerid=" + customerid + ", name=" + name + ", company=" + company
+				+ ", jobtitle=" + jobtitle + ", email=" + email + ", phone=" + phone + ", moblie=" + moblie + ", fax="
+				+ fax + ", department=" + department + ", director=" + director + ", industry=" + industry
+				+ ", companynum=" + companynum + ", source=" + source + ", fromactivity=" + fromactivity + ", user="
+				+ user + ", contacttime=" + contacttime + ", status=" + status + ", city=" + city + ", town=" + town
+				+ ", postal=" + postal + ", address=" + address + ", remark=" + remark + ", createtime=" + createtime
+				+ "]";
 	}
 
 

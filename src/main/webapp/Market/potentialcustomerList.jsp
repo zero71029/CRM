@@ -9,6 +9,8 @@
 
             <link rel="preconnect" href="https://fonts.gstatic.com">
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+            <script src="${pageContext.request.contextPath}/js/vue.js"></script>
+            <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
 
             <title>CRM客戶管理系統</title>
             <style>
@@ -25,9 +27,10 @@
                     <jsp:include page="/Sidebar.jsp"></jsp:include>
                     <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
 
-                    <div class="col-md-10">
+                    <div class="col-md-10 app">
+                        
                         <!-- <%-- 抬頭按鈕--%> -->
-                        <div class="row">
+                        <div class="row" >
                             <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                                 <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off"
                                     onclick="javascript:location.href='${pageContext.request.contextPath}/Market/potentialcustomer/0'">
@@ -39,11 +42,11 @@
                                     onclick="javascript:location.href='${pageContext.request.contextPath}/Market/PotentialCustomerList'">潛在顧客</label>
 
                                 <input type="checkbox" class="btn-check" id="btncheck4" autocomplete="off">
-                                <label class="btn btn-outline-primary" for="btncheck4"
-                                    onclick="javascript:location.href='${pageContext.request.contextPath}/Market/closed'">結案</label>
+                                <label class="btn btn-outline-primary" for="btncheck4" v-on:click="closed"
+                                    >結案</label>
                             </div>
                         </div> <!-- <%-- 抬頭搜索--%> -->
-                        <div class="col-lg-5">
+                        <div class="col-lg-5" >
                             <form action="${pageContext.request.contextPath}/Market/selectPotentialCustomer"
                                 method="post">
                                 <div class="input-group mb-3" style="width: 95%; padding-left: 50px;">
@@ -54,10 +57,11 @@
                                 </div>
                             </form>
                         </div>
+                        
+                       
+                        <transition-group name="slide-fade" appear>
                         <!-- <%-- 中間主體--%> -->
-
-
-                        <table class="Table table-striped orderTable">
+                        <table class="Table table-striped orderTable" v-if="show" key="1">
                             <tr>
                                 <td><input type="checkbox" id="activity"></td>
                                 <td>編號</td>
@@ -66,43 +70,31 @@
                                 <td>客戶公司</td>
                                 <td>產業</td>
                                 <td>部門</td>
-                                <td>上次聯絡時間</td>
+                                <td>建立時間</td>
                                 <td>負責人</td>
                             </tr>
-                            <c:if test="${not empty list}">
-                                <c:forEach varStatus="loop" begin="0" end="${list.size()-1}" items="${list}" var="s">
-                                    <tr class="item">
-                                        <td><input type="checkbox" value="${s.customerid}" name="mak"></td>
-                                        <td
-                                            onclick="javascript:location.href='${pageContext.request.contextPath}/Market/potentialcustomer/${s.customerid}'">
-                                            ${s.customerid}</td>
-                                        <td
-                                            onclick="javascript:location.href='${pageContext.request.contextPath}/Market/potentialcustomer/${s.customerid}'">
-                                            ${s.name}</td>
-                                        <td
-                                            onclick="javascript:location.href='${pageContext.request.contextPath}/Market/potentialcustomer/${s.customerid}'">
-                                            ${s.status}</td>
-                                        <td
-                                            onclick="javascript:location.href='${pageContext.request.contextPath}/Market/potentialcustomer/${s.customerid}'">
-                                            ${s.company}</td>
+                            <tr class="item" v-for="(s, index) in list" :key="s.customerid">
+                                <td><input type="checkbox" value="{s.customerid}" name="mak"></td>
+                                <td v-on:click="customer(s.customerid)">
+                                    {{s.customerid}}</td>
+                                <td v-on:click="customer(s.customerid)">
+                                    {{s.name}}</td>
+                                <td v-on:click="customer(s.customerid)">
+                                    {{s.status}}</td>
+                                <td v-on:click="customer(s.customerid)">
+                                    {{s.company}}</td>
 
-                                        <td
-                                            onclick="javascript:location.href='${pageContext.request.contextPath}/Market/potentialcustomer/${s.customerid}'">
-                                            ${s.industry}</td>
-                                        <td
-                                            onclick="javascript:location.href='${pageContext.request.contextPath}/Market/potentialcustomer/${s.customerid}'">
-                                            ${s.department}</td>
-                                        <td
-                                            onclick="javascript:location.href='${pageContext.request.contextPath}/Market/potentialcustomer/${s.customerid}'">
-                                            ${s.contacttime}</td>
-                                        <td
-                                            onclick="javascript:location.href='${pageContext.request.contextPath}/Market/potentialcustomer/${s.customerid}'">
-                                            ${s.user}</td>
-                                    </tr>
-                                </c:forEach>
-                            </c:if>
+                                <td v-on:click="customer(s.customerid)">
+                                    {{s.industry}}</td>
+                                <td v-on:click="customer(s.customerid)">
+                                    {{s.department}}</td>
+                                <td v-on:click="customer(s.customerid)">
+                                    {{s.createtime}}</td>
+                                <td v-on:click="customer(s.customerid)">
+                                    {{s.user}}</td>
+                            </tr>
                         </table>
-
+                        </transition-group>
                     </div>
                 </div>
             </div>
@@ -157,6 +149,66 @@
             }
 
         </script>
+        <script>
+            const vm = new Vue({
+                el: '.app',
+                data: {
+                    list: [],
+                    name: "XXX",
+                    show:true
+                },
+                created: function () {
+                    axios
+                        .get('${pageContext.request.contextPath}/Potential/CustomerList')
+                        .then(response => (
+                            this.list = response.data                            
+                        ))
+                        .catch(function (error) { // 请求失败处理
+                            console.log(error);
+                        });
+                },
+                methods: {
+                    customer: function (id) {
+                        this.show = false
+                        setTimeout(function(){
+                            location.href = '${pageContext.request.contextPath}/Market/potentialcustomer/' + id
+                        },100)
+                       
+                    },
+                    closed:function(){
+                        axios
+                        .get('${pageContext.request.contextPath}/Potential/closed')
+                        .then(response => (
+                            this.list = response.data,
+                            console.log(response.data)   
+                        ))
+                        .catch(function (error) { // 请求失败处理
+                            console.log(error);
+                        });
+                    }
+                   
+                },
+            })
+        </script>
+        <style>
+            /* 可以设置不同的进入和离开动画 */
+            /* 设置持续时间和动画函数 */
+            .slide-fade-enter-active {
+                transition: all .3s ease;
+            }
 
+            .slide-fade-leave-active {
+                transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+            }
+
+            .slide-fade-enter,
+            .slide-fade-leave-to
+
+            /* .slide-fade-leave-active 用于 2.1.8 以下版本 */
+                {
+                transform: translateY(200%);
+                opacity: 0;
+            }
+        </style>
 
         </html>

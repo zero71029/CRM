@@ -91,7 +91,7 @@
                             class="basefrom g-3 needs-validation AAA" novalidate>
                             <div class="row">
                                 <input type="hidden" name="customerid" value="${bean.customerid}">
-                                
+
 
                                 <div class="row" style="text-align: center;">
                                     <div class="col-md-1"></div>
@@ -111,23 +111,16 @@
 
                                     <div class="col-md-1"></div>
                                     <div class="col-md-1 cell">負責人*</div>
-                                    <div class="col-md-2 cell FormPadding">                                        
-                                        <c:if test="${user.position != '職員' }">
-                                            <select name="user" class="form-select cellFrom"
-                                                aria-label="Default select example">
-                                                <option value="無" ${bean.user=="無" ?"selected":null}>無</option>
-                                                <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}"
-                                                    items="${admin}" var="s">
-                                                    <option value="${s.name}" ${bean.user==s.name ?"selected":null}>
-                                                        ${s.name}</option>
-                                                </c:forEach>
-                                            </select>
-                                        </c:if>
-                                        <c:if test="${user.position == '職員' }">
-                                            <input type="hidden" name="user" value="${bean.user}">
-                                            ${bean.user}
-                                        </c:if>
-
+                                    <div class="col-md-2 cell FormPadding">
+                                        <select name="user" class="form-select cellFrom"
+                                            aria-label="Default select example">
+                                            <option value="無" ${bean.user=="無" ?"selected":null}>無</option>
+                                            <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}"
+                                                items="${admin}" var="s">
+                                                <option value="${s.name}" ${bean.user==s.name ?"selected":null}>
+                                                    ${s.name}</option>
+                                            </c:forEach>
+                                        </select>
                                     </div>
                                 </div>
 

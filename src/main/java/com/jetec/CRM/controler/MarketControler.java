@@ -45,7 +45,7 @@ public class MarketControler {
 	@RequestMapping("/SavePotentialCustomer")
 	public String SavePotentialCustomer(PotentialCustomerBean pcb) {
 		System.out.println("*****儲存潛在客戶*****");
-		System.out.println(pcb);
+		
 		PCS.SavePotentialCustomer(pcb);
 		return "redirect:/Market/PotentialCustomerList";
 	}
