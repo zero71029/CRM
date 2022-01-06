@@ -394,8 +394,7 @@ public class MarketControler {
 		Date toDate;
 		try {
 			formDate = sdf.parse(from);
-			toDate = sdf.parse(to);
-			ms.selectDate(formDate, toDate);
+			toDate = sdf.parse(to);			
 			model.addAttribute("list", ms.selectDate(formDate, toDate));
 
 		} catch (ParseException e) {

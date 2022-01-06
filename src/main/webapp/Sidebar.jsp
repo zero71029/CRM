@@ -10,7 +10,7 @@
         <!-- <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.rtl.min.css"> -->
         <script src="${pageContext.request.contextPath}/bootstrap/js/bootstrap.min.js"></script>
         <!--  popper.min.js 用于弹窗、提示、下拉菜单 -->
-        <script src="https://cdn.staticfile.org/popper.js/2.9.3/umd/popper.min.js"></script>
+        <!-- <script src="https://cdn.staticfile.org/popper.js/2.9.3/umd/popper.min.js"></script> -->
         <!-- <%-- 主要的CSS、JS放在這裡--%> -->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
         <!-- <%-- VUE放這裡 --%> -->
@@ -33,7 +33,8 @@
             </div>
             <div class="row">
                 <div class='col-lg-9'></div>
-                <div class='col-lg-3 workitem'></div>
+                <div class='col-lg-1 workitem'></div>
+                <div class='col-lg-2'> 
             </div>
         </header>
         <!--側邊欄  -->
@@ -42,16 +43,21 @@
                 <button class="list-group-item" onclick="market()">
                     營銷模塊
                 </button>
-                <button class="market" onclick="javascript:location.href='${pageContext.request.contextPath}/Market/potentialcustomerList.jsp'">潛在客戶</button>
-                <button class="market" onclick="javascript:location.href='${pageContext.request.contextPath}/Market/MarketList'">銷售機會</button>
-                <button class="market" onclick="javascript:location.href='${pageContext.request.contextPath}/work/workList'">工作項目</button>
+                <button class="market"
+                    onclick="javascript:location.href='${pageContext.request.contextPath}/Market/potentialcustomerList.jsp'">潛在客戶</button>
+                <button class="market"
+                    onclick="javascript:location.href='${pageContext.request.contextPath}/Market/MarketList'">銷售機會</button>
+                <button class="market"
+                    onclick="javascript:location.href='${pageContext.request.contextPath}/work/workList'">工作項目</button>
                 <!-- <button class="market"
                     onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/QuotationList'">報價單</button> -->
                 <button class="list-group-item" onclick="client()">
                     客戶管理
                 </button>
-                <button class="client" onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/ClientList'">客戶訊息</button>
-                <button class="client" onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/ContactList'">聯絡人</button>
+                <button class="client"
+                    onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/ClientList'">客戶訊息</button>
+                <button class="client"
+                    onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/ContactList'">聯絡人</button>
                 <!-- <button class="client">流失客戶</button> -->
                 <button class="list-group-item" onclick="javascript:location.href=''">
                     服務管理
@@ -66,9 +72,11 @@
                     <c:if test='${user.position == "系統"||user.position == "總經理"}'>
                         <!-- <button class="system"
                         onclick="javascript:location.href='#'">下拉選單管理</button> -->
-                        <button class="system" onclick="javascript:location.href='${pageContext.request.contextPath}/system/adminList/adminid'">員工管理</button>
+                        <button class="system"
+                            onclick="javascript:location.href='${pageContext.request.contextPath}/system/adminList/adminid'">員工管理</button>
                     </c:if>
-                    <button class="system" onclick="javascript:location.href='${pageContext.request.contextPath}/system/billboardList?pag=1'">討論區管理</button>
+                    <button class="system"
+                        onclick="javascript:location.href='${pageContext.request.contextPath}/system/billboardList?pag=1'">討論區管理</button>
                 </c:if>
             </ul>
             <c:if test='${empty user}'>
@@ -77,14 +85,14 @@
                     $.ajax({
                         url: '${pageContext.request.contextPath}/UserAuthorize', //接受請求的Servlet地址
                         type: 'POST',
-                        success: function(json) {
+                        success: function (json) {
                             if (json) {
                                 location.reload();
                             } else {
                                 console.log("沒有認證");
                             }
                         },
-                        error: function(returndata) {
+                        error: function (returndata) {
                             console.log(returndata);
                         }
                     });
@@ -109,7 +117,7 @@
         <script>
             $('title').html('${user.mail.size() > 0 ? ddd:CRM}');
 
-            window.setTimeout(function() {
+            window.setTimeout(function () {
                 location.reload();
             }, 600000);
             $(".market").hide();
@@ -137,12 +145,12 @@
             if (Signout == '') {
                 $('.Signout').text("登入");
                 $('.Signout').attr("href", "${pageContext.request.contextPath}/time.jsp");
-            } else {}
+            } else { }
             //取得工作項目
             $.ajax({
                 url: '${pageContext.request.contextPath}/workitem/${user.name}', //接受請求的Servlet地址
                 type: 'POST',
-                success: function(json) {
+                success: function (json) {
                     $('.workitem').text("工作項目:" + json.length);
                     $('.workTable').empty();
                     $('.workTable').append("<tr><td width='100'> </td><td>主題</td> <td width='100'>狀態</td></tr>");
@@ -158,7 +166,7 @@
                     $.ajax({
                         url: '${pageContext.request.contextPath}/marketitem/${user.name}', //接受請求的Servlet地址
                         type: 'POST',
-                        success: function(market) {
+                        success: function (market) {
                             $('.workitem').text("工作項目:" + (json.length + market.length));
                             for (var bean of market) {
                                 $('.workTable').append('<tr class="www" onclick="gomarket(' + bean.marketid + ')"><td>銷售機會</td><td>' + bean.name + '</td><td>' + bean.stage + '</td></tr>');
@@ -167,7 +175,7 @@
                             $.ajax({
                                 url: '${pageContext.request.contextPath}/PotentialItem/${user.name}', //接受請求的Servlet地址
                                 type: 'POST',
-                                success: function(customer) {
+                                success: function (customer) {
                                     $('.workitem').text("工作項目:" + (json.length + market.length + customer.length));
                                     for (var bean of customer) {
                                         $('.workTable').append('<tr class="www" onclick="goPotential(' + bean.customerid + ')"><td>潛在顧客</td><td>' + bean.name + '</td><td>' + bean.status + '</td></tr>');
@@ -180,11 +188,11 @@
                     });
 
                 },
-                error: function(returndata) {
+                error: function (returndata) {
                     console.log(returndata);
                 }
             });
-            $('.workitem').click(function() {
+            $('.workitem').click(function () {
                 $('.work').dialog("open");
             })
 

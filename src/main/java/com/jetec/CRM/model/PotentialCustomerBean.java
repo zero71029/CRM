@@ -45,7 +45,11 @@ public class PotentialCustomerBean {
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "customerid", cascade = CascadeType.ALL)
-	private List<TrackBean> trackbean;	
+	private List<TrackBean> trackbean;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "customerid", cascade = CascadeType.ALL)
+	private List<PotentialCustomerHelperBean> helper;	
 	
 	//工作項目
 	@JsonIgnore
@@ -56,6 +60,12 @@ public class PotentialCustomerBean {
 	
 	
 	
+	public List<PotentialCustomerHelperBean> getHelper() {
+		return helper;
+	}
+	public void setHelper(List<PotentialCustomerHelperBean> helper) {
+		this.helper = helper;
+	}
 	public String getCreatetime() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 		return sdf.format(createtime);

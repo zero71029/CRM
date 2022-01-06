@@ -40,11 +40,12 @@
                                 <label class="btn btn-outline-primary state2" for="btncheck2" onclick="sta()">刪除</label>
                                 <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off">
                                 <label class="btn btn-outline-primary" for="btncheck3"
-                                    onclick="javascript:location.href='${pageContext.request.contextPath}/Market/MarketList'">處理中</label>
+                                    onclick="javascript:location.href='${pageContext.request.contextPath}/Market/MarketList'">XXX</label>
 
                                 <input type="checkbox" class="btn-check" id="btncheck4" autocomplete="off">
                                 <label class="btn btn-outline-primary" for="btncheck4"
-                                    onclick="javascript:location.href='${pageContext.request.contextPath}/Market/CloseMarket'">結案</label>
+                                data-bs-toggle="offcanvas"
+                                data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">搜索</label>
                             </div>
                         </div>
                         <!-- <%-- 抬頭搜索--%> -->
@@ -60,18 +61,9 @@
                                     </div>
                                 </form>
                             </div>
-                            <div class="col-lg-6 "></div>
-                            <div class="col-lg-1 ">
-                                <button class="btn btn-primary me-md-2" type="button" data-bs-toggle="offcanvas"
-                                    data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">搜索</button>
-                            </div>
-                            
+                            <div class="col-lg-6 "></div>                            
                         </div>
-
                         <!-- <%-- 中間主體--%> -->
-
-
-
                         <table class="Table table-striped orderTable">
                             <tr>
                                 <td><input type="checkbox" id="activity"></td>
@@ -121,7 +113,7 @@
                 </div>
             </div>
             <!-- 滑塊 -->
-            <div class="offcanvas offcanvas-end show" tabindex="0" id="offcanvasRight"
+            <div class="offcanvas offcanvas-end " tabindex="0" id="offcanvasRight"
                 aria-labelledby="offcanvasRightLabel" style="width: 300px;">
                 <div class="offcanvas-header">
                     <h5 id="offcanvasRightLabel">搜索</h5>
