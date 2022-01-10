@@ -81,7 +81,6 @@ public class PublicControl {
 	ReplyFileRepository rfr;
 	@Autowired
 	ReplyTimeRepository rtr;
-	
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //獲得認證資料
@@ -163,7 +162,7 @@ public class PublicControl {
 			}
 			session.setAttribute("user", adminBean);
 			model.addAttribute("advice", advice);// 抓被@的資料
-			model.addAttribute("unread", unread);// 抓被未讀的資料  
+			model.addAttribute("unread", unread);// 抓被未讀的資料
 		} else {
 			AdminBean xxx = null;
 			if (sortString.equals("createtime"))
@@ -476,15 +475,15 @@ public class PublicControl {
 				ss.saveMail(advice.getAdviceto(), bean.getBillboardid(), "新留言");
 		}
 		// 留言過的人 存mail
-		List<BillboardReplyBean> replyList = bb.getReply();    
+		List<BillboardReplyBean> replyList = bb.getReply();
 		for (BillboardReplyBean reply : replyList) {
 			if (!user.getName().equals(reply.getName()))
 				ss.saveMail(ar.findByName(reply.getName()).getAdminid(), bean.getBillboardid(), "新留言");// 用名子去admin找人
 																										// 找到後取出Adminid
 		}
-		//最後回覆時間
+		// 最後回覆時間
 		br.save(bb);
-		ReplyTimeBean replyTimeBean= new ReplyTimeBean();
+		ReplyTimeBean replyTimeBean = new ReplyTimeBean();
 		replyTimeBean.setBillboardid(bb.getBillboardid());
 		replyTimeBean.setAaa("1");
 		rtr.save(replyTimeBean);
@@ -669,6 +668,16 @@ public class PublicControl {
 	@ResponseBody
 	public List<PotentialCustomerBean> PotentialItem(@PathVariable("adminname") String adminname) {
 		List<PotentialCustomerBean> result = ws.PotentialItem(adminname);
+		return result;
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//取得使用者
+	@RequestMapping("/admin/{adminid}")
+	@ResponseBody
+	public AdminBean workitem(@PathVariable("adminid") Integer adminid) {	
+		AdminBean result =ar.getById(adminid);
+		System.out.println(result);
 		return result;
 	}
 

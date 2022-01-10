@@ -140,9 +140,7 @@ public class PotentialCustomerService {
 		newBean.setCustomerid(customerid);
 		newBean.setName(helper);
 		newBean.setAdminid(ar.findByName(helper).getAdminid());	
-		pchr.save(newBean);
-		
-		
+		pchr.save(newBean);				
 		return PCR.getById(customerid).getHelper();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

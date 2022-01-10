@@ -19,7 +19,7 @@
 
 
 
-        <!-- <%-- 頁首--%> -->
+        <!-- <%-- 抬頭--%> -->
         <header class="mainColor headtop">
             <div class="row">
                 <a href='${pageContext.request.contextPath}/' class='col-lg-2' style="font-size: 2.5rem;">CRM</a>
@@ -34,8 +34,8 @@
             <div class="row">
                 <div class='col-lg-9'></div>
                 <div class='col-lg-1 workitem'></div>
-                <div class='col-lg-2'> 
-            </div>
+                <div class='col-lg-2 helpItem'>
+                </div>
         </header>
         <!--側邊欄  -->
         <div class="col-lg-1 navfix mainColor" style="padding: 0%;">
@@ -79,6 +79,7 @@
                         onclick="javascript:location.href='${pageContext.request.contextPath}/system/billboardList?pag=1'">討論區管理</button>
                 </c:if>
             </ul>
+            <!-- session 認證-->
             <c:if test='${empty user}'>
                 <script>
                     console.log("未登入");
@@ -101,13 +102,10 @@
             <!-- 工作項目彈窗 -->
             <div class="work" title="工作項目">
                 <table class="Table table-striped workTable">
-                    <tr>
-                        <td></td>
+                    <tr class=''>
+                        <td width='100'>種類</td>
                         <td>主題</td>
-                        <td>到期日</td>
-                        <td>負責人</td>
-                        <td>重要性</td>
-                        <td>狀態</td>
+                        <td width='100'>狀態</td>
                     </tr>
                 </table>
             </div>
@@ -159,7 +157,7 @@
                         $('.workitem').empty()
                     } else {
                         for (var bean of json) {
-                            $('.workTable').append('<tr class="www" onclick="gowork(' + bean.workid + ')"><td>工作項目</td><td>' + bean.name + '</td><td>' + bean.state + '</td></tr>');
+                            $('.workTable').append('<tr class="www workTR" onclick="gowork(' + bean.workid + ')"><td>工作項目</td><td>' + bean.name + '</td><td>' + bean.state + '</td></tr>');
                         }
                     }
                     //取得銷售機會
@@ -169,7 +167,7 @@
                         success: function (market) {
                             $('.workitem').text("工作項目:" + (json.length + market.length));
                             for (var bean of market) {
-                                $('.workTable').append('<tr class="www" onclick="gomarket(' + bean.marketid + ')"><td>銷售機會</td><td>' + bean.name + '</td><td>' + bean.stage + '</td></tr>');
+                                $('.workTable').append('<tr class="www workTR" onclick="gomarket(' + bean.marketid + ')"><td>銷售機會</td><td>' + bean.name + '</td><td>' + bean.stage + '</td></tr>');
                             }
                             //取得潛在顧客
                             $.ajax({
@@ -178,8 +176,9 @@
                                 success: function (customer) {
                                     $('.workitem').text("工作項目:" + (json.length + market.length + customer.length));
                                     for (var bean of customer) {
-                                        $('.workTable').append('<tr class="www" onclick="goPotential(' + bean.customerid + ')"><td>潛在顧客</td><td>' + bean.name + '</td><td>' + bean.status + '</td></tr>');
+                                        $('.workTable').append('<tr class="www workTR" onclick="goPotential(' + bean.customerid + ')"><td>潛在顧客</td><td>' + bean.name + '</td><td>' + bean.status + '</td></tr>');
                                     }
+                                    $('.workTable').append('<br><br>')
                                 }
                             });
 
@@ -192,6 +191,23 @@
                     console.log(returndata);
                 }
             });
+            //取得使用者
+            // $.ajax({
+            //     url: '${pageContext.request.contextPath}/admin/${user.adminid}', //接受請求的Servlet地址
+            //     type: 'POST',
+            //     success: function (market) {
+            //         $('.helpItem').text("協助工作:" +  market.length);
+            //         // for (var bean of market) {
+            //         //     $('.workTable').append('<tr class="www workTR" onclick="gomarket(' + bean.marketid + ')"><td>銷售機會</td><td>' + bean.name + '</td><td>' + bean.stage + '</td></tr>');
+            //         // }
+ 
+
+            //     }
+
+            // });
+
+
+
             $('.workitem').click(function () {
                 $('.work').dialog("open");
             })
@@ -218,3 +234,11 @@
             }
             //取得工作項目=========================
         </script>
+        <style>
+            .workTable .workTR:hover {
+                color: #FFF;
+                line-height: 3rem;
+                background-color: #62A5A1;
+                cursor: pointer;
+            }
+        </style>
