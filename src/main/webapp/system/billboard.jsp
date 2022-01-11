@@ -286,7 +286,7 @@
                                     <div class="col-lg-10" style="padding: 0%;">
                                         <button type="submit"
                                             style="width: 100%;background-color: #08604f;color: white;"
-                                            class="btn ">修改</button>
+                                            class="btn ">儲存</button>
                                     </div>
                                 </div>
                             </c:if>

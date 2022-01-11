@@ -9,7 +9,7 @@
 
             <link rel="preconnect" href="https://fonts.gstatic.com">
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
-            <script src="${pageContext.request.contextPath}/js/vue.js"></script>
+            <script src="${pageContext.request.contextPath}/js/vue.min.js"></script>
             <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
 
             <title>CRM客戶管理系統</title>
@@ -276,18 +276,18 @@
                                         </h2>
                                         <div id="i7" class="accordion-collapse collapse"
                                             aria-labelledby="flush-headingThree"
-                                            data-bs-parent="#accordionFlushExample">                                            
-                                            <div class="accordion-body" >
+                                            data-bs-parent="#accordionFlushExample">
+                                            <div class="accordion-body">
                                                 <div class="form-check" v-for="(s, index) in ind" :key="index">
-                                                    <input class="form-check-input" type="checkbox" :value="s" :id="'industry'+index"
-                                                        name="industry" v-model="source">
+                                                    <input class="form-check-input" type="checkbox" :value="s"
+                                                        :id="'industry'+index" name="industry" v-model="source">
                                                     <label class="form-check-label" :for="'industry'+index">
                                                         {{s}}
                                                     </label>
                                                 </div>
                                             </div>
                                             <button class="btn btn-outline-secondary" v-on:click="selectSource"
-                                            id="selectProduct">搜索</button>
+                                                id="selectProduct">搜索</button>
                                         </div>
                                     </div>
                                     <!--  XXXXX-->
@@ -325,9 +325,9 @@
                                 <label class="btn btn-outline-primary" for="btncheck3"
                                     onclick="javascript:location.href='${pageContext.request.contextPath}/Market/PotentialCustomerList'">XXX</label>
 
-             
-                                <label class="btn btn-outline-primary" for="btncheck4"  data-bs-toggle="offcanvas"
-                                data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">搜索</label>
+
+                                <label class="btn btn-outline-primary" for="btncheck4" data-bs-toggle="offcanvas"
+                                    data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">搜索</label>
                             </div>
                         </div>
 
@@ -346,7 +346,7 @@
                                     <td>負責人</td>
                                 </tr>
                                 <tr class="item" v-for="(s, index) in list" :key="s.customerid">
-                                    <td><input type="checkbox" value="{s.customerid}" name="mak"></td>
+                                    <td><input type="checkbox" :value="s.customerid" name="mak"></td>
                                     <td v-on:click="customer(s.customerid)">
                                         {{s.customerid}}</td>
                                     <td v-on:click="customer(s.customerid)">
@@ -367,12 +367,11 @@
                                 </tr>
                             </table>
                         </transition-group>
-
- </div>
+                    </div>
                 </div>
             </div>
 
-            
+
 
 
 
@@ -418,7 +417,8 @@
                                 window.location.href = "${pageContext.request.contextPath}/Market/PotentialCustomerList";
                             },
                             error: function (returndata) {
-                                console.log(returndata);
+                                console.log(returndata.responseJSON.message);
+                                
                             }
                         });
                     }
@@ -436,8 +436,8 @@
                     name: "",
                     show: true,
                     source: [],
-                    ind:["尚未分類",'生產 製造','工程公司','學校','研究單位','電子業','光電產業','半導體業','公家機關','機械設備製造','生技製藥','食品加工','醫院/醫療','物流/倉儲','畜牧/農業','公共/消費性環境','製紙業','紡織業','化工業','金屬加工','冷凍空調','航太/造船','環保相關','水處理/水資源','石化能源','印刷','其它','業主','設備換修'],
-                    industry:[],
+                    ind: ["尚未分類", '生產 製造', '工程公司', '學校', '研究單位', '電子業', '光電產業', '半導體業', '公家機關', '機械設備製造', '生技製藥', '食品加工', '醫院/醫療', '物流/倉儲', '畜牧/農業', '公共/消費性環境', '製紙業', '紡織業', '化工業', '金屬加工', '冷凍空調', '航太/造船', '環保相關', '水處理/水資源', '石化能源', '印刷', '其它', '業主', '設備換修'],
+                    industry: [],
                 },
                 created: function () {
                     axios
@@ -506,9 +506,9 @@
                                 console.log(error);
                             });
                     }, selectSource: function () {
-                        var da = {source:this.source};
+                        var da = { source: this.source };
                         axios
-                            .post('${pageContext.request.contextPath}/Potential/selectSource',da)
+                            .post('${pageContext.request.contextPath}/Potential/selectSource', da)
                             .then(response => (
                                 this.list = response.data
                             ))
