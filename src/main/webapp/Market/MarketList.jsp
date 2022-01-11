@@ -134,11 +134,11 @@
                                         </h2>
                                         <div id="flush-collapseTwo" class="accordion-collapse collapse"
                                             aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-                                            <div class="accordion-body">        
-                                                    
-                                                    <dp></dp>
-                                                    <input type="submit" value="送出" v-on:click="selectCreateDate">
-                                           
+                                            <div class="accordion-body">
+
+                                                <dp @update="selfUpdate"></dp>
+
+
                                             </div>
                                         </div>
 
@@ -364,7 +364,7 @@
             //時間選擇器
             Vue.component('dp', {
                 template:
-                    '<div class="block"><el-date-picker v-model="value2"      type="daterange"      align="right"      unlink-panels      range-separator="到"      start-placeholder="開始"      end-placeholder="結束" :picker-options="pickerOptions"></el-date-picker></div>',
+                    '<div class="block"> <input type="submit" value="送出" v-on:click="updateText"><el-date-picker v-model="value2"      type="daterange"      align="right"      unlink-panels      range-separator="到"      start-placeholder="開始"      end-placeholder="結束" :picker-options="pickerOptions"></el-date-picker></div>',
                 data() {
                     return {
                         pickerOptions: {
@@ -398,12 +398,18 @@
                         value2: ''
                     };
                 },
-                
+                methods: {
+                    updateText() {
+                        //事件名稱 //value =>this.message是指子層的噢！
+                        this.$emit('update', this.value2);
+                    }
+                },
+
             })
             Vue.config.productionTip = false;
             const vm = new Vue({
                 el: '.app',
-              
+
                 data: {
                     list: [],
                     name: "",
@@ -451,6 +457,10 @@
                             .catch(function (error) { // 请求失败处理
                                 console.log(error);
                             });
+                    },
+                    selfUpdate(val) {
+                        console.log(val)
+
                     },
                     selectCreateDate: function (value2) {
                         console.log(this.value1);
@@ -513,7 +523,7 @@
             });
         </script>
         <style>
-            .el-date-editor--daterange.el-input__inner{
+            .el-date-editor--daterange.el-input__inner {
                 width: auto;
             }
         </style>
