@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -45,7 +46,7 @@ public class MarketControler {
 	@RequestMapping("/SavePotentialCustomer")
 	public String SavePotentialCustomer(PotentialCustomerBean pcb) {
 		System.out.println("*****儲存潛在客戶*****");
-		
+
 		PCS.SavePotentialCustomer(pcb);
 		return "redirect:/Market/PotentialCustomerList";
 	}
@@ -87,9 +88,23 @@ public class MarketControler {
 //銷售機會列表
 	@ResponseBody
 	@RequestMapping("/MarketList")
-	public List<MarketBean> Market(Model model) {
+	public List<MarketBean> Market() {
 		System.out.println("*****讀取銷售機會列表****");
 		return ms.getList();
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//搜索聯絡人電話
+	@ResponseBody
+	@RequestMapping("/selectContantPhone/{phone}")
+	public List<MarketBean> selectContantPhone(@PathVariable("phone") String phone) {
+		System.out.println("*****搜索聯絡人電話****");
+		phone = phone.trim();
+		phone = phone.replace("-", "");
+		phone = phone.replace("(", "");
+		phone = phone.replace(")", "");
+		phone = phone.replace(" ", "");
+		return ms.selectContantPhone(phone);
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -106,7 +121,7 @@ public class MarketControler {
 	public String SaveMarket(MarketBean marketBean) {
 		System.out.println(marketBean);
 		ms.save(marketBean);
-		return "redirect:/Market/MarketList";
+		return "redirect:/Market/MarketList.jsp";
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -159,7 +174,7 @@ public class MarketControler {
 	public String SaveTrack(TrackBean trackBean) {
 		System.out.println("存追蹤");
 		Date date = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd hh:mm");
 		trackBean.setTracktime(sdf.format(date));
 		ms.SaveTrack(trackBean);
 		return "redirect:/Market/potentialcustomer/" + trackBean.getCustomerid();
@@ -378,7 +393,8 @@ public class MarketControler {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索銷售機會by日期
 	@RequestMapping("/selectDate")
-	public String selectDate(Model model, @RequestParam("from") String from, @RequestParam("to") String to) {
+	@ResponseBody
+	public List<MarketBean> selectDate(@RequestParam("from") String from, @RequestParam("to") String to) {
 		System.out.println("搜索銷售機會 日期");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		// 設定日期格式
@@ -396,21 +412,61 @@ public class MarketControler {
 		Date toDate;
 		try {
 			formDate = sdf.parse(from);
-			toDate = sdf.parse(to);			
-			model.addAttribute("list", ms.selectDate(formDate, toDate));
+			toDate = sdf.parse(to);
 
+			return ms.selectDate(formDate, toDate);
 		} catch (ParseException e) {
 
 		}
-		return "/Market/MarketList";
+		return null;
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索銷售機會by狀態
 	@RequestMapping("/selectStage/{name}")
-	public String selectStage(Model model, @PathVariable("name") String name) {
+	@ResponseBody
+	public List<MarketBean> selectStage(@PathVariable("name") String name) {
 		System.out.println("搜索銷售機會");
-		model.addAttribute("list", ms.selectStage(name));
-		return "/Market/MarketList";
+		return ms.selectStage(name);
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//搜索銷售機會by產品類別
+	@RequestMapping("/selectProductType")
+	@ResponseBody
+	public List<MarketBean> selectProductType(@RequestBody List<String> data) {
+		System.out.println("搜索銷售機會by產品類別");
+		System.out.println(data);
+		return ms.selectProductType(data);
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//搜索銷售機會by來源
+	@RequestMapping("/selectSource")
+	@ResponseBody
+	public List<MarketBean> selectSource(@RequestBody List<String> data) {
+		System.out.println("搜索銷售機會by產品類別");
+		System.out.println(data);
+		return ms.selectProductType(data);
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//搜索銷售機會by成交機率
+	@RequestMapping("/selectClinch/{Clinch}")
+	@ResponseBody
+	public List<MarketBean> selectClinch(@PathVariable("Clinch") String Clinch) {
+		System.out.println("搜索銷售機會by成交機率");
+		return ms.selectClinch(Clinch);
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//搜索銷售機會by預算
+	@RequestMapping("/selectBudget/{start}/{to}")
+	@ResponseBody
+	public List<MarketBean> selectBudget(@PathVariable("start") String start,@PathVariable("to") String to) {
+		System.out.println("搜索銷售機會by預算");
+		System.out.println(start);
+		System.out.println(to);
+		return ms.selectBudget(start,to);
 	}
 }

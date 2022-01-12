@@ -121,7 +121,8 @@ public class MarketService {
 					boo = false;
 				}
 			}
-			if (boo)result.add(p);
+			if (boo)
+				result.add(p);
 		}
 
 		return result;
@@ -183,17 +184,61 @@ public class MarketService {
 	public AgreementBean getAgreementBeanById(Integer id) {
 		return ar.getById(id);
 	}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//搜索銷售機會by日期
+	// 搜索銷售機會by日期
 	public List<MarketBean> selectDate(Date startTime, Date endTime) {
-		return	mr.findCreatetime(startTime, endTime);
-		
+		return mr.findCreatetime(startTime, endTime);
+
 	}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索銷售機會by狀態
 	public List<MarketBean> selectStage(String name) {
 		Sort sort = Sort.by(Direction.DESC, "marketid");
 		return mr.findByStage(name, sort);
 	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//銷售機會列表
+	public List<MarketBean> selectContantPhone(String phone) {
+		List<MarketBean> result = mr.findByContactphone(phone);
+		Boolean isBoolean = true;
+		for (MarketBean bean : mr.findByContactmoblie(phone)) {
+			System.out.println(bean);
+			for (MarketBean phonebeBean : result) {				
+				if(bean.getMarketid() == phonebeBean.getMarketid()) {
+					isBoolean = false;
+				}
+			}
+			if(isBoolean)result.add(bean);
+			isBoolean = true;
+		}
+		return result;
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//搜索銷售機會by產品類別
+	public List<MarketBean> selectProductType(List<String> data) {
+		List<MarketBean> result = new ArrayList<MarketBean>();
+		for(String typeString : data) {
+			result.addAll(mr.findProducttype(typeString));
+			result.addAll(mr.findSource(typeString));
+		}
+		return result;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//搜索銷售機會by產品類別
+	public List<MarketBean> selectClinch(String clinch) {
+		// TODO Auto-generated method stub
+		return mr.selectClinch(clinch);
+	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//搜索銷售機會by預算
+	public List<MarketBean> selectBudget(String start, String to) {
+		// TODO Auto-generated method stub
+		return mr.selectBudget( start,  to);
+	}
+	
 
 }

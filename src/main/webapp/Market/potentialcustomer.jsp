@@ -472,8 +472,8 @@
                                         <div class="col-md-1"></div>
                                         <div class="col-md-3" style="word-wrap:break-word;">${s.trackdescribe}
                                         </div>
-                                        <div class="col-md-3">${s.result}</div>
-                                        <div class="col-md-2">${s.remark}</div>
+                                        <div class="col-md-3" style="word-wrap:break-word;">${s.result}</div>
+                                        <div class="col-md-2" style="word-wrap:break-word;">${s.remark}</div>
                                         <div class="col-md-2">${s.tracktime}</div>
                                     </div>
                                     <div class="row">

@@ -9,11 +9,14 @@
 
             <link rel="preconnect" href="https://fonts.gstatic.com">
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+
+
+            <!-- 引入样式 vue-->
             <script src="${pageContext.request.contextPath}/js/vue.js"></script>
             <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
-            <!-- 引入样式 -->
+            <!-- 引入element-ui样式 -->
             <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-            <!-- 引入组件库 -->
+            <!-- 引入element-ui组件库 -->
             <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 
             <!-- <%-- 主要的CSS、JS放在這裡--%> -->
@@ -22,6 +25,10 @@
             <style>
                 .item:hover {
                     background-color: #afe3d5;
+                }
+
+                [v-cloak] {
+                    display: none;
                 }
             </style>
         </head>
@@ -33,7 +40,7 @@
                     <jsp:include page="/Sidebar.jsp"></jsp:include>
 
                     <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
-                    <div class="col-md-11 app">
+                    <div class="col-md-11 app" v-cloak>
                         <!-- <%-- 抬頭按鈕--%> -->
                         <div class="row">
                             <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
@@ -45,7 +52,7 @@
                                 <label class="btn btn-outline-primary state2" for="btncheck2" onclick="sta()">刪除</label>
                                 <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off">
                                 <label class="btn btn-outline-primary" for="btncheck3"
-                                    onclick="javascript:location.href='${pageContext.request.contextPath}/Market/MarketList'">XXX</label>
+                                    onclick="javascript:location.href='${pageContext.request.contextPath}/Market/MarketList.jsp'">XXX</label>
 
                                 <input type="checkbox" class="btn-check" id="btncheck4" autocomplete="off">
                                 <label class="btn btn-outline-primary" for="btncheck4" data-bs-toggle="offcanvas"
@@ -54,40 +61,41 @@
                         </div>
 
                         <!-- <%-- 中間主體--%> -->
-                        <table class="Table table-striped orderTable">
-                            <tr>
-                                <td><input type="checkbox" id="activity"></td>
-                                <td>名稱</td>
-                                <td>客戶</td>
-                                <td>負責人</td>
-                                <td>類型</td>
-                                <td>階段</td>
-                                <td>機率</td>
-                                <td>開始時間</td>
-                                <td>終止時間</td>
-                            </tr>
-                            <tr class="item" v-for="(s, index) in list" :key="index">
-                                <td><input type="checkbox" :value="s.marketid" name="mak"></td>
-                                <td v-on:click="market(s.marketid)">
-                                    {{s.name}}</td>
-                                <td v-on:click="market(s.marketid)">
-                                    {{s.client}}</td>
-                                <td v-on:click="market(s.marketid)">
-                                    {{s.user}}</td>
-                                <td v-on:click="market(s.marketid)">
-                                    {{s.type}}</td>
-                                <td v-on:click="market(s.marketid)">
-                                    {{s.stage}}</td>
-                                <td v-on:click="market(s.marketid)">
-                                    {{s.clinch}}</td>
-                                <td v-on:click="market(s.marketid)">
-                                    {{s.createtime}}</td>
-                                <td v-on:click="market(s.marketid)">
-                                    {{s.endtime}}</td>
-                            </tr>
+                        <transition-group name="slide-fade" appear>
+                            <table class="Table table-striped orderTable" key="1" v-if="show">
+                                <tr>
+                                    <td><input type="checkbox" id="activity"></td>
+                                    <td>名稱</td>
+                                    <td>客戶</td>
+                                    <td>負責人</td>
+                                    <td>產業</td>
+                                    <td>階段</td>
+                                    <td>機率</td>
+                                    <td>開始時間</td>
+                                    <td>終止時間</td>
+                                </tr>
+                                <tr class="item" v-for="(s, index) in list" :key="index">
+                                    <td><input type="checkbox" :value="s.marketid" name="mak"></td>
+                                    <td v-on:click="market(s.marketid)">
+                                        {{s.name}}</td>
+                                    <td v-on:click="market(s.marketid)">
+                                        {{s.client}}</td>
+                                    <td v-on:click="market(s.marketid)">
+                                        {{s.user}}</td>
+                                    <td v-on:click="market(s.marketid)">
+                                        {{s.type}}</td>
+                                    <td v-on:click="market(s.marketid)">
+                                        {{s.stage}}</td>
+                                    <td v-on:click="market(s.marketid)">
+                                        {{s.clinch}}</td>
+                                    <td v-on:click="market(s.marketid)">
+                                        {{s.createtime}}</td>
+                                    <td v-on:click="market(s.marketid)">
+                                        {{s.endtime}}</td>
+                                </tr>
 
-                        </table>
-
+                            </table>
+                        </transition-group>
                         <!-- 滑塊 -->
                         <div class="offcanvas offcanvas-end " tabindex="0" id="offcanvasRight"
                             aria-labelledby="offcanvasRightLabel" style="width: 450px;">
@@ -156,16 +164,15 @@
                                             aria-labelledby="flush-headingThree"
                                             data-bs-parent="#accordionFlushExample">
                                             <div class="accordion-body">
-                                                <form action="${pageContext.request.contextPath}/Market/selectMarket"
-                                                    method="post">
-                                                    <div class="input-group mb-3">
-                                                        <input type="text" class="form-control" placeholder=""
-                                                            aria-label="Recipient's username"
-                                                            aria-describedby="button-addon2" name="name">
-                                                        <button class="btn btn-outline-secondary" type="submit"
-                                                            id="selectProduct">搜索</button>
-                                                    </div>
-                                                </form>
+
+                                                <div class="input-group mb-3">
+                                                    <input type="text" class="form-control" placeholder=""
+                                                        aria-label="Recipient's username" v-model="name"
+                                                        aria-describedby="button-addon2" name="name">
+                                                    <button class="btn btn-outline-secondary" @click="selectCustomer"
+                                                        id="selectProduct">搜索</button>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -182,24 +189,23 @@
                                             aria-labelledby="flush-headingThree"
                                             data-bs-parent="#accordionFlushExample">
                                             <div class="accordion-body">
-                                                <form action="${pageContext.request.contextPath}/Market/selectMarket"
-                                                    method="post">
-                                                    <div class="input-group mb-3">
-                                                        <input type="text" class="form-control" placeholder=""
-                                                            aria-label="Recipient's username"
-                                                            aria-describedby="button-addon2" name="name" list="company">
-                                                        <button class="btn btn-outline-secondary" type="submit"
-                                                            id="selectProduct">搜索</button>
-                                                        <datalist id="company">
-                                                            <c:if test="${not empty client}">
-                                                                <c:forEach varStatus="loop" begin="0"
-                                                                    end="${client.size()-1}" items="${client}" var="s">
-                                                                    <option value="${s.name}">
-                                                                </c:forEach>
-                                                            </c:if>
-                                                        </datalist>
-                                                    </div>
-                                                </form>
+
+                                                <div class="input-group mb-3">
+                                                    <input type="text" class="form-control" placeholder=""
+                                                        v-model="name" aria-label="Recipient's username"
+                                                        aria-describedby="button-addon2" name="name" list="company">
+                                                    <button class="btn btn-outline-secondary" @click="selectCustomer"
+                                                        id="selectProduct">搜索</button>
+                                                    <datalist id="company">
+                                                        <c:if test="${not empty client}">
+                                                            <c:forEach varStatus="loop" begin="0"
+                                                                end="${client.size()-1}" items="${client}" var="s">
+                                                                <option value="${s.name}">
+                                                            </c:forEach>
+                                                        </c:if>
+                                                    </datalist>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -217,26 +223,19 @@
                                             data-bs-parent="#accordionFlushExample">
                                             <div class="accordion-body">
                                                 <ul class=" ">
-                                                    <li><a
-                                                            href="${pageContext.request.contextPath}/Market/selectStage/尚未處理">尚未處理</a>
+                                                    <li><a href="#" @click="selectStatus('尚未處理')">尚未處理</a>
                                                     </li>
-                                                    <li><a
-                                                            href="${pageContext.request.contextPath}/Market/selectStage/需求確認">需求確認</a>
+                                                    <li><a href="#" @click="selectStatus('需求確認')">需求確認</a>
                                                     </li>
-                                                    <li><a
-                                                            href="${pageContext.request.contextPath}/Market/selectStage/聯繫中">聯繫中</a>
+                                                    <li><a href="#" @click="selectStatus('聯繫中')">聯繫中</a>
                                                     </li>
-                                                    <li><a
-                                                            href="${pageContext.request.contextPath}/Market/selectStage/處理中">處理中</a>
+                                                    <li><a href="#" @click="selectStatus('處理中')">處理中</a>
                                                     </li>
-                                                    <li><a
-                                                            href="${pageContext.request.contextPath}/Market/selectStage/已報價">已報價</a>
+                                                    <li><a href="#" @click="selectStatus('已報價')">已報價</a>
                                                     </li>
-                                                    <li><a
-                                                            href="${pageContext.request.contextPath}/Market/selectStage/成功結案">成功結案</a>
+                                                    <li><a href="#" @click="selectStatus('成功結案')">成功結案</a>
                                                     </li>
-                                                    <li><a
-                                                            href="${pageContext.request.contextPath}/Market/selectStage/失敗結案">失敗結案</a>
+                                                    <li><a href="#" @click="selectStatus('失敗結案')">失敗結案</a>
                                                     </li>
 
                                                 </ul>
@@ -256,16 +255,14 @@
                                             aria-labelledby="flush-headingThree"
                                             data-bs-parent="#accordionFlushExample">
                                             <div class="accordion-body">
-                                                <form action="${pageContext.request.contextPath}/Market/selectMarket"
-                                                    method="post">
-                                                    <div class="input-group mb-3">
-                                                        <input type="text" class="form-control" placeholder=""
-                                                            aria-label="Recipient's username"
-                                                            aria-describedby="button-addon2" name="name">
-                                                        <button class="btn btn-outline-secondary" type="submit"
-                                                            id="selectProduct">搜索</button>
-                                                    </div>
-                                                </form>
+                                                <div class="input-group mb-3">
+                                                    <input type="text" class="form-control" placeholder=""
+                                                        aria-label="Recipient's username" v-model="name"
+                                                        aria-describedby="button-addon2" name="name">
+                                                    <button class="btn btn-outline-secondary" @click="selectCustomer"
+                                                        id="selectProduct">搜索</button>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -282,27 +279,160 @@
                                             aria-labelledby="flush-headingThree"
                                             data-bs-parent="#accordionFlushExample">
                                             <div class="accordion-body">
-                                                ke itf how this would look in a real-world application.
+                                                <div class="input-group mb-3">
+                                                    <input type="text" class="form-control" placeholder=""
+                                                        aria-label="Recipient's username" v-model="ContantPhone"
+                                                        aria-describedby="button-addon2" name="ContantPhone">
+                                                    <button class="btn btn-outline-secondary"
+                                                        @click="selectContantPhone" id="selectProduct">搜索</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <!--  XXXXX-->
+                                    <!--  產品類別-->
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingThree">
                                             <button class="accordion-button collapsed" type="button"
                                                 data-bs-toggle="collapse" data-bs-target="#i8" aria-expanded="false"
                                                 aria-controls="flush-collapseThree">
-                                                XXXXX
+                                                產品類別
                                             </button>
                                         </h2>
                                         <div id="i8" class="accordion-collapse collapse"
                                             aria-labelledby="flush-headingThree"
                                             data-bs-parent="#accordionFlushExample">
                                             <div class="accordion-body">
-                                                ke itf how this would look in a real-world application.
+                                                <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll"
+                                                    @change="handleCheckAllChange">全选</el-checkbox>
+                                                <div style="margin: 15px 0;"></div>
+                                                <el-checkbox-group v-model="checkedCities"
+                                                    @change="handleCheckedCitiesChange">
+                                                    <div class="row">
+                                                        <div class="col-md-5" v-for="city in cities" :key="city">
+                                                            <el-checkbox :label="city">
+                                                                {{city}}</el-checkbox>
+                                                        </div>
+                                                    </div>
+                                                </el-checkbox-group>
+                                                <el-button type="primary" @click="selectProductType"
+                                                    style="width: 100%;">送出</el-button>
+
+
                                             </div>
                                         </div>
                                     </div>
+                                    <!--  機會來源 -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="flush-headingThree">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#i9" aria-expanded="false"
+                                                aria-controls="flush-collapseThree">
+                                                機會來源
+                                            </button>
+                                        </h2>
+                                        <div id="i9" class="accordion-collapse collapse"
+                                            aria-labelledby="flush-headingThree"
+                                            data-bs-parent="#accordionFlushExample">
+                                            <div class="accordion-body">
+                                                <el-checkbox :indeterminate="isSource" v-model="sourceAll"
+                                                    @change="CheckSourceAllChange">全选</el-checkbox>
+                                                <div style="margin: 15px 0;"></div>
+                                                <el-checkbox-group v-model="checkedSources"
+                                                    @change="handleCheckedSourcesChange">
+                                                    <div class="row">
+                                                        <div class="col-md-5" v-for="source in sources" :key="source">
+                                                            <el-checkbox :label="source">
+                                                                {{source}}</el-checkbox>
+                                                        </div>
+                                                    </div>
+                                                </el-checkbox-group>
+                                                <el-button type="primary" @click="selectSource" style="width: 100%;">送出
+                                                </el-button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  成交機率-->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="flush-headingThree">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#i10" aria-expanded="false"
+                                                aria-controls="flush-collapseThree">
+                                                成交機率
+                                            </button>
+                                        </h2>
+                                        <div id="i10" class="accordion-collapse collapse"
+                                            aria-labelledby="flush-headingThree"
+                                            data-bs-parent="#accordionFlushExample">
+                                            <div class="accordion-body">
+                                                <el-rate v-model="clinch" show-text
+                                                    :texts="['極差', '失望', '一般', '滿意', '驚喜']" style="height: 30px;"
+                                                    :colors="{ 2: '#99A9BF', 3:  '#F7BA2A', 4: '#FF9900', 5: 'red' }">
+                                                </el-rate>
+                                                <el-button type="primary" @click="selectClinch" style="width: 100%;">送出
+                                                </el-button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  預算-->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="flush-headingThree">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#i11" aria-expanded="false"
+                                                aria-controls="flush-collapseThree">
+                                                預算
+                                            </button>
+                                        </h2>
+                                        <div id="i11" class="accordion-collapse collapse"
+                                            aria-labelledby="flush-headingThree"
+                                            data-bs-parent="#accordionFlushExample">
+                                            <div class="accordion-body">
+                                                <div class="input-group mb-3">
+                                                    <input type="text" class="form-control" v-model="budget1">
+                                                    <span class="input-group-text">~</span>
+                                                    <input type="text" class="form-control" v-model="budget2">
+                                                    <el-button type="primary" @click="selectBudget"
+                                                        style="width: 100%;">送出
+                                                    </el-button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  XXXXX-->
+                                    <!-- <div class="accordion-item">
+                                        <h2 class="accordion-header" id="flush-headingThree">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#i12" aria-expanded="false"
+                                                aria-controls="flush-collapseThree">
+                                                XXXXX
+                                            </button>
+                                        </h2>
+                                        <div id="i12" class="accordion-collapse collapse"
+                                            aria-labelledby="flush-headingThree"
+                                            data-bs-parent="#accordionFlushExample">
+                                            <div class="accordion-body">
+                                                ke itf how this would look in a real-world application.
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                    <!--  XXXXX-->
+                                    <!-- <div class="accordion-item">
+                                        <h2 class="accordion-header" id="flush-headingThree">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#i13" aria-expanded="false"
+                                                aria-controls="flush-collapseThree">
+                                                XXXXX
+                                            </button>
+                                        </h2>
+                                        <div id="i13" class="accordion-collapse collapse"
+                                            aria-labelledby="flush-headingThree"
+                                            data-bs-parent="#accordionFlushExample">
+                                            <div class="accordion-body">
+                                                ke itf how this would look in a real-world application.
+                                            </div>
+                                        </div>
+                                    </div> -->
+
                                 </div>
 
                             </div>
@@ -364,7 +494,7 @@
             //時間選擇器
             Vue.component('dp', {
                 template:
-                    '<div class="block"> <input type="submit" value="送出" v-on:click="updateText"><el-date-picker v-model="value2"      type="daterange"      align="right"      unlink-panels      range-separator="到"      start-placeholder="開始"      end-placeholder="結束" :picker-options="pickerOptions"></el-date-picker></div>',
+                    '<div class="block"> <el-date-picker v-model="value2"      type="daterange"      align="right"      unlink-panels      range-separator="到"      start-placeholder="開始b日期"      end-placeholder="結束日期" :picker-options="pickerOptions" value-format="yyyy-MM-dd"></el-date-picker> <input type="submit" value="送出" v-on:click="updateText"> </div>',
                 data() {
                     return {
                         pickerOptions: {
@@ -406,34 +536,88 @@
                 },
 
             })
+            const cityOptions = ['尚未分類', '大型顯示器', '空氣品質', '流量-AICHI', '流量-RGL', '流量-其他'
+                , '記錄器', '資料收集器-JETEC', '資料收集器-其他'
+                , '溫濕-JETEC', '溫濕-GALLTEC'
+                , '溫濕-E+E', '溫濕-其他'
+                , '紅外線', '壓力-JETEC', '壓力-HUBA'
+                , '壓力-COPAL', '壓力-其他', '差壓'
+                , '氣體-JETEC', '氣體-Senko', '氣體-GASDNA'
+                , '氣體-手持', '氣體-其他', '氣象儀器-土壤/pH'
+                , '氣象儀器-日照/紫外線', '氣象儀器-風速/風向', '氣象儀器-雨量'
+                , '氣象儀器-其他', '水質相關', '液位/料位-JETEC'
+                , '液位/料位-DINEL', '液位/料位-HONDA'
+                , '液位/料位-其他', '溫度貼紙', '溫控器-TOHO'
+                , '溫控器-其他', '能源管理控制', '無線傳輸'
+                , '編碼器/電位計', '食品', '其它'];
+            const sourceOptions = ['自己打來', '員工推薦', '外部推薦', '合作夥伴', '公共關係', '研討會 - 內部'
+                , '研討會 - 合作夥伴', '廣告', '參展', '網絡', '口碑', '其他'];
             Vue.config.productionTip = false;
             const vm = new Vue({
                 el: '.app',
-
                 data: {
                     list: [],
                     name: "",
-                    show: true,
-                    source: [],
+                    show: false,
+
                     ind: ["尚未分類", '生產 製造', '工程公司', '學校', '研究單位', '電子業', '光電產業', '半導體業', '公家機關', '機械設備製造', '生技製藥', '食品加工', '醫院/醫療', '物流/倉儲', '畜牧/農業', '公共/消費性環境', '製紙業', '紡織業', '化工業', '金屬加工', '冷凍空調', '航太/造船', '環保相關', '水處理/水資源', '石化能源', '印刷', '其它', '業主', '設備換修'],
                     industry: [],
+                    ContantPhone: "",
+                    //產品類別
+                    checkAll: false,
+                    isIndeterminate: true,
+                    cities: cityOptions,
+                    checkedCities: ['尚未分類'],
+                    //來源
+                    sourceAll: false,
+                    isSource: false,
+                    sources: sourceOptions,
+                    checkedSources: [],
+                    clinch: null,
+                    budget1: "0",
+                    budget2: "",
                 },
                 created: function () {
                     axios
                         .get('${pageContext.request.contextPath}/Market/MarketList')
                         .then(response => (
-                            this.list = response.data
+                            this.list = response.data,
+                            this.show = true
                         ))
                         .catch(function (error) { // 请求失败处理
                             console.log(error);
                         });
                 },
                 methods: {
+                    //////////////////////產品類別
+                    handleCheckAllChange(val) {
+                        this.checkedCities = val ? cityOptions : [];
+                        this.isIndeterminate = false;
+                    },
+                    handleCheckedCitiesChange(value) {
+                        this.checkedSources = [];//重置來源
+                        let checkedCount = value.length;
+                        this.checkAll = checkedCount === this.cities.length;
+                        this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+                    },
+                    ////////////////////////////產品類別結束
+                    //////////////////////來源
+                    CheckSourceAllChange(val) {
+                        this.checkedSources = val ? sourceOptions : [];
+                        this.isSource = false;
+                    },
+                    handleCheckedSourcesChange(value) {
+                        this.checkedCities = ['尚未分類'];//重置類別結束
+                        let checkedCount = value.length;
+                        this.sourceAll = checkedCount === this.sources.length;
+                        this.isSource = checkedCount > 0 && checkedCount < this.sources.length;
+                    },
+                    ////////////////////////////來源結束
                     market: function (id) {
                         this.show = false
                         setTimeout(function () {
                             location.href = '${pageContext.request.contextPath}/Market/Market/' + id
-                        }, 100)
+                        }, 500)
 
                     },
                     closed: function () {
@@ -454,57 +638,96 @@
                                 this.list = response.data,
                                 console.log(response.data)
                             ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    },
+                    selfUpdate(val) {//搜索建立日期
+                        console.log(val)
+
+                        axios
+                            .get('${pageContext.request.contextPath}/Market/selectDate?from=' + val[0] + "&to=" + val[1])
+                            .then(response => (
+                                this.list = response.data,
+                                console.log(this.list)
+                            ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    },
+                    selectCustomer: function () {//搜索客戶
+                        axios
+                            .get('${pageContext.request.contextPath}/Market/selectMarket/' + this.name)
+                            .then(response => (
+                                this.list = response.data
+                            ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    },
+                    selectStatus: function (status) {//搜索狀態
+                        axios
+                            .get('${pageContext.request.contextPath}/Market/selectStage/' + status)
+                            .then(response => (
+                                this.list = response.data
+                            ))
                             .catch(function (error) { // 请求失败处理
                                 console.log(error);
                             });
                     },
-                    selfUpdate(val) {
-                        console.log(val)
-
+                    selectContantPhone: function () {
+                        axios
+                            .get('${pageContext.request.contextPath}/Market/selectContantPhone/' + this.ContantPhone)
+                            .then(response => (
+                                this.list = response.data
+                            ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
                     },
-                    selectCreateDate: function (value2) {
-                        console.log(this.value1);
-                        console.log(value2)
-
-                        // axios
-                        //     .get('${pageContext.request.contextPath}/Potential/selectDate?from=' + $('#from').val() + "&to=" + $('#to').val())
-                        //     .then(response => (
-                        //         this.list = response.data
-                        // console.log(this.list)
-                        //     ))
-                        //     .catch(function (error) { // 请求失败处理
-                        //         console.log(error);
-                        //     });
+                    //select產品類別
+                    selectProductType: function () {
+                        axios
+                            .post('${pageContext.request.contextPath}/Market/selectProductType', this.checkedCities)
+                            .then(response => (
+                                this.list = response.data
+                            ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
                     },
-                    // selectCustomer: function () {
-                    //     axios
-                    //         .get('${pageContext.request.contextPath}/Potential/admin/' + this.name)
-                    //         .then(response => (
-                    //             this.list = response.data
-                    //         ))
-                    //         .catch(function (error) { // 请求失败处理
-                    //             console.log(error);
-                    //         });
-                    // }, selectStatus: function (status) {
-                    //     axios
-                    //         .get('${pageContext.request.contextPath}/Potential/status/' + status)
-                    //         .then(response => (
-                    //             this.list = response.data
-                    //         ))
-                    //         .catch(function (error) { // 请求失败处理
-                    //             console.log(error);
-                    //         });
-                    // }, selectSource: function () {
-                    //     var da = { source: this.source };
-                    //     axios
-                    //         .post('${pageContext.request.contextPath}/Potential/selectSource', da)
-                    //         .then(response => (
-                    //             this.list = response.data
-                    //         ))
-                    //         .catch(function (error) { // 请求失败处理
-                    //             console.log(error);
-                    //         });
-                    // }
+                    //select來源
+
+                    selectSource: function () {
+                        axios
+                            .post('${pageContext.request.contextPath}/Market/selectSource', this.checkedSources)
+                            .then(response => (
+                                this.list = response.data
+                            ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    },
+                    selectClinch: function () {
+                        axios
+                            .post('${pageContext.request.contextPath}/Market/selectClinch/' + this.clinch)
+                            .then(response => (
+                                this.list = response.data
+                            ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    },
+                    selectBudget: function () {//select預算                        
+                        axios
+                            .post('${pageContext.request.contextPath}/Market/selectBudget/' + this.budget1 + "/" + this.budget2)
+                            .then(response => (
+                                this.list = response.data
+                            ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    }
                 },
             })
         </script>
@@ -525,6 +748,31 @@
         <style>
             .el-date-editor--daterange.el-input__inner {
                 width: auto;
+            }
+
+            .el-rate__icon {
+                font-size: 30px;
+                width: 30px;
+
+            }
+
+            /* 可以设置不同的进入和离开动画 */
+            /* 设置持续时间和动画函数 */
+            .slide-fade-enter-active {
+                transition: all .3s ease;
+            }
+
+            .slide-fade-leave-active {
+                transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+            }
+
+            .slide-fade-enter,
+            .slide-fade-leave-to
+
+            /* .slide-fade-leave-active 用于 2.1.8 以下版本 */
+                {
+                transform: translateY(200%);
+                opacity: 0;
             }
         </style>
 

@@ -290,6 +290,23 @@
                                                 id="selectProduct">搜索</button>
                                         </div>
                                     </div>
+                                    <!--  上次聯絡時間-->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="flush-headingThree">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#i8" aria-expanded="false"
+                                                aria-controls="flush-collapseThree">
+                                                XXXXX
+                                            </button>
+                                        </h2>
+                                        <div id="i8" class="accordion-collapse collapse"
+                                            aria-labelledby="flush-headingThree"
+                                            data-bs-parent="#accordionFlushExample">
+                                            <div class="accordion-body">
+                                                ke itf how this would look in a real-world application.
+                                            </div>
+                                        </div>
+                                    </div>
                                     <!--  XXXXX-->
                                     <!-- <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingThree">
@@ -418,7 +435,7 @@
                             },
                             error: function (returndata) {
                                 console.log(returndata.responseJSON.message);
-                                
+
                             }
                         });
                     }

@@ -70,10 +70,28 @@ public class MarketBean {
 	}
 
 	public String getPhone() {
-		return phone;
+		StringBuffer sb = new StringBuffer(phone);
+		if(sb.length()==10) {
+			sb.insert(3, "-");
+			sb.insert(7, "-");
+		}
+		if(sb.length()==9) {
+			sb.insert(2, "-");
+			sb.insert(6, "-");
+		}
+		if(sb.length()==8) {
+			sb.insert(5, "-");
+		}
+		if(sb.length()==7) {
+			sb.insert(4, "-");
+		}
+		return sb.toString();	
 	}
 
 	public void setPhone(String phone) {
+		phone = phone.replace("-", "");
+		phone = phone.replace("(", "");
+		phone = phone.replace(")", "");	
 		this.phone = phone;
 	}
 
@@ -102,10 +120,28 @@ public class MarketBean {
 	}
 
 	public String getContactphone() {
-		return contactphone;
+		StringBuffer sb = new StringBuffer(contactphone);
+		if(sb.length()==10) {
+			sb.insert(3, "-");
+			sb.insert(7, "-");
+		}
+		if(sb.length()==9) {
+			sb.insert(2, "-");
+			sb.insert(6, "-");
+		}
+		if(sb.length()==8) {
+			sb.insert(5, "-");
+		}
+		if(sb.length()==7) {
+			sb.insert(4, "-");
+		}
+		return sb.toString();
 	}
 
 	public void setContactphone(String contactphone) {
+		contactphone= contactphone.replace("-", "");
+		contactphone = contactphone.replace("(", "");
+		contactphone = contactphone.replace(")", "");	
 		this.contactphone = contactphone;
 	}
 
