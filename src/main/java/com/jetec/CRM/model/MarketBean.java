@@ -53,6 +53,18 @@ public class MarketBean {
 	
 	
 
+	
+	
+	
+	
+	public String getContactphone() {
+		return contactphone;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
 	public List<WorkBean> getWork() {
 		return work;
 	}
@@ -69,24 +81,24 @@ public class MarketBean {
 		this.contactemail = contactemail;
 	}
 
-	public String getPhone() {
-		StringBuffer sb = new StringBuffer(phone);
-		if(sb.length()==10) {
-			sb.insert(3, "-");
-			sb.insert(7, "-");
-		}
-		if(sb.length()==9) {
-			sb.insert(2, "-");
-			sb.insert(6, "-");
-		}
-		if(sb.length()==8) {
-			sb.insert(5, "-");
-		}
-		if(sb.length()==7) {
-			sb.insert(4, "-");
-		}
-		return sb.toString();	
-	}
+//	public String getPhone() {
+//		StringBuffer sb = new StringBuffer(phone);
+//		if(sb.length()==10) {
+//			sb.insert(3, "-");
+//			sb.insert(7, "-");
+//		}
+//		if(sb.length()==9) {
+//			sb.insert(2, "-");
+//			sb.insert(6, "-");
+//		}
+//		if(sb.length()==8) {
+//			sb.insert(5, "-");
+//		}
+//		if(sb.length()==7) {
+//			sb.insert(4, "-");
+//		}
+//		return sb.toString();	
+//	}
 
 	public void setPhone(String phone) {
 		phone = phone.replace("-", "");
@@ -119,24 +131,24 @@ public class MarketBean {
 		this.contactname = contactname;
 	}
 
-	public String getContactphone() {
-		StringBuffer sb = new StringBuffer(contactphone);
-		if(sb.length()==10) {
-			sb.insert(3, "-");
-			sb.insert(7, "-");
-		}
-		if(sb.length()==9) {
-			sb.insert(2, "-");
-			sb.insert(6, "-");
-		}
-		if(sb.length()==8) {
-			sb.insert(5, "-");
-		}
-		if(sb.length()==7) {
-			sb.insert(4, "-");
-		}
-		return sb.toString();
-	}
+//	public String getContactphone() {
+//		StringBuffer sb = new StringBuffer(contactphone);
+//		if(sb.length()==10) {
+//			sb.insert(3, "-");
+//			sb.insert(7, "-");
+//		}
+//		if(sb.length()==9) {
+//			sb.insert(2, "-");
+//			sb.insert(6, "-");
+//		}
+//		if(sb.length()==8) {
+//			sb.insert(5, "-");
+//		}
+//		if(sb.length()==7) {
+//			sb.insert(4, "-");
+//		}
+//		return sb.toString();
+//	}
 
 	public void setContactphone(String contactphone) {
 		contactphone= contactphone.replace("-", "");

@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,9 @@ import com.jetec.CRM.repository.AdminRepository;
 import com.jetec.CRM.repository.PotentialCustomerHelperRepository;
 import com.jetec.CRM.repository.PotentialCustomerRepository;
 import com.jetec.CRM.repository.TrackRepository;
+
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 
 @Service
 @Transactional
@@ -148,6 +152,17 @@ public class PotentialCustomerService {
 	public List<PotentialCustomerHelperBean> delHelper(Integer customerid, String helperid) {
 		pchr.deleteById(helperid);
 		return PCR.getById(customerid).getHelper();
+	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//搜索潛在客戶by追蹤時間
+	public List<PotentialCustomerBean> selectPotentialCustomerTrack(String from, String to) {
+		
+		
+		
+		
+//		Sort sort = Sort.by(Direction.DESC,"trackbean.tracktime");
+	
+		return PCR.findByTrackbeanTracktimeBetween(from,to);
 	}
 
 }

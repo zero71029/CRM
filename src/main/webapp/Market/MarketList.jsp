@@ -12,7 +12,7 @@
 
 
             <!-- 引入样式 vue-->
-            <script src="${pageContext.request.contextPath}/js/vue.js"></script>
+            <script src="${pageContext.request.contextPath}/js/vue.min.js"></script>
             <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
             <!-- 引入element-ui样式 -->
             <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
@@ -491,7 +491,7 @@
             }
         </script>
         <script>
-            //時間選擇器
+            //element-ui時間選擇器
             Vue.component('dp', {
                 template:
                     '<div class="block"> <el-date-picker v-model="value2"      type="daterange"      align="right"      unlink-panels      range-separator="到"      start-placeholder="開始b日期"      end-placeholder="結束日期" :picker-options="pickerOptions" value-format="yyyy-MM-dd"></el-date-picker> <input type="submit" value="送出" v-on:click="updateText"> </div>',
@@ -617,7 +617,7 @@
                         this.show = false
                         setTimeout(function () {
                             location.href = '${pageContext.request.contextPath}/Market/Market/' + id
-                        }, 500)
+                        }, 200)
 
                     },
                     closed: function () {

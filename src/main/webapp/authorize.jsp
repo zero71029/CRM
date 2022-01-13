@@ -10,9 +10,6 @@
             <link rel="preconnect" href="https://fonts.gstatic.com">
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
 
-            <!-- bootstrap的CSS、JS樣式放這裡  -->
-            <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css">
-            <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.rtl.min.css">
 
             <!-- <%-- 主要的CSS、JS放在這裡--%> -->
             <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">

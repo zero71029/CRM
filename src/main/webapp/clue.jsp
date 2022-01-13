@@ -10,11 +10,7 @@
             <link rel="preconnect" href="https://fonts.gstatic.com">
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
 
-            <!-- bootstrap的CSS、JS樣式放這裡  -->
-            <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css">
-            <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.rtl.min.css">
-            <!-- <%-- jQuery放這裡 --%> -->
-            <script src="${pageContext.request.contextPath}/js/jquery-3.4.1.js"></script>
+
             <!-- <%-- 主要的CSS、JS放在這裡--%> -->
             <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
             <title>商城後台</title>

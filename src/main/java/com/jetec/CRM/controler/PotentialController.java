@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -125,5 +126,18 @@ public class PotentialController {
 			@PathVariable("helper") String helperid) {
 		System.out.println("刪除協助者");
 		return PCS.delHelper(customerid, helperid);
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//搜索潛在客戶by追蹤時間
+	@RequestMapping("/selectTrackDate")
+	@ResponseBody
+	public List<PotentialCustomerBean> selectTrackDate(@RequestParam("from") String from,
+			@RequestParam("to") String to) {
+		System.out.println("搜索潛在客戶by追蹤時間");
+		List<PotentialCustomerBean> list = PCS.selectPotentialCustomerTrack(from, to);
+		LinkedHashSet<PotentialCustomerBean> hashSet = new LinkedHashSet<PotentialCustomerBean>(list);
+		List<PotentialCustomerBean> result = new ArrayList<PotentialCustomerBean>(hashSet);
+		return result;
 	}
 }

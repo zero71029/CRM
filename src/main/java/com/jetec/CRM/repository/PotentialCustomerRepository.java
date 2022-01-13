@@ -3,6 +3,7 @@ package com.jetec.CRM.repository;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -27,4 +28,12 @@ public interface PotentialCustomerRepository extends JpaRepository<PotentialCust
 	List<PotentialCustomerBean> findBySource(String source);
 
 	List<PotentialCustomerBean> findByIndustry(String industry);
+
+	List<PotentialCustomerBean> findByCreatetimeBetween(String from, String to);
+
+	List<PotentialCustomerBean> findByTrackbeanTracktimeBetween(String from, String to);
+
+	List<PotentialCustomerBean> findByTrackbeanTracktimeBetween(String from, String to, Sort sort);
+
+
 }

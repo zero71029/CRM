@@ -10,7 +10,7 @@
             <link rel="preconnect" href="https://fonts.gstatic.com">
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
             <!-- 引入样式 vue-->
-            <script src="${pageContext.request.contextPath}/js/vue.js"></script>
+            <script src="${pageContext.request.contextPath}/js/vue.min.js"></script>
             <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
             <!-- 引入element-ui样式 -->
             <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
@@ -30,12 +30,13 @@
 
                 .slide-fade-enter,
                 .slide-fade-leave-to
-
                 /* .slide-fade-leave-active 用于 2.1.8 以下版本 */
                     {
                     transform: translateY(-200%);
                     opacity: 0;
                 }
+
+
             </style>
 
             <title>CRM客戶管理系統</title>
@@ -129,8 +130,8 @@
 
                     <div class="col-md-10 app" v-cloak>
 
-                        <transition name="slide-fade" appear>
-                            <div v-loading="loading">
+                        <transition-group name="slide-fade" appear>
+                            <div v-loading="loading" v-if="show" key="1">
                                 <!-- <%-- 中間主體--%> -->
                                 <br>
                                 <div class="row">
@@ -146,7 +147,7 @@
                                         <!-- 上一頁 -->
                                         <!-- <a href="#"  onclick="location.href='${pageContext.request.contextPath}/billboard?pag=1&sort=createtime';" -->
 
-                                        <a href="#" onclick="self.location=document.referrer;"
+                                        <b href="#" @click="back"
                                             style="text-decoration: none;">
                                             <img src="${pageContext.request.contextPath}/img/Pre.png" alt="上一頁">
                                         </a>
@@ -672,7 +673,7 @@
                                     <div class="col-md-1"></div>
                                 </div>
                             </div>
-                        </transition>
+                        </transition-group>
                         <!-- <%-- 彈窗--%> -->
 
                         <el-dialog title="選擇聯絡人" :visible.sync="outerVisible" width="50%" :before-close="handleClose"
@@ -858,9 +859,16 @@
                         contact();
                         this.outerVisible = true;
                     },
+                    back:function(){
+                        this.show=false;
+                        setTimeout(function(){
+                            // location.href="http://localhost:8080/CRM/Market/MarketList.jsp";
+                            
+                            self.location=document.referrer;
+                        },200)
+                        
+                    }
                 },
-
-
             })
 
         </script>

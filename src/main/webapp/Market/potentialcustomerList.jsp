@@ -11,11 +11,19 @@
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
             <script src="${pageContext.request.contextPath}/js/vue.min.js"></script>
             <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+            <!-- 引入element-ui样式 -->
+            <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+            <!-- 引入element-ui组件库 -->
+            <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 
             <title>CRM客戶管理系統</title>
             <style>
                 .item:hover {
                     background-color: #afe3d5;
+                }
+
+                [v-cloak] {
+                    display: none;
                 }
             </style>
         </head>
@@ -27,10 +35,10 @@
                     <jsp:include page="/Sidebar.jsp"></jsp:include>
                     <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
 
-                    <div class="col-md-10 app">
+                    <div class="col-md-10 app" v-cloak>
                         <!-- 滑塊 -->
                         <div class="offcanvas offcanvas-end" tabindex="0" id="offcanvasRight"
-                            aria-labelledby="offcanvasRightLabel" style="width: 300px;">
+                            aria-labelledby="offcanvasRightLabel" style="width: 450px;">
                             <div class="offcanvas-header">
                                 <h5 id="offcanvasRightLabel">搜索</h5>
                                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
@@ -296,14 +304,14 @@
                                             <button class="accordion-button collapsed" type="button"
                                                 data-bs-toggle="collapse" data-bs-target="#i8" aria-expanded="false"
                                                 aria-controls="flush-collapseThree">
-                                                XXXXX
+                                                上次聯絡時間
                                             </button>
                                         </h2>
                                         <div id="i8" class="accordion-collapse collapse"
                                             aria-labelledby="flush-headingThree"
                                             data-bs-parent="#accordionFlushExample">
                                             <div class="accordion-body">
-                                                ke itf how this would look in a real-world application.
+                                                <dp @update="selfUpdate"></dp>
                                             </div>
                                         </div>
                                     </div>
@@ -445,6 +453,51 @@
 
         </script>
         <script>
+            //element-ui時間選擇器
+            Vue.component('dp', {
+                template:
+                    '<div class="block"> <el-date-picker v-model="value2"      type="daterange"      align="right"      unlink-panels      range-separator="到"      start-placeholder="開始b日期"      end-placeholder="結束日期" :picker-options="pickerOptions" value-format="yyyy-MM-dd"></el-date-picker> <input type="submit" value="送出" v-on:click="updateText"> </div>',
+                data() {
+                    return {
+                        pickerOptions: {
+                            shortcuts: [{
+                                text: '最近一周',
+                                onClick(picker) {
+                                    const end = new Date();
+                                    const start = new Date();
+                                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                                    picker.$emit('pick', [start, end]);
+                                }
+                            }, {
+                                text: '最近一個月',
+                                onClick(picker) {
+                                    const end = new Date();
+                                    const start = new Date();
+                                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                                    picker.$emit('pick', [start, end]);
+                                }
+                            }, {
+                                text: '最近三個月',
+                                onClick(picker) {
+                                    const end = new Date();
+                                    const start = new Date();
+                                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                                    picker.$emit('pick', [start, end]);
+                                }
+                            }]
+                        },
+                        
+                        value2: ''
+                    };
+                },
+                methods: {
+                    updateText() {
+                        //事件名稱 //value =>this.message是指子層的噢！
+                        this.$emit('update', this.value2);
+                    }
+                },
+
+            })
             Vue.config.productionTip = false;
             const vm = new Vue({
                 el: '.app',
@@ -473,6 +526,19 @@
                             location.href = '${pageContext.request.contextPath}/Market/potentialcustomer/' + id
                         }, 100)
 
+                    },
+                    selfUpdate(val) {//搜索建立日期
+                        console.log(val)
+
+                        axios
+                            .get('${pageContext.request.contextPath}/Potential/selectTrackDate?from=' + val[0] + "&to=" + val[1])
+                            .then(response => (
+                                this.list = response.data,
+                                console.log(this.list)
+                            ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
                     },
                     closed: function () {
                         axios

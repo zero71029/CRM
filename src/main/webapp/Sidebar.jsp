@@ -10,7 +10,7 @@
         <!-- <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.rtl.min.css"> -->
         <script src="${pageContext.request.contextPath}/bootstrap/js/bootstrap.min.js"></script>
         <!--  popper.min.js 用于弹窗、提示、下拉菜单 -->
-        <!-- <script src="https://cdn.staticfile.org/popper.js/2.9.3/umd/popper.min.js"></script> -->
+        <script src="https://cdn.staticfile.org/popper.js/2.9.3/umd/popper.min.js"></script>
         <!-- <%-- 主要的CSS、JS放在這裡--%> -->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
         <!-- <%-- VUE放這裡 --%> -->
