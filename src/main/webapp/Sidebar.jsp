@@ -82,6 +82,7 @@
             <!-- session 認證-->
             <c:if test='${empty user}'>
                 <script>
+                  
                     console.log("未登入");
                     $.ajax({
                         url: '${pageContext.request.contextPath}/UserAuthorize', //接受請求的Servlet地址
@@ -90,6 +91,7 @@
                             if (json) {
                                 location.reload();
                             } else {
+                                
                                 console.log("沒有認證");
                             }
                         },

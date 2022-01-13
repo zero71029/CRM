@@ -24,7 +24,7 @@ import com.jetec.CRM.model.PotentialCustomerHelperBean;
 @Controller
 @ResponseBody
 @RequestMapping("/Potential")
-@PreAuthorize("hasAuthority('系統') OR hasAuthority('主管') OR hasAuthority('業務')")
+@PreAuthorize("hasAuthority('系統') OR hasAuthority('主管') OR hasAuthority('業務')OR hasAuthority('行銷')")
 public class PotentialController {
 
 	@Autowired

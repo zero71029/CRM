@@ -83,11 +83,11 @@ public class PublicControl {
 	ReplyTimeRepository rtr;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//獲得認證資料
+//登入驗證
 	@RequestMapping("/UserAuthorize")
 	@ResponseBody
 	public boolean UserAuthorize(Authentication authentication, HttpSession session) {
-		System.out.println("*****獲得認證資料******");
+		System.out.println("*****登入驗證******");
 		// 驗證 補session user
 		if (authentication != null) {
 			ss.auth(authentication, session);

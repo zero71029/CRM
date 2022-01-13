@@ -30,15 +30,13 @@
 
                 .slide-fade-enter,
                 .slide-fade-leave-to
+
                 /* .slide-fade-leave-active 用于 2.1.8 以下版本 */
                     {
                     transform: translateY(-200%);
                     opacity: 0;
                 }
-
-
             </style>
-
             <title>CRM客戶管理系統</title>
         </head>
         <style>
@@ -147,8 +145,7 @@
                                         <!-- 上一頁 -->
                                         <!-- <a href="#"  onclick="location.href='${pageContext.request.contextPath}/billboard?pag=1&sort=createtime';" -->
 
-                                        <b href="#" @click="back"
-                                            style="text-decoration: none;">
+                                        <a href="#" @click="back" style="text-decoration: none;">
                                             <img src="${pageContext.request.contextPath}/img/Pre.png" alt="上一頁">
                                         </a>
                                     </div>
@@ -157,7 +154,7 @@
                                 <br>
                                 <form action="${pageContext.request.contextPath}/Market/SaveMarket" method="post"
                                     class="basefrom g-3 needs-validation AAA">
-
+                                    <input type="hidden" name="aaa" value="${bean.aaa}">
                                     <div class="row">
                                         <input type="hidden" name="marketid" value="${bean.marketid}">
                                         <div class="row" style="text-align: center;">
@@ -216,12 +213,12 @@
                                             <div class="col-md-1 cell">公司電話</div>
                                             <div class="col-md-2 FormPadding">
                                                 <input type="text" class="col-md- form-control cellFrom" name="phone"
-                                                    value="${bean.phone}" maxlength="20">
+                                                    v-model="phone" maxlength="20">
                                             </div>
                                             <div class="col-md-1 cell">聯絡人電話</div>
                                             <div class="col-md-2 FormPadding">
                                                 <input type="text" class="col-md- form-control cellFrom"
-                                                    name="contactphone" value="${bean.contactphone}" maxlength="19">
+                                                    v-model="contactphone" name="contactphone" maxlength="19">
                                             </div>
 
                                             <div class="col-md-1 "> </div>
@@ -310,8 +307,8 @@
                                             </div>
                                             <div class="col-md-1 cell">聯絡人手機</div>
                                             <div class="col-md-2 FormPadding">
-                                                <input type="text" class=" form-control cellFrom" name="contactmoblie"
-                                                    value="${bean.contactmoblie}" maxlength="20">
+                                                <input type="text" class=" form-control cellFrom"
+                                                    v-model="contactmoblie" maxlength="20" name="contactmoblie">
                                             </div>
                                             <div class="col-md-1"></div>
                                             <div class="col-md-1 cell">階段</div>
@@ -829,6 +826,32 @@
                 $(".AAA").attr("action", "${pageContext.request.contextPath}/Market/goQuotation.action");
                 $(".AAA").submit();
             }
+String.prototype.insert = function (index, string) {
+    if (index > 0)
+        return this.substring(0, index) + string + this.substring(index, this.length);
+    else
+        return string + this;
+};
+function formatPhone(sb) {
+    if (sb.length == 10) {
+        sb = sb.insert(3, "-");
+        sb = sb.insert(7, "-");
+    }
+    if (sb.length == 9) {
+        sb = sb.insert(2, "-");
+        sb = sb.insert(6, "-");
+    }
+    if (sb.length == 8) {
+        sb = sb.insert(5, "-");
+    }
+    if (sb.length == 7) {
+        sb = sb.insert(4, "-");
+    }
+    return sb;
+}
+
+
+
         </script>
         <script>
             var clinch = parseInt('${bean.clinch}' || null);
@@ -839,12 +862,20 @@
                         value: clinch,
                         show: false,
                         loading: true,
-                        outerVisible: false
+                        outerVisible: false,
+                        phone: '${bean.phone}',
+                        contactphone: '${bean.contactphone}',
+                        contactmoblie: '${bean.contactmoblie}',
+
                     }
                 },
                 created() {
                     this.show = true;
                     this.loading = false;
+                    this.phone = formatPhone(this.phone);
+                    this.contactphone = formatPhone(this.contactphone);
+                    this.contactmoblie = formatPhone(this.contactmoblie);
+
                 },
                 methods: {
                     ddd: function () {
@@ -859,14 +890,14 @@
                         contact();
                         this.outerVisible = true;
                     },
-                    back:function(){
-                        this.show=false;
-                        setTimeout(function(){
+                    back: function () {
+                        this.show = false;
+                        setTimeout(function () {
                             // location.href="http://localhost:8080/CRM/Market/MarketList.jsp";
-                            
-                            self.location=document.referrer;
-                        },200)
-                        
+
+                            self.location = document.referrer;
+                        }, 200)
+
                     }
                 },
             })

@@ -31,7 +31,7 @@ import com.jetec.CRM.repository.AdminRepository;
 
 @Controller
 @RequestMapping("/Market")
-@PreAuthorize("hasAuthority('系統') OR hasAuthority('主管') OR hasAuthority('業務')")
+@PreAuthorize("hasAuthority('系統') OR hasAuthority('主管') OR hasAuthority('業務')OR hasAuthority('行銷')")
 public class MarketControler {
 	@Autowired
 	MarketService ms;
@@ -119,6 +119,7 @@ public class MarketControler {
 	// 存銷售機會
 	@RequestMapping("/SaveMarket")
 	public String SaveMarket(MarketBean marketBean) {
+		System.out.println("*****存銷售機會****");
 		System.out.println(marketBean);
 		ms.save(marketBean);
 		return "redirect:/Market/MarketList.jsp";
@@ -127,6 +128,7 @@ public class MarketControler {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@RequestMapping("/Market/{id}")
 	public String Market(Model model, @PathVariable("id") Integer id) {
+		System.out.println("進入詳細");
 		model.addAttribute("bean", ms.getById(id));
 		return "/Market/Market";
 	}

@@ -40,29 +40,34 @@ public class MarketBean {
 	private Date ccc;// 創建時間
 	private String product;//
 	private String producttype;//
-	private String phone;//公司電話
+	private String phone;// 公司電話
+	private String aaa;//創建時間 字串
+	
+	
+	
+	
+	
 	//
 	@JsonIgnore
 	@OneToMany(mappedBy = "marketid", cascade = CascadeType.ALL)
-	private List<MarketRemarkBean> mrb;	
+	private List<MarketRemarkBean> mrb;
 
-	//工作項目
+	// 工作項目
 	@JsonIgnore
-	@OneToMany(targetEntity = WorkBean.class ,mappedBy = "marketid", cascade = CascadeType.ALL)
+	@OneToMany(targetEntity = WorkBean.class, mappedBy = "marketid", cascade = CascadeType.ALL)
 	private List<WorkBean> work;
-	
-	
+
+
 
 	
 	
 	
-	
-	public String getContactphone() {
-		return contactphone;
+	public String getAaa() {
+		return aaa;
 	}
 
-	public String getPhone() {
-		return phone;
+	public void setAaa(String aaa) {
+		this.aaa = aaa;
 	}
 
 	public List<WorkBean> getWork() {
@@ -80,30 +85,33 @@ public class MarketBean {
 	public void setContactemail(String contactemail) {
 		this.contactemail = contactemail;
 	}
+	public String getPhone() {
+		return phone;
+	}
 
 //	public String getPhone() {
 //		StringBuffer sb = new StringBuffer(phone);
-//		if(sb.length()==10) {
+//		if (sb.length() == 10) {
 //			sb.insert(3, "-");
 //			sb.insert(7, "-");
 //		}
-//		if(sb.length()==9) {
+//		if (sb.length() == 9) {
 //			sb.insert(2, "-");
 //			sb.insert(6, "-");
 //		}
-//		if(sb.length()==8) {
+//		if (sb.length() == 8) {
 //			sb.insert(5, "-");
 //		}
-//		if(sb.length()==7) {
+//		if (sb.length() == 7) {
 //			sb.insert(4, "-");
 //		}
-//		return sb.toString();	
+//		return sb.toString();
 //	}
 
 	public void setPhone(String phone) {
 		phone = phone.replace("-", "");
 		phone = phone.replace("(", "");
-		phone = phone.replace(")", "");	
+		phone = phone.replace(")", "");
 		this.phone = phone;
 	}
 
@@ -130,6 +138,9 @@ public class MarketBean {
 	public void setContactname(String contactname) {
 		this.contactname = contactname;
 	}
+	public String getContactphone() {
+		return contactphone;
+	}
 
 //	public String getContactphone() {
 //		StringBuffer sb = new StringBuffer(contactphone);
@@ -151,17 +162,40 @@ public class MarketBean {
 //	}
 
 	public void setContactphone(String contactphone) {
-		contactphone= contactphone.replace("-", "");
+		contactphone = contactphone.replace("-", "");
 		contactphone = contactphone.replace("(", "");
-		contactphone = contactphone.replace(")", "");	
+		contactphone = contactphone.replace(")", "");
 		this.contactphone = contactphone;
 	}
 
 	public String getContactmoblie() {
 		return contactmoblie;
 	}
+//	public String getContactmoblie() {
+//		StringBuffer sb = new StringBuffer(contactmoblie);
+//		if(sb.length()==10) {
+//			sb.insert(3, "-");
+//			sb.insert(7, "-");
+//		}
+//		if(sb.length()==9) {
+//			sb.insert(2, "-");
+//			sb.insert(6, "-");
+//		}
+//		if(sb.length()==8) {
+//			sb.insert(5, "-");
+//		}
+//		if(sb.length()==7) {
+//			sb.insert(4, "-");
+//		}
+//		return sb.toString();
+//		
+//	}
 
 	public void setContactmoblie(String contactmoblie) {
+		contactmoblie = contactmoblie.replace("-", "");
+		contactmoblie = contactmoblie.replace("(", "");
+		contactmoblie = contactmoblie.replace(")", "");
+
 		this.contactmoblie = contactmoblie;
 	}
 
@@ -180,9 +214,6 @@ public class MarketBean {
 	public void setClient(String client) {
 		this.client = client;
 	}
-
-
-
 
 	public String getType() {
 		return type;
@@ -298,41 +329,17 @@ public class MarketBean {
 
 	@Override
 	public String toString() {
-		
-		return "marketid:'"+marketid+"',"
-				+ "name:'"+name+"',"
-				+ "user:'"+user+"',"
-				+ "createtime:'"+createtime+"',"
-	     		+ "endtime:'"+endtime+"',"
-				+ "message:'"+message+"',"
-				+ "cost:'"+cost+"',"
-				+ "client:'"+client+"',"
-				+ "type:'"+type+"',"
-				+ "source:'"+source+"',"
-				+ "clinch:'"+clinch+"',"
-				+ "stage:'"+stage+"',"
-				+ "need:'"+need+"',"
-				+ "roianalyze:'"+roianalyze+"',"
-				+ "contactmoblie:'"+contactmoblie+"',"
-				+ "contactname:'"+contactname+"',"
-				+ "contactphone:'"+contactphone+"',"
-				+ "contactmoblie:'"+contactmoblie+"',"
-				+ "phone:'"+phone+"',"
-				+ "contactemail:'"+contactemail+"',"
-				+ "producttype:'"+producttype+"',"
-				+ "ccc:'"+ccc+"',"
-			
+
+		return "marketid:'" + marketid + "'," + "name:'" + name + "'," + "user:'" + user + "'," + "createtime:'"
+				+ createtime + "'," + "endtime:'" + endtime + "'," + "message:'" + message + "'," + "cost:'" + cost
+				+ "'," + "client:'" + client + "'," + "type:'" + type + "'," + "source:'" + source + "'," + "clinch:'"
+				+ clinch + "'," + "stage:'" + stage + "'," + "need:'" + need + "'," + "roianalyze:'" + roianalyze + "',"
+				+ "contactmoblie:'" + contactmoblie + "'," + "contactname:'" + contactname + "'," + "contactphone:'"
+				+ contactphone + "'," + "contactmoblie:'" + contactmoblie + "'," + "phone:'" + phone + "',"
+				+ "contactemail:'" + contactemail + "'," + "producttype:'" + producttype + "'," + "ccc:'" + ccc + "',"
+
 				+ "";
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
 //		return "MarketBean [marketid=" + marketid + ", name=" + name + ", user=" + user + ", createtime=" + createtime
 //				+ ", endtime=" + endtime + ", message=" + message + ", cost=" + cost + ", client=" + client
 //				+ ", contactname=" + contactname + ", contactphone=" + contactphone + ", contactmoblie=" + contactmoblie

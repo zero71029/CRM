@@ -17,8 +17,6 @@
             .cell {
                 border: 0px solid black;
                 border-bottom: 1px solid black;
-
-
             }
 
             .cellFrom {

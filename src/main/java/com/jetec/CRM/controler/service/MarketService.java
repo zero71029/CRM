@@ -1,5 +1,6 @@
 package com.jetec.CRM.controler.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,6 +41,12 @@ public class MarketService {
 	ZeroTools zTools;
 
 	public void save(MarketBean marketBean) {
+		
+		System.out.println(marketBean.getAaa()+"dddddddddddd");
+		if(marketBean.getAaa() == "") {
+			System.out.println(marketBean.getAaa()+"null");
+			marketBean.setAaa(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()));			
+		}
 		mr.save(marketBean);
 	}
 
@@ -206,12 +213,13 @@ public class MarketService {
 		Boolean isBoolean = true;
 		for (MarketBean bean : mr.findByContactmoblie(phone)) {
 			System.out.println(bean);
-			for (MarketBean phonebeBean : result) {				
-				if(bean.getMarketid() == phonebeBean.getMarketid()) {
+			for (MarketBean phonebeBean : result) {
+				if (bean.getMarketid() == phonebeBean.getMarketid()) {
 					isBoolean = false;
 				}
 			}
-			if(isBoolean)result.add(bean);
+			if (isBoolean)
+				result.add(bean);
 			isBoolean = true;
 		}
 		return result;
@@ -221,24 +229,25 @@ public class MarketService {
 //搜索銷售機會by產品類別
 	public List<MarketBean> selectProductType(List<String> data) {
 		List<MarketBean> result = new ArrayList<MarketBean>();
-		for(String typeString : data) {
+		for (String typeString : data) {
 			result.addAll(mr.findProducttype(typeString));
 			result.addAll(mr.findSource(typeString));
 		}
 		return result;
 	}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索銷售機會by產品類別
 	public List<MarketBean> selectClinch(String clinch) {
 		// TODO Auto-generated method stub
 		return mr.selectClinch(clinch);
 	}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索銷售機會by預算
 	public List<MarketBean> selectBudget(String start, String to) {
 		// TODO Auto-generated method stub
-		return mr.selectBudget( start,  to);
+		return mr.selectBudget(start, to);
 	}
-	
 
 }

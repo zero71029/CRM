@@ -573,8 +573,7 @@
         <!-- @ java 轉資料給javaScript -->
         <c:forEach varStatus="loop" begin="0" end="${bean.advice.size()}" items="${bean.advice}" var="ad">
             <script>
-                var a = "${ad.formname}"
-                console.log(a);
+                var a = "${ad.formname}"                
                 $("#${ad.formname}").prop("checked", true);
             </script>
         </c:forEach>

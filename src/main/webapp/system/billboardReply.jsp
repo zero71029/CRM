@@ -894,9 +894,7 @@
                         // contentType: false,//當form以multipart/form-data方式上傳檔案時，需要設定為false
                         // processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
                         success: function (json) {
-                            console.log("要求附件");
-                            console.log('${uuid}');
-                            console.log(json);
+
                             $(".fileDiv").empty();
                             for (var f of json) {
                                 var url = "${pageContext.request.contextPath}/file/" + f.url;
@@ -994,14 +992,14 @@
             </div>
             </div>
             <!-- tiny 所見即所得-->
-            <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.7.6/tinymce.min.js"></script> -->
-            <script src="${pageContext.request.contextPath}/tinymce/js/tinymce/tinymce.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.7.6/tinymce.min.js"></script>
+            <!-- <script src="${pageContext.request.contextPath}/tinymce/js/tinymce/tinymce.min.js"></script> -->
             <script>
                 tinymce.init({
                     language: 'zh_TW',
                     language_url: '${pageContext.request.contextPath}/tinymce/langs/zh_TW.js',
                     selector: '#replycontent',
-                    height: '460',
+                    height: '200',
 
                 });
             </script>
