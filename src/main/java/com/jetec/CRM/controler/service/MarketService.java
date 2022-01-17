@@ -232,7 +232,7 @@ public class MarketService {
 		for (String typeString : data) {
 			result.addAll(mr.findProducttype(typeString));
 			result.addAll(mr.findSource(typeString));
-		}
+		}		
 		return result;
 	}
 

@@ -83,7 +83,7 @@ body {
     z-index: 5;
 }
 
-.navfix {
+.navfix { 
     position: sticky;
     top: 80px;
     height: 100vh;

@@ -183,10 +183,10 @@
                                             data-bs-parent="#accordionFlushExample">
                                             <div class="accordion-body">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="自己打來" id="s1"
+                                                    <input class="form-check-input" type="checkbox" value="廣告" id="s8"
                                                         name="source" v-model="source">
-                                                    <label class="form-check-label" for="s1">
-                                                        自己打來
+                                                    <label class="form-check-label" for="s8">
+                                                        廣告
                                                     </label>
                                                 </div>
                                                 <div class="form-check">
@@ -211,34 +211,6 @@
                                                     </label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="公共關係" id="s5"
-                                                        name="source" v-model="source">
-                                                    <label class="form-check-label" for="s5">
-                                                        公共關係
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="研討會 - 內部"
-                                                        id="s6" name="source" v-model="source">
-                                                    <label class="form-check-label" for="s6">
-                                                        研討會 - 內部
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="研討會 - 合作夥伴"
-                                                        id="s7" name="source" v-model="source">
-                                                    <label class="form-check-label" for="s7">
-                                                        研討會 - 合作夥伴
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="廣告" id="s8"
-                                                        name="source" v-model="source">
-                                                    <label class="form-check-label" for="s8">
-                                                        廣告
-                                                    </label>
-                                                </div>
-                                                <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" value="參展" id="s9"
                                                         name="source" v-model="source">
                                                     <label class="form-check-label" for="s9">
@@ -246,10 +218,10 @@
                                                     </label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="網絡" id="s10"
+                                                    <input class="form-check-input" type="checkbox" value="網絡搜索" id="s10"
                                                         name="source" v-model="source">
                                                     <label class="form-check-label" for="s10">
-                                                        網絡
+                                                        網絡搜索
                                                     </label>
                                                 </div>
                                                 <div class="form-check">
@@ -348,7 +320,7 @@
                                 <label class="btn btn-outline-primary state2" for="btncheck2" onclick="sta()">刪除</label>
                                 <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off">
                                 <label class="btn btn-outline-primary" for="btncheck3"
-                                    onclick="javascript:location.href='${pageContext.request.contextPath}/Market/PotentialCustomerList'">XXX</label>
+                                    onclick="javascript:location.href='${pageContext.request.contextPath}/Market/PotentialCustomerList'">重置</label>
 
 
                                 <label class="btn btn-outline-primary" for="btncheck4" data-bs-toggle="offcanvas"

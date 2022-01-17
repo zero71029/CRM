@@ -159,8 +159,8 @@
                                         <input type="hidden" name="marketid" value="${bean.marketid}">
                                         <div class="row" style="text-align: center;">
                                             <div class="col-md-1"></div>
-                                            <div class="col-md-6"
-                                                style="background-color: rgb(102, 102, 102);font-size: 1.5rem;color: white;border-radius: 5px 5px 0 0 ;">
+                                            <div class="col-md-6 bg-danger text-white"
+                                                style="font-size: 1.5rem;border-radius: 5px 5px 0 0 ;">
                                                 基本資料</div>
                                         </div>
 
@@ -345,9 +345,10 @@
                                             <div class="col-md-1 cell">來源</div>
                                             <div class="col-md-2 FormPadding">
                                                 <select class="form-select cellFrom" name="source">
-                                                    <option value="自己打來" class="selItemOff" ${bean.source=="自己打來"
+                                                    <option value="廣告" class="selItemOff" ${bean.source=="廣告"
                                                         ?"selected":null}>
-                                                        自己打來</option>
+                                                        廣告
+                                                    </option>
                                                     <option value="員工推薦" class="selItemOff" ${bean.source=="員工推薦"
                                                         ?"selected":null}>
                                                         員工推薦</option>
@@ -357,25 +358,13 @@
                                                     <option value="合作夥伴" class="selItemOff" ${bean.source=="合作夥伴"
                                                         ?"selected":null}>
                                                         合作夥伴</option>
-                                                    <option value="公共關係" class="selItemOff" ${bean.source=="公共關係"
-                                                        ?"selected":null}>
-                                                        公共關係</option>
-                                                    <option value="研討會 - 內部" class="selItemOff"
-                                                        ${bean.source=="研討會 - 內部" ?"selected":null}>研討會 - 內部 </option>
-                                                    <option value="研討會 - 合作夥伴" class="selItemOff"
-                                                        ${bean.source=="研討會 - 合作夥伴" ?"selected":null}>研討會 - 合作夥伴
-                                                    </option>
-                                                    <option value="廣告" class="selItemOff" ${bean.source=="廣告"
-                                                        ?"selected":null}>
-                                                        廣告
-                                                    </option>
                                                     <option value="參展" class="selItemOff" ${bean.source=="參展"
                                                         ?"selected":null}>
                                                         參展
                                                     </option>
-                                                    <option value="網絡" class="selItemOff" ${bean.source=="網絡"
+                                                    <option value="網絡搜索" class="selItemOff" ${bean.source=="網絡搜索"
                                                         ?"selected":null}>
-                                                        網絡
+                                                        網絡搜索
                                                     </option>
                                                     <option value="口碑" class="selItemOff" ${bean.source=="口碑"
                                                         ?"selected":null}>
@@ -400,8 +389,8 @@
                                         <div class="row">&nbsp;</div>
                                         <div class="row" style="text-align: center;">
                                             <div class="col-md-1"></div>
-                                            <div class="col-md-6"
-                                                style="background-color: rgb(102, 102, 102);font-size: 1.5rem;color: white;border-radius: 5px 5px 0 0 ;">
+                                            <div class="col-md-6 bg-danger text-white"
+                                                style="font-size: 1.5rem;border-radius: 5px 5px 0 0 ;">
                                                 需求</div>
                                         </div>
                                         <div class="row">
@@ -606,7 +595,7 @@
                                         <div class="row">
                                             <div class="col-md-1"></div>
                                             <div class="col-md-6 FormPadding">
-                                                <button type="submit" style="width: 100%;" class="btn btn-primary"
+                                                <button type="submit" style="width: 100%;" class="btn btn-outline-dark"
                                                     onclick="return window.confirm('確定修改')">儲存</button>
                                             </div>
                                         </div>
@@ -633,7 +622,7 @@
                                         <div class="row">
                                             <div class="col-md-1"></div>
                                             <div class="col-md-6 FormPadding">
-                                                <button style="width: 100%;" class="btn btn-primary"
+                                                <button style="width: 100%;" class="btn btn-outline-dark"
                                                     onclick="">確認</button>
                                             </div>
                                         </div>
@@ -826,29 +815,29 @@
                 $(".AAA").attr("action", "${pageContext.request.contextPath}/Market/goQuotation.action");
                 $(".AAA").submit();
             }
-String.prototype.insert = function (index, string) {
-    if (index > 0)
-        return this.substring(0, index) + string + this.substring(index, this.length);
-    else
-        return string + this;
-};
-function formatPhone(sb) {
-    if (sb.length == 10) {
-        sb = sb.insert(3, "-");
-        sb = sb.insert(7, "-");
-    }
-    if (sb.length == 9) {
-        sb = sb.insert(2, "-");
-        sb = sb.insert(6, "-");
-    }
-    if (sb.length == 8) {
-        sb = sb.insert(5, "-");
-    }
-    if (sb.length == 7) {
-        sb = sb.insert(4, "-");
-    }
-    return sb;
-}
+            String.prototype.insert = function (index, string) {
+                if (index > 0)
+                    return this.substring(0, index) + string + this.substring(index, this.length);
+                else
+                    return string + this;
+            };
+            function formatPhone(sb) {
+                if (sb.length == 10) {
+                    sb = sb.insert(3, "-");
+                    sb = sb.insert(7, "-");
+                }
+                if (sb.length == 9) {
+                    sb = sb.insert(2, "-");
+                    sb = sb.insert(6, "-");
+                }
+                if (sb.length == 8) {
+                    sb = sb.insert(5, "-");
+                }
+                if (sb.length == 7) {
+                    sb = sb.insert(4, "-");
+                }
+                return sb;
+            }
 
 
 

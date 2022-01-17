@@ -33,7 +33,7 @@
             </div>
             <div class="row">
                 <div class='col-lg-9'></div>
-                <div class='col-lg-1 workitem'></div>
+                <div class='col-lg-1 workitem' style="cursor: pointer;"></div>
                 <div class='col-lg-2 helpItem'>
                 </div>
         </header>
@@ -55,7 +55,7 @@
                     客戶管理
                 </button>
                 <button class="client"
-                    onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/ClientList'">客戶訊息</button>
+                    onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/ClientList'">客戶</button>
                 <button class="client"
                     onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/ContactList'">聯絡人</button>
                 <!-- <button class="client">流失客戶</button> -->
@@ -151,7 +151,7 @@
                 url: '${pageContext.request.contextPath}/workitem/${user.name}', //接受請求的Servlet地址
                 type: 'POST',
                 success: function (json) {
-                    $('.workitem').text("工作項目:" + json.length);
+                    $('.workitem').html("工作項目<span class='badge bg-primary'>"+(json.length )+"</span>");
                     $('.workTable').empty();
                     $('.workTable').append("<tr><td width='100'> </td><td>主題</td> <td width='100'>狀態</td></tr>");
 
@@ -167,7 +167,7 @@
                         url: '${pageContext.request.contextPath}/marketitem/${user.name}', //接受請求的Servlet地址
                         type: 'POST',
                         success: function (market) {
-                            $('.workitem').text("工作項目:" + (json.length + market.length));
+                            $('.workitem').html("工作項目<span class='badge bg-primary'>"+(json.length + market.length )+"</span>");
                             for (var bean of market) {
                                 $('.workTable').append('<tr class="www workTR" onclick="gomarket(' + bean.marketid + ')"><td>銷售機會</td><td>' + bean.name + '</td><td>' + bean.stage + '</td></tr>');
                             }
@@ -176,7 +176,7 @@
                                 url: '${pageContext.request.contextPath}/PotentialItem/${user.name}', //接受請求的Servlet地址
                                 type: 'POST',
                                 success: function (customer) {
-                                    $('.workitem').text("工作項目:" + (json.length + market.length + customer.length));
+                                    $('.workitem').html("工作項目<span class='badge bg-primary'>"+(json.length + market.length + customer.length)+"</span>");
                                     for (var bean of customer) {
                                         $('.workTable').append('<tr class="www workTR" onclick="goPotential(' + bean.customerid + ')"><td>潛在顧客</td><td>' + bean.name + '</td><td>' + bean.status + '</td></tr>');
                                     }

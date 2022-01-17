@@ -1000,7 +1000,7 @@
                     language_url: '${pageContext.request.contextPath}/tinymce/langs/zh_TW.js',
                     selector: '#replycontent',
                     height: '200',
-
+                    menubar: false,
                 });
             </script>
 

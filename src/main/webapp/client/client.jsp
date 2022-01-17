@@ -33,7 +33,7 @@
 
             .log {
                 text-align: center;
-                background-color: rgb(234, 169, 48);
+                background-color: #0d6efd;
                 color: white;
                 border-radius: 5px 5px 0 0;
             }
@@ -111,7 +111,7 @@
 
                                 <div class="row">
                                     <div class="col-md-1"></div>
-                                    <div class="col-md-10 log">基本資訊</div>
+                                    <div class="col-md-10 log ">基本資訊</div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-1"></div>
@@ -336,7 +336,7 @@
                                     <div class="col-md-1"></div>
 
                                     <div class="col-md-10 FormPadding">
-                                        <button type="submit" style="width: 100%;" class="btn btn-primary">送出</button>
+                                        <button type="submit" style="width: 100%;" class="btn btn-outline-dark">儲存</button>
                                     </div>
 
 
@@ -692,7 +692,7 @@
 
                                     </datalist>
 
-                                    <button class="btn btn-warning " type="button" id="button-addon2"
+                                    <button class="btn btn-primary" type="button" id="button-addon2"
                                         onclick="tag()">新增</button>
                                 </div>
                             </div>

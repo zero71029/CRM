@@ -36,6 +36,63 @@
                 display: block;
 
             }
+
+
+/* 右下角按鈕 */
+
+
+            .row .box {
+                height: 0px;
+                width: 460px;
+                position: fixed;
+                z-index: 1000;
+                bottom: 30px;
+                right: 0px;
+                background-color: #fff;
+
+                padding: 0%;
+                border-radius: 15px 0 0 15px;
+                margin: 0%;
+            }
+
+            .row .dockbar {
+                opacity: 1;
+                width: 460px;
+                height: 30px;
+                background-color: #ddd;
+
+                border-radius: 15px 0 0 15px;
+            }
+
+            .dockbar div {
+                border-right: 1px solid black;
+                cursor: pointer;
+            }
+
+            .dockbar div:hover {
+                background-color: #aaa;
+
+            }
+
+            .box .act {
+                position: absolute;
+                background-color: #aaa;
+                width: 411px;
+                bottom: 0px;
+                right: 25px;
+                color: white;
+                padding: 0%;
+            }
+
+            .box .act a {
+                color: white;
+                display: block;
+                border: 1px solid white;
+                background-color: #569b92;
+                text-align: center;
+                text-decoration: none;
+            }
+            /* 右下角按鈕////////////////結束 */
         </style>
 
         <body>
@@ -64,7 +121,7 @@
                                 <a href="javascript:history.back()">＜</a>
                             </div>
                             <c:if test="${not empty bean}">
-                                <div class="col-md-1 btn men">
+                                <!-- <div class="col-md-1 btn men">
                                     <a href="javascript:goClient()">轉成客戶</a>
                                 </div>
                                 <div class="col-md-1 btn men">
@@ -72,7 +129,7 @@
                                 </div>
                                 <div class="col-md-1 btn men">
                                     <a href="javascript:goWork()">新增工作項目</a>
-                                </div>
+                                </div> -->
                             </c:if>
 
                         </div>
@@ -86,7 +143,7 @@
                                 <div class="col-md-8">
                                     <div class="row" style="text-align: center;">
                                         <div class="col-md-1"></div>
-                                        <div class="col-md-10"
+                                        <div class="col-md-10 bg-warning text-white"
                                             style="background-color: rgb(36, 101, 164);font-size: 1.5rem;color: white;border-radius: 5px 5px 0 0 ;">
                                             基本資料</div>
                                     </div>
@@ -238,9 +295,10 @@
                                         <div class="col-md-2 cell">來源</div>
                                         <div class="col-md-3 cell FormPadding">
                                             <select class="form-select cellFrom" name="source">
-                                                <option value="自己打來" class="selItemOff" ${bean.source=="自己打來"
+                                                <option value="廣告" class="selItemOff" ${bean.source=="廣告"
                                                     ?"selected":null}>
-                                                    自己打來</option>
+                                                    廣告
+                                                </option>
                                                 <option value="員工推薦" class="selItemOff" ${bean.source=="員工推薦"
                                                     ?"selected":null}>
                                                     員工推薦</option>
@@ -250,25 +308,13 @@
                                                 <option value="合作夥伴" class="selItemOff" ${bean.source=="合作夥伴"
                                                     ?"selected":null}>
                                                     合作夥伴</option>
-                                                <option value="公共關係" class="selItemOff" ${bean.source=="公共關係"
-                                                    ?"selected":null}>
-                                                    公共關係</option>
-                                                <option value="研討會 - 內部" class="selItemOff" ${bean.source=="研討會 - 內部"
-                                                    ?"selected":null}>研討會 - 內部 </option>
-                                                <option value="研討會 - 合作夥伴" class="selItemOff"
-                                                    ${bean.source=="研討會 - 合作夥伴" ?"selected":null}>研討會 - 合作夥伴
-                                                </option>
-                                                <option value="廣告" class="selItemOff" ${bean.source=="廣告"
-                                                    ?"selected":null}>
-                                                    廣告
-                                                </option>
                                                 <option value="參展" class="selItemOff" ${bean.source=="參展"
                                                     ?"selected":null}>
                                                     參展
                                                 </option>
-                                                <option value="網絡" class="selItemOff" ${bean.source=="網絡"
+                                                <option value="網絡搜索" class="selItemOff" ${bean.source=="網絡搜索"
                                                     ?"selected":null}>
-                                                    網絡
+                                                    網絡搜索
                                                 </option>
                                                 <option value="口碑" class="selItemOff" ${bean.source=="口碑"
                                                     ?"selected":null}>
@@ -316,7 +362,7 @@
                                     <div class="row">
                                         <div class="col-md-1"></div>
                                         <div class="col-md-10 FormPadding">
-                                            <button type="submit" style="width: 100%;" class="btn btn-primary"
+                                            <button type="submit" style="width: 100%;" class="btn btn-outline-dark"
                                                 onclick="return window.confirm('確定修改')">儲存</button>
                                         </div>
                                     </div>
@@ -366,7 +412,7 @@
                                         <ul class="helpList col-md-7" style="position: relative;">
                                             <c:forEach varStatus="loop" begin="0" end="${bean.helper.size()}"
                                                 items="${bean.helper}" var="s">
-                                                <li >${s.name}<a style="right: 0px; position: absolute;"
+                                                <li>${s.name}<a style="right: 0px; position: absolute;"
                                                         href="javascript:delHelp('${s.helperid}')">remove</a></li>
                                             </c:forEach>
                                         </ul>
@@ -374,7 +420,7 @@
 
 
                                     <style>
-                                        li{
+                                        li {
                                             /* border: black 1px solid; */
                                         }
                                     </style>
@@ -420,7 +466,7 @@
                         <c:if test="${not empty bean}">
                             <div class="row">
                                 <div class="col-md-1"></div>
-                                <div class="col-md-9"
+                                <div class="col-md-9 bg-warning text-white"
                                     style="text-align: center;background-color: rgb(36, 101, 164);color: white;">
                                     <h5>追蹤資訊</h5>
                                 </div>
@@ -453,8 +499,9 @@
                                     <div class="col-md-2 FormPadding">
                                         <input type="text" class=" form-control cellFrom" name="remark" maxlength="190">
                                     </div>
-                                    <div class="col-md-1">
-                                        <button style="width: 100%;" class="btn btn-primary" onclick="">新增</button>
+                                    <div class="col-md-1" style="padding: 0%;">
+                                        <button style="width: 100%; " class="btn btn-outline-dark"
+                                            onclick="">新增</button>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -492,10 +539,37 @@
                         <div class="row">&nbsp;</div>
                     </div>
 
+
+
+
+
+                    <c:if test="${not empty bean}">
+
+                        <div class="row box" id="draggable">
+                            <div class="row act" style="height: 30px;">
+                                <a class="col-md-4" href="#" onclick="goClient()">轉成客戶</a>
+                                <a class="col-md-4" href="#" onclick="goContact()">建立聯絡⼈</a>
+                                <a class="col-md-4" href="#" onclick="goWork()">新增工作項目</a>
+                            </div>
+                            <div class="dockbar row shadow  ">
+
+                                <div class="col-md-2 offset-md-1" style="border-left: black 1px solid;" onclick="javascript:$('.act').toggle();">
+                                    行動
+                                </div>
+                                <div class="col-md-2">紀錄</div>
+                                <div class="col-md-2">留言</div>
+
+                            </div>
+                        </div>
+                    </c:if>
                 </div>
             </div>
         </body>
         <script>
+            $('.act').hide();
+            $(function () {
+                $("#draggable").draggable();
+            });
             $(".market").show();
             $('.help').toggle();
             // 日期UI

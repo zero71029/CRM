@@ -144,13 +144,17 @@ public class PotentialCustomerService {
 		newBean.setCustomerid(customerid);
 		newBean.setName(helper);
 		newBean.setAdminid(ar.findByName(helper).getAdminid());	
-		pchr.save(newBean);				
+		pchr.save(newBean);		
+		System.out.println(PCR.getById(customerid).getHelper());
 		return PCR.getById(customerid).getHelper();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //刪除協助者
 	public List<PotentialCustomerHelperBean> delHelper(Integer customerid, String helperid) {
 		pchr.deleteById(helperid);
+		
+		
+		System.out.println(PCR.getById(customerid).getHelper());
 		return PCR.getById(customerid).getHelper();
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
