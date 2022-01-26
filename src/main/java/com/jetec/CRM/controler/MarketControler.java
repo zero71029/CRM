@@ -121,8 +121,8 @@ public class MarketControler {
 	public String SaveMarket(MarketBean marketBean) {
 		System.out.println("*****存銷售機會****");
 		System.out.println(marketBean);
-		ms.save(marketBean);
-		return "redirect:/Market/MarketList.jsp";
+		MarketBean save =    ms.save(marketBean);
+		return "redirect:/Market/Market/"+save.getMarketid();
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -355,7 +355,12 @@ public class MarketControler {
 //		contactBean.setFax(Bean.getFax());
 //		contactBean.setRemark(Bean.getRemark());
 //		contactBean.setUser(Bean.getUser());
-		contactBean.setClientid(4);
+		
+		
+		
+		
+		
+		
 
 		cs.SaveContact(contactBean);
 		model.addAttribute("message", "儲存成功");
