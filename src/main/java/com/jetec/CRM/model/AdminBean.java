@@ -33,14 +33,14 @@ public class AdminBean {
     private String 	director;//主管
     private String 	dutyDay;//到職日
     
-	@JsonIgnore
+
 	@OneToMany(targetEntity = AdminMailBean.class ,mappedBy = "adminid", cascade = CascadeType.ALL)
 	private List<AdminMailBean> mail;
 	//@他人
-	@JsonIgnore
+
 	@OneToMany(targetEntity = BillboardAdviceBean.class ,mappedBy = "adviceto", cascade = CascadeType.ALL)
 	private List<BillboardAdviceBean> advice;
-	@JsonIgnore
+
 	@OneToMany(targetEntity = BillboardTopBean.class ,mappedBy = "adminid", cascade = CascadeType.ALL)
 	private List<BillboardTopBean> top;
 	

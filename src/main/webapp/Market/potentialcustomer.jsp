@@ -136,27 +136,17 @@
                         <br>
                         <form action="${pageContext.request.contextPath}/Market/SavePotentialCustomer" method="post"
                             class="basefrom g-3 needs-validation AAA" novalidate>
+                            
                             <input type="hidden" name="customerid" value="${bean.customerid}">
                             <input type="hidden" name="fromactivity" value="${bean.fromactivity}" maxlength="50">
                             <div class="row">
                                 <!-- 基本資料 -->
-                                <div class="col-md-8">
+                                <div class="col-md-7">
                                     <div class="row" style="text-align: center;">
                                         <div class="col-md-1"></div>
                                         <div class="col-md-10 bg-warning text-white"
                                             style="background-color: rgb(36, 101, 164);font-size: 1.5rem;color: white;border-radius: 5px 5px 0 0 ;">
                                             基本資料</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-1"></div>
-                                        <div class="col-md-2 cell">聯絡人*</div>
-                                        <div class="col-md-3 cell FormPadding">
-                                            <input type="text" class=" form-control cellFrom" name="name"
-                                                value="${bean.name}" maxlength="20" required>
-                                        </div>
-                                        <div class="col-md-2 cell">編號</div>
-                                        <div class="col-md-3 cell">${bean.customerid}</div>
-
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1"></div>
@@ -173,6 +163,21 @@
                                                     </c:forEach>
                                                 </c:if>
                                             </datalist>
+                                        </div>
+
+
+
+
+                                        <div class="col-md-2 cell">編號</div>
+                                        <div class="col-md-3 cell">${bean.customerid}</div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-2 cell">聯絡人*</div>
+                                        <div class="col-md-3 cell FormPadding">
+                                            <input type="text" class=" form-control cellFrom" name="name"
+                                                value="${bean.name}" maxlength="20" required>
                                         </div>
                                         <div class="col-md-2 cell">部門</div>
                                         <div class="col-md-3 cell FormPadding"><input type="text"
@@ -359,13 +364,7 @@
                                                 rows="5" maxlength="200">${bean.remark}</textarea>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-1"></div>
-                                        <div class="col-md-10 FormPadding">
-                                            <button type="submit" style="width: 100%;" class="btn btn-outline-dark"
-                                                onclick="return window.confirm('確定修改')">儲存</button>
-                                        </div>
-                                    </div>
+
                                 </div>
                                 <!--  -->
                                 <div class="col-md-4  ASDFG">
@@ -387,14 +386,16 @@
                                                 <input type="hidden" name="user" value="${bean.user}">
                                                 ${bean.user}
                                             </c:if>
-                                            <a href="javascript:$('.help').toggle()">+添加協助者</a>
+                                            
                                         </div>
                                     </div>
-
-                                    <div class="row help">
+                                   
+                                    <!-- <div class="row ">
                                         <div class="col-md-2 "></div>
                                         <div class="col-lg-7">
-                                            <div class="input-group">
+                                            <a href="javascript:$('.help').toggle()">+添加協助者</a>
+                                            <div class="input-group help">
+                                                
                                                 <select class="form-select" name="helper">
                                                     <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}"
                                                         items="${admin}" var="s">
@@ -406,16 +407,17 @@
                                             </div>
                                         </div>
 
-                                    </div>
+                                    </div> -->
                                     <div class="row ">
-                                        <div class="col-md-2 "></div>
-                                        <ul class="helpList col-md-7" style="position: relative;">
+                                        <div class="col-md-2 cell"></div>
+                                        <div class="col-md-7 cell">
+                                        <ul class="helpList " style="position: relative;">
                                             <c:forEach varStatus="loop" begin="0" end="${bean.helper.size()}"
                                                 items="${bean.helper}" var="s">
                                                 <li>${s.name}<a style="right: 0px; position: absolute;"
                                                         href="javascript:delHelp('${s.helperid}')">remove</a></li>
                                             </c:forEach>
-                                        </ul>
+                                        </ul></div>
                                     </div>
 
 
@@ -455,6 +457,13 @@
                                                 <option value="合格" ${bean.status=="合格" ?"selected":null}>合格</option>
                                             </select>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-9 FormPadding">
+                                        <button type="submit" style="width: 100%; " class="btn btn-warning"
+                                            onclick="return window.confirm('確定修改')">儲存</button>
                                     </div>
                                 </div>
                             </div>

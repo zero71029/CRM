@@ -218,8 +218,8 @@
                                                     </label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="網絡搜索" id="s10"
-                                                        name="source" v-model="source">
+                                                    <input class="form-check-input" type="checkbox" value="網絡搜索"
+                                                        id="s10" name="source" v-model="source">
                                                     <label class="form-check-label" for="s10">
                                                         網絡搜索
                                                     </label>
@@ -334,9 +334,9 @@
                                 <tr>
                                     <td><input type="checkbox" id="activity"></td>
                                     <td>編號</td>
+                                    <td>客戶公司</td>
                                     <td>聯絡人</td>
                                     <td>狀態</td>
-                                    <td>客戶公司</td>
                                     <td>產業</td>
                                     <td>部門</td>
                                     <td>建立時間</td>
@@ -347,11 +347,12 @@
                                     <td v-on:click="customer(s.customerid)">
                                         {{s.customerid}}</td>
                                     <td v-on:click="customer(s.customerid)">
+                                        {{s.company}}</td>
+                                    <td v-on:click="customer(s.customerid)">
                                         {{s.name}}</td>
                                     <td v-on:click="customer(s.customerid)">
                                         {{s.status}}</td>
-                                    <td v-on:click="customer(s.customerid)">
-                                        {{s.company}}</td>
+
 
                                     <td v-on:click="customer(s.customerid)">
                                         {{s.industry}}</td>
@@ -458,7 +459,7 @@
                                 }
                             }]
                         },
-                        
+
                         value2: ''
                     };
                 },
@@ -476,26 +477,26 @@
                 data: {
                     list: [],
                     name: "",
-                    admin:'${user.name}',
+                    admin: '${user.name}',
                     show: true,
                     source: [],
                     ind: ["尚未分類", '生產 製造', '工程公司', '學校', '研究單位', '電子業', '光電產業', '半導體業', '公家機關', '機械設備製造', '生技製藥', '食品加工', '醫院/醫療', '物流/倉儲', '畜牧/農業', '公共/消費性環境', '製紙業', '紡織業', '化工業', '金屬加工', '冷凍空調', '航太/造船', '環保相關', '水處理/水資源', '石化能源', '印刷', '其它', '業主', '設備換修'],
                     industry: [],
                 },
                 created: function () {
-                    if(this.admin != ""){
+                    if (this.admin != "") {
                         axios
-                        .get('${pageContext.request.contextPath}/Potential/CustomerList')
-                        .then(response => (
-                            this.list = response.data
-                        ))
-                        .catch(function (error) { // 请求失败处理
-                            console.log(error);
-                        });
+                            .get('${pageContext.request.contextPath}/Potential/CustomerList')
+                            .then(response => (
+                                this.list = response.data
+                            ))
+                            .catch(function (error) { // 请求失败处理
+                                console.log(error);
+                            });
 
-                    }else{
+                    } else {
                         alert("沒有權限");
-                        location.href="${pageContext.request.contextPath}/"
+                        location.href = "${pageContext.request.contextPath}/"
                     }
                 },
                 methods: {

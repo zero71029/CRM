@@ -42,7 +42,7 @@ public class WorkBean {
 	@ManyToOne(targetEntity = PotentialCustomerBean.class,fetch = FetchType.EAGER)
 	@JoinColumn(name = "customerid", referencedColumnName = "customerid", insertable = false, updatable = false)
 	private PotentialCustomerBean customer;
-	//潛在顧客
+	//銷售機會
 	@ManyToOne(targetEntity = MarketBean.class,fetch = FetchType.EAGER)
 	@JoinColumn(name = "marketid", referencedColumnName = "marketid", insertable = false, updatable = false)
 	private MarketBean market;

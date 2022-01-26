@@ -125,7 +125,6 @@ public class PotentialController {
 	public List<PotentialCustomerHelperBean> delHelper(@PathVariable("customerid") Integer customerid,
 			@PathVariable("helper") String helperid) {
 		System.out.println("刪除協助者");
-		System.out.println(PCS.delHelper(customerid, helperid));
 		return PCS.delHelper(customerid, helperid);
 	}
 

@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,9 +15,6 @@ import com.jetec.CRM.repository.AdminRepository;
 import com.jetec.CRM.repository.PotentialCustomerHelperRepository;
 import com.jetec.CRM.repository.PotentialCustomerRepository;
 import com.jetec.CRM.repository.TrackRepository;
-
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 
 @Service
 @Transactional
@@ -145,17 +141,17 @@ public class PotentialCustomerService {
 		newBean.setName(helper);
 		newBean.setAdminid(ar.findByName(helper).getAdminid());	
 		pchr.save(newBean);		
-		System.out.println(PCR.getById(customerid).getHelper());
-		return PCR.getById(customerid).getHelper();
+		System.out.println(pchr.findByCustomerid(customerid));
+		return pchr.findByCustomerid(customerid);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //刪除協助者
 	public List<PotentialCustomerHelperBean> delHelper(Integer customerid, String helperid) {
+		System.out.println(helperid);
 		pchr.deleteById(helperid);
 		
-		
-		System.out.println(PCR.getById(customerid).getHelper());
-		return PCR.getById(customerid).getHelper();
+		System.out.println(pchr.findByCustomerid(customerid));
+		return pchr.findByCustomerid(customerid);
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索潛在客戶by追蹤時間

@@ -135,14 +135,16 @@
                                     <div class="col-md-2 cell">聯絡人</div>
                                     <div class="col-md-4 cell FormPadding">
                                         <select name="" id="" class="form-select cellFrom  contactname">
+                                            <option value style="background-color: #eee;">選擇..
+                                            </option>
                                             <c:if test="${not empty bean.contact}">
                                                 <c:forEach varStatus="loop" begin="0" end="${bean.contact.size()-1}"
                                                     items="${bean.contact}" var="con">
-                                                    <option value="${con.name}">${con.name}</option>
+                                                    <option value="${con.name}" selected       >${con.name}</option>
                                                 </c:forEach>
-                                                <option value="new" style="background-color: #eee;">新增聯絡人
-                                                </option>
                                             </c:if>
+                                            <option value="new" style="background-color: #eee;">新增聯絡人
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -850,6 +852,7 @@
                 </script>
             </c:forEach>
         </c:if>
+       
         <script>
 
             $(".contactname").change(function () {
@@ -862,9 +865,9 @@
 
             });
             //轉成聯絡人
-            function changeContact() {
+            function changeContact() {              
                 $(".AAA").attr("action", "${pageContext.request.contextPath}/CRM/changeContact");
-                $(".AAA").submit();
+                $(".AAA").submit();                
             }
             //轉成銷售機會
             function changeMarket() {

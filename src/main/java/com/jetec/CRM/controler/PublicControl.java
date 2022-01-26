@@ -673,12 +673,12 @@ public class PublicControl {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //取得使用者
-	@RequestMapping("/admin/{adminid}")
-	@ResponseBody
-	public AdminBean workitem(@PathVariable("adminid") Integer adminid) {	
-		AdminBean result =ar.getById(adminid);
-		System.out.println(result);
-		return result;
-	}
-
+//	@RequestMapping("/admin/{adminid}")
+//	@ResponseBody
+//	public AdminBean geAdmin(@PathVariable("adminid") Integer adminid) {
+//		System.out.println("取得使用者");
+//		AdminBean result =ar.getById(adminid);
+//		System.out.println(result);
+//		return result;
+//	}
 }

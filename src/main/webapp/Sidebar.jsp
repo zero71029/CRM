@@ -22,7 +22,7 @@
         <!-- <%-- 抬頭--%> -->
         <header class="mainColor headtop">
             <div class="row">
-                <a href='${pageContext.request.contextPath}/' class='col-lg-2' style="font-size: 2.5rem;">CRM</a>
+                <a href='${pageContext.request.contextPath}/' class='col-lg-2' style="font-size: 2.5rem;">久德資訊平台</a>
                 <div class='col-lg-7'></div>
                 <span class='col-lg-3 username' style="font-size: 2.5rem;">${user.name}
                     <c:if test='${empty user}'>
@@ -192,20 +192,19 @@
                 error: function (returndata) {
                     console.log(returndata);
                 }
+                
             });
-            //取得使用者
+            
+            // 取得使用者
             // $.ajax({
             //     url: '${pageContext.request.contextPath}/admin/${user.adminid}', //接受請求的Servlet地址
             //     type: 'POST',
             //     success: function (market) {
-            //         $('.helpItem').text("協助工作:" +  market.length);
+            //         $('.helpItem').text("協助工作:" );
             //         // for (var bean of market) {
             //         //     $('.workTable').append('<tr class="www workTR" onclick="gomarket(' + bean.marketid + ')"><td>銷售機會</td><td>' + bean.name + '</td><td>' + bean.stage + '</td></tr>');
             //         // }
- 
-
             //     }
-
             // });
 
 

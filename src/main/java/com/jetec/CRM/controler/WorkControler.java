@@ -39,6 +39,7 @@ public class WorkControler {
 	@RequestMapping("/SaveWork")
 	public String SaveWork(WorkBean worKBean) {
 		System.out.println("存工作項目");
+		System.out.println(worKBean);
 		WorkBean save = ws.SaveWork(worKBean);
 		return "redirect:/work/detail/" + save.getWorkid();
 	}

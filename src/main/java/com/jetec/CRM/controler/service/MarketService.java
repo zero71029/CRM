@@ -40,14 +40,14 @@ public class MarketService {
 	@Autowired
 	ZeroTools zTools;
 
-	public void save(MarketBean marketBean) {
+	public MarketBean save(MarketBean marketBean) {
 		
 		System.out.println(marketBean.getAaa()+"dddddddddddd");
 		if(marketBean.getAaa() == "") {
 			System.out.println(marketBean.getAaa()+"null");
 			marketBean.setAaa(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()));			
 		}
-		mr.save(marketBean);
+		return mr.save(marketBean);
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////

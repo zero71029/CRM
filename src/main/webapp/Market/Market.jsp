@@ -595,7 +595,7 @@
                                         <div class="row">
                                             <div class="col-md-1"></div>
                                             <div class="col-md-6 FormPadding">
-                                                <button type="submit" style="width: 100%;" class="btn btn-outline-dark"
+                                                <button type="submit" style="width: 100%;" class="btn btn-danger"
                                                     onclick="return window.confirm('確定修改')">儲存</button>
                                             </div>
                                         </div>
@@ -622,7 +622,7 @@
                                         <div class="row">
                                             <div class="col-md-1"></div>
                                             <div class="col-md-6 FormPadding">
-                                                <button style="width: 100%;" class="btn btn-outline-dark"
+                                                <button style="width: 100%;" class="btn btn-danger"
                                                     onclick="">確認</button>
                                             </div>
                                         </div>
@@ -758,8 +758,7 @@
             }
 
             function contact() {
-                $(".cat").show();
-                $(".hazy").show();
+
                 $.ajax({
                     url: '${pageContext.request.contextPath}/Market/selectContactByClientName/' + $("input[name='client']").val(), //接受請求的Servlet地址
                     type: 'POST',
@@ -786,28 +785,25 @@
                     }
                 });
             }
-            $(".cat").hide();
-            $(".hazy").hide();
-            $(".catReturn").click(function () {
-                $(".cat").hide();
-                $(".hazy").hide();
-            });
 
-            function clickContact(name, phone, moblie) {
-                $(".cat").hide();
-                $(".hazy").hide();
+
+
+            function clickContact(name, phone, moblie) {    
+                vm.contactphone = phone;
+                vm.contactmoblie = moblie;
                 $("input[name='contactname']").val(name);
-                $("input[name='contactphone']").val(phone);
-                $("input[name='contactmoblie']").val(moblie);
+                // $("input[name='contactphone']").val(phone);
+                // $("input[name='contactmoblie']").val(moblie);
                 vm.outerVisible = false;
             }
 
             function catbtn() {
-                $(".cat").hide();
-                $(".hazy").hide();
                 $("input[name='contactname']").val($("input[name='catin']").val());
-                $("input[name='contactphone']").val("");
-                $("input[name='contactmoblie']").val("");
+                vm.contactphone = "";
+                vm.contactmoblie ="";
+
+
+
                 vm.outerVisible = false;
             }
             //建立報價單
@@ -882,12 +878,12 @@
                     back: function () {
                         this.show = false;
                         setTimeout(function () {
-                            // location.href="http://localhost:8080/CRM/Market/MarketList.jsp";
+                            location.href = "http://localhost:8080/CRM/Market/MarketList.jsp";
 
-                            self.location = document.referrer;
+                            // self.location = document.referrer;
                         }, 200)
 
-                    }
+                    }, 
                 },
             })
 

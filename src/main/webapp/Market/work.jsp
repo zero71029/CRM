@@ -71,11 +71,9 @@
                         <div class="row">
                             <div class="col-md-1"></div>
                             <div class="col-md-1 btn">
-                                <a href="javascript:history.back()"
+                                <a href="${pageContext.request.contextPath}/work/workList"
                                     style="text-decoration: none;text-align: center;background-color: #569b92;color: white;;display: block;">＜</a>
                             </div>
-
-
 
                         </div>
                         <br>
@@ -222,7 +220,7 @@
                                         <a href="${pageContext.request.contextPath}/CRM/potentialcustomer/${bean.customer.customerid}"
                                             target="_blank" class="customerName">${bean.customer.name}</a>
                                         <input type="hidden" class=" form-control cellFrom" name="customerid"
-                                            value="${bean.customerid}" maxlength="20">
+                                            value="${bean.customer.customerid}" maxlength="20">
 
                                     </div>
                                 </div>
@@ -231,7 +229,7 @@
                                     <div class="col-md-1 cell">銷售機會</div>
                                     <div class="col-md-3 cell FormPadding" style="background-color: #ccc;"
                                         onclick="showMarket()">
-                                        <a href="${pageContext.request.contextPath}/CRM/Market/${bean.market.marketid}"
+                                        <a href="${pageContext.request.contextPath}/Market/Market/${bean.market.marketid}"
                                             target="_blank" class="marketName">${bean.market.name}</a>
                                         <input type="hidden" class=" form-control cellFrom" name="marketid"
                                             value="${bean.marketid}" maxlength="20">
@@ -243,7 +241,7 @@
                                     <div class="col-md-1"></div>
 
                                     <div class="col-md-4 FormPadding">
-                                        <button type="submit" style="width: 100%;" class="btn btn-primary">送出</button>
+                                        <button type="submit" style="width: 100%;background-color: rgb(36, 101, 164);color: white;" class="btn">送出</button>
                                     </div>
                                 </div>
 
