@@ -18,9 +18,11 @@
 
             <title>CRM客戶管理系統</title>
             <style>
-                .customerbar{ /* 按鈕顏色 */
-                    background-color: #afe3d5;    
+                .customerbar {
+                    /* 按鈕顏色 */
+                    background-color: #afe3d5;
                 }
+
                 .item:hover {
                     background-color: #afe3d5;
                 }
@@ -52,10 +54,10 @@
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingOne">
                                             <button class="accordion-button collapsed" type="button"
-                                            onclick="javascript:location.href='${pageContext.request.contextPath}/Market/PotentialCustomerList'">
+                                                onclick="javascript:location.href='${pageContext.request.contextPath}/Market/PotentialCustomerList'">
                                                 重置
                                             </button>
-                                        </h2>                                        
+                                        </h2>
                                     </div>
                                     <!-- 負責人 -->
                                     <div class="accordion-item">
@@ -331,7 +333,7 @@
                                 <label class="btn btn-outline-primary state2" for="btncheck2" onclick="sta()">刪除</label>
                                 <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off">
                                 <label class="btn btn-outline-primary" for="btncheck3"
-                                    onclick="javascript:location.href='${pageContext.request.contextPath}/Market/PotentialCustomerList'">重置</label>
+                                   @click="adminList" >{{admin}}</label>
 
 
                                 <label class="btn btn-outline-primary" for="btncheck4" data-bs-toggle="offcanvas"
@@ -349,7 +351,7 @@
                                     <td>聯絡人</td>
                                     <td>狀態</td>
                                     <td>產業</td>
-                                    <td>重要性</td>
+                                    <td @click="sortItem('important')">重要性</td>
                                     <td>建立時間</td>
                                     <td>負責人</td>
                                 </tr>
@@ -367,7 +369,7 @@
 
                                     <td v-on:click="customer(s.customerid)">
                                         {{s.industry}}</td>
-                                    <td v-on:click="customer(s.customerid)">
+                                    <td v-on:click="customer(s.customerid)" :class="'important'+index">
                                         {{s.important}}</td>
                                     <td v-on:click="customer(s.customerid)">
                                         {{s.createtime}}</td>
@@ -504,7 +506,6 @@
                             .catch(function (error) { // 请求失败处理
                                 console.log(error);
                             });
-
                     } else {
                         alert("沒有權限");
                         location.href = "${pageContext.request.contextPath}/"
@@ -541,7 +542,7 @@
                                 console.log(error);
                             });
                     },
-                    aadmin: function (name) {
+                    aadmin: function (name) {//搜索負責人
                         axios
                             .get('${pageContext.request.contextPath}/Potential/admin/' + name)
                             .then(response => (
@@ -586,10 +587,40 @@
                             .then(response => (
                                 this.list = response.data
                             ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    },
+                    sortItem: function (direct) {//排序
+                        console.log($('.' + direct + '0').text().trim())
+                        var d = $('.' + direct + '0').text().trim();
+                        var oldList = this.list;
+                        this.list = [];
+                        for(var o of oldList){
+                            if(o.important == "高")this.list.push(o)
+                        }
+                        for(var o of oldList){
+                            if(o.important == "中")this.list.push(o)
+                        }
+                        for(var o of oldList){
+                            if(o.important == "低")this.list.push(o)
+                        }
+
+
+                        
+
+
+                    },
+                    adminList:function(){
+                        axios
+                            .get('${pageContext.request.contextPath}/Potential/admin/' + this.admin)
+                            .then(response => (
+                                this.list = response.data
+                            ))
                             .catch(function (error) { // 请求失败处理
                                 console.log(error);
                             });
-                    }
+                    },
                 },
             })
         </script>

@@ -38,7 +38,7 @@ public class ContactBean {
 	private String remark;//備註
 	private String user;//負責人
 	private String contacttime;//上次聯絡時間
-	
+	private String line;//
 	
 	
 	
@@ -55,6 +55,12 @@ public class ContactBean {
 	
 	
 	
+	public String getLine() {
+		return line;
+	}
+	public void setLine(String line) {
+		this.line = line;
+	}
 	public List<WorkBean> getWork() {
 		return work;
 	}

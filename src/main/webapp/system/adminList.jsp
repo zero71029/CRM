@@ -154,7 +154,7 @@
             }
 
             // <td><a href="${pageContext.request.contextPath}/system/adminList/department">部門</a>
-
+                //員工列表排序
             function so(men) {
                 console.log("sss");
                 console.log($("." + men + "0").text().trim());

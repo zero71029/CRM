@@ -73,16 +73,16 @@ public class SystemControler {
 			HttpServletRequest sce) {
 		System.out.println("*****員工列表排序*****");
 		ServletContext app = sce.getServletContext();
-		List<LibraryBean> list = (List<LibraryBean>) app.getAttribute("library");
-		List<String> department = new ArrayList<String>();
+		List<LibraryBean> list = (List<LibraryBean>) app.getAttribute("library");//拿列表
+		List<String> department = new ArrayList<String>();//部門列表
 		List<String> nnn = new ArrayList<String>();
 		if (so.equals("department")) {
-			for (LibraryBean library : list) {
+			for (LibraryBean library : list) {//把要排的單獨拿出來
 				if (library.getLibrarygroup().equals("department"))
 					department.add(library.getLibraryoption());
 			}
 			boolean index = false;
-			for (String a : department) {
+			for (String a : department) {//如果列表 = 輸入的 先加
 				if (index) {
 					nnn.add(a);
 				}
@@ -90,7 +90,7 @@ public class SystemControler {
 					index = true;
 				}
 			}
-			for (String a : department) {
+			for (String a : department) { //如果列表 !=輸入的 後加
 				if (a.equals(name)) {
 					index = false;
 				}
@@ -129,9 +129,10 @@ public class SystemControler {
 //		System.out.println(department);
 //		System.out.println(nnn);
 		nnn.add(name);
+		System.out.println(nnn);
 		List<AdminBean> Billboard = new ArrayList<AdminBean>();
 		List<AdminBean> dList = new ArrayList<AdminBean>();
-		for (String d : nnn) {
+		for (String d : nnn) {///再根據列表去脂料庫拿取
 			if (so.equals("department")) {
 				dList = ar.getByDepartment(d);
 			} else {

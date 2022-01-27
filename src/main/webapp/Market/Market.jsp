@@ -387,8 +387,28 @@
                                                 <input type="text" class="col-md- form-control cellFrom"
                                                     name="contactemail" value="${bean.contactemail}" maxlength="50">
                                             </div>
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-1 cell">階段</div>
+                                            <div class="col-md-2 FormPadding">
+                                                <select class="form-select cellFrom" name="important" v-model="important">
+                                                    <option value >未選...</option>
+                                                    <option value="高">高</option>
+                                                    <option value="中">中</option>
+                                                    <option value="低">低</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-1 cell"></div>
+                                            <div class="col-md-2 FormPadding">    
+                                            </div>
 
-
+                                            <div class="col-md-1 cell">Line</div>
+                                            <div class="col-md-2 FormPadding">
+                                                <input type="text" class="form-control cellFrom"
+                                                    name="line" v-model="line" maxlength="200">
+                                            </div>
                                         </div>
                                         <!-- ////////////////////////////////////////////////////////////////////////////////// -->
                                         <div class="row">&nbsp;</div>
@@ -856,6 +876,8 @@
                         phone: '${bean.phone}',
                         contactphone: '${bean.contactphone}',
                         contactmoblie: '${bean.contactmoblie}',
+                        important:'${bean.important}',
+                        line: '${bean.line}'
 
                     }
                 },

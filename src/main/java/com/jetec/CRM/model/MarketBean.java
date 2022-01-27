@@ -43,7 +43,8 @@ public class MarketBean {
 	private String producttype;//
 	private String phone;// 公司電話
 	private String aaa;//創建時間 字串
-	
+	private String important;
+	private String line;
 	
 	
 	
@@ -64,6 +65,22 @@ public class MarketBean {
 	
 	
 	
+	public String getImportant() {
+		return important;
+	}
+
+	public void setImportant(String important) {
+		this.important = important;
+	}
+
+	public String getLine() {
+		return line;
+	}
+
+	public void setLine(String line) {
+		this.line = line;
+	}
+
 	public String getAaa() {
 		return aaa;
 	}

@@ -44,7 +44,7 @@ public class PotentialCustomerBean {
 	private String remark;
 	private Date createtime;
 	private String important;
-	
+	private String line;
 	
 	@JsonIgnore
 	@OrderBy("tracktime DESC")
@@ -64,6 +64,12 @@ public class PotentialCustomerBean {
 	
 	
 	
+	public String getLine() {
+		return line;
+	}
+	public void setLine(String line) {
+		this.line = line;
+	}
 	public String getImportant() {
 		return important;
 	}

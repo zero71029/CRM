@@ -140,4 +140,12 @@ public class PotentialController {
 		List<PotentialCustomerBean> result = new ArrayList<PotentialCustomerBean>(hashSet);
 		return result;
 	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//排序
+//	@RequestMapping("/sor/{direct}")
+//	public List<PotentialCustomerBean> sortItem(@PathVariable("direct") String direct) {
+//		System.out.println("排序");
+//		return PCS.getSortList(direct);
+//	}
 }

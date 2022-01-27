@@ -174,6 +174,14 @@
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1 cell">Line</div>
+                                    <div class="col-md-3 cell FormPadding">
+                                        <input type="text" class=" form-control cellFrom" name="moblie"
+                                            value="${bean.moblie}" maxlength="20">
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <br><br>
                                     <div class="col-md-1">&nbsp;</div>
                                 </div>

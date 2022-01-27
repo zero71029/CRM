@@ -345,7 +345,14 @@
                                             <input type="text" class=" form-control cellFrom" name="moblie"
                                                 value="${bean.moblie}" maxlength="20">
                                         </div>
-
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-2 cell">Line</div>
+                                        <div class="col-md-3 cell FormPadding">
+                                            <input type="text" class=" form-control cellFrom" name="line"
+                                                value="${bean.line}" maxlength="190">
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1"></div>
@@ -465,7 +472,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-2 cell">重要性</div>
+                                        <div class="col-md-2 cell" >重要性</div>
                                         <div class="col-md-7 cell FormPadding">
                                             <select name="important" class="form-select cellFrom"
                                                 aria-label="Default select example" required>
