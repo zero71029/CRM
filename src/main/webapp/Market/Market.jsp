@@ -18,6 +18,11 @@
             <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 
             <style>
+                .marketbar {
+                    /* 按鈕顏色 */
+                    background-color: #afe3d5;
+                }
+
                 /* 可以设置不同的进入和离开动画 */
                 /* 设置持续时间和动画函数 */
                 .slide-fade-enter-active {
@@ -552,8 +557,7 @@
                                             <div class="col-md-1 cell">成交機率</div>
 
                                             <div class="col-md-2 FormPadding">
-                                                <el-rate v-model="value" show-text
-                                                    :texts="['極差', '失望', '一般', '滿意', '驚喜']"
+                                                <el-rate v-model="value" 
                                                     :colors="{ 2: '#99A9BF', 3:  '#F7BA2A', 4: '#FF9900', 5: 'red' }">
                                                 </el-rate>
                                                 <input type="hidden" name="clinch" v-model="value">
@@ -592,8 +596,9 @@
                                                     style=" height:75px;" required>${bean.message}</textarea>
                                             </div><br><br>
                                         </div>
+                                        <p>&nbsp;</p>
                                         <div class="row">
-                                            <div class="col-md-1"></div>
+                                            <div class="col-md-3"></div>
                                             <div class="col-md-6 FormPadding">
                                                 <button type="submit" style="width: 100%;" class="btn btn-danger"
                                                     onclick="return window.confirm('確定修改')">儲存</button>
@@ -788,7 +793,7 @@
 
 
 
-            function clickContact(name, phone, moblie) {    
+            function clickContact(name, phone, moblie) {
                 vm.contactphone = phone;
                 vm.contactmoblie = moblie;
                 $("input[name='contactname']").val(name);
@@ -800,7 +805,7 @@
             function catbtn() {
                 $("input[name='contactname']").val($("input[name='catin']").val());
                 vm.contactphone = "";
-                vm.contactmoblie ="";
+                vm.contactmoblie = "";
 
 
 
@@ -878,12 +883,12 @@
                     back: function () {
                         this.show = false;
                         setTimeout(function () {
-                            location.href = "http://localhost:8080/CRM/Market/MarketList.jsp";
+                            location.href = "${pageContext.request.contextPath}/Market/MarketList.jsp";
 
                             // self.location = document.referrer;
                         }, 200)
 
-                    }, 
+                    },
                 },
             })
 

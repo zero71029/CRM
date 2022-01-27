@@ -15,6 +15,11 @@
             <title>CRM客戶管理系統</title>
         </head>
         <style>
+            
+            .contactbar { /* 按鈕顏色 */
+                background-color: #afe3d5;
+            }
+
             .cell {
                 border: 0px solid black;
                 border-bottom: 1px solid black;

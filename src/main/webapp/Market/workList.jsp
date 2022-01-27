@@ -12,6 +12,10 @@
 
             <title>CRM客戶管理系統</title>
             <style>
+                .workbar {/* 按鈕顏色 */
+                    background-color: #afe3d5;
+                }
+
                 .item:hover {
                     background-color: #afe3d5;
                 }

@@ -14,6 +14,11 @@
 
         </head>
         <style>
+            .clientbar {
+                /* 按鈕顏色 */
+                background-color: #afe3d5;
+            }
+
             .cell {
                 border: 0px solid black;
                 border-bottom: 1px solid black;
@@ -140,7 +145,7 @@
                                             <c:if test="${not empty bean.contact}">
                                                 <c:forEach varStatus="loop" begin="0" end="${bean.contact.size()-1}"
                                                     items="${bean.contact}" var="con">
-                                                    <option value="${con.name}" selected       >${con.name}</option>
+                                                    <option value="${con.name}" selected>${con.name}</option>
                                                 </c:forEach>
                                             </c:if>
                                             <option value="new" style="background-color: #eee;">新增聯絡人
@@ -338,7 +343,8 @@
                                     <div class="col-md-1"></div>
 
                                     <div class="col-md-10 FormPadding">
-                                        <button type="submit" style="width: 100%;" class="btn btn-outline-dark">儲存</button>
+                                        <button type="submit" style="width: 100%;"
+                                            class="btn btn-outline-dark">儲存</button>
                                     </div>
 
 
@@ -852,7 +858,7 @@
                 </script>
             </c:forEach>
         </c:if>
-       
+
         <script>
 
             $(".contactname").change(function () {
@@ -865,9 +871,9 @@
 
             });
             //轉成聯絡人
-            function changeContact() {              
+            function changeContact() {
                 $(".AAA").attr("action", "${pageContext.request.contextPath}/CRM/changeContact");
-                $(".AAA").submit();                
+                $(".AAA").submit();
             }
             //轉成銷售機會
             function changeMarket() {
@@ -918,10 +924,10 @@
                     url: '${pageContext.request.contextPath}/CRM/tag/${bean.clientid}/' + $('.tag').val(),//接受請求的Servlet地址
                     type: 'POST',
                     success: function (bean) {
-                        
-                        $('.clientTag').append('<a class="col-md-6 bg-primary" href="http://www.google.com/search?sitesearch=jetec.com.tw&q='+bean.name+'">'+bean.name+'</a>\
+
+                        $('.clientTag').append('<a class="col-md-6 bg-primary" href="http://www.google.com/search?sitesearch=jetec.com.tw&q=' + bean.name + '">' + bean.name + '</a>\
                                     <div class="col-md-5" style="text-align: right;"> \
-                                       <a href="${pageContext.request.contextPath}/CRM/removeTag/'+bean.clientid+'/'+bean.clienttagid+'" style="color:rgb(0, 47, 167);">remove</a> \
+                                       <a href="${pageContext.request.contextPath}/CRM/removeTag/'+ bean.clientid + '/' + bean.clienttagid + '" style="color:rgb(0, 47, 167);">remove</a> \
                                     </div>');
                     },
                 });

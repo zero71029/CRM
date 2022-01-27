@@ -18,6 +18,9 @@
 
             <title>CRM客戶管理系統</title>
             <style>
+                .customerbar{ /* 按鈕顏色 */
+                    background-color: #afe3d5;    
+                }
                 .item:hover {
                     background-color: #afe3d5;
                 }
@@ -46,6 +49,14 @@
                             </div>
                             <div class="offcanvas-body">
                                 <div class="accordion accordion-flush" id="accordionFlushExample">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="flush-headingOne">
+                                            <button class="accordion-button collapsed" type="button"
+                                            onclick="javascript:location.href='${pageContext.request.contextPath}/Market/PotentialCustomerList'">
+                                                重置
+                                            </button>
+                                        </h2>                                        
+                                    </div>
                                     <!-- 負責人 -->
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingOne">
@@ -62,7 +73,7 @@
                                                     <c:if test="${not empty admin}">
                                                         <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}"
                                                             items="${admin}" var="s">
-                                                            <li><a v-on:click="admin('${s.name}')"
+                                                            <li><a v-on:click="aadmin('${s.name}')"
                                                                     href="#">${s.name}</a>
                                                             </li>
                                                         </c:forEach>
@@ -338,7 +349,7 @@
                                     <td>聯絡人</td>
                                     <td>狀態</td>
                                     <td>產業</td>
-                                    <td>部門</td>
+                                    <td>重要性</td>
                                     <td>建立時間</td>
                                     <td>負責人</td>
                                 </tr>
@@ -357,7 +368,7 @@
                                     <td v-on:click="customer(s.customerid)">
                                         {{s.industry}}</td>
                                     <td v-on:click="customer(s.customerid)">
-                                        {{s.department}}</td>
+                                        {{s.important}}</td>
                                     <td v-on:click="customer(s.customerid)">
                                         {{s.createtime}}</td>
                                     <td v-on:click="customer(s.customerid)">
@@ -530,7 +541,7 @@
                                 console.log(error);
                             });
                     },
-                    admin: function (name) {
+                    aadmin: function (name) {
                         axios
                             .get('${pageContext.request.contextPath}/Potential/admin/' + name)
                             .then(response => (

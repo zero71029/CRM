@@ -15,6 +15,11 @@
             <title>CRM客戶管理系統</title>
         </head>
         <style>
+            .workbar {
+                /* 按鈕顏色 */
+                background-color: #afe3d5;
+            }
+
             .cell {
                 border: 0px solid black;
                 border-bottom: 1px solid black;
@@ -241,7 +246,9 @@
                                     <div class="col-md-1"></div>
 
                                     <div class="col-md-4 FormPadding">
-                                        <button type="submit" style="width: 100%;background-color: rgb(36, 101, 164);color: white;" class="btn">送出</button>
+                                        <button type="submit"
+                                            style="width: 100%;background-color: rgb(36, 101, 164);color: white;"
+                                            class="btn">送出</button>
                                     </div>
                                 </div>
 

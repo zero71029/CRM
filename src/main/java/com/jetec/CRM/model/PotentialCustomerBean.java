@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -42,8 +43,11 @@ public class PotentialCustomerBean {
 	private String address;
 	private String remark;
 	private Date createtime;
+	private String important;
+	
 	
 	@JsonIgnore
+	@OrderBy("tracktime DESC")
 	@OneToMany(mappedBy = "customerid", cascade = CascadeType.ALL)
 	private List<TrackBean> trackbean;
 	
@@ -60,6 +64,12 @@ public class PotentialCustomerBean {
 	
 	
 	
+	public String getImportant() {
+		return important;
+	}
+	public void setImportant(String important) {
+		this.important = important;
+	}
 	public List<PotentialCustomerHelperBean> getHelper() {
 		return helper;
 	}

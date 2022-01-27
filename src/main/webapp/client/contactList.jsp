@@ -15,6 +15,9 @@
             <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
             <title>CRM客戶管理系統</title>
             <style>
+                .contactbar {
+                    background-color: #afe3d5;
+                }
                 .item:hover {
                     background-color: #afe3d5;
                 }

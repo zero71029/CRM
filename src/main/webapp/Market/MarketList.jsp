@@ -23,6 +23,10 @@
             <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
             <title>CRM客戶管理系統</title>
             <style>
+                .marketbar {/* 按鈕顏色 */
+                    background-color: #afe3d5;
+                }
+
                 .item:hover {
                     background-color: #afe3d5;
                 }
@@ -122,7 +126,7 @@
                                                     <c:if test="${not empty admin}">
                                                         <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}"
                                                             items="${admin}" var="s">
-                                                            <li><a v-on:click="admin('${s.name}')"
+                                                            <li><a v-on:click="aadmin('${s.name}')"
                                                                     href="#">${s.name}</a>
                                                             </li>
                                                         </c:forEach>
@@ -550,7 +554,7 @@
                 , '液位/料位-其他', '溫度貼紙', '溫控器-TOHO'
                 , '溫控器-其他', '能源管理控制', '無線傳輸'
                 , '編碼器/電位計', '食品', '其它'];
-            const sourceOptions = [  '廣告','員工推薦', '外部推薦', '合作夥伴',  '參展', '網絡搜索', '口碑', '其他'];
+            const sourceOptions = ['廣告', '員工推薦', '外部推薦', '合作夥伴', '參展', '網絡搜索', '口碑', '其他'];
             Vue.config.productionTip = false;
             const vm = new Vue({
                 el: '.app',
@@ -558,7 +562,7 @@
                     list: [],
                     name: "",
                     show: false,
-                    admin:'${user.name}',
+                    admin: '${user.name}',
                     ind: ["尚未分類", '生產 製造', '工程公司', '學校', '研究單位', '電子業', '光電產業', '半導體業', '公家機關', '機械設備製造', '生技製藥', '食品加工', '醫院/醫療', '物流/倉儲', '畜牧/農業', '公共/消費性環境', '製紙業', '紡織業', '化工業', '金屬加工', '冷凍空調', '航太/造船', '環保相關', '水處理/水資源', '石化能源', '印刷', '其它', '業主', '設備換修'],
                     industry: [],
                     ContantPhone: "",
@@ -578,20 +582,20 @@
                 },
                 created: function () {
                     console.log(this.admin)
-                    
-                    if(this.admin != ""){
+
+                    if (this.admin != "") {
                         axios
-                        .get('${pageContext.request.contextPath}/Market/MarketList')
-                        .then(response => (
-                            this.list = response.data,
-                            this.show = true
-                        ))
-                        .catch(function (error) { // 请求失败处理
-                            console.log(error);
-                        });
-                    }else{
+                            .get('${pageContext.request.contextPath}/Market/MarketList')
+                            .then(response => (
+                                this.list = response.data,
+                                this.show = true
+                            ))
+                            .catch(function (error) { // 请求失败处理
+                                console.log(error);
+                            });
+                    } else {
                         alert("沒有權限");
-                        location.href="${pageContext.request.contextPath}/"
+                        location.href = "${pageContext.request.contextPath}/"
                     }
 
 
@@ -643,7 +647,7 @@
                                 console.log(error);
                             });
                     },
-                    admin: function (name) {
+                    aadmin: function (name) {
                         console.log(name)
                         axios
                             .get('${pageContext.request.contextPath}/Market/selectMarket/' + name)

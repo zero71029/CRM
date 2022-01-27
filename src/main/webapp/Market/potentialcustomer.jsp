@@ -15,6 +15,11 @@
             <title>CRM客戶管理系統</title>
         </head>
         <style>
+            .customerbar {
+                /* 按鈕顏色 */
+                background-color: #afe3d5;
+            }
+
             .cell {
                 border: 0px solid black;
                 border-bottom: 1px solid black;
@@ -22,8 +27,8 @@
 
             }
 
-            .cellFrom {
-                border: 0px solid black;
+            div .cellFrom {
+                border: 0px;
                 /* width: 33%; */
             }
 
@@ -38,7 +43,7 @@
             }
 
 
-/* 右下角按鈕 */
+            /* 右下角按鈕 */
 
 
             .row .box {
@@ -92,6 +97,7 @@
                 text-align: center;
                 text-decoration: none;
             }
+
             /* 右下角按鈕////////////////結束 */
         </style>
 
@@ -136,7 +142,7 @@
                         <br>
                         <form action="${pageContext.request.contextPath}/Market/SavePotentialCustomer" method="post"
                             class="basefrom g-3 needs-validation AAA" novalidate>
-                            
+
                             <input type="hidden" name="customerid" value="${bean.customerid}">
                             <input type="hidden" name="fromactivity" value="${bean.fromactivity}" maxlength="50">
                             <div class="row">
@@ -358,7 +364,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1"></div>
-                                        <div class="col-md-2 cell">備註</div>
+                                        <div class="col-md-2 cell">客人詢問</div>
                                         <div class="col-md-8 cell FormPadding">
                                             <textarea class="form-control " id="validationTextarea" name="remark"
                                                 rows="5" maxlength="200">${bean.remark}</textarea>
@@ -386,11 +392,11 @@
                                                 <input type="hidden" name="user" value="${bean.user}">
                                                 ${bean.user}
                                             </c:if>
-                                            
+
                                         </div>
                                     </div>
-                                   
-                                    <!-- <div class="row ">
+
+                                    <div class="row ">
                                         <div class="col-md-2 "></div>
                                         <div class="col-lg-7">
                                             <a href="javascript:$('.help').toggle()">+添加協助者</a>
@@ -407,17 +413,18 @@
                                             </div>
                                         </div>
 
-                                    </div> -->
+                                    </div>
                                     <div class="row ">
                                         <div class="col-md-2 cell"></div>
                                         <div class="col-md-7 cell">
-                                        <ul class="helpList " style="position: relative;">
-                                            <c:forEach varStatus="loop" begin="0" end="${bean.helper.size()}"
-                                                items="${bean.helper}" var="s">
-                                                <li>${s.name}<a style="right: 0px; position: absolute;"
-                                                        href="javascript:delHelp('${s.helperid}')">remove</a></li>
-                                            </c:forEach>
-                                        </ul></div>
+                                            <ul class="helpList " style="position: relative;">
+                                                <c:forEach varStatus="loop" begin="0" end="${bean.helper.size()}"
+                                                    items="${bean.helper}" var="s">
+                                                    <li>${s.name}<a style="right: 0px; position: absolute;"
+                                                            href="javascript:delHelp('${s.helperid}')">remove</a></li>
+                                                </c:forEach>
+                                            </ul>
+                                        </div>
                                     </div>
 
 
@@ -443,7 +450,6 @@
                                         </div>
                                     </div>
                                     <div class="row">
-
                                         <div class="col-md-2 cell">狀態</div>
                                         <div class="col-md-7 cell FormPadding">
                                             <select name="status" class="form-select cellFrom"
@@ -458,10 +464,26 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-md-2 cell">重要性</div>
+                                        <div class="col-md-7 cell FormPadding">
+                                            <select name="important" class="form-select cellFrom"
+                                                aria-label="Default select example" required>
+                                                <option value=""></option>
+                                                <option value="高" ${bean.important=="高" ?"selected":null}>高
+                                                </option>
+                                                <option value="中" ${bean.important=="中" ?"selected":null}>中
+                                                </option>
+                                                <option value="低" ${bean.important=="低" ?"selected":null}>低
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
+                                <p>&nbsp;</p>
                                 <div class="row">
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-9 FormPadding">
+                                    <div class="col-md-3"></div>
+                                    <div class="col-md-5 FormPadding">
                                         <button type="submit" style="width: 100%; " class="btn btn-warning"
                                             onclick="return window.confirm('確定修改')">儲存</button>
                                     </div>
@@ -483,9 +505,9 @@
                             <div class="row">
                                 <div class="col-md-1"></div>
 
-                                <div class="col-md-3">客人描述</div>
+                                <div class="col-md-4">客人描述</div>
                                 <div class="col-md-3">追蹤結果</div>
-                                <div class="col-md-2">備註</div>
+                                
                             </div>
                             <div class="row">
                                 <div class="col-md-1"></div>
@@ -495,18 +517,19 @@
                             </div>
                             <form action="${pageContext.request.contextPath}/Market/SaveTrack" method="post"
                                 class="row g-3 needs-validation" novalidate>
+                           
+                            <!--  -->                                   
+                                <input type="hidden" class=" form-control cellFrom" name="remark" maxlength="190" value="${user.name}">                                  
+                            <!--  -->
                                 <input type="hidden" name="customerid" value="${bean.customerid}">
                                 <div class="row">
                                     <div class="col-md-1"></div>
-                                    <div class="col-md-3 FormPadding">
+                                    <div class="col-md-4 FormPadding"> 
                                         <textarea class="form-control" name="trackdescribe" rows="1" maxlength="190"
                                             required></textarea>
                                     </div>
-                                    <div class="col-md-3 FormPadding">
+                                    <div class="col-md-4 FormPadding">
                                         <textarea class="form-control" name="result" rows="1" maxlength="95"></textarea>
-                                    </div>
-                                    <div class="col-md-2 FormPadding">
-                                        <input type="text" class=" form-control cellFrom" name="remark" maxlength="190">
                                     </div>
                                     <div class="col-md-1" style="padding: 0%;">
                                         <button style="width: 100%; " class="btn btn-outline-dark"
@@ -523,14 +546,14 @@
 
                             <c:if test="${not empty bean.trackbean}">
                                 <c:forEach varStatus="loop" begin="0" end="${bean.trackbean.size()-1}"
-                                    items="${bean.trackbean}" var="s">
+                                    items="${bean.trackbean}" var="s" >
                                     <div class="row">
                                         <div class="col-md-1"></div>
-                                        <div class="col-md-3" style="word-wrap:break-word;">${s.trackdescribe}
+                                        <div class="col-md-4" style="word-wrap:break-word;">${s.trackdescribe}
                                         </div>
                                         <div class="col-md-3" style="word-wrap:break-word;">${s.result}</div>
-                                        <div class="col-md-2" style="word-wrap:break-word;">${s.remark}</div>
-                                        <div class="col-md-2">${s.tracktime}</div>
+                                        <div class="col-md-1" style="word-wrap:break-word;"></div>
+                                        <div class="col-md-2">${s.remark} <br> ${s.tracktime}</div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1"></div>
@@ -562,7 +585,8 @@
                             </div>
                             <div class="dockbar row shadow  ">
 
-                                <div class="col-md-2 offset-md-1" style="border-left: black 1px solid;" onclick="javascript:$('.act').toggle();">
+                                <div class="col-md-2 offset-md-1" style="border-left: black 1px solid;"
+                                    onclick="javascript:$('.act').toggle();">
                                     行動
                                 </div>
                                 <div class="col-md-2">紀錄</div>

@@ -43,20 +43,20 @@
                 <button class="list-group-item" onclick="market()">
                     營銷模塊
                 </button>
-                <button class="market"
+                <button class="market customerbar"
                     onclick="javascript:location.href='${pageContext.request.contextPath}/Market/potentialcustomerList.jsp'">潛在客戶</button>
-                <button class="market"
+                <button class="market marketbar"
                     onclick="javascript:location.href='${pageContext.request.contextPath}/Market/MarketList.jsp'">銷售機會</button>
-                <button class="market"
+                <button class="market workbar"
                     onclick="javascript:location.href='${pageContext.request.contextPath}/work/workList'">工作項目</button>
                 <!-- <button class="market"
                     onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/QuotationList'">報價單</button> -->
                 <button class="list-group-item" onclick="client()">
                     客戶管理
                 </button>
-                <button class="client"
+                <button class="client clientbar" 
                     onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/ClientList'">客戶</button>
-                <button class="client"
+                <button class="client contactbar"
                     onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/ContactList'">聯絡人</button>
                 <!-- <button class="client">流失客戶</button> -->
                 <button class="list-group-item" onclick="javascript:location.href=''">
@@ -241,5 +241,8 @@
                 line-height: 3rem;
                 background-color: #62A5A1;
                 cursor: pointer;
+            }
+            a{
+                text-decoration: none;
             }
         </style>
