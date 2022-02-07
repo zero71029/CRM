@@ -557,9 +557,6 @@
                     clientList: {
                         handler(newValue, oldValue) {
                             for (const iterator of newValue) {
-                                console.log(iterator.name);
-                                console.log(iterator.name);
-                                console.log(iterator.name);
                                 if (iterator.name == this.client) this.clientbean = iterator;
                             }
                         }

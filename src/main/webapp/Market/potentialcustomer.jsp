@@ -318,9 +318,9 @@
 
                                 </div>
                                 <!--  -->
-                                <div class="col-md-4  ASDFG">
+                                <div class="col-md-5  ASDFG">
                                     <div class="row">
-                                        <div class="col-md-2 cell">負責人*</div>
+                                        <div class="col-md-3 cell">潛在各戶負責人</div>
                                         <div class="col-md-7 cell FormPadding">
                                             <c:if test="${user.position != '職員' }">
                                                 <select name="user" class="form-select cellFrom"
@@ -342,7 +342,7 @@
                                     </div>
 
                                     <div class="row ">
-                                        <div class="col-md-2 "></div>
+                                        <div class="col-md-3 "></div>
                                         <div class="col-lg-7">
                                             <a href="javascript:$('.help').toggle()">+添加協助者</a>
                                             <div class="input-group help">
@@ -360,7 +360,7 @@
 
                                     </div>
                                     <div class="row ">
-                                        <div class="col-md-2 cell"></div>
+                                        <div class="col-md-3 cell"></div>
                                         <div class="col-md-7 cell">
                                             <ul class="helpList " style="position: relative;">
                                                 <c:forEach varStatus="loop" begin="0" end="${bean.helper.size()}"
@@ -389,13 +389,13 @@
 
                                     <div class="row">
 
-                                        <div class="col-md-2 cell" style="font-size: 14px;">創造時間</div>
+                                        <div class="col-md-3 cell" style="font-size: 14px;">創造時間</div>
                                         <div class="col-md-7 cell FormPadding">
                                             ${bean.createtime}
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-2 cell">狀態</div>
+                                        <div class="col-md-3 cell">狀態</div>
                                         <div class="col-md-7 cell FormPadding">
                                             <select name="status" class="form-select cellFrom"
                                                 aria-label="Default select example">
@@ -410,7 +410,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-2 cell" >重要性</div>
+                                        <div class="col-md-3 cell" >重要性</div>
                                         <div class="col-md-7 cell FormPadding">
                                                 <select class="form-select cellFrom" name="important" v-model="important">                                                    
                                                     <option value="高">高</option>

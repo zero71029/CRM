@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.jetec.CRM.controler.service.ClientService;
 import com.jetec.CRM.model.ClientAddressBean;
 import com.jetec.CRM.model.ClientBean;
-import com.jetec.CRM.model.ClientTagBean;
 import com.jetec.CRM.model.ContactBean;
 import com.jetec.CRM.model.MarketBean;
 import com.jetec.CRM.model.QuotationBean;
@@ -214,21 +213,12 @@ public class CustomerControler {
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//新增標籤
-	@RequestMapping("/tag/{clientid}/{tagName}")
-	@ResponseBody
-	public ClientTagBean tag(@PathVariable("tagName") String tagName, @PathVariable("clientid") Integer clientid) {
-		System.out.println("***新增標籤***");		   
-		return cs.saveTag(tagName, clientid);
-	}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//刪除標籤
-	@RequestMapping("/removeTag/{clientid}/{clienttagid}")	
-	public String removeTag(@PathVariable("clienttagid") String clienttagid, @PathVariable("clientid") Integer clientid) {
-		System.out.println("***刪除標籤***");
-		cs.removeTag(clienttagid);
-		return "redirect:/CRM/client/" + clientid;
+//點擊標籤
+	@RequestMapping("/client/list")
+	public String clickTag(Model model, @RequestParam("tag") String tag) {
+		System.out.println("***點擊標籤***");
+		model.addAttribute("list", cs.clickTag(tag));
+		return "/client/clientList";
 	}
 
 }

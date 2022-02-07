@@ -49,7 +49,6 @@ public class ClientService {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取客戶列表
 	public List<ClientBean> getList() {
-
 		return cr.findByState(1);
 	}
 
@@ -243,13 +242,17 @@ public class ClientService {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //新增標籤
-	public ClientTagBean saveTag(String tagName, Integer clientid) {
-		ClientTagBean clientTagBean = new ClientTagBean();
-		clientTagBean.setClientid(clientid);
-		clientTagBean.setClienttagid(zTools.getUUID());
-		clientTagBean.setName(tagName);
-		return ctr.save(clientTagBean);
-
+	public String saveTag(String tagName, Integer clientid) {
+		
+		if(!ctr.existsByClientidAndName(clientid,tagName)) {
+			ClientTagBean clientTagBean = new ClientTagBean();
+			clientTagBean.setClientid(clientid);
+			clientTagBean.setClienttagid(zTools.getUUID());
+			clientTagBean.setName(tagName);
+			ctr.save(clientTagBean);
+			return "新增成功";
+		}
+		return "已有標籤";
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -257,6 +260,22 @@ public class ClientService {
 	public void removeTag(String clienttagid) {
 		ctr.deleteById(clienttagid);
 
+	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//讀取標籤列表
+	public List<ClientTagBean> getTagList(Integer clientid) {
+		
+		return ctr.findByClientid(clientid);
+	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//點擊標籤
+	public List<ClientBean> clickTag(String tag) {
+		List<ClientTagBean> list = ctr.getTagList(tag);		
+		List<ClientBean> result = new ArrayList<ClientBean>();
+		for(ClientTagBean bean : list) {			
+			result.add(cr.getById(bean.getClientid()));
+		}
+		return result;
 	}
 
 }

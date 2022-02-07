@@ -96,13 +96,7 @@
                                         <div id="flush-collapseTwo" class="accordion-collapse collapse"
                                             aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
                                             <div class="accordion-body">
-                                                <form action="${pageContext.request.contextPath}/Potential/selectDate"
-                                                    method="post">
-                                                    <input type="text" class="form-control" id="from" readonly required>
-                                                    到
-                                                    <input type="text" class="form-control" required id="to" readonly>
-                                                    <input type="button" value="送出" v-on:click="selectDate">
-                                                </form>
+                                                <dp @update="selectDate"></dp>
                                             </div>
                                         </div>
 
@@ -341,6 +335,20 @@
                             </div>
                         </div>
 
+
+
+
+                        <!-- 分頁 -->
+                        <div class="block text-center">
+                            <el-pagination @current-change="handleCurrentChange" :current-page.sync="currentPage1"
+                                :page-size="20" layout="  prev, pager, next" :total="MaxPag">
+                            </el-pagination>
+                        </div>
+
+
+
+
+
                         <transition-group name="slide-fade" appear>
                             <!-- <%-- 中間主體--%> -->
                             <table class="Table table-striped orderTable" v-if="show" key="1">
@@ -349,9 +357,9 @@
                                     <td style="width: 90px;">狀態</td>
                                     <td style="width: 90px;">負責人</td>
                                     <td style="width: 110px;">建立時間</td>
-                                    <td >客戶名稱</td>
-                                    <td >聯絡人</td>
-                                    <td >詢問內容</td>
+                                    <td>客戶名稱</td>
+                                    <td>聯絡人</td>
+                                    <td>詢問內容</td>
                                     <td>產業</td>
                                     <!-- 詢問產品種類		客戶來源	備註 -->
                                     <td @click="sortItem('important')"><a href="#">重要性</a></td>
@@ -370,7 +378,9 @@
                                         {{s.company}}</td>
                                     <td v-on:click="customer(s.customerid)">
                                         {{s.name}}</td>
-                                    <td v-on:click="customer(s.customerid)"><div style="width: 600px;word-break: break-all;">{{s.remark}}</div></td>
+                                    <td v-on:click="customer(s.customerid)">
+                                        <div style="width: 600px;word-break: break-all;">{{s.remark}}</div>
+                                    </td>
 
                                     <td v-on:click="customer(s.customerid)">
                                         {{s.industry}}</td>
@@ -491,43 +501,55 @@
             const vm = new Vue({
                 el: '.app',
                 data: {
+                    currentPage1: 1,//當前分頁
+                    MaxPag:1,//最大頁數
                     list: [],
                     name: "",
                     admin: '${user.name}',
                     show: true,
                     source: [],
                     ind: ["尚未分類",
-                            "農、林、漁、牧業",
-                            "礦業及土石採取業",
-                            "製造業",
-                            "電子及半導體生產", 
-                            "機械設備製造業",
-                            "電力及燃氣供應業",
-                            "用水供應及污染整治業",
-                            "營建工程業",                            
-                            "批發及零售業",
-                            "運輸及倉儲業",
-                            "住宿及餐飲業",
-                            "出版影音及資通訊業",
-                            "金融及保險業",
-                            "不動產業",
-                            "專業、科學及技術服務業",
-                            "支援服務業",
-                            "公共行政及國防；強制性社會安全",
-                            "教育業",
-                            "醫療保健及社會工作服務業",
-                            "藝術、娛樂及休閒服務業",
-                            "其他服務業"],//產業列表
+                        "農、林、漁、牧業",
+                        "礦業及土石採取業",
+                        "製造業",
+                        "電子及半導體生產",
+                        "機械設備製造業",
+                        "電力及燃氣供應業",
+                        "用水供應及污染整治業",
+                        "營建工程業",
+                        "批發及零售業",
+                        "運輸及倉儲業",
+                        "住宿及餐飲業",
+                        "出版影音及資通訊業",
+                        "金融及保險業",
+                        "不動產業",
+                        "專業、科學及技術服務業",
+                        "支援服務業",
+                        "公共行政及國防；強制性社會安全",
+                        "教育業",
+                        "醫療保健及社會工作服務業",
+                        "藝術、娛樂及休閒服務業",
+                        "其他服務業"],//產業列表
                     industry: [],
                 },
                 created: function () {
                     if (this.admin != "") {
+                        //要求列表
                         axios
-                            .get('${pageContext.request.contextPath}/Potential/CustomerList')
+                            .get('${pageContext.request.contextPath}/Potential/CustomerList?pag=' + this.currentPage1)
                             .then(response => (
                                 this.list = response.data
                             ))
                             .catch(function (error) { // 请求失败处理
+                                console.log(error);
+                            });
+                        //要求最大分頁數
+                        axios
+                            .get('${pageContext.request.contextPath}/Potential/MaxPag')
+                            .then(response => (
+                                this.MaxPag = response.data
+                            ))
+                            .catch(function (error) { 
                                 console.log(error);
                             });
                     } else {
@@ -536,6 +558,16 @@
                     }
                 },
                 methods: {
+                    handleCurrentChange(val) {//點擊分頁
+                        axios
+                            .get('${pageContext.request.contextPath}/Potential/CustomerList?pag=' + val)
+                            .then(response => (
+                                this.list = response.data
+                            ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    },
                     customer: function (id) {
                         this.show = false
                         setTimeout(function () {
@@ -543,11 +575,22 @@
                         }, 100)
 
                     },
-                    selfUpdate(val) {//搜索建立日期
+                    selfUpdate(val) {//搜索上次聯絡時間
                         console.log(val)
-
                         axios
                             .get('${pageContext.request.contextPath}/Potential/selectTrackDate?from=' + val[0] + "&to=" + val[1])
+                            .then(response => (
+                                this.list = response.data,
+                                console.log(this.list)
+                            ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    },
+                    selectDate(val) {//搜索建立日期
+                        console.log(val)
+                        axios
+                            .get('${pageContext.request.contextPath}/Potential/selectDate?from=' + val[0] + "&to=" + val[1])
                             .then(response => (
                                 this.list = response.data,
                                 console.log(this.list)
@@ -569,16 +612,6 @@
                     aadmin: function (name) {//搜索負責人
                         axios
                             .get('${pageContext.request.contextPath}/Potential/admin/' + name)
-                            .then(response => (
-                                this.list = response.data
-                            ))
-                            .catch(function (error) { // 请求失败处理
-                                console.log(error);
-                            });
-                    },
-                    selectDate: function () {
-                        axios
-                            .get('${pageContext.request.contextPath}/Potential/selectDate?from=' + $('#from').val() + "&to=" + $('#to').val())
                             .then(response => (
                                 this.list = response.data
                             ))

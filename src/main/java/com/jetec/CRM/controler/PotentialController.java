@@ -11,7 +11,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.jetec.CRM.controler.service.PotentialCustomerService;
 import com.jetec.CRM.model.PotentialCustomerBean;
 import com.jetec.CRM.model.PotentialCustomerHelperBean;
-import com.jetec.CRM.model.WorkBean;
 
 @Controller
 @ResponseBody
@@ -34,11 +32,18 @@ public class PotentialController {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取潛在客戶列表
-	@RequestMapping("/CustomerList")
-	@ResponseBody
-	public List<PotentialCustomerBean> clientList() {
+	@RequestMapping("/CustomerList")	
+	public List<PotentialCustomerBean> clientList(@RequestParam("pag") Integer pag) {
 		System.out.println("*****讀取潛在客戶列表*****");
-		return PCS.getList();
+		pag--;
+		return PCS.getList(pag);
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//要求最大分頁數
+	@RequestMapping("/MaxPag")	 
+	public long MaxPag( ) {		
+		return PCS.getMaxPag();
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -142,8 +147,6 @@ public class PotentialController {
 		List<PotentialCustomerBean> result = new ArrayList<PotentialCustomerBean>(hashSet);
 		return result;
 	}
-
-
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //排序

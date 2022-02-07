@@ -65,6 +65,37 @@
                             </div>
                         </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        <div class="block text-center">                           
+                            <el-pagination @current-change="handleCurrentChange" :current-page.sync="currentPage1"
+                                :page-size="20" layout="  prev, pager, next" :total="500">
+                            </el-pagination>
+                        </div>
+
+
+
+
+
+
+
+
+
+
                         <!-- <%-- 中間主體--%> -->
                         <transition-group name="slide-fade" appear>
                             <table class="Table table-striped orderTable" key="1" v-if="show">
@@ -98,8 +129,9 @@
                                     <td v-on:click="market(s.marketid)">
                                         {{s.endtime}}</td>
                                 </tr>
-
                             </table>
+
+ 
                         </transition-group>
                         <!-- 滑塊 -->
                         <div class="offcanvas offcanvas-end " tabindex="0" id="offcanvasRight"
@@ -586,6 +618,7 @@
             const vm = new Vue({
                 el: '.app',
                 data: {
+                    currentPage1: 5,
                     list: [],
                     name: "",
                     show: false,
@@ -647,6 +680,14 @@
                     }
                 },
                 methods: {
+                    handleCurrentChange(val) {//點擊分頁
+                        console.log(`当前页:`+val);
+
+
+
+
+
+                    },
                     //////////////////////產品類別
                     handleCheckAllChange(val) {
                         this.checkedCities = val ? cityOptions : [];

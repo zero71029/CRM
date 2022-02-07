@@ -1,6 +1,5 @@
 package com.jetec.CRM.repository;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 

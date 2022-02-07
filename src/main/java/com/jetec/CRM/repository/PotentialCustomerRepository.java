@@ -3,6 +3,8 @@ package com.jetec.CRM.repository;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -34,6 +36,11 @@ public interface PotentialCustomerRepository extends JpaRepository<PotentialCust
 	List<PotentialCustomerBean> findByTrackbeanTracktimeBetween(String from, String to);
 
 	List<PotentialCustomerBean> findByTrackbeanTracktimeBetween(String from, String to, Sort sort);
+
+
+
+	@Query(value ="SELECT  *  from potentialcustomer where status = '已聯繫' AND status = '已聯繫' ",nativeQuery = true)
+	Page<PotentialCustomerBean> findStatus(Pageable p);
 
 
 }
