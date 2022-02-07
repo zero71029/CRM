@@ -9,7 +9,8 @@
 
             <link rel="preconnect" href="https://fonts.gstatic.com">
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
-
+            <!-- 引入样式 vue-->
+            <script src="${pageContext.request.contextPath}/js/vue.min.js"></script>
 
 
             <title>CRM客戶管理系統</title>
@@ -112,7 +113,7 @@
                     <script src="${pageContext.request.contextPath}/js/jquery.validate.min.js"></script>
                     <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
                     <script src="${pageContext.request.contextPath}/bootstrap/js/bootstrap.bundle.min.js"></script>
-                    <div class="col-md-11">
+                    <div class="col-md-11 app">
                         <!-- <%-- 中間主體--%> -->
                         <br>
                         <div class="row">
@@ -121,10 +122,11 @@
                                 <h3>潛在各戶</h3>
                             </div>
                         </div>
+                        <!-- 上一頁 -->
                         <div class="row">
                             <div class="col-md-1"></div>
                             <div class="col-md-1 btn men">
-                                <a href="javascript:history.back()">＜</a>
+                                <a href="${pageContext.request.contextPath}/Market/potentialcustomerList.jsp">＜</a>
                             </div>
                             <c:if test="${not empty bean}">
                                 <!-- <div class="col-md-1 btn men">
@@ -214,72 +216,8 @@
                                         </div>
                                         <div class="col-md-2 cell">產業</div>
                                         <div class="col-md-3 cell FormPadding">
-                                            <select name="industry" class=" form-select cellFrom">
-                                                <option ${bean.industry=="尚未分類" ?"selected":null} value="尚未分類">
-                                                    請選擇...
-                                                </option>
-                                                <option ${bean.industry=="生產 製造" ?"selected":null} value="生產 製造">生產
-                                                    製造
-                                                </option>
-                                                <option ${bean.industry=="工程公司" ?"selected":null} value="工程公司">工程公司
-                                                </option>
-                                                <option ${bean.industry=="學校" ?"selected":null} value="學校">學校
-                                                </option>
-                                                <option ${bean.industry=="研究單位" ?"selected":null} value="研究單位">研究單位
-                                                </option>
-                                                <option ${bean.industry=="電子業" ?"selected":null} value="電子業">電子業
-                                                </option>
-                                                <option ${bean.industry=="光電產業" ?"selected":null} value="光電產業">光電產業
-                                                </option>
-                                                <option ${bean.industry=="半導體業" ?"selected":null} value="半導體業">半導體業
-                                                </option>
-                                                <option ${bean.industry=="公家機關" ?"selected":null} value="公家機關">公家機關
-                                                </option>
-                                                <option ${bean.industry=="機械設備製造" ?"selected":null} value="機械設備製造">
-                                                    機械設備製造
-                                                </option>
-                                                <option ${bean.industry=="生技製藥" ?"selected":null} value="生技製藥">生技製藥
-                                                </option>
-                                                <option ${bean.industry=="食品加工" ?"selected":null} value="食品加工">食品加工
-                                                </option>
-                                                <option ${bean.industry=="醫院/醫療" ?"selected":null} value="醫院/醫療">
-                                                    醫院/醫療
-                                                </option>
-                                                <option ${bean.industry=="物流/倉儲" ?"selected":null} value="物流/倉儲">
-                                                    物流/倉儲
-                                                </option>
-                                                <option ${bean.industry=="畜牧/農業" ?"selected":null} value="畜牧/農業">
-                                                    畜牧/農業
-                                                </option>
-                                                <option ${bean.industry=="公共/消費性環境" ?"selected":null} value="公共/消費性環境">
-                                                    公共/消費性環境 </option>
-                                                <option ${bean.industry=="製紙業" ?"selected":null} value="製紙業">製紙業
-                                                </option>
-                                                <option ${bean.industry=="紡織業" ?"selected":null} value="紡織業">紡織業
-                                                </option>
-                                                <option ${bean.industry=="化工業" ?"selected":null} value="化工業">化工業
-                                                </option>
-                                                <option ${bean.industry=="金屬加工" ?"selected":null} value="金屬加工">金屬加工
-                                                </option>
-                                                <option ${bean.industry=="冷凍空調" ?"selected":null} value="冷凍空調">冷凍空調
-                                                </option>
-                                                <option ${bean.industry=="航太/造船" ?"selected":null} value="航太/造船">
-                                                    航太/造船
-                                                </option>
-                                                <option ${bean.industry=="環保相關" ?"selected":null} value="環保相關">環保相關
-                                                </option>
-                                                <option ${bean.industry=="水處理/水資源" ?"selected":null} value="水處理/水資源">
-                                                    水處理/水資源
-                                                </option>
-                                                <option ${bean.industry=="石化能源" ?"selected":null} value="石化能源">石化能源
-                                                </option>
-                                                <option ${bean.industry=="印刷" ?"selected":null} value="印刷">印刷
-                                                </option>
-                                                <option ${bean.industry=="其它" ?"selected":null} value="其它">其它(請填寫)
-                                                </option>
-                                                <option ${bean.industry=="業主" ?"selected":null} value="業主">業主
-                                                </option>
-                                                <option ${bean.industry=="設備換修" ?"selected":null} value="設備換修">設備換修
+                                            <select name="industry" class=" form-select cellFrom" v-model="industry">
+                                                <option  v-for="(item, index) in industryList" :key="index">{{item}}
                                                 </option>
                                             </select>
                                         </div>
@@ -474,16 +412,11 @@
                                     <div class="row">
                                         <div class="col-md-2 cell" >重要性</div>
                                         <div class="col-md-7 cell FormPadding">
-                                            <select name="important" class="form-select cellFrom"
-                                                aria-label="Default select example" required>
-                                                <option value=""></option>
-                                                <option value="高" ${bean.important=="高" ?"selected":null}>高
-                                                </option>
-                                                <option value="中" ${bean.important=="中" ?"selected":null}>中
-                                                </option>
-                                                <option value="低" ${bean.important=="低" ?"selected":null}>低
-                                                </option>
-                                            </select>
+                                                <select class="form-select cellFrom" name="important" v-model="important">                                                    
+                                                    <option value="高">高</option>
+                                                    <option value="中">中</option>
+                                                    <option value="低">低</option>
+                                                </select>                                            
                                         </div>
                                     </div>
                                 </div>
@@ -769,6 +702,43 @@
                     },
                 });
             }
+            const vm = new Vue({
+                el:'.app',
+                data() {
+                    return {
+                        admin:'${user.name}',
+                        important:'${bean.important}',
+                        industry: "${bean.industry}",//產業
+                        industryList: ["尚未分類",
+                            "農、林、漁、牧業",
+                            "礦業及土石採取業",
+                            " 製造業",
+                            "電子及半導體生產", "機械設備製造業",
+                            "電力及燃氣供應業",
+                            "用水供應及污染整治業",
+                            "營建工程業",                            
+                            "批發及零售業",
+                            "運輸及倉儲業",
+                            "住宿及餐飲業",
+                            "出版影音及資通訊業",
+                            "金融及保險業",
+                            "不動產業",
+                            "專業、科學及技術服務業",
+                            "支援服務業",
+                            "公共行政及國防；強制性社會安全",
+                            "教育業",
+                            "醫療保健及社會工作服務業",
+                            "藝術、娛樂及休閒服務業",
+                            "其他服務業"],//產業列表
+                    }
+                },
+               created() {
+                    if( this.important == "")this.important='低';
+                },
+            })
+
+
+
         </script>
 
         </html>

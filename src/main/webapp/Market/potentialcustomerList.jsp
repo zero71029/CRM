@@ -333,7 +333,7 @@
                                 <label class="btn btn-outline-primary state2" for="btncheck2" onclick="sta()">刪除</label>
                                 <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off">
                                 <label class="btn btn-outline-primary" for="btncheck3"
-                                   @click="adminList" >{{admin}}</label>
+                                    @click="aadmin(admin)">{{admin}}</label>
 
 
                                 <label class="btn btn-outline-primary" for="btncheck4" data-bs-toggle="offcanvas"
@@ -346,35 +346,38 @@
                             <table class="Table table-striped orderTable" v-if="show" key="1">
                                 <tr>
                                     <td><input type="checkbox" id="activity"></td>
-                                    <td>編號</td>
-                                    <td>客戶公司</td>
-                                    <td>聯絡人</td>
-                                    <td>狀態</td>
+                                    <td style="width: 90px;">狀態</td>
+                                    <td style="width: 90px;">負責人</td>
+                                    <td style="width: 110px;">建立時間</td>
+                                    <td >客戶名稱</td>
+                                    <td >聯絡人</td>
+                                    <td >詢問內容</td>
                                     <td>產業</td>
-                                    <td @click="sortItem('important')">重要性</td>
-                                    <td>建立時間</td>
-                                    <td>負責人</td>
+                                    <!-- 詢問產品種類		客戶來源	備註 -->
+                                    <td @click="sortItem('important')"><a href="#">重要性</a></td>
+
+
                                 </tr>
                                 <tr class="item" v-for="(s, index) in list" :key="s.customerid">
                                     <td><input type="checkbox" :value="s.customerid" name="mak"></td>
                                     <td v-on:click="customer(s.customerid)">
-                                        {{s.customerid}}</td>
+                                        {{s.status}}</td>
+                                    <td v-on:click="customer(s.customerid)">
+                                        {{s.user}}</td>
+                                    <td v-on:click="customer(s.customerid)">
+                                        {{s.createtime}}</td>
                                     <td v-on:click="customer(s.customerid)">
                                         {{s.company}}</td>
                                     <td v-on:click="customer(s.customerid)">
                                         {{s.name}}</td>
-                                    <td v-on:click="customer(s.customerid)">
-                                        {{s.status}}</td>
-
+                                    <td v-on:click="customer(s.customerid)"><div style="width: 600px;word-break: break-all;">{{s.remark}}</div></td>
 
                                     <td v-on:click="customer(s.customerid)">
                                         {{s.industry}}</td>
                                     <td v-on:click="customer(s.customerid)" :class="'important'+index">
                                         {{s.important}}</td>
-                                    <td v-on:click="customer(s.customerid)">
-                                        {{s.createtime}}</td>
-                                    <td v-on:click="customer(s.customerid)">
-                                        {{s.user}}</td>
+
+
                                 </tr>
                             </table>
                         </transition-group>
@@ -591,36 +594,31 @@
                                 console.log(error);
                             });
                     },
-                    sortItem: function (direct) {//排序
+                    sortItem: function (direct) {//重要性 排序
                         console.log($('.' + direct + '0').text().trim())
                         var d = $('.' + direct + '0').text().trim();
                         var oldList = this.list;
+                        const imp = ["高", "中", "低"];//先輪替這列表
+                        var nimp = []
                         this.list = [];
-                        for(var o of oldList){
-                            if(o.important == "高")this.list.push(o)
-                        }
-                        for(var o of oldList){
-                            if(o.important == "中")this.list.push(o)
-                        }
-                        for(var o of oldList){
-                            if(o.important == "低")this.list.push(o)
+                        var b = false;
+                        var i = imp.indexOf(d);//找到輸入第幾個
+                        for (let index = i + 1; index < 3; index++) {
+                            nimp.push(imp[index])
                         }
 
-
-                        
-
-
+                        //根據列表抓數據
+                        for (let index = 0; index <= i; index++) {
+                            console.log(imp[index] + "index2");
+                            nimp.push(imp[index])
+                        }
+                        for (const iterator of nimp) {
+                            for (var o of oldList) {
+                                if (o.important == iterator) this.list.push(o)
+                            }
+                        }
                     },
-                    adminList:function(){
-                        axios
-                            .get('${pageContext.request.contextPath}/Potential/admin/' + this.admin)
-                            .then(response => (
-                                this.list = response.data
-                            ))
-                            .catch(function (error) { // 请求失败处理
-                                console.log(error);
-                            });
-                    },
+
                 },
             })
         </script>

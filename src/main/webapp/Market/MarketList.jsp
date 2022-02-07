@@ -23,7 +23,8 @@
             <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
             <title>CRM客戶管理系統</title>
             <style>
-                .marketbar {/* 按鈕顏色 */
+                .marketbar {
+                    /* 按鈕顏色 */
                     background-color: #afe3d5;
                 }
 
@@ -56,7 +57,7 @@
                                 <label class="btn btn-outline-primary state2" for="btncheck2" onclick="sta()">刪除</label>
                                 <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off">
                                 <label class="btn btn-outline-primary" for="btncheck3"
-                                    onclick="javascript:location.href='${pageContext.request.contextPath}/Market/MarketList.jsp'">XXX</label>
+                                    @click="aadmin(admin)">{{admin}}</label>
 
                                 <input type="checkbox" class="btn-check" id="btncheck4" autocomplete="off">
                                 <label class="btn btn-outline-primary" for="btncheck4" data-bs-toggle="offcanvas"
@@ -75,7 +76,7 @@
                                     <td>產業</td>
                                     <td>階段</td>
                                     <td>機率</td>
-                                    <td>開始時間</td>
+                                    <td @click="sortItem('important')"><a href="#">重要性</a></td>
                                     <td>終止時間</td>
                                 </tr>
                                 <tr class="item" v-for="(s, index) in list" :key="index">
@@ -92,8 +93,8 @@
                                         {{s.stage}}</td>
                                     <td v-on:click="market(s.marketid)">
                                         {{s.clinch}}</td>
-                                    <td v-on:click="market(s.marketid)">
-                                        {{s.createtime}}</td>
+                                    <td v-on:click="market(s.marketid)" :class="'important'+index">
+                                        {{s.important}}</td>
                                     <td v-on:click="market(s.marketid)">
                                         {{s.endtime}}</td>
                                 </tr>
@@ -110,6 +111,14 @@
                             </div>
                             <div class="offcanvas-body">
                                 <div class="accordion accordion-flush" id="accordionFlushExample">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="flush-headingOne">
+                                            <button class="accordion-button collapsed" type="button"
+                                                onclick="javascript:location.href='${pageContext.request.contextPath}/Market/MarketList.jsp'">
+                                                重置
+                                            </button>
+                                        </h2>
+                                    </div>
                                     <!-- 負責人 -->
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingOne">
@@ -502,7 +511,16 @@
                 data() {
                     return {
                         pickerOptions: {
-                            shortcuts: [{
+                            shortcuts: [
+                            {
+                                text: '今天',
+                                onClick(picker) {
+                                    const end = new Date();
+                                    const start = new Date();
+                                    start.setTime(start.getTime() - 3600 * 1000 * 24 );
+                                    picker.$emit('pick', [start, end]);
+                                }
+                            },{
                                 text: '最近一周',
                                 onClick(picker) {
                                     const end = new Date();
@@ -597,13 +615,6 @@
                         alert("沒有權限");
                         location.href = "${pageContext.request.contextPath}/"
                     }
-
-
-
-
-
-
-
                 },
                 methods: {
                     //////////////////////產品類別
@@ -647,7 +658,7 @@
                                 console.log(error);
                             });
                     },
-                    aadmin: function (name) {
+                    aadmin: function (name) {//搜索負責人
                         console.log(name)
                         axios
                             .get('${pageContext.request.contextPath}/Market/selectMarket/' + name)
@@ -744,7 +755,29 @@
                             .catch(function (error) {
                                 console.log(error);
                             });
-                    }
+                    }, 
+                    sortItem: function (direct) {//重要性 排序                        
+                        var d = $('.' + direct + '0').text().trim();
+                        var oldList = this.list;
+                        const imp = ["高", "中", "低",""];//先輪替這列表
+                        var nimp = []
+                        this.list = [];
+                        var b = false;
+                        var i = imp.indexOf(d);//找到輸入第幾個
+                        for (let index = i + 1; index < 3; index++) {
+                            nimp.push(imp[index])
+                        }
+
+                        //根據列表抓數據
+                        for (let index = 0; index <= i; index++) {                           
+                            nimp.push(imp[index])
+                        }
+                        for (const iterator of nimp) {
+                            for (var o of oldList) {
+                                if (o.important == iterator) this.list.push(o)
+                            }
+                        }
+                    },
                 },
             })
         </script>

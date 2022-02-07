@@ -9,7 +9,12 @@
 
             <link rel="preconnect" href="https://fonts.gstatic.com">
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
-
+            <script src="${pageContext.request.contextPath}/js/vue.js"></script>
+            <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+            <!-- 引入element-ui样式 -->
+            <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+            <!-- 引入element-ui组件库 -->
+            <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 
 
             <title>CRM客戶管理系統</title>
@@ -63,8 +68,7 @@
                     <!-- 驗證UI -->
                     <script src="${pageContext.request.contextPath}/js/jquery.validate.min.js"></script>
                     <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
-
-                    <div class="col-md-11">
+                    <div class="col-md-11 app">
                         <!-- <%-- 中間主體--%> -->
                         <br>
                         <div class="row">
@@ -171,7 +175,6 @@
                                         </select>
                                     </div>
                                 </div>
-
                                 <div class="row">
                                     <div class="col-md-1"></div>
                                     <div class="col-md-1 cell">備註</div>
@@ -186,148 +189,152 @@
                                 <div class="row">&nbsp; </div>
                                 <div class="row">
                                     <div class="col-md-1"></div>
-                                    <div class="col-md-4 log">關聯資訊</div>
-                                </div>
-                                <div class="row">
+                                    <div class="col-md-4 ">
+                                        <div class="row">
+                                            <div class="col-md-12 log">關聯資訊</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3 cell">客戶</div>
+                                            <div class="col-md-9 cell FormPadding " style="background-color: #ccc;"
+                                                @click="dialogTableVisible = true ">
+                                                <a :href="'${pageContext.request.contextPath}/CRM/client/'+clientid"
+                                                    target="_blank" class="clientName">{{client}}</a>
+                                                <input type="hidden" name='clientid' :value="clientid">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3 cell">聯絡人</div>
+                                            <div class="col-md-9 cell FormPadding">
+                                                <select name="contactid" class="form-select cellFrom"
+                                                    v-model="contactid">
+                                                    <option v-for="(contact, index) in contactList" :key="index"
+                                                        :value="contact.contactid">{{contact.name}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3 cell">潛在顧客</div>
+                                            <div class="col-md-9 cell FormPadding" style="background-color: #ccc;"
+                                                onclick="showCustomer()">
+                                                <a href="${pageContext.request.contextPath}/CRM/potentialcustomer/${bean.customer.customerid}"
+                                                    target="_blank" class="customerName">${bean.customer.name}</a>
+                                                <input type="hidden" class=" form-control cellFrom" name="customerid"
+                                                    value="${bean.customer.customerid}" maxlength="20">
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3 cell">銷售機會</div>
+                                            <div class="col-md-9 cell FormPadding" style="background-color: #ccc;"
+                                                onclick="showMarket()">
+                                                <a href="${pageContext.request.contextPath}/Market/Market/${bean.market.marketid}"
+                                                    target="_blank" class="marketName">${bean.market.name}</a>
+                                                <input type="hidden" class=" form-control cellFrom" name="marketid"
+                                                    value="${bean.marketid}" maxlength="20">
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="col-md-1"></div>
-                                    <div class="col-md-1 cell">客戶</div>
-                                    <div class="col-md-3 cell FormPadding " style="background-color: #ccc;"
-                                        onclick="showclient()">
-                                        <a href="${pageContext.request.contextPath}/CRM/client/${bean.client.clientid}"
-                                            target="_blank" class="clientName">${bean.client.name}</a>
-                                        <input type="hidden" name='clientid' value="${bean.client.clientid}">
+                                    <div class="col-md-4" style="background-color: #379cf4;">
+                                        公司地址: {{client}}<br>
+                                        公司電話: <br>
+                                        公司傳真: <br>
+                                        聯絡人地址:{{contact.address}} <br>
+                                        聯絡人電話:{{contact.phone}} <br>
+                                        聯絡人手機: {{contact.moblie}}<br>
+                                        聯絡人LIne:{{contact.line}} <br>
+
+                                    </div>
+
+
+
+                                    <div class="row">&nbsp; </div>
+                                    <!-- 送出按鈕 -->
+                                    <div class="row">
+                                        <div class="col-md-4"></div>
+                                        <div class="col-md-4 FormPadding">
+                                            <button type="submit"
+                                                style="width: 100%;background-color: rgb(36, 101, 164);color: white;"
+                                                class="btn">送出</button>
+                                        </div>
                                     </div>
                                 </div>
-
-                                <div class="row">
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-1 cell">聯絡人</div>
-                                    <div class="col-md-3 cell FormPadding">
-                                        <select name="contactid" class="form-select cellFrom">
-                                            <c:if test="${not empty bean.client.contact}">
-                                                <c:forEach varStatus="loop" begin="0"
-                                                    end="${bean.client.contact.size()-1}" items="${bean.client.contact}"
-                                                    var="contact">
-                                                    <option value="${contact.contactid}"
-                                                        ${bean.contactid==contact.contactid?"selected":""}>
-                                                        ${contact.name}
-                                                    </option>
-                                                </c:forEach>
-                                            </c:if>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-1 cell">潛在顧客</div>
-                                    <div class="col-md-3 cell FormPadding" style="background-color: #ccc;"
-                                        onclick="showCustomer()">
-                                        <a href="${pageContext.request.contextPath}/CRM/potentialcustomer/${bean.customer.customerid}"
-                                            target="_blank" class="customerName">${bean.customer.name}</a>
-                                        <input type="hidden" class=" form-control cellFrom" name="customerid"
-                                            value="${bean.customer.customerid}" maxlength="20">
-
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-1 cell">銷售機會</div>
-                                    <div class="col-md-3 cell FormPadding" style="background-color: #ccc;"
-                                        onclick="showMarket()">
-                                        <a href="${pageContext.request.contextPath}/Market/Market/${bean.market.marketid}"
-                                            target="_blank" class="marketName">${bean.market.name}</a>
-                                        <input type="hidden" class=" form-control cellFrom" name="marketid"
-                                            value="${bean.marketid}" maxlength="20">
-                                    </div>
-                                </div>
-
-                                <!-- 送出按鈕 -->
-                                <div class="row">
-                                    <div class="col-md-1"></div>
-
-                                    <div class="col-md-4 FormPadding">
-                                        <button type="submit"
-                                            style="width: 100%;background-color: rgb(36, 101, 164);color: white;"
-                                            class="btn">送出</button>
-                                    </div>
-                                </div>
-
-
-
                             </div>
                         </form>
 
 
                         <!-- ///////////////////////////////////////////////////////////////////////////// -->
+                        <!-- 客戶彈窗 -->
+
+                        <el-dialog title="客戶" :visible.sync="dialogTableVisible">
+                            <div class="input-group mb-3" style="width: 95%; padding-left: 50px;">
+                                <input type="text" class="form-control selectclient"
+                                    placeholder=" 名稱  or 統編 or 負責人or 電話" aria-label="Recipient's username"
+                                    aria-describedby="button-addon2">
+                                <button class="btn btn-outline-secondary " type="submit"
+                                    onclick="selectclient()">搜索</button>
+                            </div>
+                            <table class="Table table-striped clientTable">
+                                <tr>
+                                    <td>客戶名稱</td>
+                                    <td>統編</td>
+                                    <td>負責人</td>
+                                    <td>電話</td>
+                                    <td>產業</td>
+                                </tr>
+                                <tr v-for="(bean, index) in clientList" :key="index" class="item"
+                                    @click="clickClient(bean.name,bean.clientid)" style="cursor: pointer;">
+                                    <td>{{bean.name}}</td>
+                                    <td>{{bean.uniformnumber}}</td>
+                                    <td>{{bean.user}}</td>
+                                    <td>{{bean.phone}}</td>
+                                    <td>{{bean.industry}}</td>
+                                </tr>
+                            </table>
+                        </el-dialog>
+
+
+                        <!-- 客戶彈窗/// -->
+                        <!-- 潛在顧客彈窗 -->
+                        <div class="CustomerWork" title="潛在顧客">
+                            <!-- <%-- 抬頭搜索--%> -->
+                            <div class="col-lg-5">
+                                <div class="input-group mb-3" style="width: 95%; padding-left: 50px;">
+                                    <input type="text" class="form-control selectCustomer"
+                                        placeholder=" 客戶名稱 or 公司 or 負責人" aria-label="Recipient's username"
+                                        aria-describedby="button-addon2">
+                                    <button class="btn btn-outline-secondary " type="submit"
+                                        onclick="selectCustomer()">搜索</button>
+                                </div>
+                            </div>
+                            <table class="Table table-striped CustomerTable">
+
+                            </table>
+                        </div>
+                        <!-- 潛在顧客彈窗/// -->
+                        <!-- 銷售機會彈窗 -->
+                        <div class="MarketWork" title="銷售機會">
+                            <!-- <%-- 抬頭搜索--%> -->
+                            <div class="col-lg-5">
+                                <div class="input-group mb-3" style="width: 95%; padding-left: 50px;">
+                                    <input type="text" class="form-control selectMarket"
+                                        placeholder="名稱  or 客戶 or 聯絡人or 負責人" aria-label="Recipient's username"
+                                        aria-describedby="button-addon2">
+                                    <button class="btn btn-outline-secondary " type="submit"
+                                        onclick="selectMarket()">搜索</button>
+                                </div>
+                            </div>
+                            <table class="Table table-striped MarketTable">
+
+                            </table>
+                        </div>
+                        <!-- 銷售機會彈窗/// -->
 
                     </div>
 
                 </div>
             </div>
-            <!-- 客戶彈窗 -->
-            <div class="clientwork" title="客戶">
-                <!-- <%-- 抬頭搜索--%> -->
-                <div class="col-lg-5">
-                    <div class="input-group mb-3" style="width: 95%; padding-left: 50px;">
-                        <input type="text" class="form-control selectclient" placeholder=" 名稱  or 統編 or 負責人or 電話"
-                            aria-label="Recipient's username" aria-describedby="button-addon2">
-                        <button class="btn btn-outline-secondary " type="submit" onclick="selectclient()">搜索</button>
-                    </div>
-                </div>
 
-                <table class="Table table-striped clientTable">
-                    <tr>
-                        <td>客戶名稱</td>
-                        <td>統編</td>
-                        <td>負責人</td>
-                        <td>電話</td>
-                        <td>產業</td>
-                    </tr>
-                    <c:if test="${not empty clientList}">
-                        <c:forEach varStatus="loop" begin="0" end="${clientList.size()-1}" items="${clientList}"
-                            var="s">
-                            <tr class="item" onclick="clickClient('${s.name}',${s.clientid})" style="cursor: pointer;">
-                                <td> ${s.name}</td>
-                                <td> ${s.uniformnumber}</td>
-                                <td> ${s.user}</td>
-                                <td> ${s.phone}</td>
-                                <td> ${s.industry}</td>
-                            </tr>
-                        </c:forEach>
-                    </c:if>
-                </table>
-            </div>
-            <!-- 客戶彈窗/// -->
-            <!-- 潛在顧客彈窗 -->
-            <div class="CustomerWork" title="潛在顧客">
-                <!-- <%-- 抬頭搜索--%> -->
-                <div class="col-lg-5">
-                    <div class="input-group mb-3" style="width: 95%; padding-left: 50px;">
-                        <input type="text" class="form-control selectCustomer" placeholder=" 客戶名稱 or 公司 or 負責人"
-                            aria-label="Recipient's username" aria-describedby="button-addon2">
-                        <button class="btn btn-outline-secondary " type="submit" onclick="selectCustomer()">搜索</button>
-                    </div>
-                </div>
-                <table class="Table table-striped CustomerTable">
-
-                </table>
-            </div>
-            <!-- 潛在顧客彈窗/// -->
-            <!-- 銷售機會彈窗 -->
-            <div class="MarketWork" title="銷售機會">
-                <!-- <%-- 抬頭搜索--%> -->
-                <div class="col-lg-5">
-                    <div class="input-group mb-3" style="width: 95%; padding-left: 50px;">
-                        <input type="text" class="form-control selectMarket" placeholder="名稱  or 客戶 or 聯絡人or 負責人"
-                            aria-label="Recipient's username" aria-describedby="button-addon2">
-                        <button class="btn btn-outline-secondary " type="submit" onclick="selectMarket()">搜索</button>
-                    </div>
-                </div>
-                <table class="Table table-striped MarketTable">
-
-                </table>
-            </div>
-            <!-- 銷售機會彈窗/// -->
         </body>
         <script>
 
@@ -369,14 +376,7 @@
                 $("#myform").validate();
             });
 
-            $(".clientwork").dialog({
-                autoOpen: false,
-                position: {
-                    at: "top+300"
-                },
-                width: 1000,
-                height: 300
-            });
+
             $(".CustomerWork").dialog({
                 autoOpen: false,
                 position: {
@@ -399,27 +399,7 @@
             function showMarket() {
                 $('.MarketWork').dialog("open");
             }
-            function showclient() {
-                $('.clientwork').dialog("open");
-            }
-            //搜索客戶
-            function selectclient() {
-                $.ajax({
-                    url: '${pageContext.request.contextPath}/work/selectclient/' + $('.selectclient').val(),//接受請求的Servlet地址
-                    type: 'POST',
-                    success: function (list) {
-                        $(".clientTable").empty();
-                        $(".clientTable").append("<tr><td>客戶名稱</td> <td>統編</td><td>負責人</td> <td>電話</td> <td>產業</td></tr>");
-                        for (var bean of list) {
-                            $(".clientTable").append('<tr class="item" onclick="clickClient(`' + bean.name + '`,' + bean.clientid + ')" style="cursor: pointer;">' +
-                                '<td> ' + bean.name + '</td><td>' + bean.uniformnumber + ' </td><td> ' + bean.user + '</td><td> ' + bean.phone + '</td><td>' + bean.industry + ' </td></tr>');
-                        }
-                    },
-                    error: function (returndata) {
-                        console.log(returndata);
-                    }
-                });
-            }
+
             //搜索潛在顧客
             function selectCustomer() {
                 $.ajax({
@@ -429,6 +409,7 @@
                         $(".CustomerTable").empty();
                         $(".CustomerTable").append("<tr><td>客戶名稱</td> <td>客戶公司</td><td>負責人</td> <td>電話</td> <td>產業</td></tr>");
                         for (var bean of list) {
+
                             $(".CustomerTable").append('<tr class="item" onclick="clickCustomer(`' + bean.name + '`,' + bean.customerid + ')" style="cursor: pointer;">' +
                                 '<td> ' + bean.name + '</td><td>' + bean.company + ' </td><td> ' + bean.user + '</td><td> ' + bean.phone + '</td><td>' + bean.industry + ' </td></tr>');
                         }
@@ -462,7 +443,7 @@
                 $(".clientName").text(name);
                 $(".clientName").attr("href", "${pageContext.request.contextPath}/CRM/client/" + id);
                 $("input[name='clientid']").val(id);
-                $('.clientwork').dialog("close");
+                // $('.clientwork').dialog("close");
                 $.ajax({
                     url: '${pageContext.request.contextPath}/work/selectContact/' + name,//接受請求的Servlet地址
                     type: 'POST',
@@ -507,46 +488,98 @@
             $(".marketName").click(function (event) {
                 event.stopPropagation();
             });
-
-
-            init();
-            function init() {
-                $.ajax({
-                    url: '${pageContext.request.contextPath}/work/clientList',//接受請求的Servlet地址
-                    type: 'POST',
-                    async: false,//同步請求
-                    cache: false,//不快取頁面
-                    success: function (list) {
-                        $(".clientTable").empty();
-                        $(".clientTable").append("<tr><td>客戶名稱</td> <td>統編</td><td>負責人</td> <td>電話</td> <td>產業</td></tr>");
-                        for (var bean of list) {
-                            $(".clientTable").append('<tr class="item" onclick="clickClient(`' + bean.name + '`,' + bean.clientid + ')" style="cursor: pointer;">' +
-                                '<td> ' + bean.name + '</td><td>' + bean.uniformnumber + ' </td><td> ' + bean.user + '</td><td> ' + bean.phone + '</td><td>' + bean.industry + ' </td></tr>');
-                        }
-                    },
-                    error: function (returndata) {
-                        console.log(returndata);
-                    }
-                });
-                initContact();
-            }
-
             function initContact() {
                 var clientid = $("input[name='clientid']").val();
-                $.ajax({
-                    url: '${pageContext.request.contextPath}/work/contactList/' + clientid,//接受請求的Servlet地址
-                    type: 'POST',
-                    success: function (list) {
+                if (clientid != "") {
+                    $.ajax({
+                        url: '${pageContext.request.contextPath}/work/contactList/' + clientid,//接受請求的Servlet地址
+                        type: 'POST',
+                        success: function (list) {
+                            for (var bean of list)
+                                $('select[name="contactid"]').append('<option value="' + bean.contactid + '">' + bean.name + '</option>');
+                        },
+                        error: function (returndata) {
+                            console.log(returndata);
+                        }
+                    });
+                }
 
-                        for (var bean of list)
-                            $('select[name="contactid"]').append('<option value="' + bean.contactid + '">' + bean.name + '</option>');
-                    },
-                    error: function (returndata) {
-                        console.log(returndata);
-                    }
-                });
 
             }
+            const vm = new Vue({
+                el: ".app",
+                data() {
+                    return {
+                        contact: {},
+                        contactid: "",//聯絡人
+                        contactList: [],//聯絡人列表
+                        clientid: '${bean.clientid}',
+                        client: "${bean.client.name}",//客戶
+                        clientList: [],//客戶列表
+                        dialogTableVisible: false,//客戶彈窗
+
+                    }
+                },
+                created() {
+                    console.log(this.contact);
+                    axios//取得客戶列表
+                        .get('${pageContext.request.contextPath}/work/clientList')
+                        .then(response => (
+                            this.clientList = response.data
+                        ))
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+
+                    if (this.client != "") {
+                        axios//取得聯絡人列表
+                            .get('${pageContext.request.contextPath}/work/selectContact/' + this.client)
+                            .then(response => (
+                                this.contactList = response.data,
+                                this.contactid="${bean.contact.contactid}",
+                                this.clientid= '${bean.clientid}'
+                            ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                            
+                    }
+                }, watch: {
+                    contactid: {                     
+                        handler(newValue, oldValue) {
+                            for (const iterator of this.contactList) {
+                                if(iterator.contactid == newValue)this.contact=iterator
+                            }                    
+                        }
+                    },
+                    clientid: {                     
+                        handler(newValue, oldValue) {
+                            console.log(this.clientList,":");
+                            console.log(newValue);
+                            for (const iterator of this.clientList) {
+                                if(iterator.contactid == newValue)this.client=iterator
+                            }
+                            console.log(this.client);
+                        }
+                    }
+                }, methods: {
+                    //選取客戶後 換聯絡人列表
+                    clickClient: function (clientName, clientId) {
+                        this.clientid = clientId;
+                        this.client = clientName;
+                        this.dialogTableVisible = false;
+                        axios
+                            .get('${pageContext.request.contextPath}/work/selectContact/' + clientName,)
+                            .then(response => (
+                                this.contactList = response.data
+                            ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    }
+                },
+            })
+
         </script>
 
         </html>

@@ -247,66 +247,8 @@
                                             <div class="col-md-1"></div>
                                             <div class="col-md-1 cell">產業</div>
                                             <div class="col-md-2 FormPadding">
-                                                <select name="type" class=" form-select cellFrom">
-                                                    <option ${bean.type=="尚未分類" ?"selected":null} value="尚未分類">請選擇...
-                                                    </option>
-                                                    <option ${bean.type=="生產 製造" ?"selected":null} value="生產 製造">生產 製造
-                                                    </option>
-                                                    <option ${bean.type=="工程公司" ?"selected":null} value="工程公司">工程公司
-                                                    </option>
-                                                    <option ${bean.type=="學校 user" ?"selected":null} value="學校 user">學校
-                                                        user
-                                                    </option>
-                                                    <option ${bean.type=="研究單位" ?"selected":null} value="研究單位">研究單位
-                                                    </option>
-                                                    <option ${bean.type=="電子業" ?"selected":null} value="電子業">電子業
-                                                    </option>
-                                                    <option ${bean.type=="光電產業" ?"selected":null} value="光電產業">光電產業
-                                                    </option>
-                                                    <option ${bean.type=="半導體業" ?"selected":null} value="半導體業">半導體業
-                                                    </option>
-                                                    <option ${bean.type=="公家機關" ?"selected":null} value="公家機關">公家機關
-                                                    </option>
-                                                    <option ${bean.type=="機械設備製造" ?"selected":null} value="機械設備製造">
-                                                        機械設備製造
-                                                    </option>
-                                                    <option ${bean.type=="生技製藥" ?"selected":null} value="生技製藥">生技製藥
-                                                    </option>
-                                                    <option ${bean.type=="食品加工" ?"selected":null} value="食品加工">食品加工
-                                                    </option>
-                                                    <option ${bean.type=="醫院/醫療" ?"selected":null} value="醫院/醫療">醫院/醫療
-                                                    </option>
-                                                    <option ${bean.type=="物流/倉儲" ?"selected":null} value="物流/倉儲">物流/倉儲
-                                                    </option>
-                                                    <option ${bean.type=="畜牧/農業" ?"selected":null} value="畜牧/農業">畜牧/農業
-                                                    </option>
-                                                    <option ${bean.type=="公共/消費性環境" ?"selected":null} value="公共/消費性環境">
-                                                        公共/消費性環境
-                                                    </option>
-                                                    <option ${bean.type=="製紙業" ?"selected":null} value="製紙業">製紙業
-                                                    </option>
-                                                    <option ${bean.type=="紡織業" ?"selected":null} value="紡織業">紡織業
-                                                    </option>
-                                                    <option ${bean.type=="化工業" ?"selected":null} value="化工業">化工業
-                                                    </option>
-                                                    <option ${bean.type=="金屬加工" ?"selected":null} value="金屬加工">金屬加工
-                                                    </option>
-                                                    <option ${bean.type=="冷凍空調" ?"selected":null} value="冷凍空調">冷凍空調
-                                                    </option>
-                                                    <option ${bean.type=="航太/造船" ?"selected":null} value="航太/造船">航太/造船
-                                                    </option>
-                                                    <option ${bean.type=="環保相關" ?"selected":null} value="環保相關">環保相關
-                                                    </option>
-                                                    <option ${bean.type=="水處理/水資源" ?"selected":null} value="水處理/水資源">
-                                                        水處理/水資源
-                                                    </option>
-                                                    <option ${bean.type=="石化能源" ?"selected":null} value="石化能源">石化能源
-                                                    </option>
-                                                    <option ${bean.type=="印刷" ?"selected":null} value="印刷">印刷</option>
-                                                    <option ${bean.type=="其它" ?"selected":null} value="其它">其它(請填寫)
-                                                    </option>
-                                                    <option ${bean.type=="業主" ?"selected":null} value="業主">業主</option>
-                                                    <option ${bean.type=="設備換修" ?"selected":null} value="設備換修">設備換修
+                                                <select name="type" class=" form-select cellFrom" v-model="type">
+                                                    <option  v-for="(item, index) in typeList" :key="index">{{item}}
                                                     </option>
                                                 </select>
                                             </div>
@@ -388,26 +330,26 @@
                                                     name="contactemail" value="${bean.contactemail}" maxlength="50">
                                             </div>
                                             <div class="col-md-1"></div>
-                                            <div class="col-md-1 cell">階段</div>
+                                            <div class="col-md-1 cell">重要性</div>
                                             <div class="col-md-2 FormPadding">
-                                                <select class="form-select cellFrom" name="important" v-model="important">
-                                                    <option value >未選...</option>
+                                                <select class="form-select cellFrom" name="important"
+                                                    v-model="important">
                                                     <option value="高">高</option>
                                                     <option value="中">中</option>
-                                                    <option value="低">低</option>
+                                                    <option value="低" selected>低</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-1"></div>
                                             <div class="col-md-1 cell"></div>
-                                            <div class="col-md-2 FormPadding">    
+                                            <div class="col-md-2 FormPadding">
                                             </div>
 
                                             <div class="col-md-1 cell">Line</div>
                                             <div class="col-md-2 FormPadding">
-                                                <input type="text" class="form-control cellFrom"
-                                                    name="line" v-model="line" maxlength="200">
+                                                <input type="text" class="form-control cellFrom" name="line"
+                                                    v-model="line" maxlength="200">
                                             </div>
                                         </div>
                                         <!-- ////////////////////////////////////////////////////////////////////////////////// -->
@@ -577,7 +519,7 @@
                                             <div class="col-md-1 cell">成交機率</div>
 
                                             <div class="col-md-2 FormPadding">
-                                                <el-rate v-model="value" 
+                                                <el-rate v-model="value"
                                                     :colors="{ 2: '#99A9BF', 3:  '#F7BA2A', 4: '#FF9900', 5: 'red' }">
                                                 </el-rate>
                                                 <input type="hidden" name="clinch" v-model="value">
@@ -876,9 +818,30 @@
                         phone: '${bean.phone}',
                         contactphone: '${bean.contactphone}',
                         contactmoblie: '${bean.contactmoblie}',
-                        important:'${bean.important}',
-                        line: '${bean.line}'
-
+                        important: '${bean.important}',
+                        line: '${bean.line}',
+                        type: "${bean.type}",//產業
+                        typeList: ["尚未分類",
+                            "農、林、漁、牧業",
+                            "礦業及土石採取業",
+                            " 製造業",
+                            "電子及半導體生產", "機械設備製造業",
+                            "電力及燃氣供應業",
+                            "用水供應及污染整治業",
+                            "營建工程業",                            
+                            "批發及零售業",
+                            "運輸及倉儲業",
+                            "住宿及餐飲業",
+                            "出版影音及資通訊業",
+                            "金融及保險業",
+                            "不動產業",
+                            "專業、科學及技術服務業",
+                            "支援服務業",
+                            "公共行政及國防；強制性社會安全",
+                            "教育業",
+                            "醫療保健及社會工作服務業",
+                            "藝術、娛樂及休閒服務業",
+                            "其他服務業"],//產業列表
                     }
                 },
                 created() {
@@ -887,7 +850,7 @@
                     this.phone = formatPhone(this.phone);
                     this.contactphone = formatPhone(this.contactphone);
                     this.contactmoblie = formatPhone(this.contactmoblie);
-
+                    if (this.important == "") this.important = '低';
                 },
                 methods: {
                     ddd: function () {

@@ -47,8 +47,8 @@ public class MarketControler {
 	public String SavePotentialCustomer(PotentialCustomerBean pcb) {
 		System.out.println("*****儲存潛在客戶*****");
 
-		PCS.SavePotentialCustomer(pcb);
-		return "redirect:/Market/PotentialCustomerList";
+		PotentialCustomerBean bean =    PCS.SavePotentialCustomer(pcb);
+		return "redirect:/Market/potentialcustomer/"+bean.getCustomerid();
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
