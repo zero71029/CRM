@@ -41,11 +41,11 @@ public class MarketService {
 	ZeroTools zTools;
 
 	public MarketBean save(MarketBean marketBean) {
-		
-		System.out.println(marketBean.getAaa()+"dddddddddddd");
-		if(marketBean.getAaa() == "") {
-			System.out.println(marketBean.getAaa()+"null");
-			marketBean.setAaa(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()));			
+
+		System.out.println(marketBean.getAaa() + "dddddddddddd");
+		if (marketBean.getAaa() == "") {
+			System.out.println(marketBean.getAaa() + "null");
+			marketBean.setAaa(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()));
 		}
 		return mr.save(marketBean);
 	}
@@ -232,7 +232,17 @@ public class MarketService {
 		for (String typeString : data) {
 			result.addAll(mr.findProducttype(typeString));
 			result.addAll(mr.findSource(typeString));
-		}		
+		}
+		return result;
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//搜索銷售機會by產業
+	public List<MarketBean> selectIndustry(List<String> data) {
+		List<MarketBean> result = new ArrayList<MarketBean>();
+		for (String typeString : data) {
+			result.addAll(mr.selectType(typeString));
+		}
 		return result;
 	}
 

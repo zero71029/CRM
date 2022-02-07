@@ -47,8 +47,8 @@ public class MarketControler {
 	public String SavePotentialCustomer(PotentialCustomerBean pcb) {
 		System.out.println("*****儲存潛在客戶*****");
 
-		PotentialCustomerBean bean =    PCS.SavePotentialCustomer(pcb);
-		return "redirect:/Market/potentialcustomer/"+bean.getCustomerid();
+		PotentialCustomerBean bean = PCS.SavePotentialCustomer(pcb);
+		return "redirect:/Market/potentialcustomer/" + bean.getCustomerid();
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -121,8 +121,8 @@ public class MarketControler {
 	public String SaveMarket(MarketBean marketBean) {
 		System.out.println("*****存銷售機會****");
 		System.out.println(marketBean);
-		MarketBean save =    ms.save(marketBean);
-		return "redirect:/Market/Market/"+save.getMarketid();
+		MarketBean save = ms.save(marketBean);
+		return "redirect:/Market/Market/" + save.getMarketid();
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -333,7 +333,10 @@ public class MarketControler {
 		if (cs.existsContactByName(Bean.getName(), Bean.getCompany())) {
 			System.out.println("*****聯絡人已存在****");
 			return "聯絡人已存在";
-		}
+		}else if (!cs.existsContactByCompany(Bean.getCompany())) {
+			System.out.println("*****公司不存在****");
+			return "公司不存在";
+		}		
 		System.out.println("*****不存在****");
 		return "不存在";
 	}
@@ -355,12 +358,6 @@ public class MarketControler {
 //		contactBean.setFax(Bean.getFax());
 //		contactBean.setRemark(Bean.getRemark());
 //		contactBean.setUser(Bean.getUser());
-		
-		
-		
-		
-		
-		
 
 		cs.SaveContact(contactBean);
 		model.addAttribute("message", "儲存成功");
@@ -386,7 +383,22 @@ public class MarketControler {
 		model.addAttribute("bean", bean);
 		return "/Market/work";
 	}
-
+	//銷售機會 轉工作項目
+		@RequestMapping("/MarketChangeWork")		
+		public String changeWork(Model model ,MarketBean mBean) {
+			System.out.println("銷售機 轉工作項目");
+			WorkBean bean = new WorkBean();
+		
+			
+			
+			
+			
+			
+			
+			bean.setMarket(mBean);
+			model.addAttribute("bean", bean);
+			return "/Market/work";
+		}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索銷售機會by負則人
 	@ResponseBody
@@ -448,11 +460,21 @@ public class MarketControler {
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//搜索銷售機會by產業
+	@RequestMapping("/selectIndustry")
+	@ResponseBody
+	public List<MarketBean> selectIndustry(@RequestBody List<String> data) {
+		System.out.println("搜索銷售機會by產業");
+		System.out.println(data);
+		return ms.selectIndustry(data);
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索銷售機會by來源
 	@RequestMapping("/selectSource")
 	@ResponseBody
 	public List<MarketBean> selectSource(@RequestBody List<String> data) {
-		System.out.println("搜索銷售機會by產品類別");
+		System.out.println("搜索銷售機會by來源");
 		System.out.println(data);
 		return ms.selectProductType(data);
 	}
@@ -470,10 +492,10 @@ public class MarketControler {
 //搜索銷售機會by預算
 	@RequestMapping("/selectBudget/{start}/{to}")
 	@ResponseBody
-	public List<MarketBean> selectBudget(@PathVariable("start") String start,@PathVariable("to") String to) {
+	public List<MarketBean> selectBudget(@PathVariable("start") String start, @PathVariable("to") String to) {
 		System.out.println("搜索銷售機會by預算");
 		System.out.println(start);
 		System.out.println(to);
-		return ms.selectBudget(start,to);
+		return ms.selectBudget(start, to);
 	}
 }

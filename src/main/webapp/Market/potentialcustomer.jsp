@@ -16,6 +16,9 @@
             <title>CRM客戶管理系統</title>
         </head>
         <style>
+            .error{
+                color: red;
+            }
             .customerbar {
                 /* 按鈕顏色 */
                 background-color: #afe3d5;
@@ -45,8 +48,6 @@
 
 
             /* 右下角按鈕 */
-
-
             .row .box {
                 height: 0px;
                 width: 460px;
@@ -98,7 +99,6 @@
                 text-align: center;
                 text-decoration: none;
             }
-
             /* 右下角按鈕////////////////結束 */
         </style>
 
@@ -158,7 +158,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1"></div>
-                                        <div class="col-md-2 cell">公司*</div>
+                                        <div class="col-md-2 cell">公司<span style="color: red;">*</span></div>
                                         <div class="col-md-3 cell FormPadding">
                                             <input type="text" class="col-md-4 form-control cellFrom client"
                                                 name="company" list="company" value="${bean.company}" maxlength="20"
@@ -182,7 +182,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1"></div>
-                                        <div class="col-md-2 cell">聯絡人*</div>
+                                        <div class="col-md-2 cell">聯絡人<span style="color: red;">*</span></div>
                                         <div class="col-md-3 cell FormPadding">
                                             <input type="text" class=" form-control cellFrom" name="name"
                                                 value="${bean.name}" maxlength="20" required>
@@ -511,12 +511,8 @@
                         <div class="row">&nbsp;</div>
                     </div>
 
-
-
-
-
+                    <!-- 動作區塊 -->
                     <c:if test="${not empty bean}">
-
                         <div class="row box" id="draggable">
                             <div class="row act" style="height: 30px;">
                                 <a class="col-md-4" href="#" onclick="goClient()">轉成客戶</a>
@@ -531,7 +527,6 @@
                                 </div>
                                 <div class="col-md-2">紀錄</div>
                                 <div class="col-md-2">留言</div>
-
                             </div>
                         </div>
                     </c:if>
@@ -539,6 +534,7 @@
             </div>
         </body>
         <script>
+            
             $('.act').hide();
             $(function () {
                 $("#draggable").draggable();
@@ -565,30 +561,34 @@
                 });
 
             });
-            function basefrom() {
-                if (confirm("確定修改?")) $(".basefrom").submit();
-            }
             //表單驗證
-            // Example starter JavaScript for disabling form submissions if there are invalid fields
-            (function () {
-                'use strict'
-
-                // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                var forms = document.querySelectorAll('.needs-validation')
-
-                // Loop over them and prevent submission
-                Array.prototype.slice.call(forms)
-                    .forEach(function (form) {
-                        form.addEventListener('submit', function (event) {
-                            if (!form.checkValidity()) {
-                                event.preventDefault()
-                                event.stopPropagation()
-                            }
-
-                            form.classList.add('was-validated')
-                        }, false)
-                    })
-            })()
+            $(function () {
+                // 密碼驗證
+                jQuery.validator.setDefaults({
+                    submitHandler: function () {
+                        form.submit();
+                    }
+                });
+                $.extend($.validator.messages, {
+                    required: "這是必填字段",
+                    email: "請输入有效的電子郵件地址",
+                    url: "请输入有效的网址",
+                    date: "请输入有效的日期",
+                    dateISO: "请输入有效的日期 (YYYY-MM-DD)",
+                    number: "请输入有效的数字",
+                    digits: "只能输入数字",
+                    creditcard: "请输入有效的信用卡号码",
+                    equalTo: "你的输入不相同",
+                    extension: "请输入有效的后缀",
+                    maxlength: $.validator.format("最多可以输入 {0} 个字符"),
+                    minlength: $.validator.format("最少要输入 {0} 个字符"),
+                    rangelength: $.validator.format("请输入长度在 {0} 到 {1} 之间的字符串"),
+                    range: $.validator.format("请输入范围在 {0} 到 {1} 之间的数值"),
+                    max: $.validator.format("请输入不大于 {0} 的数值"),
+                    min: $.validator.format("请输入不小于 {0} 的数值")
+                });
+                $(".basefrom").validate();
+            });
             function delRemark(id) {
                 if (confirm("確定刪除?")) {
                     window.location.href = "${pageContext.request.contextPath}/Market/delRemark/" + id + "/${bean.customerid}";
@@ -624,7 +624,7 @@
                         }
                         if (json == "不存在") {
                             $(".AAA").attr("action", "${pageContext.request.contextPath}/Market/changeClient.action");
-                            $(".AAA").submit();
+                            $(".AAA")[0].submit();
                             return;
                         }
                         alert("錯誤");
@@ -653,9 +653,13 @@
                             alert(json);
                             return;
                         }
+                        if (json == "公司不存在,請先轉客戶") {
+                            alert(json);
+                            return;
+                        }
                         if (json == "不存在") {
                             $(".AAA").attr("action", "${pageContext.request.contextPath}/Market/changeContact.action");
-                            $(".AAA").submit();
+                            $(".AAA")[0].submit();
                             return;
                         }
                         alert("錯誤");
@@ -670,7 +674,7 @@
             //新增工作項目
             function goWork() {
                 $(".AAA").attr("action", "${pageContext.request.contextPath}/Market/changeWork");
-                $(".AAA").submit();
+                $(".AAA")[0].submit();
             }
             // 添加協助者
             function addHelper() {
@@ -712,7 +716,7 @@
                         industryList: ["尚未分類",
                             "農、林、漁、牧業",
                             "礦業及土石採取業",
-                            " 製造業",
+                            "製造業",
                             "電子及半導體生產", "機械設備製造業",
                             "電力及燃氣供應業",
                             "用水供應及污染整治業",

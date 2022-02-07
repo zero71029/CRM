@@ -1,5 +1,6 @@
 package com.jetec.CRM.repository;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -46,5 +47,8 @@ public interface MarketRepository extends JpaRepository<MarketBean, Integer> {
 	List<MarketBean> selectClinch(String clinch);
 	@Query(value = "SELECT  *  from market where stage != '失敗結案' AND stage != '成功結案' AND (cost BETWEEN ?1 AND ?2 )", nativeQuery = true)
 	List<MarketBean> selectBudget(String start, String to);
+	
+	@Query(value = "SELECT  *  from market where stage != '失敗結案' AND stage != '成功結案' AND type =?1", nativeQuery = true)
+	List<MarketBean> selectType(String typeString);
 
 }

@@ -11,13 +11,67 @@
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
             <!-- 引入样式 vue-->
             <script src="${pageContext.request.contextPath}/js/vue.min.js"></script>
-            <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+            <!-- <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script> -->
             <!-- 引入element-ui样式 -->
             <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
             <!-- 引入element-ui组件库 -->
             <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 
             <style>
+                /* 動作區塊 */
+                .row .box {
+                    height: 0px;
+                    width: 460px;
+                    position: fixed;
+                    z-index: 1000;
+                    bottom: 30px;
+                    right: 0px;
+                    background-color: #fff;
+
+                    padding: 0%;
+                    border-radius: 15px 0 0 15px;
+                    margin: 0%;
+                }
+
+                .row .dockbar {
+                    opacity: 1;
+                    width: 460px;
+                    height: 30px;
+                    background-color: #ddd;
+
+                    border-radius: 15px 0 0 15px;
+                }
+
+                .dockbar div {
+                    border-right: 1px solid black;
+                    cursor: pointer;
+                }
+
+                .dockbar div:hover {
+                    background-color: #aaa;
+
+                }
+
+                .box .act {
+                    position: absolute;
+                    background-color: #aaa;
+                    width: 411px;
+                    bottom: 0px;
+                    right: 25px;
+                    color: white;
+                    padding: 0%;
+                }
+
+                .box .act a {
+                    color: white;
+                    display: block;
+                    border: 1px solid white;
+                    background-color: #569b92;
+                    text-align: center;
+                    text-decoration: none;
+                }
+
+                /* 動作區塊////////////////結束 */
                 .marketbar {
                     /* 按鈕顏色 */
                     background-color: #afe3d5;
@@ -40,6 +94,10 @@
                     {
                     transform: translateY(-200%);
                     opacity: 0;
+                }
+
+                .error {
+                    color: red;
                 }
             </style>
             <title>CRM客戶管理系統</title>
@@ -158,7 +216,7 @@
 
                                 <br>
                                 <form action="${pageContext.request.contextPath}/Market/SaveMarket" method="post"
-                                    class="basefrom g-3 needs-validation AAA">
+                                    class="basefrom g-3 ">
                                     <input type="hidden" name="aaa" value="${bean.aaa}">
                                     <div class="row">
                                         <input type="hidden" name="marketid" value="${bean.marketid}">
@@ -171,7 +229,7 @@
 
                                         <div class="row">
                                             <div class="col-md-1"></div>
-                                            <div class="col-md-1 cell">機會名稱*</div>
+                                            <div class="col-md-1 cell">機會名稱 <span style="color: red;">*</span></div>
                                             <div class="col-md-5 FormPadding">
                                                 <input type="text" class=" form-control cellFrom" name="name"
                                                     style="width: 100%;" value="${bean.name}" maxlength="20" required>
@@ -182,7 +240,7 @@
 
                                         <div class="row">
                                             <div class="col-md-1"></div>
-                                            <div class="col-md-1 cell">公司名*</div>
+                                            <div class="col-md-1 cell">公司名<span style="color: red;">*</span></div>
                                             <div class="col-md-2 FormPadding">
                                                 <input type="text" class="col-md-4 form-control cellFrom client"
                                                     name="client" list="company" value="${bean.client}" maxlength="20"
@@ -227,7 +285,7 @@
                                             </div>
 
                                             <div class="col-md-1 "> </div>
-                                            <div class="col-md-1 cell">負責人*</div>
+                                            <div class="col-md-1 cell">負責人</div>
                                             <div class="col-md-2 FormPadding">
                                                 <select name="user" class="form-select cellFrom"
                                                     aria-label="Default select example">
@@ -248,7 +306,7 @@
                                             <div class="col-md-1 cell">產業</div>
                                             <div class="col-md-2 FormPadding">
                                                 <select name="type" class=" form-select cellFrom" v-model="type">
-                                                    <option  v-for="(item, index) in typeList" :key="index">{{item}}
+                                                    <option v-for="(item, index) in typeList" :key="index">{{item}}
                                                     </option>
                                                 </select>
                                             </div>
@@ -283,9 +341,6 @@
                                                         失敗結案</option>
                                                 </select>
                                             </div>
-
-
-
                                         </div>
                                         <div class="row">
                                             <div class="col-md-1"></div>
@@ -552,7 +607,7 @@
                                         <!-- /////////////////////////////////////////////////////////////////////////// -->
                                         <div class="row">
                                             <div class="col-md-1"></div>
-                                            <div class="col-md-1 cell">描述*</div>
+                                            <div class="col-md-1 cell">描述<span style="color: red;">*</span></div>
                                             <div class="col-md-5 FormPadding">
                                                 <textarea name="message" class="col-md-12" id="message" maxlength="9000"
                                                     style=" height:75px;" required>${bean.message}</textarea>
@@ -570,62 +625,64 @@
                                 </form>
                                 <!-- ///////////////////////////////////////////////////////////////////////////// -->
                                 <hr>
+                                <!-- ////////////////////////////////////////追蹤資訊///////////////////////////////////// -->
+                                <c:if test="${not empty bean}">
+                                    <form action="${pageContext.request.contextPath}/Market/SaveRemark" method="post"
+                                        class="row g-3 needs-validation" novalidate>
+                                        <div class="row">
+                                            <input type="hidden" name="marketid" value="${bean.marketid}">
+                                            <input type="hidden" name="user" value="${user.name}">
 
-                                <form action="${pageContext.request.contextPath}/Market/SaveRemark" method="post"
-                                    class="row g-3 needs-validation" novalidate>
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-6 FormPadding">
+                                                    <label for="validationTextarea" class="form-label ">追蹤資訊</label>
+                                                    <textarea class="form-control" id="validationTextarea" required
+                                                        name="remark" rows="5" maxlength="200"></textarea>
+                                                    <div class="invalid-feedback">須填寫</div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-6 FormPadding">
+                                                    <button style="width: 100%;" class="btn btn-danger"
+                                                        onclick="">確認</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
                                     <div class="row">
-                                        <input type="hidden" name="marketid" value="${bean.marketid}">
-                                        <input type="hidden" name="user" value="${user.name}">
-
-                                        <div class="row">
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-6 FormPadding">
-                                                <label for="validationTextarea" class="form-label ">追蹤資訊</label>
-                                                <textarea class="form-control" id="validationTextarea" required
-                                                    name="remark" rows="5" maxlength="200"></textarea>
-                                                <div class="invalid-feedback">須填寫</div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-6 FormPadding">
-                                                <button style="width: 100%;" class="btn btn-danger"
-                                                    onclick="">確認</button>
-                                            </div>
-                                        </div>
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">內容</div>
+                                        <div class="col-md-1">創建人 </div>
+                                        <div class="col-md-1"> 創建時間</div>
+                                        <div class="col-md-1"></div>
                                     </div>
-                                </form>
-                                <div class="row">
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-4">內容</div>
-                                    <div class="col-md-1">創建人 </div>
-                                    <div class="col-md-1"> 創建時間</div>
-                                    <div class="col-md-1"></div>
-                                </div>
-                                <br>
-                                <c:if test="${not empty bean.mrb}">
-                                    <c:forEach varStatus="loop" begin="0" end="${bean.mrb.size()-1}" items="${bean.mrb}"
-                                        var="s">
-                                        <div class="row">
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-4" style="word-wrap: break-word;">${s.remark}</div>
-                                            <div class="col-md-1">${s.user}</div>
-                                            <div class="col-md-1">${s.createtime}</div>
-                                            <div class="col-md-1"><a href="javascript:delRemark(${s.id})"
-                                                    style="text-decoration: none;">remove</a></div>
-                                        </div>
-                                    </c:forEach>
-                                </c:if>
-                                <br><br><br><br><br>
+                                    <br>
+                                    <c:if test="${not empty bean.mrb}">
+                                        <c:forEach varStatus="loop" begin="0" end="${bean.mrb.size()-1}"
+                                            items="${bean.mrb}" var="s">
+                                            <div class="row">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-4" style="word-wrap: break-word;">${s.remark}</div>
+                                                <div class="col-md-1">${s.user}</div>
+                                                <div class="col-md-1">${s.createtime}</div>
+                                                <div class="col-md-1"><a href="javascript:delRemark(${s.id})"
+                                                        style="text-decoration: none;">remove</a></div>
+                                            </div>
+                                        </c:forEach>
+                                    </c:if>
+                                    <br><br><br><br><br>
 
-                                <div class="row">
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-7"></div>
-                                    <div class="col-md-1"> </div>
-                                    <div class="col-md-1">&nbsp;</div>
-                                    <div class="col-md-1"></div>
-                                </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-7"></div>
+                                        <div class="col-md-1"> </div>
+                                        <div class="col-md-1">&nbsp;</div>
+                                        <div class="col-md-1"></div>
+                                    </div>
                             </div>
+                            </c:if>
                         </transition-group>
                         <!-- <%-- 彈窗--%> -->
 
@@ -664,14 +721,34 @@
                                 </div>
                         </el-dialog>
                         <!-- <%-- 彈窗結束/////////////////////////////////////--%> -->
+                        <!-- 動作區塊 -->
+                        <c:if test="${not empty bean}">
+                            <div class="row box" id="draggable">
+                                <div class="row act" style="height: 30px;">
+                                    <a href="#" onclick="goWork()">新增工作項目</a>
+                                </div>
+                                <div class="dockbar row shadow  ">
 
-
+                                    <div class="col-md-2 offset-md-1" style="border-left: black 1px solid;"
+                                        onclick="javascript:$('.act').toggle();">
+                                        行動
+                                    </div>
+                                    <div class="col-md-2">紀錄</div>
+                                    <div class="col-md-2">留言</div>
+                                </div>
+                            </div>
+                        </c:if>
+                        <!-- <%-- 動作區塊結束/////////////////////////////////////--%> -->
                     </div>
                 </div>
             </div>
             </div>
         </body>
         <script>
+            // console.log("${bean}");
+            //    動作區塊
+            $("#draggable").draggable();
+
             $(".market").show();
             // 日期UI
             $(function () {
@@ -686,9 +763,7 @@
                     dateFormat: "yy-mm-dd"
                 });
             });
-            // function basefrom() {
-            //     if (confirm("確定修改?")) $(".basefrom").submit();
-            // }
+
 
             $(function () {
                 // 密碼驗證
@@ -775,9 +850,26 @@
             }
             //建立報價單
             function goquotation() {
-                $(".AAA").attr("action", "${pageContext.request.contextPath}/Market/goQuotation.action");
-                $(".AAA").submit();
+                $(".basefrom").attr("action", "${pageContext.request.contextPath}/Market/goQuotation.action");
+                $(".basefrom").submit();
             }
+
+
+
+
+
+            //新增工作項目
+            function goWork() {
+                console.log("新增工作項目");
+                console.log($(".basefrom")[0]);
+                $(".basefrom").attr("action", "${pageContext.request.contextPath}/Market/MarketChangeWork");
+                $(".basefrom")[0].submit();
+            }
+
+
+
+
+
             String.prototype.insert = function (index, string) {
                 if (index > 0)
                     return this.substring(0, index) + string + this.substring(index, this.length);
@@ -824,11 +916,11 @@
                         typeList: ["尚未分類",
                             "農、林、漁、牧業",
                             "礦業及土石採取業",
-                            " 製造業",
+                            "製造業",
                             "電子及半導體生產", "機械設備製造業",
                             "電力及燃氣供應業",
                             "用水供應及污染整治業",
-                            "營建工程業",                            
+                            "營建工程業",
                             "批發及零售業",
                             "運輸及倉儲業",
                             "住宿及餐飲業",
@@ -874,8 +966,10 @@
                         }, 200)
 
                     },
+
                 },
             })
+
 
         </script>
 

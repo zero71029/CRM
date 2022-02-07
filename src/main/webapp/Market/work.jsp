@@ -235,10 +235,11 @@
                                         </div>
                                     </div>
                                     <div class="col-md-1"></div>
-                                    <div class="col-md-4" style="background-color: #379cf4;">
-                                        公司地址: {{client}}<br>
-                                        公司電話: <br>
-                                        公司傳真: <br>
+                                    <div class="col-md-4" v-show="Object.keys(client).length !=0">
+                                        公司地址:{{clientbean.billcity}} {{clientbean.billtown}}({{clientbean.billpostal}})
+                                        {{clientbean.billaddress}}<br>
+                                        公司電話: {{clientbean.phone}}<br>
+                                        公司傳真: {{clientbean.fax}}<br>
                                         聯絡人地址:{{contact.address}} <br>
                                         聯絡人電話:{{contact.phone}} <br>
                                         聯絡人手機: {{contact.moblie}}<br>
@@ -283,7 +284,7 @@
                                     <td>產業</td>
                                 </tr>
                                 <tr v-for="(bean, index) in clientList" :key="index" class="item"
-                                    @click="clickClient(bean.name,bean.clientid)" style="cursor: pointer;">
+                                    @click="clickClient(bean)" style="cursor: pointer;">
                                     <td>{{bean.name}}</td>
                                     <td>{{bean.uniformnumber}}</td>
                                     <td>{{bean.user}}</td>
@@ -439,25 +440,25 @@
             }
 
             //點選客戶後
-            function clickClient(name, id) {
-                $(".clientName").text(name);
-                $(".clientName").attr("href", "${pageContext.request.contextPath}/CRM/client/" + id);
-                $("input[name='clientid']").val(id);
-                // $('.clientwork').dialog("close");
-                $.ajax({
-                    url: '${pageContext.request.contextPath}/work/selectContact/' + name,//接受請求的Servlet地址
-                    type: 'POST',
-                    success: function (list) {
-                        $("select[name='contactid']").empty();
-                        for (var bean of list) {
-                            $("select[name='contactid']").append('<option value="' + bean.contactid + '" selected>' + bean.name + '</option>');
-                        }
-                    },
-                    error: function (returndata) {
-                        console.log(returndata);
-                    }
-                });
-            }
+            // function clickClient(name, id) {
+            //     $(".clientName").text(name);
+            //     $(".clientName").attr("href", "${pageContext.request.contextPath}/CRM/client/" + id);
+            //     $("input[name='clientid']").val(id);
+            //     // $('.clientwork').dialog("close");
+            //     $.ajax({
+            //         url: '${pageContext.request.contextPath}/work/selectContact/' + name,//接受請求的Servlet地址
+            //         type: 'POST',
+            //         success: function (list) {
+            //             $("select[name='contactid']").empty();
+            //             for (var bean of list) {
+            //                 $("select[name='contactid']").append('<option value="' + bean.contactid + '" selected>' + bean.name + '</option>');
+            //             }
+            //         },
+            //         error: function (returndata) {
+            //             console.log(returndata);
+            //         }
+            //     });
+            // }
             $(".clientName").click(function (event) {
                 event.stopPropagation();
             });
@@ -506,6 +507,7 @@
 
 
             }
+
             const vm = new Vue({
                 el: ".app",
                 data() {
@@ -515,13 +517,13 @@
                         contactList: [],//聯絡人列表
                         clientid: '${bean.clientid}',
                         client: "${bean.client.name}",//客戶
+                        clientbean: {},
                         clientList: [],//客戶列表
                         dialogTableVisible: false,//客戶彈窗
 
                     }
                 },
                 created() {
-                    console.log(this.contact);
                     axios//取得客戶列表
                         .get('${pageContext.request.contextPath}/work/clientList')
                         .then(response => (
@@ -530,52 +532,70 @@
                         .catch(function (error) {
                             console.log(error);
                         });
-
+                    for (const iterator of this.clientList) {
+                        console.log(iterator.name);
+                        if (iterator.name == client) this.clientbean = iterator;
+                    }
                     if (this.client != "") {
+                        for (const iterator of this.clientList) {
+                            console.log(iterator.name);
+                            if (iterator.name == client) this.clientbean = iterator;
+                        }
                         axios//取得聯絡人列表
                             .get('${pageContext.request.contextPath}/work/selectContact/' + this.client)
                             .then(response => (
                                 this.contactList = response.data,
-                                this.contactid="${bean.contact.contactid}",
-                                this.clientid= '${bean.clientid}'
+                                this.contactid = "${bean.contact.contactid}",
+                                this.clientid = '${bean.clientid}'
+
                             ))
                             .catch(function (error) {
                                 console.log(error);
                             });
-                            
                     }
                 }, watch: {
-                    contactid: {                     
+                    clientList: {
                         handler(newValue, oldValue) {
-                            for (const iterator of this.contactList) {
-                                if(iterator.contactid == newValue)this.contact=iterator
-                            }                    
+                            for (const iterator of newValue) {
+                                console.log(iterator.name);
+                                console.log(iterator.name);
+                                console.log(iterator.name);
+                                if (iterator.name == this.client) this.clientbean = iterator;
+                            }
                         }
                     },
-                    clientid: {                     
+                    contactid: {
                         handler(newValue, oldValue) {
-                            console.log(this.clientList,":");
-                            console.log(newValue);
-                            for (const iterator of this.clientList) {
-                                if(iterator.contactid == newValue)this.client=iterator
+                            for (const iterator of this.contactList) {
+                                if (iterator.contactid == newValue) this.contact = iterator
                             }
-                            console.log(this.client);
+                        }
+                    },
+                    clientid: {  //客戶改變 
+                        handler(newValue, oldValue) {
+                            console.log(this.clientid)
+                            console.log(this.clientList)
+                            for (const iterator of this.clientList) {
+                                if (iterator.contactid == newValue) this.clientbean = iterator
+                            }
                         }
                     }
                 }, methods: {
                     //選取客戶後 換聯絡人列表
-                    clickClient: function (clientName, clientId) {
-                        this.clientid = clientId;
-                        this.client = clientName;
+                    clickClient: function (bean) {
+                        this.clientid = bean.clientId;
+                        this.client = bean.name;
+                        this.clientbean = bean;
                         this.dialogTableVisible = false;
                         axios
-                            .get('${pageContext.request.contextPath}/work/selectContact/' + clientName,)
+                            .get('${pageContext.request.contextPath}/work/selectContact/' + bean.name,)
                             .then(response => (
                                 this.contactList = response.data
                             ))
                             .catch(function (error) {
                                 console.log(error);
                             });
+
                     }
                 },
             })

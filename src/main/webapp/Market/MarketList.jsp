@@ -302,6 +302,31 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!--  產業-->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="flush-headingThree">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#i99" aria-expanded="false"
+                                                aria-controls="flush-collapseThree">
+                                                產業
+                                            </button>
+                                        </h2>
+                                        <div id="i99" class="accordion-collapse collapse"
+                                            aria-labelledby="flush-headingThree"
+                                            data-bs-parent="#accordionFlushExample">
+                                            <div class="accordion-body">
+                                                <div class="form-check" v-for="(s, index) in ind" :key="index">
+                                                    <input class="form-check-input" type="checkbox" :value="s"
+                                                        :id="'industry'+index" name="industry" v-model="source">
+                                                    <label class="form-check-label" :for="'industry'+index">
+                                                        {{s}}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-outline-secondary" v-on:click="selectIndustry"
+                                                id="selectProduct">搜索</button>
+                                        </div>
+                                    </div>
                                     <!--  產品類別-->
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingThree">
@@ -411,23 +436,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!--  XXXXX-->
-                                    <!-- <div class="accordion-item">
-                                        <h2 class="accordion-header" id="flush-headingThree">
-                                            <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#i12" aria-expanded="false"
-                                                aria-controls="flush-collapseThree">
-                                                XXXXX
-                                            </button>
-                                        </h2>
-                                        <div id="i12" class="accordion-collapse collapse"
-                                            aria-labelledby="flush-headingThree"
-                                            data-bs-parent="#accordionFlushExample">
-                                            <div class="accordion-body">
-                                                ke itf how this would look in a real-world application.
-                                            </div>
-                                        </div>
-                                    </div> -->
+
                                     <!--  XXXXX-->
                                     <!-- <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingThree">
@@ -512,39 +521,39 @@
                     return {
                         pickerOptions: {
                             shortcuts: [
-                            {
-                                text: '今天',
-                                onClick(picker) {
-                                    const end = new Date();
-                                    const start = new Date();
-                                    start.setTime(start.getTime() - 3600 * 1000 * 24 );
-                                    picker.$emit('pick', [start, end]);
-                                }
-                            },{
-                                text: '最近一周',
-                                onClick(picker) {
-                                    const end = new Date();
-                                    const start = new Date();
-                                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-                                    picker.$emit('pick', [start, end]);
-                                }
-                            }, {
-                                text: '最近一個月',
-                                onClick(picker) {
-                                    const end = new Date();
-                                    const start = new Date();
-                                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-                                    picker.$emit('pick', [start, end]);
-                                }
-                            }, {
-                                text: '最近三個月',
-                                onClick(picker) {
-                                    const end = new Date();
-                                    const start = new Date();
-                                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-                                    picker.$emit('pick', [start, end]);
-                                }
-                            }]
+                                {
+                                    text: '今天',
+                                    onClick(picker) {
+                                        const end = new Date();
+                                        const start = new Date();
+                                        start.setTime(start.getTime() - 3600 * 1000 * 24);
+                                        picker.$emit('pick', [start, end]);
+                                    }
+                                }, {
+                                    text: '最近一周',
+                                    onClick(picker) {
+                                        const end = new Date();
+                                        const start = new Date();
+                                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                                        picker.$emit('pick', [start, end]);
+                                    }
+                                }, {
+                                    text: '最近一個月',
+                                    onClick(picker) {
+                                        const end = new Date();
+                                        const start = new Date();
+                                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                                        picker.$emit('pick', [start, end]);
+                                    }
+                                }, {
+                                    text: '最近三個月',
+                                    onClick(picker) {
+                                        const end = new Date();
+                                        const start = new Date();
+                                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                                        picker.$emit('pick', [start, end]);
+                                    }
+                                }]
                         },
                         value1: '',
                         value2: ''
@@ -581,7 +590,28 @@
                     name: "",
                     show: false,
                     admin: '${user.name}',
-                    ind: ["尚未分類", '生產 製造', '工程公司', '學校', '研究單位', '電子業', '光電產業', '半導體業', '公家機關', '機械設備製造', '生技製藥', '食品加工', '醫院/醫療', '物流/倉儲', '畜牧/農業', '公共/消費性環境', '製紙業', '紡織業', '化工業', '金屬加工', '冷凍空調', '航太/造船', '環保相關', '水處理/水資源', '石化能源', '印刷', '其它', '業主', '設備換修'],
+                    source: [],
+                    ind: ["尚未分類",
+                        "農、林、漁、牧業",
+                        "礦業及土石採取業",
+                        "製造業",
+                        "電子及半導體生產", "機械設備製造業",
+                        "電力及燃氣供應業",
+                        "用水供應及污染整治業",
+                        "營建工程業",
+                        "批發及零售業",
+                        "運輸及倉儲業",
+                        "住宿及餐飲業",
+                        "出版影音及資通訊業",
+                        "金融及保險業",
+                        "不動產業",
+                        "專業、科學及技術服務業",
+                        "支援服務業",
+                        "公共行政及國防；強制性社會安全",
+                        "教育業",
+                        "醫療保健及社會工作服務業",
+                        "藝術、娛樂及休閒服務業",
+                        "其他服務業"],//產業列表
                     industry: [],
                     ContantPhone: "",
                     //產品類別
@@ -725,10 +755,20 @@
                             });
                     },
                     //select來源
-
                     selectSource: function () {
                         axios
-                            .post('${pageContext.request.contextPath}/Market/selectSource', this.checkedSources)
+                            .post('${pageContext.request.contextPath}/Market/selectSource', this.source)
+                            .then(response => (
+                                this.list = response.data
+                            ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    },
+                    //select產業
+                    selectIndustry: function () {
+                        axios
+                            .post('${pageContext.request.contextPath}/Market/selectIndustry', this.source)
                             .then(response => (
                                 this.list = response.data
                             ))
@@ -755,11 +795,11 @@
                             .catch(function (error) {
                                 console.log(error);
                             });
-                    }, 
+                    },
                     sortItem: function (direct) {//重要性 排序                        
                         var d = $('.' + direct + '0').text().trim();
                         var oldList = this.list;
-                        const imp = ["高", "中", "低",""];//先輪替這列表
+                        const imp = ["高", "中", "低", ""];//先輪替這列表
                         var nimp = []
                         this.list = [];
                         var b = false;
@@ -769,7 +809,7 @@
                         }
 
                         //根據列表抓數據
-                        for (let index = 0; index <= i; index++) {                           
+                        for (let index = 0; index <= i; index++) {
                             nimp.push(imp[index])
                         }
                         for (const iterator of nimp) {

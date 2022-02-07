@@ -221,6 +221,11 @@ public class ClientService {
 		return contactRepository.existsByNameAndCompany(name, company);
 	}
 
+	// 判段公司存在
+	public boolean existsContactByCompany( String company) {
+		return cr.existsByName(company);
+	}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //新增其他地址
 	public void newAddress(ClientAddressBean cabean) {
@@ -235,21 +240,23 @@ public class ClientService {
 	public void delAddress(String addressid) {
 		car.deleteById(addressid);
 	}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //新增標籤
-	public ClientTagBean saveTag(String tagName,Integer clientid) {
+	public ClientTagBean saveTag(String tagName, Integer clientid) {
 		ClientTagBean clientTagBean = new ClientTagBean();
 		clientTagBean.setClientid(clientid);
 		clientTagBean.setClienttagid(zTools.getUUID());
 		clientTagBean.setName(tagName);
-		return   ctr.save(clientTagBean);
-		
+		return ctr.save(clientTagBean);
+
 	}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //刪除標籤
 	public void removeTag(String clienttagid) {
 		ctr.deleteById(clienttagid);
-		
+
 	}
 
 }
