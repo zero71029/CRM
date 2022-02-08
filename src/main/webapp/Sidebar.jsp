@@ -48,7 +48,7 @@
                 <button class="market marketbar"
                     onclick="javascript:location.href='${pageContext.request.contextPath}/Market/MarketList.jsp'">銷售機會</button>
                 <button class="market workbar"
-                    onclick="javascript:location.href='${pageContext.request.contextPath}/work/workList'">工作項目</button>
+                    onclick="javascript:location.href='${pageContext.request.contextPath}/Market/workList.jsp'">工作項目</button>
                 <!-- <button class="market"
                     onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/QuotationList'">報價單</button> -->
                 <button class="list-group-item" onclick="client()">

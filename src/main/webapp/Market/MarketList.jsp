@@ -20,8 +20,8 @@
             <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 
             <!-- <%-- 主要的CSS、JS放在這裡--%> -->
-            <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
-            <title>CRM客戶管理系統</title>
+            <!-- <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css"> -->
+         
             <style>
                 .marketbar {
                     /* 按鈕顏色 */
@@ -81,14 +81,6 @@
 
 
 
-                        <div class="block text-center">                           
-                            <el-pagination @current-change="handleCurrentChange" :current-page.sync="currentPage1"
-                                :page-size="20" layout="  prev, pager, next" :total="500">
-                            </el-pagination>
-                        </div>
-
-
-
 
 
 
@@ -99,6 +91,8 @@
                         <!-- <%-- 中間主體--%> -->
                         <transition-group name="slide-fade" appear>
                             <table class="Table table-striped orderTable" key="1" v-if="show">
+
+
                                 <tr>
                                     <td><input type="checkbox" id="activity"></td>
                                     <td>名稱</td>
@@ -130,9 +124,14 @@
                                         {{s.endtime}}</td>
                                 </tr>
                             </table>
-
- 
+                            <!-- 分頁 -->
+                            <div class="block text-center" key="2" v-if="show">
+                                <el-pagination @current-change="handleCurrentChange" :current-page.sync="currentPage1"
+                                    :page-size="20" layout="  prev, pager, next" :total="total">
+                                </el-pagination>
+                            </div>
                         </transition-group>
+
                         <!-- 滑塊 -->
                         <div class="offcanvas offcanvas-end " tabindex="0" id="offcanvasRight"
                             aria-labelledby="offcanvasRightLabel" style="width: 450px;">
@@ -533,7 +532,7 @@
 
                             success: function (json) {
                                 alert(json);
-                                window.location.href = "${pageContext.request.contextPath}/Market/MarketList";
+                                window.location.href = "${pageContext.request.contextPath}/Market/MarketList.jsp";
                             },
                             error: function (returndata) {
                                 console.log(returndata);
@@ -614,11 +613,15 @@
                 , '溫控器-其他', '能源管理控制', '無線傳輸'
                 , '編碼器/電位計', '食品', '其它'];
             const sourceOptions = ['廣告', '員工推薦', '外部推薦', '合作夥伴', '參展', '網絡搜索', '口碑', '其他'];
+
+
+
             Vue.config.productionTip = false;
             const vm = new Vue({
                 el: '.app',
                 data: {
-                    currentPage1: 5,
+                    currentPage1: 1,//當前分頁
+                    total: 1,//所有筆數
                     list: [],
                     name: "",
                     show: false,
@@ -662,16 +665,22 @@
                     budget2: "",
                 },
                 created: function () {
-                    console.log(this.admin)
-
                     if (this.admin != "") {
                         axios
-                            .get('${pageContext.request.contextPath}/Market/MarketList')
+                            .get('${pageContext.request.contextPath}/Market/MarketList?pag=1')//銷售機會列表
                             .then(response => (
                                 this.list = response.data,
                                 this.show = true
                             ))
-                            .catch(function (error) { // 请求失败处理
+                            .catch(function (error) {  
+                                console.log(error);
+                            });
+                        axios
+                            .get('${pageContext.request.contextPath}/Market/total')//所有筆數
+                            .then(response => (
+                                this.total = response.data
+                            ))
+                            .catch(function (error) {
                                 console.log(error);
                             });
                     } else {
@@ -681,12 +690,14 @@
                 },
                 methods: {
                     handleCurrentChange(val) {//點擊分頁
-                        console.log(`当前页:`+val);
-
-
-
-
-
+                        axios
+                            .get('${pageContext.request.contextPath}/Market/MarketList?pag=' + val)
+                            .then(response => (
+                                this.list = response.data
+                            ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
                     },
                     //////////////////////產品類別
                     handleCheckAllChange(val) {

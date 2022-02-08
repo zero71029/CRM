@@ -1,6 +1,7 @@
 package com.jetec.CRM.controler;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -46,12 +47,14 @@ public class WorkControler {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //工作項目列表
+	@ResponseBody
 	@RequestMapping("/workList")
-	public String workList(Model model) {
-		model.addAttribute("list", ws.getList());
-		return "/Market/workList";
+	public Map<String, Object> workList(@RequestParam("pag") Integer pag) {
+		System.out.println("工作項目列表");
+		pag--;
+		return ws.getList(pag);
 	}
-
+	//取得所有筆數
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //工作項目列表(結案)
 	@RequestMapping("/closed")
@@ -149,10 +152,11 @@ public class WorkControler {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索工作項目
 	@RequestMapping("/selectWork")
-	public String selectWork(Model model, @RequestParam("name") String name) {
+	@ResponseBody
+	public Map<String, Object> selectWork( @RequestParam("name") String name,@RequestParam("pag") Integer pag) {
 		System.out.println("搜索工作項目");
 		name = name.trim();
-		model.addAttribute("list", ws.sekectWork(name));
-		return "/Market/workList";
+		pag--;
+		return ws.sekectWork(name,pag);
 	}
 }

@@ -6,6 +6,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
@@ -52,14 +55,22 @@ public class MarketService {
 
 /////////////////////////////////////////////////////////////////////////////////////
 	// 銷售機會列表
-	public List<MarketBean> getList() {
-		Sort sort = Sort.by(Direction.DESC, "marketid");
-		List<MarketBean> result = mr.findByStage("尚未處理", sort);
-		result.addAll(mr.findByStage("需求確認", sort));
-		result.addAll(mr.findByStage("聯繫中", sort));
-		result.addAll(mr.findByStage("處理中", sort));
-		result.addAll(mr.findByStage("已報價", sort));
+	public List<MarketBean> getList(Integer pag) {
+
+		Pageable p = (Pageable) PageRequest.of(pag, 20);
+		Page<MarketBean> page = (Page<MarketBean>) mr.findStage(p);
+		List<MarketBean> result = page.getContent();
+//		Sort sort = Sort.by(Direction.DESC, "marketid");
+//		List<MarketBean> result = mr.findByStage("尚未處理", sort);
+//		result.addAll(mr.findByStage("需求確認", sort));
+//		result.addAll(mr.findByStage("聯繫中", sort));
+//		result.addAll(mr.findByStage("處理中", sort));
+//		result.addAll(mr.findByStage("已報價", sort));
 		return result;
+	}
+	//所有筆數
+	public Integer getTotal() {		
+		return mr.getTotal();
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -259,5 +270,7 @@ public class MarketService {
 		// TODO Auto-generated method stub
 		return mr.selectBudget(start, to);
 	}
+
+
 
 }

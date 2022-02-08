@@ -3,6 +3,8 @@ package com.jetec.CRM.repository;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -49,5 +51,11 @@ public interface MarketRepository extends JpaRepository<MarketBean, Integer> {
 	
 	@Query(value = "SELECT  *  from market where stage != '失敗結案' AND stage != '成功結案' AND type =?1", nativeQuery = true)
 	List<MarketBean> selectType(String typeString);
+	
+	@Query(value = "SELECT  *  from market where stage != '失敗結案' AND stage != '成功結案' order by marketid DESC ", nativeQuery = true)
+	Page<MarketBean> findStage(Pageable p);
+	
+	@Query(value = "SELECT  count(*)  from market where stage != '失敗結案' AND stage != '成功結案' order by marketid DESC ", nativeQuery = true)
+	Integer getTotal();
 
 }

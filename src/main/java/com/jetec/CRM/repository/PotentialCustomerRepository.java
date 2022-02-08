@@ -39,7 +39,7 @@ public interface PotentialCustomerRepository extends JpaRepository<PotentialCust
 
 
 
-	@Query(value ="SELECT  *  from potentialcustomer where status = '已聯繫' AND status = '已聯繫' ",nativeQuery = true)
+	@Query(value ="SELECT  *  from potentialcustomer where status = '未處理' OR status = '已聯繫' ",nativeQuery = true)
 	Page<PotentialCustomerBean> findStatus(Pageable p);
 
 

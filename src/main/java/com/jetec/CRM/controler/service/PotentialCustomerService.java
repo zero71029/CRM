@@ -47,7 +47,7 @@ public class PotentialCustomerService {
 		Pageable p = (Pageable) PageRequest.of(pag, 20);
 		Page<PotentialCustomerBean> page = (Page<PotentialCustomerBean>) PCR.findStatus(p);
 //		全部有幾頁
-		page.getTotalPages();
+//		page.getTotalPages();
 		List<PotentialCustomerBean> result = page.getContent();
 		return result;
 	}

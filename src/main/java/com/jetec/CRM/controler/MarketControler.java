@@ -53,21 +53,25 @@ public class MarketControler {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取潛在客戶列表
-	@RequestMapping("/PotentialCustomerList")
-	public String clientList(Model model) {
-		System.out.println("*****讀取潛在客戶列表*****");
-		model.addAttribute("list", PCS.getList());
-		return "/Market/potentialcustomerList";
-	}
+//	@RequestMapping("/PotentialCustomerList")
+//	public String clientList(Model model) {
+//		System.out.println("*****讀取潛在客戶列表*****");
+//		model.addAttribute("list", PCS.getList(0));
+//		
+//		
+//		
+//		
+//		return "/Market/potentialcustomerList";
+//	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取潛在客戶列表(結案)
-	@RequestMapping("/closed")
-	public String closed(Model model) {
-		System.out.println("*****讀取潛在客戶列表*****");
-		model.addAttribute("list", PCS.closed());
-		return "/Market/potentialcustomerList";
-	}
+//	@RequestMapping("/closed")
+//	public String closed(Model model) {
+//		System.out.println("*****讀取潛在客戶列表*****");
+//		model.addAttribute("list", PCS.closed());
+//		return "/Market/potentialcustomerList";
+//	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //	讀取潛在客戶細節
@@ -88,9 +92,19 @@ public class MarketControler {
 //銷售機會列表
 	@ResponseBody
 	@RequestMapping("/MarketList")
-	public List<MarketBean> Market() {
+	public List<MarketBean> Market(@RequestParam("pag") Integer pag) {
 		System.out.println("*****讀取銷售機會列表****");
-		return ms.getList();
+		pag--;
+		return ms.getList(pag);
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//所有筆數
+	@ResponseBody
+	@RequestMapping("/total")
+	public Integer total() {
+		System.out.println("*****所有筆數****");		 
+		return ms.getTotal();
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -333,10 +347,10 @@ public class MarketControler {
 		if (cs.existsContactByName(Bean.getName(), Bean.getCompany())) {
 			System.out.println("*****聯絡人已存在****");
 			return "聯絡人已存在";
-		}else if (!cs.existsContactByCompany(Bean.getCompany())) {
+		} else if (!cs.existsContactByCompany(Bean.getCompany())) {
 			System.out.println("*****公司不存在****");
 			return "公司不存在";
-		}		
+		}
 		System.out.println("*****不存在****");
 		return "不存在";
 	}
@@ -383,22 +397,18 @@ public class MarketControler {
 		model.addAttribute("bean", bean);
 		return "/Market/work";
 	}
-	//銷售機會 轉工作項目
-		@RequestMapping("/MarketChangeWork")		
-		public String changeWork(Model model ,MarketBean mBean) {
-			System.out.println("銷售機 轉工作項目");
-			WorkBean bean = new WorkBean();
-		
-			
-			
-			
-			
-			
-			
-			bean.setMarket(mBean);
-			model.addAttribute("bean", bean);
-			return "/Market/work";
-		}
+
+	// 銷售機會 轉工作項目
+	@RequestMapping("/MarketChangeWork")
+	public String changeWork(Model model, MarketBean mBean) {
+		System.out.println("銷售機 轉工作項目");
+		WorkBean bean = new WorkBean();
+
+		bean.setMarket(mBean);
+		model.addAttribute("bean", bean);
+		return "/Market/work";
+	}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索銷售機會by負則人
 	@ResponseBody

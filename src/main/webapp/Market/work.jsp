@@ -80,8 +80,8 @@
                         <div class="row">
                             <div class="col-md-1"></div>
                             <div class="col-md-1 btn">
-                                <a href="${pageContext.request.contextPath}/work/workList"
-                                    style="text-decoration: none;text-align: center;background-color: #569b92;color: white;;display: block;">＜</a>
+                                <a href="${pageContext.request.contextPath}/Market/workList.jsp"
+                                    style="text-decoration: none;text-align: center;background-color: #569b92;color: white;;display: block;"><span class="el-icon-arrow-left"></span></a>
                             </div>
 
                         </div>
@@ -90,8 +90,6 @@
                             class="basefrom g-3 ">
                             <div class="row">
                                 <input type="hidden" name="workid" value="${bean.workid}">
-
-
                                 <div class="row">
                                     <div class="col-md-1"></div>
                                     <div class="col-md-4 log">項目內容</div>
@@ -570,10 +568,10 @@
                     },
                     clientid: {  //客戶改變 
                         handler(newValue, oldValue) {
-                            console.log(this.clientid)
-                            console.log(this.clientList)
                             for (const iterator of this.clientList) {
-                                if (iterator.contactid == newValue) this.clientbean = iterator
+                                if (iterator.contactid == newValue){
+                                    this.clientbean = iterator                                    
+                                } 
                             }
                         }
                     }
@@ -587,7 +585,8 @@
                         axios
                             .get('${pageContext.request.contextPath}/work/selectContact/' + bean.name,)
                             .then(response => (
-                                this.contactList = response.data
+                                this.contactList = response.data,
+                                this.contact ={}
                             ))
                             .catch(function (error) {
                                 console.log(error);

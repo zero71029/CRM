@@ -9,6 +9,8 @@
 
             <link rel="preconnect" href="https://fonts.gstatic.com">
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+
+             <!-- 引入样式 vue-->
             <script src="${pageContext.request.contextPath}/js/vue.min.js"></script>
             <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
             <!-- 引入element-ui样式 -->
@@ -336,8 +338,6 @@
                         </div>
 
 
-
-
                         <!-- 分頁 -->
                         <div class="block text-center">
                             <el-pagination @current-change="handleCurrentChange" :current-page.sync="currentPage1"
@@ -438,7 +438,7 @@
 
                             success: function (json) {
                                 alert(json);
-                                window.location.href = "${pageContext.request.contextPath}/Market/PotentialCustomerList";
+                                window.location.href = "${pageContext.request.contextPath}/Market/potentialcustomerList.jsp";
                             },
                             error: function (returndata) {
                                 console.log(returndata.responseJSON.message);
@@ -502,7 +502,7 @@
                 el: '.app',
                 data: {
                     currentPage1: 1,//當前分頁
-                    MaxPag:1,//最大頁數
+                    MaxPag:1,//所有筆數
                     list: [],
                     name: "",
                     admin: '${user.name}',
@@ -543,7 +543,7 @@
                             .catch(function (error) { // 请求失败处理
                                 console.log(error);
                             });
-                        //要求最大分頁數
+                        //要求所有筆數
                         axios
                             .get('${pageContext.request.contextPath}/Potential/MaxPag')
                             .then(response => (
