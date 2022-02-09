@@ -8,6 +8,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -18,8 +20,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jetec.CRM.controler.service.PotentialCustomerService;
+import com.jetec.CRM.model.AdminBean;
 import com.jetec.CRM.model.PotentialCustomerBean;
 import com.jetec.CRM.model.PotentialCustomerHelperBean;
+import com.jetec.CRM.model.TrackBean;
+import com.jetec.CRM.repository.TrackRepository;
 
 @Controller
 @ResponseBody
@@ -29,10 +34,11 @@ public class PotentialController {
 
 	@Autowired
 	PotentialCustomerService PCS;
-
+	@Autowired
+	TrackRepository tr;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取潛在客戶列表
-	@RequestMapping("/CustomerList")	
+	@RequestMapping("/CustomerList")
 	public List<PotentialCustomerBean> clientList(@RequestParam("pag") Integer pag) {
 		System.out.println("*****讀取潛在客戶列表*****");
 		pag--;
@@ -40,9 +46,9 @@ public class PotentialController {
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//所有筆數
-	@RequestMapping("/MaxPag")	 
-	public long MaxPag( ) {		
+	// 所有筆數
+	@RequestMapping("/MaxPag")
+	public long MaxPag() {
 		return PCS.getMaxPag();
 	}
 
@@ -138,7 +144,6 @@ public class PotentialController {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索潛在客戶by追蹤時間
 	@RequestMapping("/selectTrackDate")
-	@ResponseBody
 	public List<PotentialCustomerBean> selectTrackDate(@RequestParam("from") String from,
 			@RequestParam("to") String to) {
 		System.out.println("搜索潛在客戶by追蹤時間");
@@ -149,10 +154,36 @@ public class PotentialController {
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//排序
-//	@RequestMapping("/sor/{direct}")
-//	public List<PotentialCustomerBean> sortItem(@PathVariable("direct") String direct) {
-//		System.out.println("排序");
-//		return PCS.getSortList(direct);
-//	}
+//讀取追蹤資訊
+	@RequestMapping("/client/{customerid}")
+	public List<TrackBean> client(@PathVariable("customerid") Integer customerid) {
+		return PCS.getById(customerid).getTrackbean();
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//存回覆追蹤資訊
+	@RequestMapping("/saveTrackRemark/{trackid}/{content}")
+	public List<TrackBean> saveTrackRemark(@PathVariable("trackid") String trackid, @PathVariable("content") String content,HttpSession session) {
+		System.out.println("存回覆追蹤資訊");
+		AdminBean aBean = (AdminBean) session.getAttribute("user");
+		return PCS.saveTrackRemark(trackid, content,aBean.getName());
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//刪除追蹤資訊
+	@RequestMapping("/removeTrack/{trackid}")
+	public List<TrackBean> removeTrack(@PathVariable("trackid") String trackid) {
+		System.out.println("刪除追蹤資訊");
+		Integer Customerid = PCS.removeTrack(trackid);
+		return PCS.getById(Customerid).getTrackbean();
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//刪除追蹤回覆
+	@RequestMapping("/removeTrackremark/{trackremarkid}/{trackid}")
+	public List<TrackBean> removeTrackremark(@PathVariable("trackremarkid") String trackremarkid,@PathVariable("trackid") String trackid) {
+		System.out.println("刪除追蹤回覆");
+		PCS.removeTrackremark(trackremarkid);
+		return tr.getById(trackid).getPcb().getTrackbean();
+	}
 }

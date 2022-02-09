@@ -9,31 +9,30 @@
 
             <link rel="preconnect" href="https://fonts.gstatic.com">
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
-            <!-- 引入样式 vue-->
-            <script src="${pageContext.request.contextPath}/js/vue.min.js"></script>
 
 
             <title>CRM客戶管理系統</title>
         </head>
         <style>
-            .error{
+            .error {
                 color: red;
             }
+
             .customerbar {
                 /* 按鈕顏色 */
                 background-color: #afe3d5;
             }
 
             .cell {
+                /* 標題顏色 */
                 border: 0px solid black;
                 border-bottom: 1px solid black;
-
-
+                background-color: #CCC;
             }
 
             div .cellFrom {
                 border: 0px;
-                /* width: 33%; */
+
             }
 
             .btn a {
@@ -99,6 +98,7 @@
                 text-align: center;
                 text-decoration: none;
             }
+
             /* 右下角按鈕////////////////結束 */
         </style>
 
@@ -217,7 +217,7 @@
                                         <div class="col-md-2 cell">產業</div>
                                         <div class="col-md-3 cell FormPadding">
                                             <select name="industry" class=" form-select cellFrom" v-model="industry">
-                                                <option  v-for="(item, index) in industryList" :key="index">{{item}}
+                                                <option v-for="(item, index) in industryList" :key="index">{{item}}
                                                 </option>
                                             </select>
                                         </div>
@@ -294,7 +294,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1"></div>
-                                        <div class="col-md-2 ">地址</div>
+                                        <div class="col-md-2 cell">地址</div>
                                         <div class="col-md-8 ">
                                             <div class="row" id="twzipcode"></div>
                                         </div>
@@ -342,11 +342,11 @@
                                     </div>
 
                                     <div class="row ">
-                                        <div class="col-md-3 "></div>
+                                        <div class="col-md-3 cell"></div>
                                         <div class="col-lg-7">
                                             <a href="javascript:$('.help').toggle()">+添加協助者</a>
                                             <div class="input-group help">
-                                                
+
                                                 <select class="form-select" name="helper">
                                                     <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}"
                                                         items="${admin}" var="s">
@@ -361,7 +361,7 @@
                                     </div>
                                     <div class="row ">
                                         <div class="col-md-3 cell"></div>
-                                        <div class="col-md-7 cell">
+                                        <div class="col-md-7 ">
                                             <ul class="helpList " style="position: relative;">
                                                 <c:forEach varStatus="loop" begin="0" end="${bean.helper.size()}"
                                                     items="${bean.helper}" var="s">
@@ -373,24 +373,11 @@
                                     </div>
 
 
-                                    <style>
-                                        li {
-                                            /* border: black 1px solid; */
-                                        }
-                                    </style>
-
-
-
-
-
-
-
-
 
                                     <div class="row">
 
                                         <div class="col-md-3 cell" style="font-size: 14px;">創造時間</div>
-                                        <div class="col-md-7 cell FormPadding">
+                                        <div class="col-md-7  FormPadding">
                                             ${bean.createtime}
                                         </div>
                                     </div>
@@ -410,13 +397,13 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-3 cell" >重要性</div>
+                                        <div class="col-md-3 cell">重要性</div>
                                         <div class="col-md-7 cell FormPadding">
-                                                <select class="form-select cellFrom" name="important" v-model="important">                                                    
-                                                    <option value="高">高</option>
-                                                    <option value="中">中</option>
-                                                    <option value="低">低</option>
-                                                </select>                                            
+                                            <select class="form-select cellFrom" name="important" v-model="important">
+                                                <option value="高">高</option>
+                                                <option value="中">中</option>
+                                                <option value="低">低</option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -442,12 +429,15 @@
                                     <h5>追蹤資訊</h5>
                                 </div>
                             </div>
+
+
+
                             <div class="row">
                                 <div class="col-md-1"></div>
 
                                 <div class="col-md-4">客人描述</div>
                                 <div class="col-md-3">追蹤結果</div>
-                                
+
                             </div>
                             <div class="row">
                                 <div class="col-md-1"></div>
@@ -455,16 +445,15 @@
                                     <hr>
                                 </div>
                             </div>
+                            <!--  -->
                             <form action="${pageContext.request.contextPath}/Market/SaveTrack" method="post"
                                 class="row g-3 needs-validation" novalidate>
-                           
-                            <!--  -->                                   
-                                <input type="hidden" class=" form-control cellFrom" name="remark" maxlength="190" value="${user.name}">                                  
-                            <!--  -->
+                                <input type="hidden" class=" form-control cellFrom" name="remark" maxlength="190"
+                                    value="${user.name}">
                                 <input type="hidden" name="customerid" value="${bean.customerid}">
                                 <div class="row">
                                     <div class="col-md-1"></div>
-                                    <div class="col-md-4 FormPadding"> 
+                                    <div class="col-md-4 FormPadding">
                                         <textarea class="form-control" name="trackdescribe" rows="1" maxlength="190"
                                             required></textarea>
                                     </div>
@@ -472,39 +461,113 @@
                                         <textarea class="form-control" name="result" rows="1" maxlength="95"></textarea>
                                     </div>
                                     <div class="col-md-1" style="padding: 0%;">
-                                        <button style="width: 100%; " class="btn btn-outline-dark"
-                                            onclick="">新增</button>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-9">
-                                        <hr>
+                                        <button style="width: 100%; background-color: #569b92;"
+                                            class="btn btn-outline-dark" onclick="">新增</button>
                                     </div>
                                 </div>
                             </form>
+                            <!--  -->
 
-                            <c:if test="${not empty bean.trackbean}">
-                                <c:forEach varStatus="loop" begin="0" end="${bean.trackbean.size()-1}"
-                                    items="${bean.trackbean}" var="s" >
-                                    <div class="row">
-                                        <div class="col-md-1"></div>
-                                        <div class="col-md-4" style="word-wrap:break-word;">${s.trackdescribe}
-                                        </div>
-                                        <div class="col-md-3" style="word-wrap:break-word;">${s.result}</div>
-                                        <div class="col-md-1" style="word-wrap:break-word;"></div>
-                                        <div class="col-md-2">${s.remark} <br> ${s.tracktime}</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-1"></div>
-                                        <div class="col-md-9">
-                                            <hr>
-                                        </div>
 
+                            <div class="row replyImg" v-for="(s, index) in TrackList" :key="index">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-11">
+                                    <div class="row">
+                                        <div class="col-md-10" style=" padding: 0%;">
+                                            <hr style="color: #569b92; opacity: 1;">
+                                        </div>
                                     </div>
-                                    <br>
-                                </c:forEach>
-                            </c:if>
+                                    <!-- {{s}} -->
+                                    <div class="row" style="min-height: 70px;">
+                                        <div class="row">
+                                            <div class="col-md-4" style="position: relative; word-wrap:break-word;">
+                                                {{s.trackdescribe}}
+                                            </div>
+                                            <div class="col-md-4" style="position: relative; word-wrap:break-word;">
+                                                {{s.result}}
+                                            </div>
+                                            <div class="col-md-3" style="color: #569b92;">
+                                                {{s.remark}} {{s.tracktime}}</div>
+                                        </div>
+                                    </div>
+                                    <!-- 留言的控制 -->
+                                    <div class="row replyA" style="font-size: 12;">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-6 "
+                                            style="position: relative; word-wrap:break-word;color: #8e8e8e; ">
+
+                                        </div>
+                                        <div class="col-md-3 ccc" style="text-align: right;">
+                                            <el-button v-show="s.remark == '${user.name}'" type="text" @click="open(s)">
+                                                修改</el-button>&nbsp;&nbsp;&nbsp;
+                                            <el-button v-show="s.remark == '${user.name}'" type="text"
+                                                @click="removeTrack(s)">刪除</el-button>&nbsp;&nbsp;&nbsp;
+                                            <el-button type="text" @click="trackremark(s.trackid)">回覆</el-button>
+                                            &nbsp;&nbsp;&nbsp;
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+                                    <!-- 留言的附件 -->
+                                    <c:if test="${not empty s.file}">
+                                        <c:forEach varStatus="loop" begin="0" end="${s.file.size()-1}" items="${s.file}"
+                                            var="file">
+                                            <div class="row">
+                                                <div class="col-md-1" style="color: #569b92;">
+                                                    附件</div>
+                                                <div class="col-md-5 ">
+                                                    <a href="${pageContext.request.contextPath}/file/${file.url}"
+                                                        target="_blank">${file.name}</a>
+                                                </div>
+                                            </div>
+                                        </c:forEach>
+                                    </c:if>
+
+                                    <!-- 評論 -->
+                                    <div class="row" v-for="(remark, index) in s.trackremark" :key="index">
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-8 ">
+                                            <div class="row replyA">
+                                                <hr>
+                                                <div class="col-md-2 " style="color: #569b92;">
+                                                    {{remark.name}}
+                                                </div>
+                                                <div class="col-md-7" style="word-wrap:break-word;">
+                                                    {{remark.content}}
+                                                </div>
+                                                <div class="col-md-3 ">
+                                                    {{remark.createtime}}&nbsp;&nbsp;&nbsp;
+                                                    <el-button v-show="remark.name == '${user.name}'" type="text"
+                                                        @click="removeTrackremark(remark)">刪除</el-button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
                         </c:if>
                         <br>
                         <br><br><br><br><br>
@@ -534,7 +597,7 @@
             </div>
         </body>
         <script>
-            
+
             $('.act').hide();
             $(function () {
                 $("#draggable").draggable();
@@ -707,11 +770,13 @@
                 });
             }
             const vm = new Vue({
-                el:'.app',
+                el: '.app',
                 data() {
                     return {
-                        admin:'${user.name}',
-                        important:'${bean.important}',
+                        visible: false,
+                        showTrackRemark: 0,
+                        admin: '${user.name}',
+                        important: '${bean.important}',
                         industry: "${bean.industry}",//產業
                         industryList: ["尚未分類",
                             "農、林、漁、牧業",
@@ -720,7 +785,7 @@
                             "電子及半導體生產", "機械設備製造業",
                             "電力及燃氣供應業",
                             "用水供應及污染整治業",
-                            "營建工程業",                            
+                            "營建工程業",
                             "批發及零售業",
                             "運輸及倉儲業",
                             "住宿及餐飲業",
@@ -734,15 +799,137 @@
                             "醫療保健及社會工作服務業",
                             "藝術、娛樂及休閒服務業",
                             "其他服務業"],//產業列表
+                        TrackList: {},
                     }
                 },
-               created() {
-                    if( this.important == "")this.important='低';
+                created() {
+                    if (this.important == "") this.important = '低';
+                    //要求追蹤資訊
+                    axios
+                        .get('${pageContext.request.contextPath}/Potential/client/${bean.customerid}')
+                        .then(response => (
+                            this.TrackList = response.data,
+                            console.log(this.TrackList)
+                        ))
+                        .catch(function (error) { // 请求失败处理
+                            console.log(error);
+                        });
+
+
+                },
+                methods: {
+                    open(s) {//修改追蹤資訊
+                        this.$alert('<form action="${pageContext.request.contextPath}/Market/SaveTrack" method = "post" >\
+                                                    <div class="row">\
+                                                        <div class="col-md-5 FormPadding">\
+                                                            <textarea class="form-control" name="trackdescribe" rows="1"\
+                                                                maxlength="190" required>'+ s.trackdescribe + '</textarea>\
+                                                        </div>\
+                                                        <div class="col-md-5 FormPadding">\
+                                                            <textarea class="form-control" name="result" rows="1"\
+                                                                maxlength="195">'+ s.result + '</textarea>\
+                                                        </div>\
+                                                        <div class="col-md-2" style="padding: 0%;">\
+                                                            <button style="width: 100%; background-color: #569b92;"\
+                                                                class="btn btn-outline-dark" onclick="">修改</button>\
+                                                        </div>\
+                                                    </div>\
+                                                    <input type="hidden" name="trackid" value="'+ s.trackid + '">\
+                                                    <input type="hidden" name="tracktime" value="'+ s.tracktime + '">\
+                                                    <input type="hidden" name="customerid" value="'+ s.customerid + '">\
+                                                    <input type="hidden" name="remark" value="'+ s.remark + '"> </form>', '修改',
+                            {
+                                dangerouslyUseHTMLString: true,//将 message 属性作为 HTML 片段处理
+                                showConfirmButton: false,	//是否显示确定按钮
+                                confirmButtonText: '放棄',//确定按钮的文本内容
+                                closeOnClickModal: false,//通过点击遮罩关闭
+                                closeOnPressEscape: true,//通过按下 ESC 键关闭
+
+                            });
+                    },
+                    trackremark(id) {//回復追蹤資訊
+                        this.$prompt('回覆追蹤資訊', {
+                            confirmButtonText: '確定',
+                            cancelButtonText: '取消',
+                        }).then(({ value }) => {
+                            axios
+                                .get('${pageContext.request.contextPath}/Potential/saveTrackRemark/' + id + '/' + value)
+                                .then(response => (
+                                    this.TrackList = response.data,
+                                    console.log(this.TrackList)
+                                ))
+                                .catch(function (error) {
+                                    console.log(error);
+                                });
+                        }).catch(() => {
+                            this.$message({
+                                type: 'info',
+                                message: '取消输入'
+                            });
+                        });
+                    },
+                    removeTrack(bean) {//刪除追蹤資訊
+                        this.$confirm('此操作將永久删除, 是否繼續?', '提示', {
+                            confirmButtonText: '缺定',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }).then(() => {
+                            axios
+                                .get('${pageContext.request.contextPath}/Potential/removeTrack/' + bean.trackid)
+                                .then(response => (
+                                    this.TrackList = response.data,
+                                    console.log(this.TrackList),
+                                    this.$message({
+                                        type: 'success',
+                                        message: '删除成功!'
+                                    })
+                                ))
+                                .catch(function (error) {
+                                    console.log(error);
+                                });
+
+
+                        }).catch(() => {
+                            this.$message({
+                                type: 'info',
+                                message: '已取消删除'
+                            });
+                        });
+                    }, removeTrackremark(remark) {
+                        this.$confirm('此操作將永久删除 "'+remark.content+'" 是否繼續?', '提示', {
+                            confirmButtonText: '缺定',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }).then(() => {
+                            axios
+                                .get('${pageContext.request.contextPath}/Potential/removeTrackremark/' + remark.trackremarkid+"/"+remark.trackid)
+                                .then(response => (
+                                    this.TrackList = response.data,
+                                    console.log(this.TrackList),
+                                    this.$message({
+                                        type: 'success',
+                                        message: '删除成功!'
+                                    })
+                                ))
+                                .catch(function (error) {
+                                    console.log(error);
+                                });
+
+
+                        }).catch(() => {
+                            this.$message({
+                                type: 'info',
+                                message: '已取消删除'
+                            });
+                        });
+                    },
                 },
             })
-
-
-
         </script>
+        <style>
+            .el-message-box {
+                width: 50%;
+            }
+        </style>
 
         </html>

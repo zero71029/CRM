@@ -9,12 +9,7 @@
 
             <link rel="preconnect" href="https://fonts.gstatic.com">
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
-            <script src="${pageContext.request.contextPath}/js/vue.js"></script>
-            <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
-            <!-- 引入element-ui样式 -->
-            <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-            <!-- 引入element-ui组件库 -->
-            <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
 
 
             <title>CRM客戶管理系統</title>
@@ -28,7 +23,7 @@
             .cell {
                 border: 0px solid black;
                 border-bottom: 1px solid black;
-
+                background-color: #CCC;
 
             }
 
@@ -42,7 +37,7 @@
                 text-align: center;
                 background-color: #569b92;
                 color: white;
-                ;
+   
                 display: block;
             }
 
@@ -100,7 +95,7 @@
                                 <div class="row">
                                     <div class="col-md-1"></div>
                                     <div class="col-md-1 cell">主題*</div>
-                                    <div class="col-md-3 cell FormPadding">
+                                    <div class="col-md-3   FormPadding">
                                         <input type="text" class=" form-control cellFrom" name="name"
                                             value="${bean.name}" maxlength="95" required>
                                     </div>
@@ -113,7 +108,7 @@
                                 <div class="row">
                                     <div class="col-md-1"></div>
                                     <div class="col-md-1 cell">到期日</div>
-                                    <div class="col-md-3 cell FormPadding">
+                                    <div class="col-md-3   FormPadding">
                                         <input type="text" class="form-control cellFrom endtime" name="endtime"
                                             value="${bean.endtime}" maxlength="20" readonly>
                                     </div>
@@ -193,7 +188,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-3 cell">客戶</div>
-                                            <div class="col-md-9 cell FormPadding " style="background-color: #ccc;"
+                                            <div class="col-md-9   FormPadding "  
                                                 @click="dialogTableVisible = true ">
                                                 <a :href="'${pageContext.request.contextPath}/CRM/client/'+clientid"
                                                     target="_blank" class="clientName">{{client}}</a>
@@ -212,7 +207,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-3 cell">潛在顧客</div>
-                                            <div class="col-md-9 cell FormPadding" style="background-color: #ccc;"
+                                            <div class="col-md-9   FormPadding"  
                                                 onclick="showCustomer()">
                                                 <a href="${pageContext.request.contextPath}/CRM/potentialcustomer/${bean.customer.customerid}"
                                                     target="_blank" class="customerName">${bean.customer.name}</a>
@@ -223,11 +218,11 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-3 cell">銷售機會</div>
-                                            <div class="col-md-9 cell FormPadding" style="background-color: #ccc;"
+                                            <div class="col-md-9   FormPadding"  
                                                 onclick="showMarket()">
                                                 <a href="${pageContext.request.contextPath}/Market/Market/${bean.market.marketid}"
                                                     target="_blank" class="marketName">${bean.market.name}</a>
-                                                <input type="hidden" class=" form-control cellFrom" name="marketid"
+                                                <input type="hidden" class=" form-control " name="marketid"
                                                     value="${bean.marketid}" maxlength="20">
                                             </div>
                                         </div>

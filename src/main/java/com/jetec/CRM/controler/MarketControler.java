@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.jetec.CRM.Tool.ZeroTools;
 import com.jetec.CRM.controler.service.ClientService;
 import com.jetec.CRM.controler.service.MarketService;
 import com.jetec.CRM.controler.service.PotentialCustomerService;
@@ -41,6 +42,8 @@ public class MarketControler {
 	ClientService cs;
 	@Autowired
 	AdminRepository ar;
+	@Autowired
+	ZeroTools zTools;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@RequestMapping("/SavePotentialCustomer")
@@ -83,7 +86,6 @@ public class MarketControler {
 		} else {
 			model.addAttribute("bean", PCS.getById(id));
 		}
-//		model.addAttribute("admin", ar.findAll());
 
 		return "/Market/potentialcustomer";
 	}
@@ -99,11 +101,11 @@ public class MarketControler {
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//所有筆數
+	// 所有筆數
 	@ResponseBody
 	@RequestMapping("/total")
 	public Integer total() {
-		System.out.println("*****所有筆數****");		 
+		System.out.println("*****所有筆數****");
 		return ms.getTotal();
 	}
 
@@ -189,9 +191,13 @@ public class MarketControler {
 	@RequestMapping("/SaveTrack")
 	public String SaveTrack(TrackBean trackBean) {
 		System.out.println("存追蹤");
-		Date date = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd hh:mm");
-		trackBean.setTracktime(sdf.format(date));
+		System.out.println(trackBean.getTrackid());
+
+		if (trackBean.getTrackid() == null || trackBean.getTrackid().isEmpty())
+			trackBean.setTrackid(zTools.getUUID()); 
+		
+		trackBean.setTracktime(zTools.getTime(new Date()));
+		System.out.println(trackBean.getTrackid());
 		ms.SaveTrack(trackBean);
 		return "redirect:/Market/potentialcustomer/" + trackBean.getCustomerid();
 	}

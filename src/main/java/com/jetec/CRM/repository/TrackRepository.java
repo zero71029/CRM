@@ -4,8 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.jetec.CRM.model.TrackBean;
 
-public interface TrackRepository extends JpaRepository<TrackBean, Integer>{
+public interface TrackRepository extends JpaRepository<TrackBean, String>{
 
-	void deleteByCustomerid(Integer id);
+	void deleteByCustomerid(Integer id); 
 
 }

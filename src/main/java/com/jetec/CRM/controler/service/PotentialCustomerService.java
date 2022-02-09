@@ -14,9 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jetec.CRM.Tool.ZeroTools;
 import com.jetec.CRM.model.PotentialCustomerBean;
 import com.jetec.CRM.model.PotentialCustomerHelperBean;
+import com.jetec.CRM.model.TrackBean;
+import com.jetec.CRM.model.TrackRemarkBean;
 import com.jetec.CRM.repository.AdminRepository;
 import com.jetec.CRM.repository.PotentialCustomerHelperRepository;
 import com.jetec.CRM.repository.PotentialCustomerRepository;
+import com.jetec.CRM.repository.TrackRemarkRepository;
 import com.jetec.CRM.repository.TrackRepository;
 
 @Service
@@ -31,6 +34,8 @@ public class PotentialCustomerService {
 	TrackRepository tr;
 	@Autowired
 	PotentialCustomerHelperRepository pchr;
+	@Autowired
+	TrackRemarkRepository trr;	
 	@Autowired
 	ZeroTools zTools;
 
@@ -185,5 +190,33 @@ public class PotentialCustomerService {
 
 		return PCR.findByTrackbeanTracktimeBetween(from, to);
 	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//回覆追蹤資訊
+	public List<TrackBean> saveTrackRemark(String trackid, String content,String name) {
+		TrackRemarkBean trbean = new TrackRemarkBean();
+		trbean.setName(name);
+		trbean.setTrackid(trackid);
+		trbean.setContent(content);
+		trbean.setTrackremarkid(zTools.getUUID());
+		Date date = new Date();
+		trbean.setCreatetime(zTools.getTime(date));
+		trr.save(trbean);
+		tr.getById(trackid).getPcb().getTrackbean();
+		return tr.getById(trackid).getPcb().getTrackbean();
+	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//刪除追蹤資訊
+	public Integer removeTrack(String trackid) {
+		Integer Customerid = tr.getById(trackid).getPcb().getCustomerid();
+		tr.deleteById(trackid);
+		return Customerid;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//刪除追蹤回覆
+	public void removeTrackremark(String trackremarkid) {
+		trr.deleteById(trackremarkid);
+		
+	}
+
 
 }

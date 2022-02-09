@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "work")
 public class WorkBean {
@@ -31,18 +33,22 @@ public class WorkBean {
 	private Date createtime;//創造時間	
 	
 	//客戶
+	@JsonIgnore
 	@ManyToOne(targetEntity = ClientBean.class,fetch = FetchType.EAGER)
 	@JoinColumn(name = "clientid", referencedColumnName = "clientid", insertable = false, updatable = false)
 	private ClientBean client;
 	//聯繫人
+	@JsonIgnore
 	@ManyToOne(targetEntity = ContactBean.class,fetch = FetchType.EAGER)
 	@JoinColumn(name = "contactid", referencedColumnName = "contactid", insertable = false, updatable = false)
 	private ContactBean contact;
 	//潛在顧客
+	@JsonIgnore
 	@ManyToOne(targetEntity = PotentialCustomerBean.class,fetch = FetchType.EAGER)
 	@JoinColumn(name = "customerid", referencedColumnName = "customerid", insertable = false, updatable = false)
 	private PotentialCustomerBean customer;
 	//銷售機會
+	@JsonIgnore
 	@ManyToOne(targetEntity = MarketBean.class,fetch = FetchType.EAGER)
 	@JoinColumn(name = "marketid", referencedColumnName = "marketid", insertable = false, updatable = false)
 	private MarketBean market;

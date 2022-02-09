@@ -11,13 +11,7 @@
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
 
 
-            <!-- 引入样式 vue-->
-            <script src="${pageContext.request.contextPath}/js/vue.min.js"></script>
-            <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
-            <!-- 引入element-ui样式 -->
-            <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-            <!-- 引入element-ui组件库 -->
-            <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
 
             <!-- <%-- 主要的CSS、JS放在這裡--%> -->
             <!-- <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css"> -->

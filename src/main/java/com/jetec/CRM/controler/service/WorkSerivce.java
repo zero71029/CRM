@@ -70,7 +70,7 @@ public class WorkSerivce {
 //			return result;
 //			
 //		} catch (JsonProcessingException e) {
-//			// TODO Auto-generated catch block
+//			 
 //			e.printStackTrace();
 //		}	
 //		return result;
@@ -88,7 +88,7 @@ public class WorkSerivce {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取工作項目細節
 	public WorkBean getById(Integer id) {
-		// TODO Auto-generated method stub
+		 
 		return wr.getById(id);
 	}
 
@@ -116,7 +116,6 @@ public class WorkSerivce {
 		boolean boo = true;
 		// 搜索主題
 		Page<WorkBean> page = (Page<WorkBean>) wr.findByNameLikeIgnoreCase("%" + name + "%", p);
-		@SuppressWarnings("unused")
 		Long total = page.getTotalElements();
 		for (WorkBean b : page.getContent()) {
 			result.add(b);

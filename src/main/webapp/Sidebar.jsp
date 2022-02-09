@@ -16,6 +16,13 @@
         <!-- <%-- VUE放這裡 --%> -->
         <!-- <script src="${pageContext.request.contextPath}/js/vue.js"></script> -->
 
+        <!-- 引入样式 vue-->
+        <script src="${pageContext.request.contextPath}/js/vue.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/axios.min.js"></script>
+        <!-- 引入element-ui样式 -->
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/js/element-ui.css">
+        <!-- 引入element-ui组件库 -->
+        <script src="${pageContext.request.contextPath}/js/element-ui.js"></script>
 
 
 
@@ -54,7 +61,7 @@
                 <button class="list-group-item" onclick="client()">
                     客戶管理
                 </button>
-                <button class="client clientbar" 
+                <button class="client clientbar"
                     onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/ClientList'">客戶</button>
                 <button class="client contactbar"
                     onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/ContactList'">聯絡人</button>
@@ -82,7 +89,7 @@
             <!-- session 認證-->
             <c:if test='${empty user}'>
                 <script>
-                  
+
                     console.log("未登入");
                     $.ajax({
                         url: '${pageContext.request.contextPath}/UserAuthorize', //接受請求的Servlet地址
@@ -91,7 +98,7 @@
                             if (json) {
                                 location.reload();
                             } else {
-                                
+
                                 console.log("沒有認證");
                             }
                         },
@@ -151,7 +158,7 @@
                 url: '${pageContext.request.contextPath}/workitem/${user.name}', //接受請求的Servlet地址
                 type: 'POST',
                 success: function (json) {
-                    $('.workitem').html("工作項目<span class='badge bg-primary'>"+(json.length )+"</span>");
+                    $('.workitem').html("工作項目<span class='badge bg-primary'>" + (json.length) + "</span>");
                     $('.workTable').empty();
                     $('.workTable').append("<tr><td width='100'> </td><td>主題</td> <td width='100'>狀態</td></tr>");
 
@@ -167,7 +174,7 @@
                         url: '${pageContext.request.contextPath}/marketitem/${user.name}', //接受請求的Servlet地址
                         type: 'POST',
                         success: function (market) {
-                            $('.workitem').html("工作項目<span class='badge bg-primary'>"+(json.length + market.length )+"</span>");
+                            $('.workitem').html("工作項目<span class='badge bg-primary'>" + (json.length + market.length) + "</span>");
                             for (var bean of market) {
                                 $('.workTable').append('<tr class="www workTR" onclick="gomarket(' + bean.marketid + ')"><td>銷售機會</td><td>' + bean.name + '</td><td>' + bean.stage + '</td></tr>');
                             }
@@ -176,7 +183,7 @@
                                 url: '${pageContext.request.contextPath}/PotentialItem/${user.name}', //接受請求的Servlet地址
                                 type: 'POST',
                                 success: function (customer) {
-                                    $('.workitem').html("工作項目<span class='badge bg-primary'>"+(json.length + market.length + customer.length)+"</span>");
+                                    $('.workitem').html("工作項目<span class='badge bg-primary'>" + (json.length + market.length + customer.length) + "</span>");
                                     for (var bean of customer) {
                                         $('.workTable').append('<tr class="www workTR" onclick="goPotential(' + bean.customerid + ')"><td>潛在顧客</td><td>' + bean.name + '</td><td>' + bean.status + '</td></tr>');
                                     }
@@ -192,9 +199,9 @@
                 error: function (returndata) {
                     console.log(returndata);
                 }
-                
+
             });
-            
+
             // 取得使用者
             // $.ajax({
             //     url: '${pageContext.request.contextPath}/admin/${user.adminid}', //接受請求的Servlet地址
@@ -242,7 +249,8 @@
                 background-color: #62A5A1;
                 cursor: pointer;
             }
-            a{
+
+            a {
                 text-decoration: none;
             }
         </style>
