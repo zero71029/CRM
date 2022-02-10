@@ -506,18 +506,6 @@
                                             &nbsp;&nbsp;&nbsp;
                                         </div>
                                     </div>
-
-
-
-
-
-
-
-
-
-
-
-
                                     <!-- 留言的附件 -->
                                     <c:if test="${not empty s.file}">
                                         <c:forEach varStatus="loop" begin="0" end="${s.file.size()-1}" items="${s.file}"
@@ -532,7 +520,6 @@
                                             </div>
                                         </c:forEach>
                                     </c:if>
-
                                     <!-- 評論 -->
                                     <div class="row" v-for="(remark, index) in s.trackremark" :key="index">
                                         <div class="col-md-2"></div>
@@ -555,25 +542,11 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
                         </c:if>
                         <br>
                         <br><br><br><br><br>
                         <div class="row">&nbsp;</div>
                     </div>
-
                     <!-- 動作區塊 -->
                     <c:if test="${not empty bean}">
                         <div class="row box" id="draggable">
@@ -748,7 +721,7 @@
                         $(".helpList").empty();
                         for (var h of json) {
                             console.log(h)
-                            $(".helpList").append('<li ">' + h.name + '<a style="right: 0px; position: absolute;" href="delHelp(' + h.helperid + ')" >remove</a></li>')
+                            $(".helpList").append('<li ">' + h.name + '<a style="right: 0px; position: absolute;" href="javascript:delHelp(`' + h.helperid + '`)" >remove</a></li>')
                         }
                     },
                     error: function (returndata) {
@@ -774,7 +747,6 @@
                 data() {
                     return {
                         visible: false,
-                        showTrackRemark: 0,
                         admin: '${user.name}',
                         important: '${bean.important}',
                         industry: "${bean.industry}",//產業
@@ -808,8 +780,7 @@
                     axios
                         .get('${pageContext.request.contextPath}/Potential/client/${bean.customerid}')
                         .then(response => (
-                            this.TrackList = response.data,
-                            console.log(this.TrackList)
+                            this.TrackList = response.data
                         ))
                         .catch(function (error) { // 请求失败处理
                             console.log(error);

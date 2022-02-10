@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,7 +59,7 @@ public class PotentialCustomerService {
 		return result;
 	}
 
-	public PotentialCustomerBean getById(Integer id) {
+	public PotentialCustomerBean getById(String id) {
 		return PCR.getById(id);
 	}
 
@@ -80,8 +82,8 @@ public class PotentialCustomerService {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //刪除潛在客戶
-	public void delPotentialCustomer(List<Integer> id) {
-		for (Integer i : id) {
+	public void delPotentialCustomer(List<String> id) {
+		for (String i : id) {
 			tr.deleteByCustomerid(i);
 			PCR.deleteById(i);
 		}
@@ -152,14 +154,14 @@ public class PotentialCustomerService {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //添加協助者
-	public List<PotentialCustomerHelperBean> addHelper(Integer customerid, String helper) {
+	public List<PotentialCustomerHelperBean> addHelper(String customerid, String helper) {
 		PotentialCustomerBean pcBean = PCR.getById(customerid);
 		for (PotentialCustomerHelperBean helperBean : pcBean.getHelper()) {
 			if (helperBean.getName().equals(helper)) {
 				return pcBean.getHelper();
 			}
 		}
-		if (pcBean.getUser().equals(helper)) {
+		if (pcBean.getUser().equals(helper)) { 
 			return pcBean.getHelper();
 		}
 		PotentialCustomerHelperBean newBean = new PotentialCustomerHelperBean();
@@ -174,7 +176,7 @@ public class PotentialCustomerService {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //刪除協助者
-	public List<PotentialCustomerHelperBean> delHelper(Integer customerid, String helperid) {
+	public List<PotentialCustomerHelperBean> delHelper(String customerid, String helperid) {
 		System.out.println(helperid);
 		pchr.deleteById(helperid);
 
@@ -200,14 +202,14 @@ public class PotentialCustomerService {
 		trbean.setTrackremarkid(zTools.getUUID());
 		Date date = new Date();
 		trbean.setCreatetime(zTools.getTime(date));
-		trr.save(trbean);
-		tr.getById(trackid).getPcb().getTrackbean();
-		return tr.getById(trackid).getPcb().getTrackbean();
+		 trr.save(trbean);		
+		//trackid取得TrackBean , TrackBean取得Customerid ,Customerid取得 List<TrackBean>
+		return tr.findByCustomerid(tr.getById(trackid).getCustomerid()) ;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //刪除追蹤資訊
-	public Integer removeTrack(String trackid) {
-		Integer Customerid = tr.getById(trackid).getPcb().getCustomerid();
+	public String removeTrack(String trackid) {
+		String Customerid = tr.getById(trackid).getCustomerid(); 
 		tr.deleteById(trackid);
 		return Customerid;
 	}
@@ -216,6 +218,12 @@ public class PotentialCustomerService {
 	public void removeTrackremark(String trackremarkid) {
 		trr.deleteById(trackremarkid);
 		
+	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//讀取追蹤資訊
+	public List<TrackBean> getTrackByCustomerid(String customerid) {	
+		Sort sort = Sort.by(Direction.DESC,"tracktime");
+		return tr.findByCustomerid(customerid,sort);
 	}
 
 

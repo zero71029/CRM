@@ -12,7 +12,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.jetec.CRM.model.PotentialCustomerBean;
 
-public interface PotentialCustomerRepository extends JpaRepository<PotentialCustomerBean, Integer>{
+public interface PotentialCustomerRepository extends JpaRepository<PotentialCustomerBean, String>{
 
 	List<PotentialCustomerBean> findByNameLikeIgnoreCase(String string);
 

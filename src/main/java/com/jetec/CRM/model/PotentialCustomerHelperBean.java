@@ -10,7 +10,7 @@ public class PotentialCustomerHelperBean {
 	@Id
 	private String helperid;
 	private String name;
-	private Integer customerid;
+	private String customerid;
 	private Integer adminid;
 	public String getHelperid() {
 		return helperid;
@@ -24,10 +24,11 @@ public class PotentialCustomerHelperBean {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Integer getCustomerid() {
+
+	public String getCustomerid() {
 		return customerid;
 	}
-	public void setCustomerid(Integer customerid) {
+	public void setCustomerid(String customerid) {
 		this.customerid = customerid;
 	}
 	public Integer getAdminid() {

@@ -45,9 +45,8 @@ public class MarketService {
 
 	public MarketBean save(MarketBean marketBean) {
 
-		System.out.println(marketBean.getAaa() + "dddddddddddd");
-		if (marketBean.getAaa() == "") {
-			System.out.println(marketBean.getAaa() + "null");
+		//插入日期
+		if (marketBean.getAaa() == "") {			
 			marketBean.setAaa(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()));
 		}
 		return mr.save(marketBean);
@@ -154,8 +153,8 @@ public class MarketService {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //存追蹤
-	public void SaveTrack(TrackBean trackBean) {
-		tr.save(trackBean);
+	public TrackBean SaveTrack(TrackBean trackBean) {
+		 return tr.save(trackBean);
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

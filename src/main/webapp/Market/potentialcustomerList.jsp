@@ -317,7 +317,7 @@
                         <div class="row">
                             <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                                 <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off"
-                                    onclick="javascript:location.href='${pageContext.request.contextPath}/Market/potentialcustomer/0'">
+                                    onclick="javascript:location.href='${pageContext.request.contextPath}/Market/potentialcustomer.jsp'">
                                 <label class="btn btn-outline-primary state1" for="btncheck1">新增</label>
                                 <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
                                 <label class="btn btn-outline-primary state2" for="btncheck2" onclick="sta()">刪除</label>

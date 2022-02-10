@@ -6,8 +6,6 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
@@ -19,8 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name="potentialcustomer")
 public class PotentialCustomerBean {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer customerid;
+	private String customerid;
 	private String name;
 	private String company;
 	private String jobtitle;
@@ -64,6 +61,12 @@ public class PotentialCustomerBean {
 	
 	
 	
+	public String getCustomerid() {
+		return customerid;
+	}
+	public void setCustomerid(String customerid) {
+		this.customerid = customerid;
+	}
 	public String getLine() {
 		return line;
 	}
@@ -118,12 +121,6 @@ public class PotentialCustomerBean {
 	}
 	public void setTrackbean(List<TrackBean> trackbean) {
 		this.trackbean = trackbean;
-	}
-	public Integer getCustomerid() {
-		return customerid;
-	}
-	public void setCustomerid(Integer customerid) {
-		this.customerid = customerid;
 	}
 	public String getName() {
 		return name;
@@ -277,13 +274,7 @@ public class PotentialCustomerBean {
 	}
 	@Override
 	public String toString() {
-		return " [customerid=" + customerid + ", name=" + name + ", company=" + company
-				+ ", jobtitle=" + jobtitle + ", email=" + email + ", phone=" + phone + ", moblie=" + moblie + ", fax="
-				+ fax + ", department=" + department + ", director=" + director + ", industry=" + industry
-				+ ", companynum=" + companynum + ", source=" + source + ", fromactivity=" + fromactivity + ", user="
-				+ user + ", contacttime=" + contacttime + ", status=" + status + ", city=" + city + ", town=" + town
-				+ ", postal=" + postal + ", address=" + address + ", remark=" + remark + ", createtime=" + createtime
-				+ "]";
+		return "PotentialCustomerBean [trackbean=" + trackbean + ", helper=" + helper + ", work=" + work + "]";
 	}
 
 

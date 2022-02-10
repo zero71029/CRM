@@ -49,7 +49,9 @@ public class MarketControler {
 	@RequestMapping("/SavePotentialCustomer")
 	public String SavePotentialCustomer(PotentialCustomerBean pcb) {
 		System.out.println("*****儲存潛在客戶*****");
-
+		System.out.println(pcb.getCustomerid());
+		if (pcb.getCustomerid() == null || pcb.getCustomerid().isEmpty())
+			pcb.setCustomerid(zTools.getUUID());
 		PotentialCustomerBean bean = PCS.SavePotentialCustomer(pcb);
 		return "redirect:/Market/potentialcustomer/" + bean.getCustomerid();
 	}
@@ -79,14 +81,10 @@ public class MarketControler {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //	讀取潛在客戶細節
 	@RequestMapping("/potentialcustomer/{id}")
-	public String potentialcustomer(Model model, @PathVariable("id") Integer id) {
+	public String potentialcustomer(Model model, @PathVariable("id") String id) {
 		System.out.println("*****讀取潛在客戶細節****");
-		if (id == 0) {
-//			model.addAttribute("bean", new PotentialCustomerBean());
-		} else {
-			model.addAttribute("bean", PCS.getById(id));
-		}
-
+		model.addAttribute("bean", PCS.getById(id));
+		System.out.println(PCS.getById(id));
 		return "/Market/potentialcustomer";
 	}
 
@@ -194,8 +192,8 @@ public class MarketControler {
 		System.out.println(trackBean.getTrackid());
 
 		if (trackBean.getTrackid() == null || trackBean.getTrackid().isEmpty())
-			trackBean.setTrackid(zTools.getUUID()); 
-		
+			trackBean.setTrackid(zTools.getUUID());
+
 		trackBean.setTracktime(zTools.getTime(new Date()));
 		System.out.println(trackBean.getTrackid());
 		ms.SaveTrack(trackBean);
@@ -206,7 +204,7 @@ public class MarketControler {
 //刪除潛在客戶
 	@RequestMapping("/delPotentialCustomer")
 	@ResponseBody
-	public String delPotentialCustomer(@RequestParam("id") List<Integer> id) {
+	public String delPotentialCustomer(@RequestParam("id") List<String> id) {
 		System.out.println("*****刪除潛在客戶*****");
 		System.out.println(id.toString());
 		PCS.delPotentialCustomer(id);
@@ -513,5 +511,51 @@ public class MarketControler {
 		System.out.println(start);
 		System.out.println(to);
 		return ms.selectBudget(start, to);
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//存追蹤by銷售機會
+	@RequestMapping("/SaveTrackByMarket/{marketid}")
+	@ResponseBody
+	public List<TrackBean> SaveTrackByMarket(TrackBean trackBean, @PathVariable("marketid") Integer marketid) {
+		System.out.println("存追蹤by銷售機會");
+		System.out.println(trackBean);
+		String uuid = zTools.getUUID();
+		if (trackBean.getTrackid() == null || trackBean.getTrackid().isEmpty())
+			trackBean.setTrackid(uuid);
+		// 插入Customerid
+		if (trackBean.getCustomerid() == null || trackBean.getCustomerid().isEmpty()) {
+			trackBean.setCustomerid(uuid);
+			MarketBean marketBean = ms.getById(marketid);
+			marketBean.setCustomerid(uuid);
+			ms.save(marketBean);
+		}
+		// 插入日期
+		trackBean.setTracktime(zTools.getTime(new Date()));
+		TrackBean save = ms.SaveTrack(trackBean);
+
+		return PCS.getTrackByCustomerid(save.getCustomerid());
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//修改追蹤by銷售機會
+	@RequestMapping("/changeTrackByMarket/{marketid}")
+	public String changeTrackByMarket(TrackBean trackBean, @PathVariable("marketid") Integer marketid) {
+		System.out.println("修改追蹤by銷售機會");		
+		String uuid = zTools.getUUID();
+		if (trackBean.getTrackid() == null || trackBean.getTrackid().isEmpty())
+			trackBean.setTrackid(uuid);
+//插入Customerid
+		if (trackBean.getCustomerid() == null || trackBean.getCustomerid().isEmpty()) {
+			trackBean.setCustomerid(uuid);
+			MarketBean marketBean = ms.getById(marketid);
+			marketBean.setCustomerid(uuid);
+			ms.save(marketBean);
+		}
+//插入日期
+		trackBean.setTracktime(zTools.getTime(new Date()));
+		 ms.SaveTrack(trackBean);
+
+		return "redirect:/Market/Market/"+marketid;
 	}
 }

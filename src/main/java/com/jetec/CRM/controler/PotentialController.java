@@ -126,7 +126,7 @@ public class PotentialController {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //添加協助者
 	@RequestMapping("/addHelper/{customerid}/{helper}")
-	public List<PotentialCustomerHelperBean> addHelper(@PathVariable("customerid") Integer customerid,
+	public List<PotentialCustomerHelperBean> addHelper(@PathVariable("customerid") String customerid,
 			@PathVariable("helper") String helper) {
 		System.out.println("添加協助者");
 		return PCS.addHelper(customerid, helper);
@@ -135,7 +135,7 @@ public class PotentialController {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //刪除協助者
 	@RequestMapping("/delHelper/{customerid}/{helper}")
-	public List<PotentialCustomerHelperBean> delHelper(@PathVariable("customerid") Integer customerid,
+	public List<PotentialCustomerHelperBean> delHelper(@PathVariable("customerid") String customerid,
 			@PathVariable("helper") String helperid) {
 		System.out.println("刪除協助者");
 		return PCS.delHelper(customerid, helperid);
@@ -156,8 +156,8 @@ public class PotentialController {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取追蹤資訊
 	@RequestMapping("/client/{customerid}")
-	public List<TrackBean> client(@PathVariable("customerid") Integer customerid) {
-		return PCS.getById(customerid).getTrackbean();
+	public List<TrackBean> client(@PathVariable("customerid") String customerid) {
+		return PCS.getTrackByCustomerid(customerid);
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -174,8 +174,8 @@ public class PotentialController {
 	@RequestMapping("/removeTrack/{trackid}")
 	public List<TrackBean> removeTrack(@PathVariable("trackid") String trackid) {
 		System.out.println("刪除追蹤資訊");
-		Integer Customerid = PCS.removeTrack(trackid);
-		return PCS.getById(Customerid).getTrackbean();
+		String customerid = PCS.removeTrack(trackid);		
+		return PCS.getTrackByCustomerid(customerid);
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -184,6 +184,6 @@ public class PotentialController {
 	public List<TrackBean> removeTrackremark(@PathVariable("trackremarkid") String trackremarkid,@PathVariable("trackid") String trackid) {
 		System.out.println("刪除追蹤回覆");
 		PCS.removeTrackremark(trackremarkid);
-		return tr.getById(trackid).getPcb().getTrackbean();
+		return tr.findByCustomerid(tr.getById(trackid).getCustomerid()) ;
 	}
 }

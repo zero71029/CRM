@@ -5,13 +5,9 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "track")
@@ -30,10 +26,10 @@ public class TrackBean {
 	@OneToMany(targetEntity = TrackRemarkBean.class ,mappedBy = "trackid", cascade = CascadeType.ALL)
 	private List<TrackRemarkBean> trackremark;
 	
-	@JsonIgnore
-	@ManyToOne(targetEntity = PotentialCustomerBean.class)
-	@JoinColumn(name = "customerid", referencedColumnName = "customerid", insertable = false, updatable = false)
-	private PotentialCustomerBean pcb;// 分類
+//	@JsonIgnore
+//	@ManyToOne(targetEntity = PotentialCustomerBean.class)
+//	@JoinColumn(name = "customerid", referencedColumnName = "customerid", insertable = false, updatable = false)
+//	private PotentialCustomerBean pcb;// 分類
 
 	
 	
@@ -48,12 +44,12 @@ public class TrackBean {
 	public void setTrackremark(List<TrackRemarkBean> trackremark) {
 		this.trackremark = trackremark;
 	}
-	public PotentialCustomerBean getPcb() {
-		return pcb;
-	}
-	public void setPcb(PotentialCustomerBean pcb) {
-		this.pcb = pcb;
-	}
+//	public PotentialCustomerBean getPcb() {
+//		return pcb;
+//	}
+//	public void setPcb(PotentialCustomerBean pcb) {
+//		this.pcb = pcb;
+//	}
 
 
 	public String getTrackid() {

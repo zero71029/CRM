@@ -10,6 +10,6 @@ public interface PotentialCustomerHelperRepository extends JpaRepository<Potenti
 
 
 
-	List<PotentialCustomerHelperBean> findByCustomerid(Integer customerid);
+	List<PotentialCustomerHelperBean> findByCustomerid(String customerid);
 
 }

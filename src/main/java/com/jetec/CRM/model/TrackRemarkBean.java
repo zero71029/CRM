@@ -54,6 +54,11 @@ public class TrackRemarkBean {
 	public void setCreatetime(String createtime) {
 		this.createtime = createtime;
 	}
+	@Override
+	public String toString() {
+		return "TrackRemarkBean [trackremarkid=" + trackremarkid + ", trackid=" + trackid + ", content=" + content
+				+ ", createtime=" + createtime + ", name=" + name + "]";
+	}
 	
 	
 	

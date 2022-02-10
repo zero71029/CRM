@@ -619,65 +619,135 @@
                                 </form>
                                 <!-- ///////////////////////////////////////////////////////////////////////////// -->
                                 <hr>
-                                <!-- ////////////////////////////////////////追蹤資訊///////////////////////////////////// -->
-                                <c:if test="${not empty bean}">
-                                    <form action="${pageContext.request.contextPath}/Market/SaveRemark" method="post"
-                                        class="row g-3 needs-validation" novalidate>
-                                        <div class="row">
-                                            <input type="hidden" name="marketid" value="${bean.marketid}">
-                                            <input type="hidden" name="user" value="${user.name}">
 
-                                            <div class="row">
-                                                <div class="col-md-1"></div>
-                                                <div class="col-md-6 FormPadding">
-                                                    <label for="validationTextarea" class="form-label ">追蹤資訊</label>
-                                                    <textarea class="form-control" id="validationTextarea" required
-                                                        name="remark" rows="5" maxlength="200"></textarea>
-                                                    <div class="invalid-feedback">須填寫</div>
-                                                </div>
+                                <!-- ////////////////////////////////////////追蹤資訊///////////////////////////////////// -->
+                                <br><br><br>
+                                <c:if test="${not empty bean}">
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-9 bg-danger text-white"
+                                            style="text-align: center; color: white;">
+                                            <h5>追蹤資訊</h5>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">客人描述</div>
+                                        <div class="col-md-3">追蹤結果</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-9">
+                                            <hr>
+                                        </div>
+                                    </div>
+                                    <!--  -->
+                                    <form action="" method="post" id="SaveTrack" class="row g-3 needs-validation"
+                                        novalidate>
+                                        <input type="hidden" class=" form-control cellFrom" name="remark"
+                                            maxlength="190" value="${user.name}">
+                                        <input type="hidden" name="customerid" value="${bean.customerid}">
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-4 FormPadding">
+                                                <textarea class="form-control" name="trackdescribe" rows="1"
+                                                    maxlength="190" required></textarea>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-1"></div>
-                                                <div class="col-md-6 FormPadding">
-                                                    <button style="width: 100%;" class="btn btn-danger"
-                                                        onclick="">確認</button>
-                                                </div>
+                                            <div class="col-md-4 FormPadding">
+                                                <textarea class="form-control" name="result" rows="1"
+                                                    maxlength="95"></textarea>
+                                            </div>
+                                            <div class="col-md-1" style="padding: 0%;">
+                                                <button style="width: 100%; background-color: #569b92;" type="button"
+                                                    class="btn btn-outline-dark" @click="SaveTrackByMarket">新增</button>
                                             </div>
                                         </div>
                                     </form>
-                                    <div class="row">
-                                        <div class="col-md-1"></div>
-                                        <div class="col-md-4">內容</div>
-                                        <div class="col-md-1">創建人 </div>
-                                        <div class="col-md-1"> 創建時間</div>
-                                        <div class="col-md-1"></div>
-                                    </div>
-                                    <br>
-                                    <c:if test="${not empty bean.mrb}">
-                                        <c:forEach varStatus="loop" begin="0" end="${bean.mrb.size()-1}"
-                                            items="${bean.mrb}" var="s">
-                                            <div class="row">
-                                                <div class="col-md-1"></div>
-                                                <div class="col-md-4" style="word-wrap: break-word;">${s.remark}</div>
-                                                <div class="col-md-1">${s.user}</div>
-                                                <div class="col-md-1">${s.createtime}</div>
-                                                <div class="col-md-1"><a href="javascript:delRemark(${s.id})"
-                                                        style="text-decoration: none;">remove</a></div>
-                                            </div>
-                                        </c:forEach>
-                                    </c:if>
-                                    <br><br><br><br><br>
+                                    <!--  -->
 
-                                    <div class="row">
+
+                                    <div class="row replyImg" v-for="(s, index) in TrackList" :key="index">
                                         <div class="col-md-1"></div>
-                                        <div class="col-md-7"></div>
-                                        <div class="col-md-1"> </div>
-                                        <div class="col-md-1">&nbsp;</div>
-                                        <div class="col-md-1"></div>
+                                        <div class="col-md-11">
+                                            <div class="row">
+                                                <div class="col-md-10" style=" padding: 0%;">
+                                                    <hr style="color: #569b92; opacity: 1;">
+                                                </div>
+                                            </div>
+                                            <!-- {{s}} -->
+                                            <div class="row" style="min-height: 70px;">
+                                                <div class="row">
+                                                    <div class="col-md-4"
+                                                        style="position: relative; word-wrap:break-word;">
+                                                        {{s.trackdescribe}}
+                                                    </div>
+                                                    <div class="col-md-4"
+                                                        style="position: relative; word-wrap:break-word;">
+                                                        {{s.result}}
+                                                    </div>
+                                                    <div class="col-md-3" style="color: #569b92;">
+                                                        {{s.remark}} {{s.tracktime}}</div>
+                                                </div>
+                                            </div>
+                                            <!-- 留言的控制 -->
+                                            <div class="row replyA" style="font-size: 12;">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-6 "
+                                                    style="position: relative; word-wrap:break-word;color: #8e8e8e; ">
+
+                                                </div>
+                                                <div class="col-md-3 ccc" style="text-align: right;">
+                                                    <el-button v-show="s.remark == '${user.name}'" type="text"
+                                                        @click="open(s)">
+                                                        修改</el-button>&nbsp;&nbsp;&nbsp;
+                                                    <el-button v-show="s.remark == '${user.name}'" type="text"
+                                                        @click="removeTrack(s)">刪除</el-button>&nbsp;&nbsp;&nbsp;
+                                                    <el-button type="text" @click="trackremark(s.trackid)">回覆
+                                                    </el-button>
+                                                    &nbsp;&nbsp;&nbsp;
+                                                </div>
+                                            </div>
+                                            <!-- 留言的附件 -->
+                                            <c:if test="${not empty s.file}">
+                                                <c:forEach varStatus="loop" begin="0" end="${s.file.size()-1}"
+                                                    items="${s.file}" var="file">
+                                                    <div class="row">
+                                                        <div class="col-md-1" style="color: #569b92;">
+                                                            附件</div>
+                                                        <div class="col-md-5 ">
+                                                            <a href="${pageContext.request.contextPath}/file/${file.url}"
+                                                                target="_blank">${file.name}</a>
+                                                        </div>
+                                                    </div>
+                                                </c:forEach>
+                                            </c:if>
+                                            <!-- 評論 -->
+                                            <div class="row" v-for="(remark, index) in s.trackremark" :key="index">
+                                                <div class="col-md-2"></div>
+                                                <div class="col-md-8 ">
+                                                    <div class="row replyA">
+                                                        <hr>
+                                                        <div class="col-md-2 " style="color: #569b92;">
+                                                            {{remark.name}}
+                                                        </div>
+                                                        <div class="col-md-7" style="word-wrap:break-word;">
+                                                            {{remark.content}}
+                                                        </div>
+                                                        <div class="col-md-3 ">
+                                                            {{remark.createtime}}&nbsp;&nbsp;&nbsp;
+                                                            <el-button v-show="remark.name == '${user.name}'"
+                                                                type="text" @click="removeTrackremark(remark)">刪除
+                                                            </el-button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                            </div>
-                            </c:if>
-                            
+                                </c:if>
+                                <br>
+                                <br><br><br><br><br>
+                                <div class="row">&nbsp;</div>
                         </transition-group>
                         <!-- <%-- 彈窗--%> -->
 
@@ -929,6 +999,7 @@
                             "醫療保健及社會工作服務業",
                             "藝術、娛樂及休閒服務業",
                             "其他服務業"],//產業列表
+                        TrackList: {},
                     }
                 },
                 created() {
@@ -938,15 +1009,137 @@
                     this.contactphone = formatPhone(this.contactphone);
                     this.contactmoblie = formatPhone(this.contactmoblie);
                     if (this.important == "") this.important = '低';
+                    if ('${bean.customerid}' != '') {
+                        axios
+                            .get('${pageContext.request.contextPath}/Potential/client/${bean.customerid}')
+                            .then(response => (
+                                this.TrackList = response.data
+                            ))
+                            .catch(function (error) { // 请求失败处理
+                                console.log(error);
+                            });
+                    }
                 },
                 methods: {
-                    ddd: function () {
-                        console.log(this.value);
+                    open(s) {//修改追蹤資訊
+                        this.$alert('<form action="${pageContext.request.contextPath}/Market/changeTrackByMarket/${bean.marketid}" method = "post" >\
+                                                    <div class="row">\
+                                                        <div class="col-md-5 FormPadding">\
+                                                            <textarea class="form-control" name="trackdescribe" rows="1"\
+                                                                maxlength="190" required>'+ s.trackdescribe + '</textarea>\
+                                                        </div>\
+                                                        <div class="col-md-5 FormPadding">\
+                                                            <textarea class="form-control" name="result" rows="1"\
+                                                                maxlength="195">'+ s.result + '</textarea>\
+                                                        </div>\
+                                                        <div class="col-md-2" style="padding: 0%;">\
+                                                            <button style="width: 100%; background-color: #569b92;"\
+                                                                class="btn btn-outline-dark" @click="">修改</button>\
+                                                        </div>\
+                                                    </div>\
+                                                    <input type="hidden" name="trackid" value="'+ s.trackid + '">\
+                                                    <input type="hidden" name="tracktime" value="'+ s.tracktime + '">\
+                                                    <input type="hidden" name="customerid" value="'+ s.customerid + '">\
+                                                    <input type="hidden" name="remark" value="'+ s.remark + '"> </form>', '修改',
+                            {
+                                dangerouslyUseHTMLString: true,//将 message 属性作为 HTML 片段处理
+                                showConfirmButton: false,	//是否显示确定按钮
+                                confirmButtonText: '放棄',//确定按钮的文本内容
+                                closeOnClickModal: false,//通过点击遮罩关闭
+                                closeOnPressEscape: true,//通过按下 ESC 键关闭
+
+                            });
+                    },
+                    removeTrack(bean) {//刪除追蹤資訊
+                        this.$confirm('此操作將永久删除, 是否繼續?', '提示', {
+                            confirmButtonText: '缺定',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }).then(() => {
+                            axios
+                                .get('${pageContext.request.contextPath}/Potential/removeTrack/' + bean.trackid)
+                                .then(response => (
+                                    this.TrackList = response.data,
+                                    console.log(this.TrackList),
+                                    this.$message({
+                                        type: 'success',
+                                        message: '删除成功!'
+                                    })
+                                ))
+                                .catch(function (error) {
+                                    console.log(error);
+                                });
+
+
+                        }).catch(() => {
+                            this.$message({
+                                type: 'info',
+                                message: '已取消删除'
+                            });
+                        });
+                    }, removeTrackremark(remark) {
+                        this.$confirm('此操作將永久删除 "' + remark.content + '" 是否繼續?', '提示', {
+                            confirmButtonText: '缺定',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }).then(() => {
+                            axios
+                                .get('${pageContext.request.contextPath}/Potential/removeTrackremark/' + remark.trackremarkid + "/" + remark.trackid)
+                                .then(response => (
+                                    this.TrackList = response.data,
+                                    console.log(this.TrackList),
+                                    this.$message({
+                                        type: 'success',
+                                        message: '删除成功!'
+                                    })
+                                ))
+                                .catch(function (error) {
+                                    console.log(error);
+                                });
+
+
+                        }).catch(() => {
+                            this.$message({
+                                type: 'info',
+                                message: '已取消删除'
+                            });
+                        });
+                    },
+                    trackremark(id) {//回復追蹤資訊
+                        this.$prompt('回覆追蹤資訊', {
+                            confirmButtonText: '確定',
+                            cancelButtonText: '取消',
+                        }).then(({ value }) => {
+                            axios
+                                .get('${pageContext.request.contextPath}/Potential/saveTrackRemark/' + id + '/' + value)
+                                .then(response => (
+                                    this.TrackList = response.data,
+                                    console.log(this.TrackList)
+                                ))
+                                .catch(function (error) {
+                                    console.log(error);
+                                });
+                        }).catch(() => {
+                            this.$message({
+                                type: 'info',
+                                message: '取消输入'
+                            });
+                        });
+                    },
+                    SaveTrackByMarket() {//存追蹤資訊
+                        var formData = new FormData($('#SaveTrack')[0]);
+                        axios
+                            .post('${pageContext.request.contextPath}/Market/SaveTrackByMarket/${bean.marketid}', formData)
+                            .then(response => (
+                                this.TrackList = response.data,
+                                console.log(this.TrackList)
+                            ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
                     },
                     handleClose(done) {
-
                         done();
-
                     },
                     openDialog: function () {
                         contact();
@@ -968,7 +1161,11 @@
 
         </script>
 
-
+        <style>
+            .el-message-box {
+                width: 50%;
+            }
+        </style>
 
 
 
