@@ -159,10 +159,9 @@
                                     <div class="row">
                                         <div class="col-md-1"></div>
                                         <div class="col-md-2 cell">公司<span style="color: red;">*</span></div>
-                                        <div class="col-md-3 cell FormPadding">
-                                            <input type="text" class="col-md-4 form-control cellFrom client"
-                                                name="company" list="company" value="${bean.company}" maxlength="20"
-                                                required>
+                                        <div class="col-md-8 cell FormPadding">
+                                            <input type="text" class="col-md-9 form-control cellFrom client"
+                                                v-model="company" name="company" list="company" maxlength="20" required>
                                             <datalist id="company">
                                                 <c:if test="${not empty client}">
                                                     <c:forEach varStatus="loop" begin="0" end="${client.size()-1}"
@@ -173,24 +172,18 @@
                                             </datalist>
                                         </div>
 
-
-
-
-                                        <div class="col-md-2 cell">編號</div>
-                                        <div class="col-md-3 cell">${bean.customerid}</div>
-
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1"></div>
                                         <div class="col-md-2 cell">聯絡人<span style="color: red;">*</span></div>
                                         <div class="col-md-3 cell FormPadding">
-                                            <input type="text" class=" form-control cellFrom" name="name"
-                                                value="${bean.name}" maxlength="20" required>
+                                            <input type="text" class=" form-control cellFrom" name="name" v-model="name"
+                                                maxlength="20" required>
                                         </div>
                                         <div class="col-md-2 cell">部門</div>
                                         <div class="col-md-3 cell FormPadding"><input type="text"
-                                                class=" form-control cellFrom" name="department"
-                                                value="${bean.department}" maxlength="20">
+                                                class=" form-control cellFrom" name="department" v-model="department"
+                                                maxlength="20">
                                         </div>
 
                                     </div>
@@ -199,12 +192,12 @@
                                         <div class="col-md-2 cell">職稱</div>
                                         <div class="col-md-3 cell FormPadding">
                                             <input type="text" class=" form-control cellFrom" name="jobtitle"
-                                                value="${bean.jobtitle}" maxlength="20">
+                                                v-model="jobtitle" maxlength="20">
                                         </div>
                                         <div class="col-md-2 cell">主管</div>
                                         <div class="col-md-3 cell FormPadding">
                                             <input type="text" class=" form-control cellFrom" name="director"
-                                                value="${bean.director}" maxlength="20">
+                                                v-model="director" maxlength="20">
                                         </div>
                                     </div>
                                     <div class="row">
@@ -212,11 +205,12 @@
                                         <div class="col-md-2 cell">Email</div>
                                         <div class="col-md-3 cell FormPadding">
                                             <input type="email" class=" form-control cellFrom" name="email"
-                                                value="${bean.email}" maxlength="50">
+                                                v-model="email" maxlength="50">
                                         </div>
                                         <div class="col-md-2 cell">產業</div>
                                         <div class="col-md-3 cell FormPadding">
-                                            <select name="industry" class=" form-select cellFrom" v-model="industry">
+                                            <select name="industry" class=" form-select cellFrom" v-model="industry"
+                                                v-model="industry">
                                                 <option v-for="(item, index) in industryList" :key="index">{{item}}
                                                 </option>
                                             </select>
@@ -227,23 +221,22 @@
                                         <div class="col-md-2 cell">電話</div>
                                         <div class="col-md-3 cell FormPadding">
                                             <input type="text" class=" form-control cellFrom" name="phone"
-                                                value="${bean.phone}" maxlength="20">
+                                                v-model="phone" maxlength="20">
                                         </div>
                                         <div class="col-md-2 cell">公司人數</div>
-                                        <div class="col-md-3 cell FormPadding"><input type="number"
-                                                class=" form-control cellFrom" name="companynum"
-                                                value="${bean.companynum}" maxlength="20"></div>
+                                        <div class="col-md-3 cell FormPadding"><input type="number" v-model="companynum"
+                                                class=" form-control cellFrom" name="companynum" maxlength="20"></div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1"></div>
                                         <div class="col-md-2 cell">傳真</div>
                                         <div class="col-md-3 cell FormPadding">
-                                            <input type="text" class=" form-control cellFrom" name="fax"
-                                                value="${bean.fax}" maxlength="20">
+                                            <input type="text" class=" form-control cellFrom" name="fax" v-model="fax"
+                                                maxlength="20">
                                         </div>
                                         <div class="col-md-2 cell">來源</div>
                                         <div class="col-md-3 cell FormPadding">
-                                            <select class="form-select cellFrom" name="source">
+                                            <select class="form-select cellFrom" name="source" v-model="source">
                                                 <option value="廣告" class="selItemOff" ${bean.source=="廣告"
                                                     ?"selected":null}>
                                                     廣告
@@ -281,15 +274,15 @@
                                         <div class="col-md-2 cell">手機</div>
                                         <div class="col-md-3 cell FormPadding">
                                             <input type="text" class=" form-control cellFrom" name="moblie"
-                                                value="${bean.moblie}" maxlength="20">
+                                                v-model="moblie" maxlength="20">
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1"></div>
                                         <div class="col-md-2 cell">Line</div>
                                         <div class="col-md-3 cell FormPadding">
-                                            <input type="text" class=" form-control cellFrom" name="line"
-                                                value="${bean.line}" maxlength="190">
+                                            <input type="text" class=" form-control cellFrom" name="line" v-model="line"
+                                                maxlength="190">
                                         </div>
                                     </div>
                                     <div class="row">
@@ -304,7 +297,7 @@
                                         <div class="col-md-2 cell"></div>
                                         <div class="col-md-8 cell FormPadding">
                                             <input type="text" class=" form-control cellFrom" name="address"
-                                                value="${bean.address}" maxlength="50">
+                                                v-model="address" maxlength="50">
                                         </div>
                                     </div>
                                     <div class="row">
@@ -312,7 +305,7 @@
                                         <div class="col-md-2 cell">客人詢問</div>
                                         <div class="col-md-8 cell FormPadding">
                                             <textarea class="form-control " id="validationTextarea" name="remark"
-                                                rows="5" maxlength="200">${bean.remark}</textarea>
+                                                v-model="remark" rows="5" maxlength="200">${bean.remark}</textarea>
                                         </div>
                                     </div>
 
@@ -597,8 +590,9 @@
                 });
 
             });
-            //表單驗證
+
             $(function () {
+                //表單驗證
                 // 密碼驗證
                 jQuery.validator.setDefaults({
                     submitHandler: function () {
@@ -624,22 +618,24 @@
                     min: $.validator.format("请输入不小于 {0} 的数值")
                 });
                 $(".basefrom").validate();
+
+                // 地區ui
+                $("#twzipcode").twzipcode({
+                    countySel: "${bean.city}",
+                    districtSel: "${bean.town}",
+                    "zipcodeIntoDistrict": true,
+                    // "css": ["city form-control", "town form-control"],
+                    "countyName": "city", // 指定城市 select name
+                    "districtName": "town", // 指定地區 select name
+                    "zipcodeName": "postal" // 指定號碼 select name
+                });
             });
             function delRemark(id) {
                 if (confirm("確定刪除?")) {
                     window.location.href = "${pageContext.request.contextPath}/Market/delRemark/" + id + "/${bean.customerid}";
                 }
             }
-            // 地區ui
-            $("#twzipcode").twzipcode({
-                countySel: "${bean.city}",
-                districtSel: "${bean.town}",
-                "zipcodeIntoDistrict": true,
-                // "css": ["city form-control", "town form-control"],
-                "countyName": "city", // 指定城市 select name
-                "districtName": "town", // 指定地區 select name
-                "zipcodeName": "postal" // 指定號碼 select name
-            });
+
 
             //建立客戶
             function goClient() {
@@ -746,6 +742,7 @@
                 el: '.app',
                 data() {
                     return {
+                        department: "${bean.department}", jobtitle: "${bean.jobtitle}", director: "${bean.director}", email: "${bean.email}", phone: "${bean.phone}", fax: "${bean.fax}", source: "${bean.source}", moblie: "${bean.moblie}", line: "${bean.line}", address: "${bean.address}", remark: "${bean.remark}", company: "${bean.company}", companynum: "${bean.companynum}",
                         visible: false,
                         admin: '${user.name}',
                         important: '${bean.important}',
@@ -785,8 +782,11 @@
                         .catch(function (error) { // 请求失败处理
                             console.log(error);
                         });
+                },
+                watch:{
+                    cpmpany:{
 
-
+                    },
                 },
                 methods: {
                     open(s) {//修改追蹤資訊
@@ -867,13 +867,13 @@
                             });
                         });
                     }, removeTrackremark(remark) {
-                        this.$confirm('此操作將永久删除 "'+remark.content+'" 是否繼續?', '提示', {
+                        this.$confirm('此操作將永久删除 "' + remark.content + '" 是否繼續?', '提示', {
                             confirmButtonText: '缺定',
                             cancelButtonText: '取消',
                             type: 'warning'
                         }).then(() => {
                             axios
-                                .get('${pageContext.request.contextPath}/Potential/removeTrackremark/' + remark.trackremarkid+"/"+remark.trackid)
+                                .get('${pageContext.request.contextPath}/Potential/removeTrackremark/' + remark.trackremarkid + "/" + remark.trackid)
                                 .then(response => (
                                     this.TrackList = response.data,
                                     console.log(this.TrackList),

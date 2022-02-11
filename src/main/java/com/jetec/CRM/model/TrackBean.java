@@ -22,7 +22,7 @@ public class TrackBean {
 	private String tracktime;//時間	
 	
 	//工作項目
-	@OrderBy("createtime desc")
+	@OrderBy("createtime DESC")
 	@OneToMany(targetEntity = TrackRemarkBean.class ,mappedBy = "trackid", cascade = CascadeType.ALL)
 	private List<TrackRemarkBean> trackremark;
 	

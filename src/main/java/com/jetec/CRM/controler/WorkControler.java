@@ -1,5 +1,6 @@
 package com.jetec.CRM.controler;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.jetec.CRM.Tool.ZeroTools;
 import com.jetec.CRM.controler.service.ClientService;
 import com.jetec.CRM.controler.service.MarketService;
 import com.jetec.CRM.controler.service.PotentialCustomerService;
@@ -20,11 +22,12 @@ import com.jetec.CRM.model.ClientBean;
 import com.jetec.CRM.model.ContactBean;
 import com.jetec.CRM.model.MarketBean;
 import com.jetec.CRM.model.PotentialCustomerBean;
+import com.jetec.CRM.model.TrackBean;
 import com.jetec.CRM.model.WorkBean;
 
 @Controller
 @RequestMapping("/work")
-@PreAuthorize("hasAuthority('系統') OR hasAuthority('主管') OR hasAuthority('業務')")
+@PreAuthorize("hasAuthority('系統') OR hasAuthority('主管') OR hasAuthority('業務')OR hasAuthority('行銷')")
 public class WorkControler {
 	@Autowired
 	WorkSerivce ws;
@@ -34,6 +37,10 @@ public class WorkControler {
 	PotentialCustomerService pcs;
 	@Autowired
 	MarketService ms;
+	@Autowired
+	ZeroTools zTools;
+	@Autowired
+	PotentialCustomerService PCS;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //存工作項目
@@ -54,7 +61,8 @@ public class WorkControler {
 		pag--;
 		return ws.getList(pag);
 	}
-	//取得所有筆數
+
+	// 取得所有筆數
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //工作項目列表(結案)
 	@RequestMapping("/closed")
@@ -80,6 +88,7 @@ public class WorkControler {
 //			model.addAttribute("bean", new PotentialCustomerBean());
 		} else {
 			model.addAttribute("bean", ws.getById(id));
+			System.out.println(ws.getById(id));
 		}
 		model.addAttribute("clientList", cs.getList());
 		return "/Market/work";
@@ -153,10 +162,55 @@ public class WorkControler {
 //搜索工作項目
 	@RequestMapping("/selectWork")
 	@ResponseBody
-	public Map<String, Object> selectWork( @RequestParam("name") String name,@RequestParam("pag") Integer pag) {
+	public Map<String, Object> selectWork(@RequestParam("name") String name, @RequestParam("pag") Integer pag) {
 		System.out.println("搜索工作項目");
 		name = name.trim();
 		pag--;
-		return ws.sekectWork(name,pag);
+		return ws.sekectWork(name, pag);
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//存追蹤by工作項目
+	@RequestMapping("/SaveTrackByWork/{workid}")
+	@ResponseBody
+	public List<TrackBean> SaveTrackByWork(TrackBean trackBean, @PathVariable("workid") Integer workid) {
+		System.out.println("存追蹤by工作項目");
+		String uuid = zTools.getUUID();
+		if (trackBean.getTrackid() == null || trackBean.getTrackid().isEmpty())
+			trackBean.setTrackid(uuid);
+// 插入Customerid
+		if (trackBean.getCustomerid() == null || trackBean.getCustomerid().isEmpty()) {
+			trackBean.setCustomerid(uuid);
+			WorkBean wBean = ws.getById(workid);
+			wBean.setTrack(uuid);
+			ws.SaveWork(wBean);
+		}
+// 插入日期
+		trackBean.setTracktime(zTools.getTime(new Date()));
+		TrackBean save = ms.SaveTrack(trackBean);
+
+		return PCS.getTrackByCustomerid(save.getCustomerid());
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//修改追蹤by銷售機會
+	@RequestMapping("/changeTrackByMarket/{workid}")
+	public String changeTrackByMarket(TrackBean trackBean, @PathVariable("workid") Integer workid) {
+		System.out.println("修改追蹤by銷售機會");
+		String uuid = zTools.getUUID();
+		if (trackBean.getTrackid() == null || trackBean.getTrackid().isEmpty())
+			trackBean.setTrackid(uuid);
+//插入Customerid
+//if (trackBean.getCustomerid() == null || trackBean.getCustomerid().isEmpty()) {
+//trackBean.setCustomerid(uuid);
+//MarketBean marketBean = ms.getById(marketid);
+//marketBean.setCustomerid(uuid);
+//ms.save(marketBean);
+//}
+//插入日期
+		trackBean.setTracktime(zTools.getTime(new Date()));
+		ms.SaveTrack(trackBean);
+
+		return "redirect:/work/detail/" + workid;
 	}
 }

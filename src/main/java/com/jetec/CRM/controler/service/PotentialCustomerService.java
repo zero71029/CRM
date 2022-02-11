@@ -202,9 +202,10 @@ public class PotentialCustomerService {
 		trbean.setTrackremarkid(zTools.getUUID());
 		Date date = new Date();
 		trbean.setCreatetime(zTools.getTime(date));
-		 trr.save(trbean);		
+		 trr.save(trbean);	
+		 Sort sort = Sort.by(Direction.DESC,"tracktime");
 		//trackid取得TrackBean , TrackBean取得Customerid ,Customerid取得 List<TrackBean>
-		return tr.findByCustomerid(tr.getById(trackid).getCustomerid()) ;
+		return tr.findByCustomerid(tr.getById(trackid).getCustomerid(),sort) ;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //刪除追蹤資訊

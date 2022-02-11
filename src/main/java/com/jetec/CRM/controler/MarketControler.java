@@ -95,6 +95,7 @@ public class MarketControler {
 	public List<MarketBean> Market(@RequestParam("pag") Integer pag) {
 		System.out.println("*****讀取銷售機會列表****");
 		pag--;
+		System.out.println(ms.getList(pag));
 		return ms.getList(pag);
 	}
 
@@ -143,6 +144,7 @@ public class MarketControler {
 	@RequestMapping("/Market/{id}")
 	public String Market(Model model, @PathVariable("id") Integer id) {
 		System.out.println("進入詳細");
+		System.out.println(ms.getById(id));
 		model.addAttribute("bean", ms.getById(id));
 		return "/Market/Market";
 	}
@@ -396,8 +398,10 @@ public class MarketControler {
 //潛在各戶轉工作項目
 	@RequestMapping("/changeWork")
 	public String changeWork(Model model, PotentialCustomerBean potentialCustomerBean) {
+		System.out.println("潛在各戶轉工作項目");
 		WorkBean bean = new WorkBean();
 		bean.setCustomer(potentialCustomerBean);
+		bean.setTrack(potentialCustomerBean.getCustomerid());
 		model.addAttribute("bean", bean);
 		return "/Market/work";
 	}
@@ -406,9 +410,11 @@ public class MarketControler {
 	@RequestMapping("/MarketChangeWork")
 	public String changeWork(Model model, MarketBean mBean) {
 		System.out.println("銷售機 轉工作項目");
+		System.out.println("MarketBean = "+mBean);
 		WorkBean bean = new WorkBean();
-
+		bean.setTrack(mBean.getCustomerid());
 		bean.setMarket(mBean);
+		System.out.println("bean = "+mBean);
 		model.addAttribute("bean", bean);
 		return "/Market/work";
 	}
@@ -519,7 +525,6 @@ public class MarketControler {
 	@ResponseBody
 	public List<TrackBean> SaveTrackByMarket(TrackBean trackBean, @PathVariable("marketid") Integer marketid) {
 		System.out.println("存追蹤by銷售機會");
-		System.out.println(trackBean);
 		String uuid = zTools.getUUID();
 		if (trackBean.getTrackid() == null || trackBean.getTrackid().isEmpty())
 			trackBean.setTrackid(uuid);
@@ -546,12 +551,12 @@ public class MarketControler {
 		if (trackBean.getTrackid() == null || trackBean.getTrackid().isEmpty())
 			trackBean.setTrackid(uuid);
 //插入Customerid
-		if (trackBean.getCustomerid() == null || trackBean.getCustomerid().isEmpty()) {
-			trackBean.setCustomerid(uuid);
-			MarketBean marketBean = ms.getById(marketid);
-			marketBean.setCustomerid(uuid);
-			ms.save(marketBean);
-		}
+//		if (trackBean.getCustomerid() == null || trackBean.getCustomerid().isEmpty()) {
+//			trackBean.setCustomerid(uuid);
+//			MarketBean marketBean = ms.getById(marketid);
+//			marketBean.setCustomerid(uuid);
+//			ms.save(marketBean);
+//		}
 //插入日期
 		trackBean.setTracktime(zTools.getTime(new Date()));
 		 ms.SaveTrack(trackBean);

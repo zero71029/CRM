@@ -13,7 +13,7 @@ public class TrackRemarkBean {
 	private String trackremarkid;//主鍵
 	private String trackid;//TrackBean
 	private String content;//內容
-	@OrderBy("desc")
+	@OrderBy("DESC")
 	private String createtime;
 	private String name;//回覆人 
 	

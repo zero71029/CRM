@@ -1,7 +1,9 @@
 package com.jetec.CRM.model;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -9,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -28,9 +32,10 @@ public class WorkBean {
 	private String state;//狀態
 	private Integer clientid;//客戶
 	private Integer contactid;//聯絡人
-	private Integer customerid;//潛在顧客	
+	private String customerid;//潛在顧客	
 	private Integer marketid;//銷售機會
 	private Date createtime;//創造時間	
+	private String track;
 	
 	//客戶
 	@JsonIgnore
@@ -56,6 +61,31 @@ public class WorkBean {
 	
 	
 	
+	@JsonIgnore
+	@OrderBy("tracktime DESC")
+	@OneToMany(mappedBy = "customerid", cascade = CascadeType.ALL)
+	private List<TrackBean> trackList;
+	
+	
+	
+	public String getCustomerid() {
+		return customerid;
+	}
+	public String getTrack() {
+		return track;
+	}
+	public void setTrack(String track) {
+		this.track = track;
+	}
+	public List<TrackBean> getTrackList() {
+		return trackList;
+	}
+	public void setTrackList(List<TrackBean> trackList) {
+		this.trackList = trackList;
+	}
+	public void setCustomerid(String customerid) {
+		this.customerid = customerid;
+	}
 	public PotentialCustomerBean getCustomer() {
 		return customer;
 	}
@@ -134,12 +164,7 @@ public class WorkBean {
 	public void setContactid(Integer contactid) {
 		this.contactid = contactid;
 	}
-	public Integer getCustomerid() {
-		return customerid;
-	}
-	public void setCustomerid(Integer customerid) {
-		this.customerid = customerid;
-	}
+
 	public Integer getMarketid() {
 		return marketid;
 	}
@@ -154,9 +179,6 @@ public class WorkBean {
 	}
 	@Override
 	public String toString() {
-		return "WorKBean [workid=" + workid + ", name=" + name + ", endtime=" + endtime + ", important=" + important
-				+ ", remake=" + remake + ", user=" + user + ", state=" + state + ", clientid=" + clientid
-				+ ", contactid=" + contactid + ", customerid=" + customerid + ", marketid=" + marketid + ", createtime="
-				+ createtime + "]";
+		return "WorkBean [track=" + track + "]";
 	}
 }

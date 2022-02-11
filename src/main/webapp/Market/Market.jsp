@@ -211,6 +211,7 @@
                                 <br>
                                 <form action="${pageContext.request.contextPath}/Market/SaveMarket" method="post"
                                     class="basefrom g-3 ">
+                                    <input type="hidden" name="customerid" value="${bean.customerid}">
                                     <input type="hidden" name="aaa" value="${bean.aaa}">
                                     <div class="row">
                                         <input type="hidden" name="marketid" value="${bean.marketid}">

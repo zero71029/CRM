@@ -11,7 +11,7 @@ public interface TrackRepository extends JpaRepository<TrackBean, String>{
 
 	void deleteByCustomerid(String id);
 
-	List<TrackBean> findByCustomerid(String customerid);
+	
 
 	List<TrackBean> findByCustomerid(String customerid, Sort sort); 
 

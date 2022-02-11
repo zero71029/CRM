@@ -11,6 +11,8 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -184,6 +186,7 @@ public class PotentialController {
 	public List<TrackBean> removeTrackremark(@PathVariable("trackremarkid") String trackremarkid,@PathVariable("trackid") String trackid) {
 		System.out.println("刪除追蹤回覆");
 		PCS.removeTrackremark(trackremarkid);
-		return tr.findByCustomerid(tr.getById(trackid).getCustomerid()) ;
+		Sort sort = Sort.by(Direction.DESC,"tracktime");
+		return tr.findByCustomerid(tr.getById(trackid).getCustomerid(),sort) ;
 	}
 }

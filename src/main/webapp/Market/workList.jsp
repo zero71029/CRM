@@ -73,7 +73,7 @@
                                 <td>狀態</td>
                             </tr>
                             <tr class="item" v-for="(s, index) in list" :key="index">
-                                <td><input type="checkbox" value="s.workid" name="mak"></td>
+                                <td><input type="checkbox" :value="s.workid" name="mak"></td>
                                 <td @click="detail(s.workid)">
                                     {{s.name}}</td>
                                 <td @click="detail(s.workid)">
@@ -166,7 +166,7 @@
                         selectIn: ""//搜索框
                     }
                 },
-                created() {
+                created() {                    
                     axios
                         .get('${pageContext.request.contextPath}/work/workList?pag=1')//銷售機會列表
                         .then(response => (
@@ -175,8 +175,6 @@
                             console.log(response.data),
                             console.log(response.data.list),
                             console.log(response.data.total)
-
-
                         ))
                         .catch(function (error) {
                             console.log(error);
