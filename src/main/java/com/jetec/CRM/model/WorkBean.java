@@ -179,6 +179,6 @@ public class WorkBean {
 	}
 	@Override
 	public String toString() {
-		return "WorkBean [track=" + track + "]";
+		return "WorkBean [track=" + track + ", trackList=" + trackList + "]";
 	}
 }

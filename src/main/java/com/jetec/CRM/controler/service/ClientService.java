@@ -59,6 +59,12 @@ public class ClientService {
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//讀取客戶細節byName
+	public ClientBean getCompanyByName(String name) {
+		return cr.findByName(name);
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //刪除客戶
 	public void delClient(List<Integer> id) {
 		for (Integer i : id) {
@@ -87,6 +93,12 @@ public class ClientService {
 //讀取聯絡人細節
 	public Object getContactById(Integer id) {
 		return contactRepository.getById(id);
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//讀取聯絡人細節
+	public Object getByNameAndCompany(String name, String company) {
+		return contactRepository.findByNameAndCompany(name, company);
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -221,7 +233,7 @@ public class ClientService {
 	}
 
 	// 判段公司存在
-	public boolean existsContactByCompany( String company) {
+	public boolean existsContactByCompany(String company) {
 		return cr.existsByName(company);
 	}
 
@@ -243,8 +255,8 @@ public class ClientService {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //新增標籤
 	public String saveTag(String tagName, Integer clientid) {
-		
-		if(!ctr.existsByClientidAndName(clientid,tagName)) {
+
+		if (!ctr.existsByClientidAndName(clientid, tagName)) {
 			ClientTagBean clientTagBean = new ClientTagBean();
 			clientTagBean.setClientid(clientid);
 			clientTagBean.setClienttagid(zTools.getUUID());
@@ -261,21 +273,31 @@ public class ClientService {
 		ctr.deleteById(clienttagid);
 
 	}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取標籤列表
 	public List<ClientTagBean> getTagList(Integer clientid) {
-		
+
 		return ctr.findByClientid(clientid);
 	}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //點擊標籤
 	public List<ClientBean> clickTag(String tag) {
-		List<ClientTagBean> list = ctr.getTagList(tag);		
+		List<ClientTagBean> list = ctr.getTagList(tag);
 		List<ClientBean> result = new ArrayList<ClientBean>();
-		for(ClientTagBean bean : list) {			
+		for (ClientTagBean bean : list) {
 			result.add(cr.getById(bean.getClientid()));
 		}
 		return result;
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//各戶負責人改變
+	public void changeUser(Integer clientid, String user) {
+		ClientBean cBean = cr.getById(clientid);
+		cBean.setUser(user);
+		cr.save(cBean);
 	}
 
 }

@@ -28,4 +28,6 @@ public interface ContactRepository extends JpaRepository<ContactBean, Integer>{
 	@Query(value ="SELECT contactid FROM `contact` WHERE name = ?1  ", nativeQuery=true)
 	Integer selectIdByname(String name);
 
+	Object findByNameAndCompany(String name, String company);
+
 }

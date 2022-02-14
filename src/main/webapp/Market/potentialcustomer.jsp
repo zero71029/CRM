@@ -161,7 +161,8 @@
                                         <div class="col-md-2 cell">公司<span style="color: red;">*</span></div>
                                         <div class="col-md-8 cell FormPadding">
                                             <input type="text" class="col-md-9 form-control cellFrom client"
-                                                v-model="company" name="company" list="company" maxlength="20" required>
+                                                @blur="changeCompany" v-model="companyName" name="company"
+                                                list="company" maxlength="20" required>
                                             <datalist id="company">
                                                 <c:if test="${not empty client}">
                                                     <c:forEach varStatus="loop" begin="0" end="${client.size()-1}"
@@ -276,9 +277,8 @@
                                             <input type="text" class=" form-control cellFrom" name="moblie"
                                                 v-model="moblie" maxlength="20">
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-1"></div>
+
+
                                         <div class="col-md-2 cell">Line</div>
                                         <div class="col-md-3 cell FormPadding">
                                             <input type="text" class=" form-control cellFrom" name="line" v-model="line"
@@ -628,7 +628,8 @@
                     "countyName": "city", // 指定城市 select name
                     "districtName": "town", // 指定地區 select name
                     "zipcodeName": "postal" // 指定號碼 select name
-                });
+                });                
+                $("select[name='city']").attr("v-model","city");
             });
             function delRemark(id) {
                 if (confirm("確定刪除?")) {
@@ -742,7 +743,13 @@
                 el: '.app',
                 data() {
                     return {
-                        department: "${bean.department}", jobtitle: "${bean.jobtitle}", director: "${bean.director}", email: "${bean.email}", phone: "${bean.phone}", fax: "${bean.fax}", source: "${bean.source}", moblie: "${bean.moblie}", line: "${bean.line}", address: "${bean.address}", remark: "${bean.remark}", company: "${bean.company}", companynum: "${bean.companynum}",
+                        department: "${bean.department}", jobtitle: "${bean.jobtitle}", director: "${bean.director}",
+                        email: "${bean.email}", phone: "${bean.phone}", fax: "${bean.fax}", source: "${bean.source}",
+                        moblie: "${bean.moblie}", line: "", address: "${bean.address}", remark: "${bean.remark}",
+                        companynum: "${bean.companynum}", companyName: "${bean.company}",city:"${bean.city}",
+                        contact: {},
+                        company: {},
+                        name: "${bean.name}",
                         visible: false,
                         admin: '${user.name}',
                         important: '${bean.important}',
@@ -772,6 +779,7 @@
                     }
                 },
                 created() {
+                    
                     if (this.important == "") this.important = '低';
                     //要求追蹤資訊
                     axios
@@ -780,15 +788,46 @@
                             this.TrackList = response.data
                         ))
                         .catch(function (error) { // 请求失败处理
-                            console.log(error);
+                            console.log("沒有追蹤資訊");
                         });
                 },
-                watch:{
-                    cpmpany:{
-
-                    },
+                watch: {
+                    company: {
+                        immediate: true,//初始化時讓handler被調用
+                        handler(n, oldValue) {                    
+                            $("select[name='city']").val(n.billcity);
+                            setTimeout(function(){},100)
+                            $("select[name='town']").append('<option value="'+n.billtown+'">'+n.billtown+'</option>');
+                            $("select[name='town']").val(n.billtown);
+                        }
+                    }
                 },
                 methods: {
+                    changeCompany() {///公司改變                        
+                        axios
+                            .get('${pageContext.request.contextPath}/Potential/getCompany/' + this.companyName.trim())
+                            .then(
+                                response => ( 
+                                    this.company = response.data.company,
+                                    this.contact = response.data.contact,
+                                    this.name = this.contact.name,                             
+                                    this.jobtitle = this.contact.jobtitle,
+                                    this.director = this.contact.director,
+                                    this.department = this.contact.department,
+                                    this.email = this.company.email,
+                                    this.industry = this.company.industry,
+                                    this.phone = this.company.phone,
+                                    this.companynum = this.company.peoplenumber,
+                                    this.fax = this.company.fax,
+                                    this.moblie = this.contact.moblie,
+                                    this.line = this.contact.line,
+                                    this.address = this.company.billaddress
+                            ))
+                            .catch(function (error) { // 请求失败处理
+                                console.log(error);
+                            });
+
+                    },
                     open(s) {//修改追蹤資訊
                         this.$alert('<form action="${pageContext.request.contextPath}/Market/SaveTrack" method = "post" >\
                                                     <div class="row">\
@@ -866,7 +905,7 @@
                                 message: '已取消删除'
                             });
                         });
-                    }, removeTrackremark(remark) {
+                    }, removeTrackremark(remark) {//
                         this.$confirm('此操作將永久删除 "' + remark.content + '" 是否繼續?', '提示', {
                             confirmButtonText: '缺定',
                             cancelButtonText: '取消',

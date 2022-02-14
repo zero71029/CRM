@@ -22,7 +22,8 @@
             .el-tag:hover {
                 cursor: pointer;
             }
-/*標籤 /////////////////*/
+
+            /*標籤 /////////////////*/
 
 
             .clientbar {
@@ -33,7 +34,7 @@
             .cell {
                 border: 0px solid black;
                 border-bottom: 1px solid black;
-                
+
             }
 
             .cellFrom {
@@ -91,30 +92,30 @@
                     <script src="${pageContext.request.contextPath}/js/jquery.validate.min.js"></script>
                     <title>CRM客戶管理系統</title>
                     <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
-                    <div class="col-md-11 app">
+                    <div class="col-lg-11 app">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-lg-6">
                                 <!-- <%-- 中間主體--%> -->
                                 <br>
                                 <div class="row">
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-10">
+                                    <div class="col-lg-1"></div>
+                                    <div class="col-lg-10">
                                         <h3>各戶</h3>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-2 btn men">
+                                    <div class="col-lg-1"></div>
+                                    <div class="col-lg-2 btn men">
                                         <a href="javascript:history.back()">＜</a>
                                     </div>
                                     <c:if test='${not empty bean}'>
-                                        <div class="col-md-2 btn men">
+                                        <div class="col-lg-2 btn men">
                                             <a href="javascript:changeMarket()">新增銷售機會</a>
                                         </div>
-                                        <div class="col-md-2 btn men">
+                                        <div class="col-lg-2 btn men">
                                             <a href="javascript:changeContact()">新增聯絡人</a>
                                         </div>
-                                        <div class="col-md-2 btn men">
+                                        <div class="col-lg-2 btn men">
                                             <a href="javascript:changeWork()">新增工作項目</a>
                                         </div>
                                     </c:if>
@@ -126,34 +127,30 @@
                                     id="myform" class="basefrom g-3 AAA">
                                     <div class="row">
                                         <input type="hidden" name="clientid" value="${bean.clientid}">
-
-
                                         <div class="row">
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-10 log ">基本資訊</div>
+                                            <div class="col-lg-1"></div>
+                                            <div class="col-lg-10 log ">基本資訊</div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-1 cell">名稱*</div>
-                                            <div class="col-md-9 cell FormPadding">
+                                            <div class="col-lg-1"></div>
+                                            <div class="col-lg-1 cell">名稱*</div>
+                                            <div class="col-lg-9 cell FormPadding">
                                                 <input type="text" class=" form-control cellFrom" name="name"
                                                     value="${bean.name}" maxlength="20" required>
                                             </div>
-                                            <div class="col-md-1"></div>
-
+                                            <div class="col-lg-1"></div>
                                         </div>
-
-
                                         <div class="row">
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-1 cell">電話</div>
-                                            <div class="col-md-3 cell FormPadding">
+                                            <div class="col-lg-1"></div>
+                                            <div class="col-lg-1 cell">電話</div>
+                                            <div class="col-lg-3 cell FormPadding">
                                                 <input type="text" class=" form-control cellFrom" name="phone"
                                                     value="${bean.phone}" maxlength="20">
                                             </div>
-                                            <div class="col-md-2 cell">聯絡人</div>
-                                            <div class="col-md-4 cell FormPadding">
-                                                <select name="" id="" class="form-select cellFrom  contactname">
+                                            <div class="col-lg-2 cell">聯絡人</div>
+                                            <div class="col-lg-4 cell FormPadding">
+                                                <select name="contactname" id=""
+                                                    class="form-select cellFrom  contactname">
                                                     <option value style="background-color: #eee;">選擇..
                                                     </option>
                                                     <c:if test="${not empty bean.contact}">
@@ -169,47 +166,45 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-1 cell">Email</div>
-                                            <div class="col-md-3 cell FormPadding">
+                                            <div class="col-lg-1"></div>
+                                            <div class="col-lg-1 cell">Email</div>
+                                            <div class="col-lg-3 cell FormPadding">
                                                 <input type="text" class=" form-control cellFrom" name="email"
-                                                    value="${bean.email}" maxlength="100">
+                                                    v-model="email" maxlength="100">
                                             </div>
-                                            <div class="col-md-2 cell">聯絡人手機</div>
-                                            <div class="col-md-4 cell moblie FormPadding">${bean.contact[0].moblie}
+                                            <div class="col-lg-2 cell">聯絡人手機</div>
+                                            <div class="col-lg-4 cell moblie FormPadding">${bean.contact[0].moblie}
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-1 cell">傳真</div>
-                                            <div class="col-md-3 cell FormPadding">
+                                            <div class="col-lg-1"></div>
+                                            <div class="col-lg-1 cell">傳真</div>
+                                            <div class="col-lg-3 cell FormPadding">
                                                 <input type="text" class=" form-control cellFrom" name="fax"
                                                     value="${bean.fax}" maxlength="20">
                                             </div>
-                                            <div class="col-md-2 cell">聯絡人職務</div>
-                                            <div class="col-md-4 cell jobtitle FormPadding">
+                                            <div class="col-lg-2 cell">聯絡人職務</div>
+                                            <div class="col-lg-4 cell jobtitle FormPadding">
                                                 ${bean.contact[0].jobtitle}
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-1 cell">統一編號</div>
-                                            <div class="col-md-3 cell FormPadding">
+                                            <div class="col-lg-1"></div>
+                                            <div class="col-lg-1 cell">統一編號</div>
+                                            <div class="col-lg-3 cell FormPadding">
                                                 <input type="text" class=" form-control cellFrom" name="uniformnumber"
                                                     value="${bean.uniformnumber}" maxlength="20">
                                             </div>
-                                            <div class="col-md-2 cell">員工人數</div>
-                                            <div class="col-md-4 cell FormPadding">
+                                            <div class="col-lg-2 cell">員工人數</div>
+                                            <div class="col-lg-4 cell FormPadding">
                                                 <input type="text" class=" form-control cellFrom" name="peoplenumber"
                                                     value="${bean.peoplenumber}" maxlength="20">
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-1 cell">類別</div>
-                                            <div class="col-md-3 cell FormPadding">
-
-
+                                            <div class="col-lg-1"></div>
+                                            <div class="col-lg-1 cell">類別</div>
+                                            <div class="col-lg-3 cell FormPadding">
                                                 <select name="sort" class="form-select cellFrom"
                                                     aria-label="Default select example">
                                                     <option value="客戶" ${bean.sort=="客戶" ?"selected":null}
@@ -241,152 +236,99 @@
                                                     </option>
                                                 </select>
                                             </div>
-                                            <div class="col-md-2 cell">產業</div>
-                                            <div class="col-md-4 cell FormPadding ">
-                                                <select name="industry" class=" form-select cellFrom">
-                                                    <option ${bean.industry=="尚未分類" ?"selected":null} value="尚未分類">
-                                                        請選擇...
-                                                    </option>
-                                                    <option ${bean.industry=="生產 製造" ?"selected":null} value="生產 製造">生產
-                                                        製造
-                                                    </option>
-                                                    <option ${bean.industry=="工程公司" ?"selected":null} value="工程公司">工程公司
-                                                    </option>
-                                                    <option ${bean.industry=="學校 user" ?"selected":null}
-                                                        value="學校 user">學校 user
-                                                    </option>
-                                                    <option ${bean.industry=="研究單位" ?"selected":null} value="研究單位">研究單位
-                                                    </option>
-                                                    <option ${bean.industry=="電子業" ?"selected":null} value="電子業">電子業
-                                                    </option>
-                                                    <option ${bean.industry=="光電產業" ?"selected":null} value="光電產業">光電產業
-                                                    </option>
-                                                    <option ${bean.industry=="半導體業" ?"selected":null} value="半導體業">半導體業
-                                                    </option>
-                                                    <option ${bean.industry=="公家機關" ?"selected":null} value="公家機關">公家機關
-                                                    </option>
-                                                    <option ${bean.industry=="機械設備製造" ?"selected":null} value="機械設備製造">
-                                                        機械設備製造
-                                                    </option>
-                                                    <option ${bean.industry=="生技製藥" ?"selected":null} value="生技製藥">生技製藥
-                                                    </option>
-                                                    <option ${bean.industry=="食品加工" ?"selected":null} value="食品加工">食品加工
-                                                    </option>
-                                                    <option ${bean.industry=="醫院/醫療" ?"selected":null} value="醫院/醫療">
-                                                        醫院/醫療
-                                                    </option>
-                                                    <option ${bean.industry=="物流/倉儲" ?"selected":null} value="物流/倉儲">
-                                                        物流/倉儲
-                                                    </option>
-                                                    <option ${bean.industry=="畜牧/農業" ?"selected":null} value="畜牧/農業">
-                                                        畜牧/農業
-                                                    </option>
-                                                    <option ${bean.industry=="公共/消費性環境" ?"selected":null}
-                                                        value="公共/消費性環境">
-                                                        公共/消費性環境 </option>
-                                                    <option ${bean.industry=="製紙業" ?"selected":null} value="製紙業">製紙業
-                                                    </option>
-                                                    <option ${bean.industry=="紡織業" ?"selected":null} value="紡織業">紡織業
-                                                    </option>
-                                                    <option ${bean.industry=="化工業" ?"selected":null} value="化工業">化工業
-                                                    </option>
-                                                    <option ${bean.industry=="金屬加工" ?"selected":null} value="金屬加工">金屬加工
-                                                    </option>
-                                                    <option ${bean.industry=="冷凍空調" ?"selected":null} value="冷凍空調">冷凍空調
-                                                    </option>
-                                                    <option ${bean.industry=="航太/造船" ?"selected":null} value="航太/造船">
-                                                        航太/造船
-                                                    </option>
-                                                    <option ${bean.industry=="環保相關" ?"selected":null} value="環保相關">環保相關
-                                                    </option>
-                                                    <option ${bean.industry=="水處理/水資源" ?"selected":null}
-                                                        value="水處理/水資源">水處理/水資源
-                                                    </option>
-                                                    <option ${bean.industry=="石化能源" ?"selected":null} value="石化能源">石化能源
-                                                    </option>
-                                                    <option ${bean.industry=="印刷" ?"selected":null} value="印刷">印刷
-                                                    </option>
-                                                    <option ${bean.industry=="其它" ?"selected":null} value="其它">其它(請填寫)
-                                                    </option>
-                                                    <option ${bean.industry=="業主" ?"selected":null} value="業主">業主
-                                                    </option>
-                                                    <option ${bean.industry=="設備換修" ?"selected":null} value="設備換修">設備換修
+                                            <div class="col-lg-2 cell">產業</div>
+                                            <div class="col-lg-4 cell FormPadding ">
+                                                <select name="industry" class=" form-select cellFrom" v-model="industry"
+                                                    v-model="industry">
+                                                    <option v-for="(item, index) in industryList" :key="index">{{item}}
                                                     </option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-1 cell">網站</div>
-                                            <div class="col-md-9 cell FormPadding">
+                                            <div class="col-lg-1"></div>
+                                            <div class="col-lg-1 cell">網站</div>
+                                            <div class="col-lg-9 cell FormPadding">
                                                 <input type="text" class=" form-control cellFrom" name="url"
                                                     value="${bean.url}" maxlength="100">
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-1 cell">備註</div>
-                                            <div class="col-md-9 cell FormPadding">
-                                                <textarea name="remark" class="col-md-9" id="message" maxlength="450"
+                                            <div class="col-lg-1"></div>
+                                            <div class="col-lg-1 cell">備註</div>
+                                            <div class="col-lg-9 cell FormPadding">
+                                                <textarea name="remark" class="col-lg-9" id="message" maxlength="450"
                                                     style="width: 100%; ">${bean.remark}</textarea>
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-1">&nbsp;</div>
-                                            <div class="col-md-8"></div>
+                                            <div class="col-lg-1">&nbsp;</div>
+                                            <div class="col-lg-8"></div>
                                         </div>
                                         <br><br>
                                         <div class="row">
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-10 log">主要地址</div>
+                                            <div class="col-lg-1"></div>
+                                            <div class="col-lg-10 log">主要地址</div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-1 cell">帳單城市</div>
-                                            <div class="col-md-4 cell">
+                                            <div class="col-lg-1"></div>
+                                            <div class="col-lg-1 cell">帳單城市</div>
+                                            <div class="col-lg-4 cell">
                                                 <div class="row" id="twzipcode"></div>
                                             </div>
-                                            <div class="col-md-1 cell">送貨城市</div>
-                                            <div class="col-md-4 cell ">
+                                            <div class="col-lg-1 cell">送貨城市</div>
+                                            <div class="col-lg-4 cell ">
                                                 <div class="row" id="twzipcode2"></div>
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-1 cell">帳單地址</div>
-                                            <div class="col-md-4 cell FormPadding">
+                                            <div class="col-lg-1"></div>
+                                            <div class="col-lg-1 cell">帳單地址</div>
+                                            <div class="col-lg-4 cell FormPadding">
                                                 <input type="text" class=" form-control cellFrom" name="billaddress"
                                                     value="${bean.billaddress}" maxlength="20">
                                             </div>
-                                            <div class="col-md-1 cell">送貨地址</div>
-                                            <div class="col-md-4 cell FormPadding">
+                                            <div class="col-lg-1 cell">送貨地址</div>
+                                            <div class="col-lg-4 cell FormPadding">
                                                 <input type="text" class=" form-control cellFrom" name="deliveraddress"
                                                     value="${bean.deliveraddress}" maxlength="20">
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-1"></div>
-
-                                            <div class="col-md-10 FormPadding">
-                                                <button type="submit" style="width: 100%;"
-                                                    class="btn btn-outline-dark">儲存</button>
-                                            </div>
+                                    </div>
 
 
+
+
+
+
+
+
+
+
+                                    <div class="row">&nbsp;</div>
+                                    <div class="row">
+                                        <div class="col-lg-1"></div>
+                                        <div class="col-lg-10 FormPadding">
+                                            <button type="submit" style="width: 100%;background-color: #0d6efd; color: white;"
+                                                class="btn log" >儲存</button>
                                         </div>
+
+
+
+
                                     </div>
                                 </form>
                                 <div class="row">
-                                    <div class="col-md-1">&nbsp;</div>
-                                    <div class="col-md-8"></div>
+                                    <div class="col-lg-1">&nbsp;</div>
+                                    <div class="col-lg-8"></div>
                                 </div>
 
                                 <c:if test='${not empty bean}'>
                                     <!-- ///////////////////////////////其他地址/////////////////////////////////// ..-->
                                     <hr>
                                     <div class="row">
-                                        <div class="col-md-1"></div>
-                                        <div class="col-md-10 log">
+                                        <div class="col-lg-1"></div>
+                                        <div class="col-lg-10 log">
                                             <h5>其他地址</h5>
                                         </div>
                                     </div>
@@ -395,13 +337,13 @@
                                         <c:forEach varStatus="loop" begin="0" end="${bean.address.size()-1}"
                                             items="${bean.address}" var="s">
                                             <div class="row ">
-                                                <div class="col-md-1"></div>
-                                                <div class="col-md-10 row contact"
+                                                <div class="col-lg-1"></div>
+                                                <div class="col-lg-10 row contact"
                                                     style="margin: 0%; position: relative;"
                                                     onclick="ClientAddress('${s.city}','${s.town}','${s.address}','${s.addressid}')">
-                                                    <div class="col-md-11">${s.city} ${s.town}[${s.postal}] ${s.address}
+                                                    <div class="col-lg-11">${s.city} ${s.town}[${s.postal}] ${s.address}
                                                     </div>
-                                                    <div class="col-md-1"> <a class="delClientAddress"
+                                                    <div class="col-lg-1"> <a class="delClientAddress"
                                                             href="${pageContext.request.contextPath}/CRM/delClientAddress/${s.addressid}/${bean.clientid}">remove</a>
                                                     </div>
                                                 </div>
@@ -410,14 +352,14 @@
                                         </c:forEach>
                                     </c:if>
                                     <div class="row">
-                                        <div class="col-md-1"></div>
-                                        <div class="col-md-10 row contact" onclick="newAddress()" style="margin: 0%;">
-                                            <div class="col-md-2">新增</div>
-                                            <div class="col-md-2"></div>
-                                            <div class="col-md-2"></div>
-                                            <div class="col-md-2"></div>
-                                            <div class="col-md-2"></div>
-                                            <div class="col-md-2"></div>
+                                        <div class="col-lg-1"></div>
+                                        <div class="col-lg-10 row contact" onclick="newAddress()" style="margin: 0%;">
+                                            <div class="col-lg-2">新增</div>
+                                            <div class="col-lg-2"></div>
+                                            <div class="col-lg-2"></div>
+                                            <div class="col-lg-2"></div>
+                                            <div class="col-lg-2"></div>
+                                            <div class="col-lg-2"></div>
                                         </div>
                                     </div>
 
@@ -425,25 +367,25 @@
                                     <!-- ///////////////////////////////聯絡人/////////////////////////////////// ..-->
                                     <hr>
                                     <div class="row">
-                                        <div class="col-md-1"></div>
-                                        <div class="col-md-10 log">
+                                        <div class="col-lg-1"></div>
+                                        <div class="col-lg-10 log">
                                             <h5>聯絡人</h5>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-1"></div>
-                                        <div class="col-md-10 row">
-                                            <div class="col-md-2">名稱</div>
-                                            <div class="col-md-2">職務</div>
-                                            <div class="col-md-2">電話</div>
-                                            <div class="col-md-2">手機</div>
-                                            <div class="col-md-2">Email</div>
-                                            <div class="col-md-2">備註</div>
+                                        <div class="col-lg-1"></div>
+                                        <div class="col-lg-10 row">
+                                            <div class="col-lg-2">名稱</div>
+                                            <div class="col-lg-2">職務</div>
+                                            <div class="col-lg-2">電話</div>
+                                            <div class="col-lg-2">手機</div>
+                                            <div class="col-lg-2">Email</div>
+                                            <div class="col-lg-2">備註</div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-1"></div>
-                                        <div class="col-md-10">
+                                        <div class="col-lg-1"></div>
+                                        <div class="col-lg-10">
                                             <hr>
                                         </div>
                                     </div>
@@ -451,29 +393,29 @@
                                         <c:forEach varStatus="loop" begin="0" end="${bean.contact.size()-1}"
                                             items="${bean.contact}" var="s">
                                             <div class="row ">
-                                                <div class="col-md-1"></div>
-                                                <div class="col-md-10 row contact" style="margin: 0%;"
+                                                <div class="col-lg-1"></div>
+                                                <div class="col-lg-10 row contact" style="margin: 0%;"
                                                     onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/contact/${s.contactid}'">
-                                                    <div class="col-md-2">${s.name}</div>
-                                                    <div class="col-md-2">${s.jobtitle}</div>
-                                                    <div class="col-md-2">${s.phone}</div>
-                                                    <div class="col-md-2">${s.moblie}</div>
-                                                    <div class="col-md-2">Email</div>
-                                                    <div class="col-md-2">${s.remark}</div>
+                                                    <div class="col-lg-2">${s.name}</div>
+                                                    <div class="col-lg-2">${s.jobtitle}</div>
+                                                    <div class="col-lg-2">${s.phone}</div>
+                                                    <div class="col-lg-2">${s.moblie}</div>
+                                                    <div class="col-lg-2">Email</div>
+                                                    <div class="col-lg-2">${s.remark}</div>
                                                 </div>
                                             </div>
                                         </c:forEach>
                                     </c:if>
                                     <div class="row">
-                                        <div class="col-md-1"></div>
-                                        <div class="col-md-10 row contact" onclick="changeContact()"
+                                        <div class="col-lg-1"></div>
+                                        <div class="col-lg-10 row contact" onclick="changeContact()"
                                             style="margin: 0%;">
-                                            <div class="col-md-2">新增</div>
-                                            <div class="col-md-2"></div>
-                                            <div class="col-md-2"></div>
-                                            <div class="col-md-2"></div>
-                                            <div class="col-md-2"></div>
-                                            <div class="col-md-2"></div>
+                                            <div class="col-lg-2">新增</div>
+                                            <div class="col-lg-2"></div>
+                                            <div class="col-lg-2"></div>
+                                            <div class="col-lg-2"></div>
+                                            <div class="col-lg-2"></div>
+                                            <div class="col-lg-2"></div>
                                         </div>
                                     </div>
 
@@ -481,20 +423,20 @@
                                     <hr>
                                     <br>
                                     <div class="row">
-                                        <div class="col-md-1"></div>
-                                        <div class="col-md-10 log">
+                                        <div class="col-lg-1"></div>
+                                        <div class="col-lg-10 log">
                                             <h5>銷售機會</h5>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-1"></div>
-                                        <div class="col-md-10 row">
-                                            <div class="col-md-2">編號</div>
-                                            <div class="col-md-2">名稱</div>
-                                            <div class="col-md-2">聯絡人</div>
-                                            <div class="col-md-2">負責人</div>
-                                            <div class="col-md-2">金額</div>
-                                            <div class="col-md-2">階段</div>
+                                        <div class="col-lg-1"></div>
+                                        <div class="col-lg-10 row">
+                                            <div class="col-lg-2">編號</div>
+                                            <div class="col-lg-2">名稱</div>
+                                            <div class="col-lg-2">聯絡人</div>
+                                            <div class="col-lg-2">負責人</div>
+                                            <div class="col-lg-2">金額</div>
+                                            <div class="col-lg-2">階段</div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -502,29 +444,29 @@
                                             <c:forEach varStatus="loop" begin="0" end="${market.size()-1}"
                                                 items="${market}" var="s">
                                                 <div class="row ">
-                                                    <div class="col-md-1"></div>
-                                                    <div class="col-md-10 row contact" style="margin: 0%;"
+                                                    <div class="col-lg-1"></div>
+                                                    <div class="col-lg-10 row contact" style="margin: 0%;"
                                                         onclick="javascript:location.href='${pageContext.request.contextPath}/Market/Market/${s.marketid}'">
-                                                        <div class="col-md-2">${s.marketid}</div>
-                                                        <div class="col-md-2">${s.name}</div>
-                                                        <div class="col-md-2">${s.contactname}</div>
-                                                        <div class="col-md-2">${s.user}</div>
-                                                        <div class="col-md-2">${s.cost}</div>
-                                                        <div class="col-md-2">${s.stage}</div>
+                                                        <div class="col-lg-2">${s.marketid}</div>
+                                                        <div class="col-lg-2">${s.name}</div>
+                                                        <div class="col-lg-2">${s.contactname}</div>
+                                                        <div class="col-lg-2">${s.user}</div>
+                                                        <div class="col-lg-2">${s.cost}</div>
+                                                        <div class="col-lg-2">${s.stage}</div>
                                                     </div>
                                                 </div>
                                             </c:forEach>
                                         </c:if>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-1"></div>
-                                        <div class="col-md-10 row contact" onclick="changeMarket()" style="margin: 0%;">
-                                            <div class="col-md-2">新增</div>
-                                            <div class="col-md-2"></div>
-                                            <div class="col-md-2"></div>
-                                            <div class="col-md-2"></div>
-                                            <div class="col-md-2"></div>
-                                            <div class="col-md-2"></div>
+                                        <div class="col-lg-1"></div>
+                                        <div class="col-lg-10 row contact" onclick="changeMarket()" style="margin: 0%;">
+                                            <div class="col-lg-2">新增</div>
+                                            <div class="col-lg-2"></div>
+                                            <div class="col-lg-2"></div>
+                                            <div class="col-lg-2"></div>
+                                            <div class="col-lg-2"></div>
+                                            <div class="col-lg-2"></div>
                                         </div>
                                     </div>
 
@@ -532,19 +474,19 @@
                                     <hr>
                                     <br>
                                     <div class="row">
-                                        <div class="col-md-1"></div>
-                                        <div class="col-md-10 log">
+                                        <div class="col-lg-1"></div>
+                                        <div class="col-lg-10 log">
                                             <h5>工作項目</h5>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-1"></div>
-                                        <div class="col-md-10 row">
-                                            <div class="col-md-4">主題</div>
-                                            <div class="col-md-2">到期日</div>
-                                            <div class="col-md-2">負責人</div>
-                                            <div class="col-md-2">狀態</div>
-                                            <div class="col-md-2">重要性</div>
+                                        <div class="col-lg-1"></div>
+                                        <div class="col-lg-10 row">
+                                            <div class="col-lg-4">主題</div>
+                                            <div class="col-lg-2">到期日</div>
+                                            <div class="col-lg-2">負責人</div>
+                                            <div class="col-lg-2">狀態</div>
+                                            <div class="col-lg-2">重要性</div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -552,14 +494,14 @@
                                             <c:forEach varStatus="loop" begin="0" end="${bean.work.size()-1}"
                                                 items="${bean.work}" var="s">
                                                 <div class="row ">
-                                                    <div class="col-md-1"></div>
-                                                    <div class="col-md-10 row contact"
+                                                    <div class="col-lg-1"></div>
+                                                    <div class="col-lg-10 row contact"
                                                         onclick="javascript:location.href='${pageContext.request.contextPath}/work/detail/${s.workid}'">
-                                                        <div class="col-md-4">${s.name}</div>
-                                                        <div class="col-md-2">${s.endtime}</div>
-                                                        <div class="col-md-2">${s.user}</div>
-                                                        <div class="col-md-2">${s.state}</div>
-                                                        <div class="col-md-2">${s.important}</div>
+                                                        <div class="col-lg-4">${s.name}</div>
+                                                        <div class="col-lg-2">${s.endtime}</div>
+                                                        <div class="col-lg-2">${s.user}</div>
+                                                        <div class="col-lg-2">${s.state}</div>
+                                                        <div class="col-lg-2">${s.important}</div>
 
                                                     </div>
                                                 </div>
@@ -568,27 +510,23 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-md-1"></div>
-                                        <div class="col-md-10 row contact" onclick="changeWork()">
-                                            <div class="col-md-2">新增</div>
-                                            <div class="col-md-2"></div>
-                                            <div class="col-md-2"></div>
-                                            <div class="col-md-2"></div>
-                                            <div class="col-md-2"></div>
-                                            <div class="col-md-2"></div>
+                                        <div class="col-lg-1"></div>
+                                        <div class="col-lg-10 row contact" onclick="changeWork()">
+                                            <div class="col-lg-2">新增</div>
+                                            <div class="col-lg-2"></div>
+                                            <div class="col-lg-2"></div>
+                                            <div class="col-lg-2"></div>
+                                            <div class="col-lg-2"></div>
+                                            <div class="col-lg-2"></div>
                                         </div>
                                     </div>
-
-
                                     <div class="row">&nbsp;</div>
                                     <div class="row">&nbsp;</div>
-
-
 
                                     <!-- ////////////////////////////////////////////////////////////////// -->
                                 </c:if>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-lg-4">
                                 <div class="row">&nbsp;</div>
                                 <div class="row">&nbsp;</div>
                                 <div class="row">&nbsp;</div>
@@ -597,11 +535,11 @@
                                 <div class="row">&nbsp;</div>
                                 <div class="row">&nbsp;</div>
                                 <div class="row">
-                                    <div class="col-md-3 cell">負責人*</div>
-                                    <div class="col-md-8 cell FormPadding">
-                                        <select name="user" class="form-select cellFrom"
+                                    <div class="col-lg-3 cell">各戶負責人*</div>
+                                    <div class="col-lg-8 cell FormPadding">
+                                        <select name="user" class="form-select cellFrom" v-model="user"
                                             aria-label="Default select example">
-                                            <option value="無" ${bean.user=="無" ?"selected":null}>無</option>
+                                            <option value="無">無</option>
                                             <c:if test="${not empty admin}">
                                                 <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}"
                                                     items="${admin}" var="s">
@@ -613,13 +551,13 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-3 cell">客戶編號</div>
-                                    <div class="col-md-8 cell FormPadding">${bean.clientid}
+                                    <div class="col-lg-3 cell">客戶編號</div>
+                                    <div class="col-lg-8 cell FormPadding">${bean.clientid}
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-3 cell">新增標籤</div>
-                                    <div class="col-md-8 cell FormPadding">
+                                    <div class="col-lg-3 cell">新增標籤</div>
+                                    <div class="col-lg-8 cell FormPadding">
                                         <div class="input-group  ">
                                             <input type="text" class="form-control tag"
                                                 aria-label="Recipient's username" aria-describedby="button-addon2"
@@ -737,11 +675,11 @@
                                 <style>
 
                                 </style>
-                                <el-tag v-for="tag in tags" :key="tag.name" closable :type="tag.type" @close="removeTag(tag.clienttagid)"
-                                    @click="clickTag(tag.name)">
+                                <el-tag v-for="tag in tags" :key="tag.name" closable :type="tag.type"
+                                    @close="removeTag(tag.clienttagid)" @click="clickTag(tag.name)">
                                     {{tag.name}}
                                 </el-tag>
-                               
+
 
 
                             </div>
@@ -808,42 +746,43 @@
                 //     min: $.validator.format("请输入不小于 {0} 的数值")
                 // });
                 // $("#myform").validate();
+                // 地區ui
+                $("#twzipcode").twzipcode({
+                    countySel: "${bean.billcity}",
+                    districtSel: "${bean.billtown}",
+                    "zipcodeIntoDistrict": true,
+                    // "css": ["city form-control", "town form-control"],
+                    "countyName": "billcity", // 指定城市 select name
+                    "districtName": "billtown", // 指定地區 select name
+                    "zipcodeName": "billpostal" // 指定號碼 select name
+                });
+                $("#twzipcode2").twzipcode({
+                    countySel: "${bean.delivercity}",
+                    districtSel: "${bean.delivertown}",
+                    "zipcodeIntoDistrict": true,
+                    // "css": ["city form-control", "town form-control"],
+                    "countyName": "delivercity", // 指定城市 select name
+                    "districtName": "delivertown", // 指定地區 select name
+                    "zipcodeName": "deliverpostal" // 指定號碼 select name
+                });
+                $("#twzipcode3").twzipcode({
+                    "zipcodeIntoDistrict": true,
+                    // "css": ["city form-control", "town form-control"],
+                    "countyName": "city", // 指定城市 select name
+                    "districtName": "town", // 指定地區 select name
+                    "zipcodeName": "postal" // 指定號碼 select name
+                });
+                //同帳單地址
+                $("#SameAddress").change(function () {
+                    if ($("#SameAddress:checked").val() == "SSS") {
+                        $("select[name='delivercity']").val($("select[name='billcity']").val());
+                        $("select[name='delivercity']").change();
+                        $("select[name='delivertown']").val($("select[name='billtown']").val());
+                        $("input[name='deliveraddress']").val($("input[name='billaddress']").val());
+                    }
+                })
             });
-            // 地區ui
-            $("#twzipcode").twzipcode({
-                countySel: "${bean.billcity}",
-                districtSel: "${bean.billtown}",
-                "zipcodeIntoDistrict": true,
-                // "css": ["city form-control", "town form-control"],
-                "countyName": "billcity", // 指定城市 select name
-                "districtName": "billtown", // 指定地區 select name
-                "zipcodeName": "billpostal" // 指定號碼 select name
-            });
-            $("#twzipcode2").twzipcode({
-                countySel: "${bean.delivercity}",
-                districtSel: "${bean.delivertown}",
-                "zipcodeIntoDistrict": true,
-                // "css": ["city form-control", "town form-control"],
-                "countyName": "delivercity", // 指定城市 select name
-                "districtName": "delivertown", // 指定地區 select name
-                "zipcodeName": "deliverpostal" // 指定號碼 select name
-            });
-            $("#twzipcode3").twzipcode({
-                "zipcodeIntoDistrict": true,
-                // "css": ["city form-control", "town form-control"],
-                "countyName": "city", // 指定城市 select name
-                "districtName": "town", // 指定地區 select name
-                "zipcodeName": "postal" // 指定號碼 select name
-            });
-            //同帳單地址
-            $("#SameAddress").change(function () {
-                if ($("#SameAddress:checked").val() == "SSS") {
-                    $("select[name='delivercity']").val($("select[name='billcity']").val());
-                    $("select[name='delivercity']").change();
-                    $("select[name='delivertown']").val($("select[name='billtown']").val());
-                    $("input[name='deliveraddress']").val($("input[name='billaddress']").val());
-                }
-            })
+
 
             var moblie = new Object;
             var jobtitle = new Object;
@@ -923,28 +862,65 @@
                 el: ".app",
                 data() {
                     return {
-                        newTag:"",
-                        tags: [
- 
-                        ],
+                        email: "${bean.email}",
+                        user: "",//各戶負責人
+                        newTag: "",//新增標籤
+                        tags: [],//標籤列表
+                        industry: "${bean.industry}",//產業
+                        industryList: ["尚未分類",
+                            "農、林、漁、牧業",
+                            "礦業及土石採取業",
+                            "製造業",
+                            "電子及半導體生產", "機械設備製造業",
+                            "電力及燃氣供應業",
+                            "用水供應及污染整治業",
+                            "營建工程業",
+                            "批發及零售業",
+                            "運輸及倉儲業",
+                            "住宿及餐飲業",
+                            "出版影音及資通訊業",
+                            "金融及保險業",
+                            "不動產業",
+                            "專業、科學及技術服務業",
+                            "支援服務業",
+                            "公共行政及國防；強制性社會安全",
+                            "教育業",
+                            "醫療保健及社會工作服務業",
+                            "藝術、娛樂及休閒服務業",
+                            "其他服務業"],//產業列表
                     };
                 },
                 created() {
                     axios
-                        .get('${pageContext.request.contextPath}/client/getTag/' + ${ bean.clientid })
+                        .get('${pageContext.request.contextPath}/client/getTag/${ bean.clientid }')
                         .then(response => (
                             this.tags = response.data
                         ))
-                        .catch(function (error) {  
+                        .catch(function (error) {
                             console.log(error);
                         });
                 },
                 watch: {
+                    user: {//各戶負責人改變
+                        handler(newValue, oldValue) {
+                            console.log(newValue);
+                            $.ajax({
+                                url: '${pageContext.request.contextPath}/client/changeUser/${bean.clientid}/' + newValue,//接受請求的Servlet地址
+                                type: 'get',
+                                success: response => (
+                                    console.log(response)
+                                ),
+                                error: function (returndata) {
+                                    console.log(returndata);
+                                }
+                            });
+                        }
+                    },
                     tags: {
                         immediate: true,//初始化時讓handler被調用
                         handler(newValue, oldValue) {
                             var i = 0;
-                            for (const iterator of newValue) {                               
+                            for (const iterator of newValue) {
                                 switch (i % 5) {
                                     case 0:
                                         iterator.type = "primary";
@@ -971,31 +947,30 @@
                 methods: {
                     removeTag: function (clienttagid) { //刪除標籤
                         console.log(clienttagid);
-                        if (confirm("確認刪除")) 
-                        axios
-                        .get('${pageContext.request.contextPath}/client/removeTag/${bean.clientid}/'+clienttagid)
-                        .then(response => (
-                            this.tags = response.data
-
-                        ))
-                        .catch(function (error) {  
-                            console.log(error);
-                        });
+                        if (confirm("確認刪除"))
+                            axios
+                                .get('${pageContext.request.contextPath}/client/removeTag/${bean.clientid}/' + clienttagid)
+                                .then(response => (
+                                    this.tags = response.data
+                                ))
+                                .catch(function (error) {
+                                    console.log(error);
+                                });
                     },
                     clickTag: function (tagName) { //點擊標籤
-                        location.href="${pageContext.request.contextPath}/CRM/client/list?tag="+tagName;
+                        location.href = "${pageContext.request.contextPath}/CRM/client/list?tag=" + tagName;
                     },
-                    addtag: function(){ //新增標籤
+                    addtag: function () { //新增標籤
                         axios
-                        .get('${pageContext.request.contextPath}/client/addTag/${bean.clientid}/' + this.newTag)
-                        .then(response => (
-                            this.tags = response.data
+                            .get('${pageContext.request.contextPath}/client/addTag/${bean.clientid}/' + this.newTag)
+                            .then(response => (
+                                this.tags = response.data
 
-                        ))
-                        .catch(function (error) {  
-                            console.log(error);
-                        });
-                       
+                            ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+
                     },
                 },
 

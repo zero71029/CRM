@@ -10,6 +10,7 @@
             <link rel="preconnect" href="https://fonts.gstatic.com">
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
             <title>${user.mail.size() > 0 ? ddd:CRM}</title>
+            <link rel="stylesheet" href="${pageContext.request.contextPath}\icons\bootstrap-icons.css">
 
         </head>
 
@@ -192,8 +193,6 @@
                                                         </c:forEach>
                                                         <span onclick="sh()" class="aaa"></span>
                                                     </c:if>
-
-
                                                     <!-- 未讀 -->
                                                     <c:if test="${not empty user.mail}">
                                                         <span onclick="showUnread()">未讀:${user.mail.size()}</span>
@@ -369,9 +368,6 @@
                                     </tbody>
                                 </table>
 
-
-
-
                             </div>
 
                             <div class="col-lg-3">
@@ -412,16 +408,17 @@
                                         </ul>
                                     </nav>
                                 </c:if>
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#myModal">Launch modal</button>
                                 <!-- 分頁 ＿////////////////////-->
                                 <!-- 彈窗 -->
                                 <c:if test="${not empty unread}">
                                     <c:forEach varStatus="loop" begin="0" end="${unread.size()}" items="${unread}"
                                         var="unread">
-                                        <div class="unread" title="未讀">
+                                        <div class="unread " title="未讀">
                                             <a href='${pageContext.request.contextPath}/billboardReply/${unread.billboardid}'
                                                 style="color:red">${unread.theme}</a>
+                                            <i class="bi bi-file-earmark-pdf" style="float: right;cursor: pointer;" onclick=""></i>
                                             <p>${unread.content}</p>
-
                                         </div>
                                     </c:forEach>
                                 </c:if>
@@ -431,10 +428,15 @@
                                         <div class="dialog" title="@">
                                             <a href='${pageContext.request.contextPath}/billboardReply/${advice.billboardid}'
                                                 style="color:red">${advice.theme}</a>
+                                             <i class="bi bi-file-earmark-pdf" style="float: right;cursor: pointer;" onclick=""></i>
                                             <p>${advice.content}</p>
                                         </div>
                                     </c:forEach>
                                 </c:if>
+
+
+
+
                             </div>
                         </div>
                     </div>

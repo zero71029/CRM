@@ -284,7 +284,7 @@ public class MarketBean {
 
 	@Override
 	public String toString() {
-		return "MarketBean [customerid=" + customerid + "]";
+		return "MarketBean [customerid=" + customerid + ", trackbean=" + trackbean + "]";
 	}
 
 }

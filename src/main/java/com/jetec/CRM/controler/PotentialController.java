@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +22,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.jetec.CRM.controler.service.ClientService;
 import com.jetec.CRM.controler.service.PotentialCustomerService;
 import com.jetec.CRM.model.AdminBean;
+import com.jetec.CRM.model.ClientBean;
 import com.jetec.CRM.model.PotentialCustomerBean;
 import com.jetec.CRM.model.PotentialCustomerHelperBean;
 import com.jetec.CRM.model.TrackBean;
@@ -38,6 +41,9 @@ public class PotentialController {
 	PotentialCustomerService PCS;
 	@Autowired
 	TrackRepository tr;
+	@Autowired
+	ClientService CS;
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取潛在客戶列表
 	@RequestMapping("/CustomerList")
@@ -165,10 +171,11 @@ public class PotentialController {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //存回覆追蹤資訊
 	@RequestMapping("/saveTrackRemark/{trackid}/{content}")
-	public List<TrackBean> saveTrackRemark(@PathVariable("trackid") String trackid, @PathVariable("content") String content,HttpSession session) {
+	public List<TrackBean> saveTrackRemark(@PathVariable("trackid") String trackid,
+			@PathVariable("content") String content, HttpSession session) {
 		System.out.println("存回覆追蹤資訊");
 		AdminBean aBean = (AdminBean) session.getAttribute("user");
-		return PCS.saveTrackRemark(trackid, content,aBean.getName());
+		return PCS.saveTrackRemark(trackid, content, aBean.getName());
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -176,17 +183,30 @@ public class PotentialController {
 	@RequestMapping("/removeTrack/{trackid}")
 	public List<TrackBean> removeTrack(@PathVariable("trackid") String trackid) {
 		System.out.println("刪除追蹤資訊");
-		String customerid = PCS.removeTrack(trackid);		
+		String customerid = PCS.removeTrack(trackid);
 		return PCS.getTrackByCustomerid(customerid);
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //刪除追蹤回覆
 	@RequestMapping("/removeTrackremark/{trackremarkid}/{trackid}")
-	public List<TrackBean> removeTrackremark(@PathVariable("trackremarkid") String trackremarkid,@PathVariable("trackid") String trackid) {
+	public List<TrackBean> removeTrackremark(@PathVariable("trackremarkid") String trackremarkid,
+			@PathVariable("trackid") String trackid) {
 		System.out.println("刪除追蹤回覆");
 		PCS.removeTrackremark(trackremarkid);
-		Sort sort = Sort.by(Direction.DESC,"tracktime");
-		return tr.findByCustomerid(tr.getById(trackid).getCustomerid(),sort) ;
+		Sort sort = Sort.by(Direction.DESC, "tracktime");
+		return tr.findByCustomerid(tr.getById(trackid).getCustomerid(), sort);
 	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//讀取客戶細節byName
+	@RequestMapping("/getCompany/{company}")
+	public Map<String, Object> getCompanyByName(@PathVariable("company") String company) {
+		Map<String, Object> map = new HashMap<>();
+		ClientBean cBean = CS.getCompanyByName(company);
+		map.put("company", cBean);
+		map.put("contact", CS.getByNameAndCompany(cBean.getUser(), company));
+		return map;
+	}
+
 }

@@ -9,7 +9,7 @@
 
             <link rel="preconnect" href="https://fonts.gstatic.com">
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
-
+            <link rel="stylesheet" href="${pageContext.request.contextPath}\icons\bootstrap-icons.css">
 
 
             <title>CRM客戶管理系統</title>
@@ -41,7 +41,7 @@
                         <div class="offcanvas offcanvas-end" tabindex="0" id="offcanvasRight"
                             aria-labelledby="offcanvasRightLabel" style="width: 450px;">
                             <div class="offcanvas-header">
-                                <h5 id="offcanvasRightLabel">搜索</h5>
+                                <h5 id="offcanvasRightLabel"><i class="bi-search"></i>&nbsp; 搜索</h5>
                                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
                                     aria-label="Close"></button>
                             </div>
@@ -50,8 +50,8 @@
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingOne">
                                             <button class="accordion-button collapsed" type="button"
-                                                onclick="javascript:location.href='${pageContext.request.contextPath}/Market/PotentialCustomerList'">
-                                                重置
+                                                onclick="javascript:location.href='${pageContext.request.contextPath}/Market/potentialcustomerList.jsp'">
+                                                <i class="bi bi-arrow-repeat"></i>&nbsp; 重置
                                             </button>
                                         </h2>
                                     </div>
@@ -61,7 +61,7 @@
                                             <button class="accordion-button collapsed" type="button"
                                                 data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
                                                 aria-expanded="false" aria-controls="flush-collapseOne">
-                                                負責人
+                                                <i class="bi bi-person-square"></i>&nbsp; 負責人
                                             </button>
                                         </h2>
                                         <div id="flush-collapseOne" class="accordion-collapse collapse"
@@ -86,7 +86,7 @@
                                             <button class="accordion-button collapsed" type="button"
                                                 data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo"
                                                 aria-expanded="false" aria-controls="flush-collapseTwo">
-                                                建立日期
+                                                <i class="bi bi-calendar-minus"></i>&nbsp; 建立日期
                                             </button>
                                         </h2>
                                         <div id="flush-collapseTwo" class="accordion-collapse collapse"
@@ -103,7 +103,7 @@
                                             <button class="accordion-button collapsed" type="button"
                                                 data-bs-toggle="collapse" data-bs-target="#flush-collapseThree"
                                                 aria-expanded="false" aria-controls="flush-collapseThree">
-                                                聯絡人
+                                                <i class="bi bi-arrows-angle-contract"></i>&nbsp; 聯絡人
                                             </button>
                                         </h2>
                                         <div id="flush-collapseThree" class="accordion-collapse collapse"
@@ -127,7 +127,7 @@
                                             <button class="accordion-button collapsed" type="button"
                                                 data-bs-toggle="collapse" data-bs-target="#i4" aria-expanded="false"
                                                 aria-controls="flush-collapseThree">
-                                                公司名稱
+                                                <i class="bi bi-building"></i>&nbsp; 公司名稱
                                             </button>
                                         </h2>
                                         <div id="i4" class="accordion-collapse collapse"
@@ -151,7 +151,7 @@
                                             <button class="accordion-button collapsed" type="button"
                                                 data-bs-toggle="collapse" data-bs-target="#i5" aria-expanded="false"
                                                 aria-controls="flush-collapseThree">
-                                                狀態
+                                                <i class="bi bi-heart-pulse"></i>&nbsp; 狀態
                                             </button>
                                         </h2>
                                         <div id="i5" class="accordion-collapse collapse"
@@ -178,7 +178,8 @@
                                             <button class="accordion-button collapsed" type="button"
                                                 data-bs-toggle="collapse" data-bs-target="#i6" aria-expanded="false"
                                                 aria-controls="flush-collapseThree">
-                                                來源
+                                              <i class="el-icon-c-scale-to-original
+                                              "></i>&nbsp;  來源
                                             </button>
                                         </h2>
                                         <div id="i6" class="accordion-collapse collapse"
@@ -254,7 +255,7 @@
                                             <button class="accordion-button collapsed" type="button"
                                                 data-bs-toggle="collapse" data-bs-target="#i7" aria-expanded="false"
                                                 aria-controls="flush-collapseThree">
-                                                產業
+                                                <i class="bi bi-globe"></i>&nbsp; 產業
                                             </button>
                                         </h2>
                                         <div id="i7" class="accordion-collapse collapse"
@@ -279,7 +280,7 @@
                                             <button class="accordion-button collapsed" type="button"
                                                 data-bs-toggle="collapse" data-bs-target="#i8" aria-expanded="false"
                                                 aria-controls="flush-collapseThree">
-                                                上次聯絡時間
+                                                <i class="bi bi-calendar3"></i>&nbsp; 上次聯絡時間
                                             </button>
                                         </h2>
                                         <div id="i8" class="accordion-collapse collapse"
@@ -318,16 +319,16 @@
                             <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                                 <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off"
                                     onclick="javascript:location.href='${pageContext.request.contextPath}/Market/potentialcustomer.jsp'">
-                                <label class="btn btn-outline-primary state1" for="btncheck1">新增</label>
+                                <label class="btn btn-outline-primary state1" for="btncheck1"><i class="bi bi-clipboard-check"></i> 新增</label>
                                 <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
-                                <label class="btn btn-outline-primary state2" for="btncheck2" onclick="sta()">刪除</label>
+                                <label class="btn btn-outline-primary state2" for="btncheck2" onclick="sta()"><i class="el-icon-delete"></i> 刪除</label>
                                 <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off">
                                 <label class="btn btn-outline-primary" for="btncheck3"
-                                    @click="aadmin(admin)">{{admin}}</label>
+                                    @click="aadmin(admin)"><i class="bi bi-person-square"></i> {{admin}}</label>
 
 
                                 <label class="btn btn-outline-primary" for="btncheck4" data-bs-toggle="offcanvas"
-                                    data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">搜索</label>
+                                    data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i class="bi-search"></i> 搜索</label>
                             </div>
                         </div>
 

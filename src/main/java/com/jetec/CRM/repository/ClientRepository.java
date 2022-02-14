@@ -25,5 +25,7 @@ public interface ClientRepository extends JpaRepository<ClientBean, Integer>{
 
 	List<ClientBean> findByState(Integer i);
 
+	ClientBean findByName(String name);
+
 
 }
