@@ -1010,7 +1010,7 @@
                     this.contactphone = formatPhone(this.contactphone);
                     this.contactmoblie = formatPhone(this.contactmoblie);
                     if (this.important == "") this.important = '低';
-                    if ('${bean.customerid}' != '') {
+                    if ('${bean.customerid}' != '') {//追蹤資訊
                         axios
                             .get('${pageContext.request.contextPath}/Potential/client/${bean.customerid}')
                             .then(response => (

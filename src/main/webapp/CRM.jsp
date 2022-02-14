@@ -29,8 +29,8 @@
                     <!-- <%-- 插入側邊欄--%> -->
                     <jsp:include page="/Sidebar.jsp"></jsp:include>
                     <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
-                    <div class="col-lg-11">
-                        
+                    <div class="col-lg-11 ">
+
                         <div class="row ">
                             <div class="col-lg-11">
                                 <!-- 導覽列 -->
@@ -201,7 +201,6 @@
 
 
                                                 <c:if test="${not empty user.advice}">
-
                                                     <script>if (b > 0) $(".aaa").append("@:" + b + "/");</script>
                                                 </c:if>
                                             </c:if>
@@ -370,7 +369,7 @@
 
                             </div>
 
-                            <div class="col-lg-3">
+                            <div class="col-lg-3 app">
                                 <!-- 分頁 -->
                                 <c:if test="${not empty param.pag}">
                                     <nav aria-label="Page navigation example">
@@ -408,7 +407,7 @@
                                         </ul>
                                     </nav>
                                 </c:if>
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#myModal">Launch modal</button>
+
                                 <!-- 分頁 ＿////////////////////-->
                                 <!-- 彈窗 -->
                                 <c:if test="${not empty unread}">
@@ -417,7 +416,8 @@
                                         <div class="unread " title="未讀">
                                             <a href='${pageContext.request.contextPath}/billboardReply/${unread.billboardid}'
                                                 style="color:red">${unread.theme}</a>
-                                            <i class="bi bi-file-earmark-pdf" style="float: right;cursor: pointer;" onclick=""></i>
+                                            <i class="bi bi-file-earmark-pdf" style="float: right;cursor: pointer;"
+                                                onclick="read('${unread.billboardid}')"></i>
                                             <p>${unread.content}</p>
                                         </div>
                                     </c:forEach>
@@ -428,7 +428,8 @@
                                         <div class="dialog" title="@">
                                             <a href='${pageContext.request.contextPath}/billboardReply/${advice.billboardid}'
                                                 style="color:red">${advice.theme}</a>
-                                             <i class="bi bi-file-earmark-pdf" style="float: right;cursor: pointer;" onclick=""></i>
+                                            <i class="bi bi-file-earmark-pdf" style="float: right;cursor: pointer;"
+                                                onclick="read('${advice.billboardid}')"></i>
                                             <p>${advice.content}</p>
                                         </div>
                                     </c:forEach>
@@ -471,6 +472,44 @@
                 function showUnread() {
                     $('.unread').dialog("open");
                 }
+                function read(billboardid) {
+                    vm.read(billboardid);
+                }
+
+                const vm = new Vue({
+                    el: '.app',
+                    methods: {
+                        read(billboardid) {
+                            console.log("ddddd");
+                            $.ajax({
+                                url: '${pageContext.request.contextPath}/read/' + billboardid + '/${user.adminid}',//接受請求的Servlet地址
+                                type: 'get',
+                                success: json => {
+                                    if (json == "找不到資料") {
+                                        this.$message({
+                                            message: json,
+                                            type: 'warning'
+                                        });
+                                    } else {
+                                        this.$message({
+                                            message: json,
+                                            type: 'success'
+                                        });
+                                    }
+                                },
+                                error: function (returndata) {
+                                    console.log(returndata.responseJSON.message);
+
+                                }
+                            });
+                        }
+                    }
+                })
+
+
+
+
+
 
 
             </script>

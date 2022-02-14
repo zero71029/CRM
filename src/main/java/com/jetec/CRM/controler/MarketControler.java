@@ -410,13 +410,36 @@ public class MarketControler {
 	@RequestMapping("/MarketChangeWork")
 	public String changeWork(Model model, MarketBean mBean) {
 		System.out.println("銷售機 轉工作項目");
-		System.out.println("MarketBean = "+mBean);
+		System.out.println("MarketBean = " + mBean);
 		WorkBean bean = new WorkBean();
 		bean.setTrack(mBean.getCustomerid());
 		bean.setMarket(mBean);
-		System.out.println("bean = "+mBean);
+		System.out.println("bean = " + mBean);
 		model.addAttribute("bean", bean);
 		return "/Market/work";
+	}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//潛在各戶轉銷售機會
+	@RequestMapping("/changeMarket")
+	public String changeMarket(Model model, PotentialCustomerBean pBean) {
+		System.out.println("潛在各戶轉銷售機會");
+		MarketBean bean = new MarketBean();
+		bean.setClient(pBean.getCompany());
+		bean.setPhone(pBean.getPhone());
+		bean.setUser(pBean.getUser());
+		bean.setMessage(pBean.getRemark());
+		bean.setContactname(pBean.getName());
+		bean.setContactphone(pBean.getPhone());
+		bean.setContactmoblie(pBean.getMoblie());
+		bean.setContactemail(pBean.getEmail());
+		bean.setType(pBean.getIndustry());
+		bean.setSource(pBean.getSource());
+		bean.setImportant(pBean.getImportant());
+		bean.setLine(pBean.getLine());
+		bean.setCustomerid(pBean.getCustomerid());
+		model.addAttribute("bean", bean);
+		return "/Market/Market";
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -546,7 +569,7 @@ public class MarketControler {
 //修改追蹤by銷售機會
 	@RequestMapping("/changeTrackByMarket/{marketid}")
 	public String changeTrackByMarket(TrackBean trackBean, @PathVariable("marketid") Integer marketid) {
-		System.out.println("修改追蹤by銷售機會");		
+		System.out.println("修改追蹤by銷售機會");
 		String uuid = zTools.getUUID();
 		if (trackBean.getTrackid() == null || trackBean.getTrackid().isEmpty())
 			trackBean.setTrackid(uuid);
@@ -559,8 +582,8 @@ public class MarketControler {
 //		}
 //插入日期
 		trackBean.setTracktime(zTools.getTime(new Date()));
-		 ms.SaveTrack(trackBean);
+		ms.SaveTrack(trackBean);
 
-		return "redirect:/Market/Market/"+marketid;
+		return "redirect:/Market/Market/" + marketid;
 	}
 }

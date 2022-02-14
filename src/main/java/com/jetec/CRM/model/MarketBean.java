@@ -20,8 +20,8 @@ public class MarketBean {
 	private Integer marketid;//
 	private String name;//
 	private String user;// 業務
-	private String createtime;//
-	private String endtime;//
+	private String createtime;//起始時間
+	private String endtime;//結束時間
 	private String message;// 描述
 	private Integer cost;// 預算
 	private String client;// 客戶
@@ -29,20 +29,20 @@ public class MarketBean {
 	private String contactphone;// 聯絡人電話
 	private String contactmoblie;// 聯絡人手機
 	private String contactemail;// 聯絡人email
-	private String type;// 類型
+	private String type;// 產業
 	private String source;// 機會來源
 	private String clinch;// 成交機率
 	private String stage;// 階段
-	private String need;// 需求確認
-	private String roianalyze;// ROI分析
+	private String need;// 需求確認(沒使用了)
+	private String roianalyze;// ROI分析(沒使用了)
 	private Date ccc;// 創建時間
-	private String product;//
-	private String producttype;//
+	private String product;//產品名稱
+	private String producttype;//產品類別
 	private String phone;// 公司電話
 	private String aaa;// 創建時間 字串
-	private String important;
+	private String important;//重要性
 	private String line;
-	private String customerid;
+	private String customerid;//追蹤資訊
 	// 追蹤資訊
 	@OneToMany(targetEntity = TrackBean.class, mappedBy = "customerid", cascade = CascadeType.ALL)
 	private List<TrackBean> trackbean;

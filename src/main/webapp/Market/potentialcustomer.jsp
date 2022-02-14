@@ -49,7 +49,7 @@
             /* 右下角按鈕 */
             .row .box {
                 height: 0px;
-                width: 460px;
+                width: 560px;
                 position: fixed;
                 z-index: 1000;
                 bottom: 30px;
@@ -63,7 +63,7 @@
 
             .row .dockbar {
                 opacity: 1;
-                width: 460px;
+                width: 560px;
                 height: 30px;
                 background-color: #ddd;
 
@@ -83,7 +83,7 @@
             .box .act {
                 position: absolute;
                 background-color: #aaa;
-                width: 411px;
+                width: 505px;
                 bottom: 0px;
                 right: 25px;
                 color: white;
@@ -544,9 +544,10 @@
                     <c:if test="${not empty bean}">
                         <div class="row box" id="draggable">
                             <div class="row act" style="height: 30px;">
-                                <a class="col-md-4" href="#" onclick="goClient()">轉成客戶</a>
-                                <a class="col-md-4" href="#" onclick="goContact()">建立聯絡⼈</a>
-                                <a class="col-md-4" href="#" onclick="goWork()">新增工作項目</a>
+                                <a class="col-md-3" href="#" onclick="goClient()">轉成客戶</a>
+                                <a class="col-md-3" href="#" onclick="goContact()">建立聯絡⼈</a>
+                                <a class="col-md-3" href="#" onclick="goMarket()">新增銷售機會</a>
+                                <a class="col-md-3" href="#" onclick="goWork()">新增工作項目</a>
                             </div>
                             <div class="dockbar row shadow  ">
 
@@ -628,8 +629,8 @@
                     "countyName": "city", // 指定城市 select name
                     "districtName": "town", // 指定地區 select name
                     "zipcodeName": "postal" // 指定號碼 select name
-                });                
-                $("select[name='city']").attr("v-model","city");
+                });
+                $("select[name='city']").attr("v-model", "city");
             });
             function delRemark(id) {
                 if (confirm("確定刪除?")) {
@@ -686,8 +687,8 @@
                             alert(json);
                             return;
                         }
-                        if (json == "公司不存在,請先轉客戶") {
-                            alert(json);
+                        if (json == "公司不存在") {
+                            alert("公司不存在,請先轉客戶");
                             return;
                         }
                         if (json == "不存在") {
@@ -707,6 +708,11 @@
             //新增工作項目
             function goWork() {
                 $(".AAA").attr("action", "${pageContext.request.contextPath}/Market/changeWork");
+                $(".AAA")[0].submit();
+            }
+            //新增工作項目
+            function goMarket() {
+                $(".AAA").attr("action", "${pageContext.request.contextPath}/Market/changeMarket");
                 $(".AAA")[0].submit();
             }
             // 添加協助者
@@ -745,8 +751,8 @@
                     return {
                         department: "${bean.department}", jobtitle: "${bean.jobtitle}", director: "${bean.director}",
                         email: "${bean.email}", phone: "${bean.phone}", fax: "${bean.fax}", source: "${bean.source}",
-                        moblie: "${bean.moblie}", line: "", address: "${bean.address}", remark: "${bean.remark}",
-                        companynum: "${bean.companynum}", companyName: "${bean.company}",city:"${bean.city}",
+                        moblie: "${bean.moblie}", line: "${bean.line}", address: "${bean.address}", remark: "${bean.remark}",
+                        companynum: "${bean.companynum}", companyName: "${bean.company}", city: "${bean.city}",
                         contact: {},
                         company: {},
                         name: "${bean.name}",
@@ -779,7 +785,7 @@
                     }
                 },
                 created() {
-                    
+
                     if (this.important == "") this.important = '低';
                     //要求追蹤資訊
                     axios
@@ -793,11 +799,11 @@
                 },
                 watch: {
                     company: {
-                        immediate: true,//初始化時讓handler被調用
-                        handler(n, oldValue) {                    
+                        // immediate: true,
+                        handler(n, oldValue) {//插入城市 區域
                             $("select[name='city']").val(n.billcity);
-                            setTimeout(function(){},100)
-                            $("select[name='town']").append('<option value="'+n.billtown+'">'+n.billtown+'</option>');
+                            setTimeout(function () { }, 100)
+                            $("select[name='town']").append('<option value="' + n.billtown + '">' + n.billtown + '</option>');
                             $("select[name='town']").val(n.billtown);
                         }
                     }
@@ -807,10 +813,10 @@
                         axios
                             .get('${pageContext.request.contextPath}/Potential/getCompany/' + this.companyName.trim())
                             .then(
-                                response => ( 
+                                response => (
                                     this.company = response.data.company,
                                     this.contact = response.data.contact,
-                                    this.name = this.contact.name,                             
+                                    this.name = this.contact.name,
                                     this.jobtitle = this.contact.jobtitle,
                                     this.director = this.contact.director,
                                     this.department = this.contact.department,
@@ -822,7 +828,7 @@
                                     this.moblie = this.contact.moblie,
                                     this.line = this.contact.line,
                                     this.address = this.company.billaddress
-                            ))
+                                ))
                             .catch(function (error) { // 请求失败处理
                                 console.log(error);
                             });

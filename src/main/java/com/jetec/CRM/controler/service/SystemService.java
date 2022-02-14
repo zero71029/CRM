@@ -354,7 +354,7 @@ public class SystemService {
 				bar.save(bab);
 			}
 
-			return "成功已讀  “您已被標註“訊息取消";
+			return "成功已讀  “請刷新頁面“  ";
 		} else {
 			return "找不到資料";
 		}
