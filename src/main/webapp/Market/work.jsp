@@ -209,20 +209,21 @@
                                         <div class="row">
                                             <div class="col-md-3 cell">潛在顧客</div>
                                             <div class="col-md-9   FormPadding" onclick="showCustomer()">
-                                                <a href="${pageContext.request.contextPath}/CRM/potentialcustomer/${bean.customer.customerid}"
-                                                    target="_blank" class="customerName">${bean.customer.name}</a>
-                                                <input type="hidden" class=" form-control cellFrom" name="customerid"
-                                                    value="${bean.customer.customerid}" maxlength="20">
-
+                                                <a href="${pageContext.request.contextPath}/Market/potentialcustomer/${bean.customerid}"
+                                                    target="_blank" class="customerName">${bean.customername}</a>
+                                                <input type="hidden" name="customerid" value="${bean.customerid}"
+                                                    maxlength="20">
+                                                <input type="hidden" name="customername" value="${bean.customername}">
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-3 cell">銷售機會</div>
+                                            <div class="col-md-3 cell">銷售機會${MarketName}</div>
                                             <div class="col-md-9   FormPadding" onclick="showMarket()">
-                                                <a href="${pageContext.request.contextPath}/Market/Market/${bean.market.marketid}"
-                                                    target="_blank" class="marketName">${bean.market.name}</a>
-                                                <input type="hidden" class=" form-control " name="marketid"
-                                                    value="${bean.marketid}" maxlength="20">
+                                                <a href="${pageContext.request.contextPath}/Market/Market/${bean.marketid}"
+                                                    target="_blank" class="marketName">${bean.marketname}</a>
+                                                <input type="hidden" name="marketid" value="${bean.marketid}"
+                                                    maxlength="20">
+                                                <input type="hidden" name="marketname" value="${bean.marketname}">
                                             </div>
                                         </div>
                                     </div>
@@ -531,7 +532,7 @@
                         $(".CustomerTable").append("<tr><td>客戶名稱</td> <td>客戶公司</td><td>負責人</td> <td>電話</td> <td>產業</td></tr>");
                         for (var bean of list) {
 
-                            $(".CustomerTable").append('<tr class="item" onclick="clickCustomer(`' + bean.name + '`,' + bean.customerid + ')" style="cursor: pointer;">' +
+                            $(".CustomerTable").append('<tr class="item" onclick="clickCustomer(`' + bean.company + '`,`' + bean.customerid + '`)" style="cursor: pointer;">' +
                                 '<td> ' + bean.name + '</td><td>' + bean.company + ' </td><td> ' + bean.user + '</td><td> ' + bean.phone + '</td><td>' + bean.industry + ' </td></tr>');
                         }
                     },
@@ -549,7 +550,7 @@
                         $(".MarketTable").empty();
                         $(".MarketTable").append("<tr><td>客戶名稱</td> <td>公司</td><td>負責人</td> <td>電話</td> </tr>");
                         for (var bean of list) {
-                            $(".MarketTable").append('<tr class="item" onclick="clickMarket(`' + bean.name + '`,' + bean.marketid + ')" style="cursor: pointer;">' +
+                            $(".MarketTable").append('<tr class="item" onclick="clickMarket(`' + bean.name + '`,`' + bean.marketid + '`)" style="cursor: pointer;">' +
                                 '<td> ' + bean.name + '</td><td>' + bean.client + ' </td><td> ' + bean.user + '</td><td> ' + bean.phone + '</td><td>' + bean.type + ' </td></tr>');
                         }
                     },
@@ -584,11 +585,13 @@
             });
             //點選潛在顧客後
             function clickCustomer(name, id) {
-                $(".customerName").text(name);
-                $(".customerName").attr("href", "${pageContext.request.contextPath}/CRM/potentialcustomer/" + id);
-                $("input[name='customerid']").val(id);
-                $('.CustomerWork').dialog("close");
                 console.log("點選潛在顧客後");
+                $(".customerName").text(name);
+                $(".customerName").attr("href", "${pageContext.request.contextPath}/Market/potentialcustomer/" + id);
+                $("input[name='customerid']").val(id);
+                $("input[name='customername']").val(name);
+                $('.CustomerWork').dialog("close");
+                
             }
             $(".clientName").click(function (event) {
                 event.stopPropagation();
@@ -596,8 +599,9 @@
             //點選銷售機會後
             function clickMarket(name, id) {
                 $(".marketName").text(name);
-                $(".marketName").attr("href", "${pageContext.request.contextPath}/CRM/Market/" + id);
+                $(".marketName").attr("href", "${pageContext.request.contextPath}/Market/Market/" + id);
                 $("input[name='marketid']").val(id);
+                $("input[name='marketname']").val(name);
                 $('.MarketWork').dialog("close");
             }
             $(".clientName").click(function (event) {
@@ -645,7 +649,6 @@
                     }
                 },
                 created() {
-                    console.log('${bean.track}','bean.track');
                     axios//取得客戶列表
                         .get('${pageContext.request.contextPath}/work/clientList')
                         .then(response => (

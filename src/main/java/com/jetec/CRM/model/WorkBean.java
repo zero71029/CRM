@@ -6,8 +6,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -22,8 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class WorkBean {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer workid;//
+	private String workid;//
 	private String name;//主題
 	private String endtime;//到期日
 	private String important;//重要性
@@ -33,30 +30,22 @@ public class WorkBean {
 	private Integer clientid;//客戶
 	private Integer contactid;//聯絡人
 	private String customerid;//潛在顧客	
-	private Integer marketid;//銷售機會
+	private String marketid;//銷售機會
 	private Date createtime;//創造時間	
 	private String track;
-	
+	private String marketname;
+	private String customername;
 	//客戶
 	@JsonIgnore
 	@ManyToOne(targetEntity = ClientBean.class,fetch = FetchType.EAGER)
 	@JoinColumn(name = "clientid", referencedColumnName = "clientid", insertable = false, updatable = false)
 	private ClientBean client;
-	//聯繫人
+//	聯繫人
 	@JsonIgnore
 	@ManyToOne(targetEntity = ContactBean.class,fetch = FetchType.EAGER)
 	@JoinColumn(name = "contactid", referencedColumnName = "contactid", insertable = false, updatable = false)
 	private ContactBean contact;
-	//潛在顧客
-	@JsonIgnore
-	@ManyToOne(targetEntity = PotentialCustomerBean.class,fetch = FetchType.EAGER)
-	@JoinColumn(name = "customerid", referencedColumnName = "customerid", insertable = false, updatable = false)
-	private PotentialCustomerBean customer;
-	//銷售機會
-	@JsonIgnore
-	@ManyToOne(targetEntity = MarketBean.class,fetch = FetchType.EAGER)
-	@JoinColumn(name = "marketid", referencedColumnName = "marketid", insertable = false, updatable = false)
-	private MarketBean market;
+
 	
 	
 	
@@ -68,6 +57,31 @@ public class WorkBean {
 	
 	
 	
+	public String getMarketname() {
+		return marketname;
+	}
+	public void setMarketname(String marketname) {
+		this.marketname = marketname;
+	}
+	public String getCustomername() {
+		return customername;
+	}
+	public void setCustomername(String customername) {
+		this.customername = customername;
+	}
+	public ClientBean getClient() {
+		return client;
+	}
+	public void setClient(ClientBean client) {
+		this.client = client;
+	}
+	public ContactBean getContact() {
+		return contact;
+	}
+	public void setContact(ContactBean contact) {
+		this.contact = contact;
+	}
+
 	public String getCustomerid() {
 		return customerid;
 	}
@@ -86,40 +100,19 @@ public class WorkBean {
 	public void setCustomerid(String customerid) {
 		this.customerid = customerid;
 	}
-	public PotentialCustomerBean getCustomer() {
-		return customer;
-	}
-	public void setCustomer(PotentialCustomerBean customer) {
-		this.customer = customer;
-	}
-	public MarketBean getMarket() {
-		return market;
-	}
-	public void setMarket(MarketBean market) {
-		this.market = market;
-	}
-	public ContactBean getContact() {
-		return contact;
-	}
-	public void setContact(ContactBean contact) {
-		this.contact = contact;
-	}
-	public ClientBean getClient() {
-		return client;
-	}
-	public void setClient(ClientBean client) {
-		this.client = client;
-	}
+
+
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Integer getWorkid() {
+
+	public String getWorkid() {
 		return workid;
 	}
-	public void setWorkid(Integer workid) {
+	public void setWorkid(String workid) {
 		this.workid = workid;
 	}
 	public String getEndtime() {
@@ -165,10 +158,11 @@ public class WorkBean {
 		this.contactid = contactid;
 	}
 
-	public Integer getMarketid() {
+
+	public String getMarketid() {
 		return marketid;
 	}
-	public void setMarketid(Integer marketid) {
+	public void setMarketid(String marketid) {
 		this.marketid = marketid;
 	}
 	public Date getCreatetime() {

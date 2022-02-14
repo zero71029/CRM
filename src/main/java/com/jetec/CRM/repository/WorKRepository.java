@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.jetec.CRM.model.WorkBean;
 
-public interface WorKRepository extends JpaRepository<WorkBean, Integer> {
+public interface WorKRepository extends JpaRepository<WorkBean, String> {
 
 	List<WorkBean> findByNameLikeIgnoreCase(String string);
 
@@ -24,10 +24,10 @@ public interface WorKRepository extends JpaRepository<WorkBean, Integer> {
 
 	List<WorkBean> findByUserAndState(String name, String state);
 
-	@Query(value = "SELECT  *  from work where state != '失敗結案' AND state != '成功結案' order by marketid DESC ", nativeQuery = true)
+	@Query(value = "SELECT  *  from work where state != '失敗結案' AND state != '成功結案' order by createtime DESC ", nativeQuery = true)
 	Page<WorkBean> findStage(Pageable p);
 
-	@Query(value = "SELECT  count(*)  from work where state != '失敗結案' AND state != '成功結案' order by marketid DESC ", nativeQuery = true)
+	@Query(value = "SELECT  count(*)  from work where state != '失敗結案' AND state != '成功結案' order by createtime DESC ", nativeQuery = true)
 	Integer getTotal();
 
 	Page<WorkBean> findByNameLikeIgnoreCase(String string, Pageable p);

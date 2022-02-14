@@ -403,8 +403,9 @@ public class MarketControler {
 	public String changeWork(Model model, PotentialCustomerBean potentialCustomerBean) {
 		System.out.println("潛在各戶轉工作項目");
 		WorkBean bean = new WorkBean();
-		bean.setCustomer(potentialCustomerBean);
+		bean.setCustomerid(potentialCustomerBean.getCustomerid());
 		bean.setTrack(potentialCustomerBean.getCustomerid());
+		bean.setCustomername(potentialCustomerBean.getCompany());
 		model.addAttribute("bean", bean);
 		return "/Market/work";
 	}
@@ -412,12 +413,12 @@ public class MarketControler {
 	// 銷售機會 轉工作項目
 	@RequestMapping("/MarketChangeWork")
 	public String changeWork(Model model, MarketBean mBean) {
-		System.out.println("銷售機 轉工作項目");
-		System.out.println("MarketBean = " + mBean);
+		System.out.println("銷售機 轉工作項目");		
 		WorkBean bean = new WorkBean();
 		bean.setTrack(mBean.getCustomerid());
-		bean.setMarket(mBean);
-		System.out.println("bean = " + mBean);
+		bean.setMarketid(mBean.getMarketid());
+		bean.setMarketname(mBean.getName());
+		
 		model.addAttribute("bean", bean);
 		return "/Market/work";
 	}

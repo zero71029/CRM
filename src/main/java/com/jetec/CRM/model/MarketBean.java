@@ -40,6 +40,15 @@ public class MarketBean {
 	private String important;//重要性
 	private String line;
 	private String customerid;//追蹤資訊
+
+	
+	
+	
+	
+	
+	
+	
+	
 	// 追蹤資訊
 	@OneToMany(targetEntity = TrackBean.class, mappedBy = "customerid", cascade = CascadeType.ALL)
 	private List<TrackBean> trackbean;
@@ -61,6 +70,8 @@ public class MarketBean {
 	public String getName() {
 		return name;
 	}
+
+
 
 	public String getMarketid() {
 		return marketid;
@@ -284,7 +295,13 @@ public class MarketBean {
 
 	@Override
 	public String toString() {
-		return "MarketBean [customerid=" + customerid + ", trackbean=" + trackbean + "]";
+		return "MarketBean [marketid=" + marketid + ", name=" + name + ", user=" + user + ", createtime=" + createtime
+				+ ", endtime=" + endtime + ", message=" + message + ", cost=" + cost + ", client=" + client
+				+ ", contactname=" + contactname + ", contactphone=" + contactphone + ", contactmoblie=" + contactmoblie
+				+ ", contactemail=" + contactemail + ", type=" + type + ", source=" + source + ", clinch=" + clinch
+				+ ", stage=" + stage + ", need=" + need + ", roianalyze=" + roianalyze + ", ccc=" + ccc + ", product="
+				+ product + ", producttype=" + producttype + ", phone=" + phone + ", aaa=" + aaa + ", important="
+				+ important + ", line=" + line + ", customerid=" + customerid + ", trackbean=" + trackbean + "]";
 	}
 
 }

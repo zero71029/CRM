@@ -48,6 +48,7 @@ public class WorkControler {
 	public String SaveWork(WorkBean worKBean) {
 		System.out.println("存工作項目");
 		System.out.println(worKBean);
+		if(worKBean.getWorkid() == null || worKBean.getWorkid().isEmpty())worKBean.setWorkid(zTools.getUUID());
 		WorkBean save = ws.SaveWork(worKBean);
 		return "redirect:/work/detail/" + save.getWorkid();
 	}
@@ -82,15 +83,11 @@ public class WorkControler {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 讀取工作項目細節
 	@RequestMapping("/detail/{id}")
-	public String detail(Model model, @PathVariable("id") Integer id) {
+	public String detail(Model model, @PathVariable("id") String id) {
 		System.out.println("*****讀取工作項目細節****");
-		if (id == 0) {
-//			model.addAttribute("bean", new PotentialCustomerBean());
-		} else {
 			model.addAttribute("bean", ws.getById(id));
 			System.out.println(ws.getById(id));
-		}
-		model.addAttribute("clientList", cs.getList());
+
 		return "/Market/work";
 	}
 
@@ -152,7 +149,7 @@ public class WorkControler {
 //刪除工作項目
 	@RequestMapping("/delWork")
 	@ResponseBody
-	public String delMarket(@RequestParam("id") List<Integer> id) {
+	public String delMarket(@RequestParam("id") List<String> id) {
 		System.out.println("*****刪除工作項目*****");
 		ws.delWorkt(id);
 		return "刪除成功";
@@ -173,7 +170,7 @@ public class WorkControler {
 //存追蹤by工作項目
 	@RequestMapping("/SaveTrackByWork/{workid}")
 	@ResponseBody
-	public List<TrackBean> SaveTrackByWork(TrackBean trackBean, @PathVariable("workid") Integer workid) {
+	public List<TrackBean> SaveTrackByWork(TrackBean trackBean, @PathVariable("workid") String workid) {
 		System.out.println("存追蹤by工作項目");
 		String uuid = zTools.getUUID();
 		if (trackBean.getTrackid() == null || trackBean.getTrackid().isEmpty())
