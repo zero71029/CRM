@@ -82,7 +82,7 @@ public class MarketService {
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////
-	public MarketBean getById(Integer id) {
+	public MarketBean getById(String id) {
 		return mr.getById(id);
 	}
 
@@ -93,8 +93,8 @@ public class MarketService {
 
 /////////////////////////////////////////////////////////////////////////////////////	
 	// 刪除銷售機會
-	public void delMarket(List<Integer> id) {
-		for (Integer i : id) {
+	public void delMarket(List<String> id) {
+		for (String i : id) {
 			mrr.deleteByMarketid(i);
 			mr.deleteById(i);
 		}

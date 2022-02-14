@@ -12,7 +12,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.jetec.CRM.model.MarketBean;
 
-public interface MarketRepository extends JpaRepository<MarketBean, Integer> {
+public interface MarketRepository extends JpaRepository<MarketBean, String> {
 
 	List<MarketBean> findByNameLikeIgnoreCase(String string);
 

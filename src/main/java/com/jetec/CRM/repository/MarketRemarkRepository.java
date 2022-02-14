@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.jetec.CRM.model.MarketRemarkBean;
 
 public interface MarketRemarkRepository extends JpaRepository<MarketRemarkBean, Integer>{
-List<MarketRemarkBean> findByMarketid(Integer marketid);
+List<MarketRemarkBean> findByMarketid(String marketid);
 
 
-void deleteByMarketid(Integer i);
+void deleteByMarketid(String i);
 }

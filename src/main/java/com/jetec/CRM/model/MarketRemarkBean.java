@@ -12,12 +12,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "marketremark")
+@Table(name = "marketremark")//沒有在用了
 public class MarketRemarkBean {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private Integer marketid;//外建
+	private String marketid;//外建
 	private String user;//留言人
 	private String remark;//留言
 	private Date createtime;//創建時間
@@ -37,10 +37,11 @@ public class MarketRemarkBean {
 	public void setMb(MarketBean mb) {
 		this.mb = mb;
 	}
-	public Integer getMarketid() {
+
+	public String getMarketid() {
 		return marketid;
 	}
-	public void setMarketid(Integer marketid) {
+	public void setMarketid(String marketid) {
 		this.marketid = marketid;
 	}
 	public Integer getId() {

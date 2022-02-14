@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -16,8 +14,7 @@ import javax.persistence.Table;
 public class MarketBean {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer marketid;//
+	private String marketid;//
 	private String name;//
 	private String user;// 業務
 	private String createtime;//起始時間
@@ -58,16 +55,19 @@ public class MarketBean {
 //	@OneToMany(targetEntity = WorkBean.class, mappedBy = "marketid", cascade = CascadeType.ALL)
 //	private List<WorkBean> work;
 
-	public Integer getMarketid() {
+
+
+	
+	public String getName() {
+		return name;
+	}
+
+	public String getMarketid() {
 		return marketid;
 	}
 
-	public void setMarketid(Integer marketid) {
+	public void setMarketid(String marketid) {
 		this.marketid = marketid;
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public void setName(String name) {

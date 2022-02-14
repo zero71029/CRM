@@ -136,13 +136,16 @@ public class MarketControler {
 	public String SaveMarket(MarketBean marketBean) {
 		System.out.println("*****存銷售機會****");
 		System.out.println(marketBean);
+		
+		if(marketBean.getMarketid() == null || marketBean.getMarketid().isEmpty())
+		marketBean.setMarketid(zTools.getUUID());
 		MarketBean save = ms.save(marketBean);
 		return "redirect:/Market/Market/" + save.getMarketid();
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@RequestMapping("/Market/{id}")
-	public String Market(Model model, @PathVariable("id") Integer id) {
+	public String Market(Model model, @PathVariable("id") String id) {
 		System.out.println("進入詳細");
 		System.out.println(ms.getById(id));
 		model.addAttribute("bean", ms.getById(id));
@@ -162,7 +165,7 @@ public class MarketControler {
 //刪除銷售機會
 	@RequestMapping("/delMarket")
 	@ResponseBody
-	public String delMarket(@RequestParam("id") List<Integer> id) {
+	public String delMarket(@RequestParam("id") List<String> id) {
 		System.out.println("*****刪除銷售機會*****");
 		ms.delMarket(id);
 		return "刪除成功";
@@ -546,7 +549,7 @@ public class MarketControler {
 //存追蹤by銷售機會
 	@RequestMapping("/SaveTrackByMarket/{marketid}")
 	@ResponseBody
-	public List<TrackBean> SaveTrackByMarket(TrackBean trackBean, @PathVariable("marketid") Integer marketid) {
+	public List<TrackBean> SaveTrackByMarket(TrackBean trackBean, @PathVariable("marketid") String marketid) {
 		System.out.println("存追蹤by銷售機會");
 		String uuid = zTools.getUUID();
 		if (trackBean.getTrackid() == null || trackBean.getTrackid().isEmpty())
