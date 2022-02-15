@@ -30,7 +30,7 @@
         </head>
 
         <body>
-            <div class="container-fluid">
+            <div class="container-fluid" >
                 <div class="row">
                     <!-- <%-- 插入側邊欄--%> -->
                     <jsp:include page="/Sidebar.jsp"></jsp:include>

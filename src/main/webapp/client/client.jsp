@@ -977,13 +977,6 @@
             })
 
 
-
-
-
-
-
-
-
         </script>
         <style>
             select[name='city'] {

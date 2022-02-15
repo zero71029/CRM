@@ -386,7 +386,8 @@
                                                     v-model="important">
                                                     <option value="高">高</option>
                                                     <option value="中">中</option>
-                                                    <option value="低" selected>低</option>
+                                                    <option value="低" >低</option>
+                                                    <option value="無">無</option>
                                                 </select>
                                             </div>
                                         </div>

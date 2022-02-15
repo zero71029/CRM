@@ -14,6 +14,7 @@
             <title>CRM客戶管理系統</title>
         </head>
         <style>
+
             .error {
                 color: red;
             }
@@ -23,7 +24,7 @@
                 background-color: #afe3d5;
             }
 
-            .cell {
+            .cellz {
                 /* 標題顏色 */
                 border: 0px solid black;
                 border-bottom: 1px solid black;
@@ -52,7 +53,7 @@
                 width: 560px;
                 position: fixed;
                 z-index: 1000;
-                bottom: 30px;
+                bottom: 530px;
                 right: 0px;
                 background-color: #fff;
 
@@ -78,6 +79,14 @@
             .dockbar div:hover {
                 background-color: #aaa;
 
+            }
+
+            .box  .bosMessagediv{
+                position: absolute;
+                width: 505px;
+                bottom: 0px;
+                right: 25px;
+                padding: 0%;
             }
 
             .box .act {
@@ -130,14 +139,14 @@
                             </div>
                             <c:if test="${not empty bean}">
                                 <!-- <div class="col-md-1 btn men">
-                                    <a href="javascript:goClient()">轉成客戶</a>
-                                </div>
-                                <div class="col-md-1 btn men">
-                                    <a href="javascript:goContact()">建立聯絡⼈</a>
-                                </div>
-                                <div class="col-md-1 btn men">
-                                    <a href="javascript:goWork()">新增工作項目</a>
-                                </div> -->
+                    <a href="javascript:goClient()">轉成客戶</a>
+                    </div>
+                    <div class="col-md-1 btn men">
+                    <a href="javascript:goContact()">建立聯絡⼈</a>
+                    </div>
+                    <div class="col-md-1 btn men">
+                    <a href="javascript:goWork()">新增工作項目</a>
+                    </div> -->
                             </c:if>
 
                         </div>
@@ -154,7 +163,8 @@
                                         <div class="col-md-1"></div>
                                         <div class="col-md-10 bg-warning text-white"
                                             style="background-color: rgb(36, 101, 164);font-size: 1.5rem;color: white;border-radius: 5px 5px 0 0 ;">
-                                            基本資料</div>
+                                            基本資料
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1"></div>
@@ -176,13 +186,13 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1"></div>
-                                        <div class="col-md-2 cell">聯絡人<span style="color: red;">*</span></div>
-                                        <div class="col-md-3 cell FormPadding">
+                                        <div class="col-md-2 cellz">聯絡人<span style="color: red;">*</span></div>
+                                        <div class="col-md-3 cellz FormPadding">
                                             <input type="text" class=" form-control cellFrom" name="name" v-model="name"
                                                 maxlength="20" required>
                                         </div>
-                                        <div class="col-md-2 cell">部門</div>
-                                        <div class="col-md-3 cell FormPadding"><input type="text"
+                                        <div class="col-md-2 cellz">部門</div>
+                                        <div class="col-md-3 cellz FormPadding"><input type="text"
                                                 class=" form-control cellFrom" name="department" v-model="department"
                                                 maxlength="20">
                                         </div>
@@ -190,26 +200,26 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1"></div>
-                                        <div class="col-md-2 cell">職稱</div>
-                                        <div class="col-md-3 cell FormPadding">
+                                        <div class="col-md-2 cellz">職稱</div>
+                                        <div class="col-md-3 cellz FormPadding">
                                             <input type="text" class=" form-control cellFrom" name="jobtitle"
                                                 v-model="jobtitle" maxlength="20">
                                         </div>
-                                        <div class="col-md-2 cell">主管</div>
-                                        <div class="col-md-3 cell FormPadding">
+                                        <div class="col-md-2 cellz">主管</div>
+                                        <div class="col-md-3 cellz FormPadding">
                                             <input type="text" class=" form-control cellFrom" name="director"
                                                 v-model="director" maxlength="20">
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1"></div>
-                                        <div class="col-md-2 cell">Email</div>
-                                        <div class="col-md-3 cell FormPadding">
+                                        <div class="col-md-2 cellz">Email</div>
+                                        <div class="col-md-3 cellz FormPadding">
                                             <input type="email" class=" form-control cellFrom" name="email"
                                                 v-model="email" maxlength="50">
                                         </div>
-                                        <div class="col-md-2 cell">產業</div>
-                                        <div class="col-md-3 cell FormPadding">
+                                        <div class="col-md-2 cellz">產業</div>
+                                        <div class="col-md-3 cellz FormPadding">
                                             <select name="industry" class=" form-select cellFrom" v-model="industry"
                                                 v-model="industry">
                                                 <option v-for="(item, index) in industryList" :key="index">{{item}}
@@ -219,24 +229,25 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1"></div>
-                                        <div class="col-md-2 cell">電話</div>
-                                        <div class="col-md-3 cell FormPadding">
+                                        <div class="col-md-2 cellz">電話</div>
+                                        <div class="col-md-3 cellz FormPadding">
                                             <input type="text" class=" form-control cellFrom" name="phone"
                                                 v-model="phone" maxlength="20">
                                         </div>
-                                        <div class="col-md-2 cell">公司人數</div>
-                                        <div class="col-md-3 cell FormPadding"><input type="number" v-model="companynum"
-                                                class=" form-control cellFrom" name="companynum" maxlength="20"></div>
+                                        <div class="col-md-2 cellz">公司人數</div>
+                                        <div class="col-md-3 cellz FormPadding"><input type="number"
+                                                v-model="companynum" class=" form-control cellFrom" name="companynum"
+                                                maxlength="20"></div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1"></div>
-                                        <div class="col-md-2 cell">傳真</div>
-                                        <div class="col-md-3 cell FormPadding">
+                                        <div class="col-md-2 cellz">傳真</div>
+                                        <div class="col-md-3 cellz FormPadding">
                                             <input type="text" class=" form-control cellFrom" name="fax" v-model="fax"
                                                 maxlength="20">
                                         </div>
-                                        <div class="col-md-2 cell">來源</div>
-                                        <div class="col-md-3 cell FormPadding">
+                                        <div class="col-md-2 cellz">來源</div>
+                                        <div class="col-md-3 cellz FormPadding">
                                             <select class="form-select cellFrom" name="source" v-model="source">
                                                 <option value="廣告" class="selItemOff" ${bean.source=="廣告"
                                                     ?"selected":null}>
@@ -244,13 +255,16 @@
                                                 </option>
                                                 <option value="員工推薦" class="selItemOff" ${bean.source=="員工推薦"
                                                     ?"selected":null}>
-                                                    員工推薦</option>
+                                                    員工推薦
+                                                </option>
                                                 <option value="外部推薦" class="selItemOff" ${bean.source=="外部推薦"
                                                     ?"selected":null}>
-                                                    外部推薦</option>
+                                                    外部推薦
+                                                </option>
                                                 <option value="合作夥伴" class="selItemOff" ${bean.source=="合作夥伴"
                                                     ?"selected":null}>
-                                                    合作夥伴</option>
+                                                    合作夥伴
+                                                </option>
                                                 <option value="參展" class="selItemOff" ${bean.source=="參展"
                                                     ?"selected":null}>
                                                     參展
@@ -272,38 +286,38 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1"></div>
-                                        <div class="col-md-2 cell">手機</div>
-                                        <div class="col-md-3 cell FormPadding">
+                                        <div class="col-md-2 cellz">手機</div>
+                                        <div class="col-md-3 cellz FormPadding">
                                             <input type="text" class=" form-control cellFrom" name="moblie"
                                                 v-model="moblie" maxlength="20">
                                         </div>
 
 
-                                        <div class="col-md-2 cell">Line</div>
-                                        <div class="col-md-3 cell FormPadding">
+                                        <div class="col-md-2 cellz">Line</div>
+                                        <div class="col-md-3 cellz FormPadding">
                                             <input type="text" class=" form-control cellFrom" name="line" v-model="line"
                                                 maxlength="190">
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1"></div>
-                                        <div class="col-md-2 cell">地址</div>
+                                        <div class="col-md-2 cellz">地址</div>
                                         <div class="col-md-8 ">
                                             <div class="row" id="twzipcode"></div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1"></div>
-                                        <div class="col-md-2 cell"></div>
-                                        <div class="col-md-8 cell FormPadding">
+                                        <div class="col-md-2 cellz"></div>
+                                        <div class="col-md-8 cellz FormPadding">
                                             <input type="text" class=" form-control cellFrom" name="address"
                                                 v-model="address" maxlength="50">
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1"></div>
-                                        <div class="col-md-2 cell">客人詢問</div>
-                                        <div class="col-md-8 cell FormPadding">
+                                        <div class="col-md-2 cellz">客人詢問</div>
+                                        <div class="col-md-8 cellz FormPadding">
                                             <textarea class="form-control " id="validationTextarea" name="remark"
                                                 v-model="remark" rows="5" maxlength="200">${bean.remark}</textarea>
                                         </div>
@@ -313,8 +327,8 @@
                                 <!--  -->
                                 <div class="col-md-5  ASDFG">
                                     <div class="row">
-                                        <div class="col-md-3 cell">潛在各戶負責人</div>
-                                        <div class="col-md-7 cell FormPadding">
+                                        <div class="col-md-3 cellz">潛在各戶負責人</div>
+                                        <div class="col-md-7 cellz FormPadding">
                                             <c:if test="${user.position != '職員' }">
                                                 <select name="user" class="form-select cellFrom"
                                                     aria-label="Default select example">
@@ -335,7 +349,7 @@
                                     </div>
 
                                     <div class="row ">
-                                        <div class="col-md-3 cell"></div>
+                                        <div class="col-md-3 cellz"></div>
                                         <div class="col-lg-7">
                                             <a href="javascript:$('.help').toggle()">+添加協助者</a>
                                             <div class="input-group help">
@@ -347,13 +361,14 @@
                                                     </c:forEach>
                                                 </select>
                                                 <button class="btn btn-outline-secondary" type="button"
-                                                    onclick="addHelper()">添加</button>
+                                                    onclick="addHelper()">添加
+                                                </button>
                                             </div>
                                         </div>
 
                                     </div>
                                     <div class="row ">
-                                        <div class="col-md-3 cell"></div>
+                                        <div class="col-md-3 cellz"></div>
                                         <div class="col-md-7 ">
                                             <ul class="helpList " style="position: relative;">
                                                 <c:forEach varStatus="loop" begin="0" end="${bean.helper.size()}"
@@ -366,17 +381,16 @@
                                     </div>
 
 
-
                                     <div class="row">
 
-                                        <div class="col-md-3 cell" style="font-size: 14px;">創造時間</div>
+                                        <div class="col-md-3 cellz" style="font-size: 14px;">創造時間</div>
                                         <div class="col-md-7  FormPadding">
                                             ${bean.createtime}
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-3 cell">狀態</div>
-                                        <div class="col-md-7 cell FormPadding">
+                                        <div class="col-md-3 cellz">狀態</div>
+                                        <div class="col-md-7 cellz FormPadding">
                                             <select name="status" class="form-select cellFrom"
                                                 aria-label="Default select example">
                                                 <option value="未處理" ${bean.status=="未處理" ?"selected":null}>未處理
@@ -390,12 +404,13 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-3 cell">重要性</div>
-                                        <div class="col-md-7 cell FormPadding">
+                                        <div class="col-md-3 celzl">重要性</div>
+                                        <div class="col-md-7 cellz FormPadding">
                                             <select class="form-select cellFrom" name="important" v-model="important">
                                                 <option value="高">高</option>
                                                 <option value="中">中</option>
                                                 <option value="低">低</option>
+                                                <option value="無">無</option>
                                             </select>
                                         </div>
                                     </div>
@@ -405,7 +420,8 @@
                                     <div class="col-md-3"></div>
                                     <div class="col-md-5 FormPadding">
                                         <button type="submit" style="width: 100%; " class="btn btn-warning"
-                                            onclick="return window.confirm('確定修改')">儲存</button>
+                                            onclick="return window.confirm('確定修改')">儲存
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -424,7 +440,6 @@
                             </div>
 
 
-
                             <div class="row">
                                 <div class="col-md-1"></div>
 
@@ -438,7 +453,7 @@
                                     <hr>
                                 </div>
                             </div>
-                            <!--  -->
+                            <!-- -->
                             <form action="${pageContext.request.contextPath}/Market/SaveTrack" method="post"
                                 class="row g-3 needs-validation" novalidate>
                                 <input type="hidden" class=" form-control cellFrom" name="remark" maxlength="190"
@@ -455,11 +470,12 @@
                                     </div>
                                     <div class="col-md-1" style="padding: 0%;">
                                         <button style="width: 100%; background-color: #569b92;"
-                                            class="btn btn-outline-dark" onclick="">新增</button>
+                                            class="btn btn-outline-dark" onclick="">新增
+                                        </button>
                                     </div>
                                 </div>
                             </form>
-                            <!--  -->
+                            <!-- -->
 
 
                             <div class="row replyImg" v-for="(s, index) in TrackList" :key="index">
@@ -480,7 +496,8 @@
                                                 {{s.result}}
                                             </div>
                                             <div class="col-md-3" style="color: #569b92;">
-                                                {{s.remark}} {{s.tracktime}}</div>
+                                                {{s.remark}} {{s.tracktime}}
+                                            </div>
                                         </div>
                                     </div>
                                     <!-- 留言的控制 -->
@@ -492,9 +509,11 @@
                                         </div>
                                         <div class="col-md-3 ccc" style="text-align: right;">
                                             <el-button v-show="s.remark == '${user.name}'" type="text" @click="open(s)">
-                                                修改</el-button>&nbsp;&nbsp;&nbsp;
+                                                修改
+                                            </el-button>&nbsp;&nbsp;&nbsp;
                                             <el-button v-show="s.remark == '${user.name}'" type="text"
-                                                @click="removeTrack(s)">刪除</el-button>&nbsp;&nbsp;&nbsp;
+                                                @click="removeTrack(s)">刪除
+                                            </el-button>&nbsp;&nbsp;&nbsp;
                                             <el-button type="text" @click="trackremark(s.trackid)">回覆</el-button>
                                             &nbsp;&nbsp;&nbsp;
                                         </div>
@@ -505,7 +524,8 @@
                                             var="file">
                                             <div class="row">
                                                 <div class="col-md-1" style="color: #569b92;">
-                                                    附件</div>
+                                                    附件
+                                                </div>
                                                 <div class="col-md-5 ">
                                                     <a href="${pageContext.request.contextPath}/file/${file.url}"
                                                         target="_blank">${file.name}</a>
@@ -528,7 +548,8 @@
                                                 <div class="col-md-3 ">
                                                     {{remark.createtime}}&nbsp;&nbsp;&nbsp;
                                                     <el-button v-show="remark.name == '${user.name}'" type="text"
-                                                        @click="removeTrackremark(remark)">刪除</el-button>
+                                                        @click="removeTrackremark(remark)">刪除
+                                                    </el-button>
                                                 </div>
                                             </div>
                                         </div>
@@ -539,27 +560,47 @@
                         <br>
                         <br><br><br><br><br>
                         <div class="row">&nbsp;</div>
+                        <c:if test="${not empty bean}">
+                            <div class="row box" id="draggable">
+                                <div class="bosMessagediv" >
+                                    <el-card class="box-card" style="background-color: #ccc">
+                                        <div slot="header" class="clearfix">
+                                            <el-input type="textarea" v-model="bosMassage" placeholder="请输入内容"
+                                                maxlength="200" show-word-limit>
+                                            </el-input>
+                                            <el-button icon="el-icon-upload" style="width: 100%"
+                                                @click="sendBosMessage">送出</el-button>
+                                        </div>
+                                        <table class="table table-success">
+                                            <tr v-for="(s, index) in bosMassageList" :key="index">
+                                                <td style="width: 100px;">{{s.name}}</td>
+                                                <td style="width: 400px;">{{s.message}}</td>
+                                                <td><i class="el-icon-delete" style="cursor: pointer;"
+                                                        @click="reomveBosMessage(s.bosmessageid)"></td>
+                                            </tr>
+                                        </table>
+                                    </el-card>
+                                </div>
+                                <div class="row act" style="height: 30px;">
+                                    <a class="col-md-3" href="#" onclick="goClient()">轉成客戶</a>
+                                    <a class="col-md-3" href="#" onclick="goContact()">建立聯絡⼈</a>
+                                    <a class="col-md-3" href="#" onclick="goMarket()">新增銷售機會</a>
+                                    <a class="col-md-3" href="#" onclick="goWork()">新增工作項目</a>
+                                </div>
+                                <div class="dockbar row shadow  ">
+                                    <div class="col-md-2 offset-md-1" style="border-left: black 1px solid;"
+                                        onclick="javascript:$('.act').toggle();">
+                                        行動
+                                    </div>
+                                    <div class="col-md-2">紀錄</div>
+                                    <div class="col-md-2" v-on:click="showbosMassage">留言</div>
+                                </div>
+                            </div>
+                        </c:if>
                     </div>
                     <!-- 動作區塊 -->
-                    <c:if test="${not empty bean}">
-                        <div class="row box" id="draggable">
-                            <div class="row act" style="height: 30px;">
-                                <a class="col-md-3" href="#" onclick="goClient()">轉成客戶</a>
-                                <a class="col-md-3" href="#" onclick="goContact()">建立聯絡⼈</a>
-                                <a class="col-md-3" href="#" onclick="goMarket()">新增銷售機會</a>
-                                <a class="col-md-3" href="#" onclick="goWork()">新增工作項目</a>
-                            </div>
-                            <div class="dockbar row shadow  ">
 
-                                <div class="col-md-2 offset-md-1" style="border-left: black 1px solid;"
-                                    onclick="javascript:$('.act').toggle();">
-                                    行動
-                                </div>
-                                <div class="col-md-2">紀錄</div>
-                                <div class="col-md-2">留言</div>
-                            </div>
-                        </div>
-                    </c:if>
+
                 </div>
             </div>
         </body>
@@ -632,6 +673,7 @@
                 });
                 $("select[name='city']").attr("v-model", "city");
             });
+
             function delRemark(id) {
                 if (confirm("確定刪除?")) {
                     window.location.href = "${pageContext.request.contextPath}/Market/delRemark/" + id + "/${bean.customerid}";
@@ -670,6 +712,7 @@
 
                 });
             }
+
             //建立聯絡人
             function goContact() {
                 var formData = new FormData($(".AAA")[0]);
@@ -705,16 +748,19 @@
 
                 });
             }
+
             //新增工作項目
             function goWork() {
                 $(".AAA").attr("action", "${pageContext.request.contextPath}/Market/changeWork");
                 $(".AAA")[0].submit();
             }
+
             //新增工作項目
             function goMarket() {
                 $(".AAA").attr("action", "${pageContext.request.contextPath}/Market/changeMarket");
                 $(".AAA")[0].submit();
             }
+
             // 添加協助者
             function addHelper() {
                 $.ajax({
@@ -732,6 +778,7 @@
                     }
                 });
             }
+
             // 刪除協助者
             function delHelp(helperid) {
                 $.ajax({
@@ -745,10 +792,15 @@
                     },
                 });
             }
+
             const vm = new Vue({
                 el: '.app',
                 data() {
                     return {
+                        
+                        bosMassage: "",
+                        bosMassageList: [],//組長留言資料
+                        //各個欄位
                         department: "${bean.department}", jobtitle: "${bean.jobtitle}", director: "${bean.director}",
                         email: "${bean.email}", phone: "${bean.phone}", fax: "${bean.fax}", source: "${bean.source}",
                         moblie: "${bean.moblie}", line: "${bean.line}", address: "${bean.address}", remark: "${bean.remark}",
@@ -757,7 +809,7 @@
                         company: {},
                         name: "${bean.name}",
                         visible: false,
-                        admin: '${user.name}',
+                        admin: '${user.name}',//使用者名稱
                         important: '${bean.important}',
                         industry: "${bean.industry}",//產業
                         industryList: ["尚未分類",
@@ -785,7 +837,6 @@
                     }
                 },
                 created() {
-
                     if (this.important == "") this.important = '低';
                     //要求追蹤資訊
                     axios
@@ -796,20 +847,65 @@
                         .catch(function (error) { // 请求失败处理
                             console.log("沒有追蹤資訊");
                         });
+                    axios
+                        .get('${pageContext.request.contextPath}/director/getMessage/${bean.customerid}')
+                        .then(response => (
+                            this.bosMassageList = response.data
+                        ))
+                        .catch(function (error) { // 请求失败处理
+                            console.log("沒有追蹤資訊");
+                        });
+                        
+                        $('.bosMessagediv').hide();
+
                 },
                 watch: {
                     company: {
                         // immediate: true,
                         handler(n, oldValue) {//插入城市 區域
                             $("select[name='city']").val(n.billcity);
-                            setTimeout(function () { }, 100)
+                            setTimeout(function () {
+                            }, 100)
                             $("select[name='town']").append('<option value="' + n.billtown + '">' + n.billtown + '</option>');
                             $("select[name='town']").val(n.billtown);
                         }
                     }
                 },
+
+
                 methods: {
-                    changeCompany() {///公司改變                        
+                    showbosMassage(){
+                        $('.bosMessagediv').toggle();
+                    },
+                    reomveBosMessage(bosmessageid) {//刪除主管留言
+                        console.log(bosmessageid);
+                        axios
+                            .post('${pageContext.request.contextPath}/director/reomveBosMessage/'+bosmessageid)
+                            .then(
+                                response => (                               
+                                    this.bosMassageList = response.data
+                                ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    },
+                    sendBosMessage() {//儲存主管留言
+                        const data = {
+                            "message": this.bosMassage,
+                            "admin": this.admin,
+                            "bosmessage": '${bean.customerid}'
+                        }
+                        axios
+                            .post('${pageContext.request.contextPath}/director/SaveMessage', data)
+                            .then(
+                                response => (                                 
+                                    this.bosMassageList = response.data
+                                ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    },
+                    changeCompany() {///公司改變
                         axios
                             .get('${pageContext.request.contextPath}/Potential/getCompany/' + this.companyName.trim())
                             .then(
@@ -839,21 +935,21 @@
                                                     <div class="row">\
                                                         <div class="col-md-5 FormPadding">\
                                                             <textarea class="form-control" name="trackdescribe" rows="1"\
-                                                                maxlength="190" required>'+ s.trackdescribe + '</textarea>\
+                                                                maxlength="190" required>' + s.trackdescribe + '</textarea>\
                                                         </div>\
                                                         <div class="col-md-5 FormPadding">\
                                                             <textarea class="form-control" name="result" rows="1"\
-                                                                maxlength="195">'+ s.result + '</textarea>\
+                                                                maxlength="195">' + s.result + '</textarea>\
                                                         </div>\
                                                         <div class="col-md-2" style="padding: 0%;">\
                                                             <button style="width: 100%; background-color: #569b92;"\
                                                                 class="btn btn-outline-dark" onclick="">修改</button>\
                                                         </div>\
                                                     </div>\
-                                                    <input type="hidden" name="trackid" value="'+ s.trackid + '">\
-                                                    <input type="hidden" name="tracktime" value="'+ s.tracktime + '">\
-                                                    <input type="hidden" name="customerid" value="'+ s.customerid + '">\
-                                                    <input type="hidden" name="remark" value="'+ s.remark + '"> </form>', '修改',
+                                                    <input type="hidden" name="trackid" value="' + s.trackid + '">\
+                                                    <input type="hidden" name="tracktime" value="' + s.tracktime + '">\
+                                                    <input type="hidden" name="customerid" value="' + s.customerid + '">\
+                                                    <input type="hidden" name="remark" value="' + s.remark + '"> </form>', '修改',
                             {
                                 dangerouslyUseHTMLString: true,//将 message 属性作为 HTML 片段处理
                                 showConfirmButton: false,	//是否显示确定按钮
