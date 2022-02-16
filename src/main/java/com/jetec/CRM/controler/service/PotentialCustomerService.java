@@ -52,8 +52,8 @@ public class PotentialCustomerService {
 //讀取潛在客戶列表
 	public List<PotentialCustomerBean> getList(Integer pag) {
 
-		Pageable p = (Pageable) PageRequest.of(pag, 20);
-		Page<PotentialCustomerBean> page = (Page<PotentialCustomerBean>) PCR.findStatus(p);
+		Pageable p = PageRequest.of(pag, 20,Direction.DESC, "createtime");
+		Page<PotentialCustomerBean> page = PCR.findStatus(p);
 //		全部有幾頁
 //		page.getTotalPages();
 		List<PotentialCustomerBean> result = page.getContent();

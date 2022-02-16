@@ -88,14 +88,18 @@ public class TrackBean {
 	public void setTracktime(String tracktime) {
 		this.tracktime = tracktime;
 	}
+
+
 	@Override
 	public String toString() {
-		return "TrackBean [trackid=" + trackid + ", customerid=" + customerid + ", trackdescribe=" + trackdescribe
-				+ ", result=" + result + ", remark=" + remark + ", tracktime=" + tracktime + "]";
+		return "TrackBean{" +
+				"trackid='" + trackid + '\'' +
+				", customerid='" + customerid + '\'' +
+				", trackdescribe='" + trackdescribe + '\'' +
+				", result='" + result + '\'' +
+				", remark='" + remark + '\'' +
+				", tracktime='" + tracktime + '\'' +
+				", trackremark=" + trackremark +
+				'}';
 	}
-
-	
-	
-	
-	
 }

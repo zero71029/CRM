@@ -52,7 +52,7 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
 	@Query(value = "SELECT  *  from market where stage != '失敗結案' AND stage != '成功結案' AND type =?1", nativeQuery = true)
 	List<MarketBean> selectType(String typeString);
 	
-	@Query(value = "SELECT  *  from market where stage != '失敗結案' AND stage != '成功結案' order by marketid DESC ", nativeQuery = true)
+	@Query(value = "SELECT  *  from market where stage != '失敗結案' AND stage != '成功結案'  ", nativeQuery = true)
 	Page<MarketBean> findStage(Pageable p);
 	
 	@Query(value = "SELECT  count(*)  from market where stage != '失敗結案' AND stage != '成功結案' order by marketid DESC ", nativeQuery = true)

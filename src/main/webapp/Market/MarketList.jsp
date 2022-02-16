@@ -72,9 +72,10 @@
 
                                     <td>機率</td>
                                     <td @click="sortItem('important')"><a href="#">重要性</a></td>
-
+                                    <td>追蹤次數</td>
                                     <td>建立時間</td>
                                 </tr>
+
 
 
                                 <tr class="item" v-for="(s, index) in list" :key="index">
@@ -92,10 +93,11 @@
                                         {{s.clinch}}</td>
                                     <td v-on:click="market(s.marketid)" :class="'important'+index">
                                         {{s.important}}</td>
-
+                                    <td>{{s.trackbean.length}}</td>
                                     <td v-on:click="market(s.marketid)">
                                         {{s.aaa}}</td>
                                 </tr>
+
                             </table>
                             <!-- 分頁 -->
                             <div class="block text-center" key="2" v-if="show">

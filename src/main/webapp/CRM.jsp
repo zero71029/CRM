@@ -407,16 +407,21 @@
                                         </ul>
                                     </nav>
                                 </c:if>
-
+                          
                                 <!-- 分頁 ＿////////////////////-->
                                 <!-- 彈窗 -->
+
+
+
+
+
                                 <c:if test="${not empty unread}">
                                     <c:forEach varStatus="loop" begin="0" end="${unread.size()}" items="${unread}"
                                         var="unread">
                                         <div class="unread " title="未讀">
                                             <a href='${pageContext.request.contextPath}/billboardReply/${unread.billboardid}'
                                                 style="color:red">${unread.theme}</a>
-                                            <i class="bi bi-file-earmark-pdf" style="float: right;cursor: pointer;"
+                                            <i class="bi bi-hand-thumbs-up" style="float: right;cursor: pointer;"
                                                 onclick="read('${unread.billboardid}')"></i>
                                             <p>${unread.content}</p>
                                         </div>
@@ -428,7 +433,7 @@
                                         <div class="dialog" title="@">
                                             <a href='${pageContext.request.contextPath}/billboardReply/${advice.billboardid}'
                                                 style="color:red">${advice.theme}</a>
-                                            <i class="bi bi-file-earmark-pdf" style="float: right;cursor: pointer;"
+                                            <i class="bi bi-hand-thumbs-up" style="float: right;cursor: pointer;"
                                                 onclick="read('${advice.billboardid}')"></i>
                                             <p>${advice.content}</p>
                                         </div>
@@ -478,6 +483,11 @@
 
                 const vm = new Vue({
                     el: '.app',
+                    data() {
+                        return {
+                            dialogVisible:false,
+                        }
+                    },
                     methods: {
                         read(billboardid) {
                             console.log("ddddd");

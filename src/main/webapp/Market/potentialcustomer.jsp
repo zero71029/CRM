@@ -868,7 +868,7 @@
                 },
                 created() {
                     if (this.important == "") this.important = '低';
-                    //要求追蹤資訊
+                    //潛在客戶初始化
                     axios
                         .get('${pageContext.request.contextPath}/Potential/init/${bean.customerid}')
                         .then(response => (
@@ -880,7 +880,7 @@
 
                         ))
                         .catch(function (error) {
-                            console.log("沒有追蹤資訊");
+                            console.log("沒有資訊");
                         });
                     $('.bosMessagediv').hide();
                 },

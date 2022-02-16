@@ -3,7 +3,9 @@ package com.jetec.CRM.controler;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -45,6 +47,19 @@ public class MarketControler {
 	@Autowired
 	ZeroTools zTools;
 
+
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	@RequestMapping("/init/{id}")
+	@ResponseBody
+	public Map<String,Object> Market(@PathVariable("id") String id) {
+		System.out.println("銷售機會初始化");
+		Map<String,Object> result = new HashMap<>();
+		MarketBean marketBean = ms.getById(id);
+		result.put("bean",marketBean);
+		return result;
+	}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@RequestMapping("/SavePotentialCustomer")
 	public String SavePotentialCustomer(PotentialCustomerBean pcb) {
@@ -56,27 +71,7 @@ public class MarketControler {
 		return "redirect:/Market/potentialcustomer/" + bean.getCustomerid();
 	}
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//讀取潛在客戶列表
-//	@RequestMapping("/PotentialCustomerList")
-//	public String clientList(Model model) {
-//		System.out.println("*****讀取潛在客戶列表*****");
-//		model.addAttribute("list", PCS.getList(0));
-//		
-//		
-//		
-//		
-//		return "/Market/potentialcustomerList";
-//	}
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//讀取潛在客戶列表(結案)
-//	@RequestMapping("/closed")
-//	public String closed(Model model) {
-//		System.out.println("*****讀取潛在客戶列表*****");
-//		model.addAttribute("list", PCS.closed());
-//		return "/Market/potentialcustomerList";
-//	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //	讀取潛在客戶細節
