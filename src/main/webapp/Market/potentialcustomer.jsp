@@ -14,7 +14,6 @@
             <title>CRM客戶管理系統</title>
         </head>
         <style>
-
             .error {
                 color: red;
             }
@@ -53,7 +52,7 @@
                 width: 560px;
                 position: fixed;
                 z-index: 1000;
-                bottom: 530px;
+                bottom: 330px;
                 right: 0px;
                 background-color: #fff;
 
@@ -81,11 +80,19 @@
 
             }
 
-            .box  .bosMessagediv{
+            .box .recorddiv {
+                position: absolute;
+                width: 705px;
+                bottom: 0px;
+                right: 20px;
+                padding: 0%;
+            }
+
+            .box .bosMessagediv {
                 position: absolute;
                 width: 505px;
                 bottom: 0px;
-                right: 25px;
+                right: 20px;
                 padding: 0%;
             }
 
@@ -118,8 +125,6 @@
                     <jsp:include page="/Sidebar.jsp"></jsp:include>
                     <!-- 台灣縣市二聯式選單 -->
                     <script src="${pageContext.request.contextPath}/js/jquery.twzipcode.min.js"></script>
-                    <!-- 驗證UI -->
-                    <script src="${pageContext.request.contextPath}/js/jquery.validate.min.js"></script>
                     <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
                     <script src="${pageContext.request.contextPath}/bootstrap/js/bootstrap.bundle.min.js"></script>
                     <div class="col-md-11 app">
@@ -128,7 +133,7 @@
                         <div class="row">
                             <div class="col-md-1"></div>
                             <div class="col-md-10">
-                                <h3>潛在各戶</h3>
+                                <h3>潛在客戶</h3>
                             </div>
                         </div>
                         <!-- 上一頁 -->
@@ -153,7 +158,6 @@
                         <br>
                         <form action="${pageContext.request.contextPath}/Market/SavePotentialCustomer" method="post"
                             class="basefrom g-3 needs-validation AAA" novalidate>
-
                             <input type="hidden" name="customerid" value="${bean.customerid}">
                             <input type="hidden" name="fromactivity" value="${bean.fromactivity}" maxlength="50">
                             <div class="row">
@@ -168,8 +172,8 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1"></div>
-                                        <div class="col-md-2 cell">公司<span style="color: red;">*</span></div>
-                                        <div class="col-md-8 cell FormPadding">
+                                        <div class="col-md-2 cellz">公司<span style="color: red;">*</span></div>
+                                        <div class="col-md-8 cellz FormPadding">
                                             <input type="text" class="col-md-9 form-control cellFrom client"
                                                 @blur="changeCompany" v-model="companyName" name="company"
                                                 list="company" maxlength="20" required>
@@ -188,13 +192,13 @@
                                         <div class="col-md-1"></div>
                                         <div class="col-md-2 cellz">聯絡人<span style="color: red;">*</span></div>
                                         <div class="col-md-3 cellz FormPadding">
-                                            <input type="text" class=" form-control cellFrom" name="name" v-model="name"
-                                                maxlength="20" required>
+                                            <input type="text" class=" form-control cellFrom" name="name"
+                                                v-model="customer.name" maxlength="20" required>
                                         </div>
                                         <div class="col-md-2 cellz">部門</div>
                                         <div class="col-md-3 cellz FormPadding"><input type="text"
-                                                class=" form-control cellFrom" name="department" v-model="department"
-                                                maxlength="20">
+                                                class=" form-control cellFrom" name="department"
+                                                v-model="customer.department" maxlength="20">
                                         </div>
 
                                     </div>
@@ -203,12 +207,12 @@
                                         <div class="col-md-2 cellz">職稱</div>
                                         <div class="col-md-3 cellz FormPadding">
                                             <input type="text" class=" form-control cellFrom" name="jobtitle"
-                                                v-model="jobtitle" maxlength="20">
+                                                v-model="customer.jobtitle" maxlength="20">
                                         </div>
                                         <div class="col-md-2 cellz">主管</div>
                                         <div class="col-md-3 cellz FormPadding">
                                             <input type="text" class=" form-control cellFrom" name="director"
-                                                v-model="director" maxlength="20">
+                                                v-model="customer.director" maxlength="20">
                                         </div>
                                     </div>
                                     <div class="row">
@@ -216,12 +220,12 @@
                                         <div class="col-md-2 cellz">Email</div>
                                         <div class="col-md-3 cellz FormPadding">
                                             <input type="email" class=" form-control cellFrom" name="email"
-                                                v-model="email" maxlength="50">
+                                                v-model="customer.email" maxlength="50">
                                         </div>
                                         <div class="col-md-2 cellz">產業</div>
                                         <div class="col-md-3 cellz FormPadding">
-                                            <select name="industry" class=" form-select cellFrom" v-model="industry"
-                                                v-model="industry">
+                                            <select name="industry" class=" form-select cellFrom"
+                                                v-model="customer.industry" v-model="customer.industry">
                                                 <option v-for="(item, index) in industryList" :key="index">{{item}}
                                                 </option>
                                             </select>
@@ -232,53 +236,46 @@
                                         <div class="col-md-2 cellz">電話</div>
                                         <div class="col-md-3 cellz FormPadding">
                                             <input type="text" class=" form-control cellFrom" name="phone"
-                                                v-model="phone" maxlength="20">
+                                                v-model="customer.phone" maxlength="20">
                                         </div>
                                         <div class="col-md-2 cellz">公司人數</div>
-                                        <div class="col-md-3 cellz FormPadding"><input type="number"
-                                                v-model="companynum" class=" form-control cellFrom" name="companynum"
-                                                maxlength="20"></div>
+                                        <div class="col-md-3 cellz FormPadding"><input type="text"
+                                                v-model="customer.companynum" class=" form-control cellFrom"
+                                                name="companynum" maxlength="20"></div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1"></div>
                                         <div class="col-md-2 cellz">傳真</div>
                                         <div class="col-md-3 cellz FormPadding">
-                                            <input type="text" class=" form-control cellFrom" name="fax" v-model="fax"
-                                                maxlength="20">
+                                            <input type="text" class=" form-control cellFrom" name="fax"
+                                                v-model="customer.fax" maxlength="20">
                                         </div>
                                         <div class="col-md-2 cellz">來源</div>
                                         <div class="col-md-3 cellz FormPadding">
-                                            <select class="form-select cellFrom" name="source" v-model="source">
-                                                <option value="廣告" class="selItemOff" ${bean.source=="廣告"
-                                                    ?"selected":null}>
+                                            <select class="form-select cellFrom" name="source"
+                                                v-model="customer.source">
+                                                <option value="廣告" class="selItemOff">
                                                     廣告
                                                 </option>
-                                                <option value="員工推薦" class="selItemOff" ${bean.source=="員工推薦"
-                                                    ?"selected":null}>
+                                                <option value="員工推薦" class="selItemOff">
                                                     員工推薦
                                                 </option>
-                                                <option value="外部推薦" class="selItemOff" ${bean.source=="外部推薦"
-                                                    ?"selected":null}>
+                                                <option value="外部推薦" class="selItemOff">
                                                     外部推薦
                                                 </option>
-                                                <option value="合作夥伴" class="selItemOff" ${bean.source=="合作夥伴"
-                                                    ?"selected":null}>
+                                                <option value="合作夥伴" class="selItemOff">
                                                     合作夥伴
                                                 </option>
-                                                <option value="參展" class="selItemOff" ${bean.source=="參展"
-                                                    ?"selected":null}>
+                                                <option value="參展" class="selItemOff">
                                                     參展
                                                 </option>
-                                                <option value="網絡搜索" class="selItemOff" ${bean.source=="網絡搜索"
-                                                    ?"selected":null}>
+                                                <option value="網絡搜索" class="selItemOff">
                                                     網絡搜索
                                                 </option>
-                                                <option value="口碑" class="selItemOff" ${bean.source=="口碑"
-                                                    ?"selected":null}>
+                                                <option value="口碑" class="selItemOff">
                                                     口碑
                                                 </option>
-                                                <option value="其他" class="selItemOff" ${bean.source=="其他"
-                                                    ?"selected":null}>
+                                                <option value="其他" class="selItemOff">
                                                     其他
                                                 </option>
                                             </select>
@@ -289,14 +286,14 @@
                                         <div class="col-md-2 cellz">手機</div>
                                         <div class="col-md-3 cellz FormPadding">
                                             <input type="text" class=" form-control cellFrom" name="moblie"
-                                                v-model="moblie" maxlength="20">
+                                                v-model="customer.moblie" maxlength="20">
                                         </div>
 
 
                                         <div class="col-md-2 cellz">Line</div>
                                         <div class="col-md-3 cellz FormPadding">
-                                            <input type="text" class=" form-control cellFrom" name="line" v-model="line"
-                                                maxlength="190">
+                                            <input type="text" class=" form-control cellFrom" name="line"
+                                                v-model="customer.line" maxlength="190">
                                         </div>
                                     </div>
                                     <div class="row">
@@ -311,7 +308,7 @@
                                         <div class="col-md-2 cellz"></div>
                                         <div class="col-md-8 cellz FormPadding">
                                             <input type="text" class=" form-control cellFrom" name="address"
-                                                v-model="address" maxlength="50">
+                                                v-model="customer.address" maxlength="50">
                                         </div>
                                     </div>
                                     <div class="row">
@@ -319,7 +316,8 @@
                                         <div class="col-md-2 cellz">客人詢問</div>
                                         <div class="col-md-8 cellz FormPadding">
                                             <textarea class="form-control " id="validationTextarea" name="remark"
-                                                v-model="remark" rows="5" maxlength="200">${bean.remark}</textarea>
+                                                v-model="customer.remark" rows="5"
+                                                maxlength="200">${bean.remark}</textarea>
                                         </div>
                                     </div>
 
@@ -327,21 +325,22 @@
                                 <!--  -->
                                 <div class="col-md-5  ASDFG">
                                     <div class="row">
-                                        <div class="col-md-3 cellz">潛在各戶負責人</div>
+                                        <div class="col-md-3 cellz">潛在客戶負責人</div>
                                         <div class="col-md-7 cellz FormPadding">
                                             <c:if test="${user.position != '職員' }">
-                                                <select name="user" class="form-select cellFrom"
+                                                <select name="user" class="form-select cellFrom" v-model="customer.user"
                                                     aria-label="Default select example">
-                                                    <option value="無" ${bean.user=="無" ?"selected":null}>無</option>
+                                                    <option value="無">無</option>
                                                     <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}"
                                                         items="${admin}" var="s">
-                                                        <option value="${s.name}" ${bean.user==s.name ?"selected":null}>
+                                                        <option value="${s.name}">
                                                             ${s.name}</option>
                                                     </c:forEach>
                                                 </select>
                                             </c:if>
                                             <c:if test="${user.position == '職員' }">
-                                                <input type="hidden" name="user" value="${bean.user}">
+                                                <input type="hidden" name="user" value="${bean.user}"
+                                                    v-model="customer.user">
                                                 ${bean.user}
                                             </c:if>
 
@@ -383,7 +382,7 @@
 
                                     <div class="row">
 
-                                        <div class="col-md-3 cellz" style="font-size: 14px;">創造時間</div>
+                                        <div class="col-md-3 cellz" style="font-size: 14px;">建立時間</div>
                                         <div class="col-md-7  FormPadding">
                                             ${bean.createtime}
                                         </div>
@@ -391,20 +390,20 @@
                                     <div class="row">
                                         <div class="col-md-3 cellz">狀態</div>
                                         <div class="col-md-7 cellz FormPadding">
-                                            <select name="status" class="form-select cellFrom"
+                                            <select name="status" class="form-select cellFrom" v-model="customer.status"
                                                 aria-label="Default select example">
-                                                <option value="未處理" ${bean.status=="未處理" ?"selected":null}>未處理
+                                                <option value="未處理">未處理
                                                 </option>
-                                                <option value="已聯繫" ${bean.status=="已聯繫" ?"selected":null}>已聯繫
+                                                <option value="已聯繫">已聯繫
                                                 </option>
-                                                <option value="不合格" ${bean.status=="不合格" ?"selected":null}>不合格
+                                                <option value="不合格">不合格
                                                 </option>
-                                                <option value="合格" ${bean.status=="合格" ?"selected":null}>合格</option>
+                                                <option value="合格">合格</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-3 celzl">重要性</div>
+                                        <div class="col-md-3 cellz">重要性</div>
                                         <div class="col-md-7 cellz FormPadding">
                                             <select class="form-select cellFrom" name="important" v-model="important">
                                                 <option value="高">高</option>
@@ -419,8 +418,8 @@
                                 <div class="row">
                                     <div class="col-md-3"></div>
                                     <div class="col-md-5 FormPadding">
-                                        <button type="submit" style="width: 100%; " class="btn btn-warning"
-                                            onclick="return window.confirm('確定修改')">儲存
+                                        <button type="button" style="width: 100%;color: white; " class="btn btn-warning"
+                                            @click="submitForm">儲存
                                         </button>
                                     </div>
                                 </div>
@@ -533,6 +532,7 @@
                                             </div>
                                         </c:forEach>
                                     </c:if>
+
                                     <!-- 評論 -->
                                     <div class="row" v-for="(remark, index) in s.trackremark" :key="index">
                                         <div class="col-md-2"></div>
@@ -561,40 +561,82 @@
                         <br><br><br><br><br>
                         <div class="row">&nbsp;</div>
                         <c:if test="${not empty bean}">
+
+
+
+
+
+
                             <div class="row box" id="draggable">
-                                <div class="bosMessagediv" >
-                                    <el-card class="box-card" style="background-color: #ccc">
-                                        <div slot="header" class="clearfix">
-                                            <el-input type="textarea" v-model="bosMassage" placeholder="请输入内容"
-                                                maxlength="200" show-word-limit>
-                                            </el-input>
-                                            <el-button icon="el-icon-upload" style="width: 100%"
-                                                @click="sendBosMessage">送出</el-button>
-                                        </div>
-                                        <table class="table table-success">
-                                            <tr v-for="(s, index) in bosMassageList" :key="index">
-                                                <td style="width: 100px;">{{s.name}}</td>
-                                                <td style="width: 400px;">{{s.message}}</td>
-                                                <td><i class="el-icon-delete" style="cursor: pointer;"
-                                                        @click="reomveBosMessage(s.bosmessageid)"></td>
-                                            </tr>
-                                        </table>
-                                    </el-card>
-                                </div>
-                                <div class="row act" style="height: 30px;">
-                                    <a class="col-md-3" href="#" onclick="goClient()">轉成客戶</a>
-                                    <a class="col-md-3" href="#" onclick="goContact()">建立聯絡⼈</a>
-                                    <a class="col-md-3" href="#" onclick="goMarket()">新增銷售機會</a>
-                                    <a class="col-md-3" href="#" onclick="goWork()">新增工作項目</a>
-                                </div>
-                                <div class="dockbar row shadow  ">
-                                    <div class="col-md-2 offset-md-1" style="border-left: black 1px solid;"
-                                        onclick="javascript:$('.act').toggle();">
-                                        行動
+                                <!-- <%--記錄區塊--%> -->
+                                    <div class="recorddiv">
+                                        <el-card class="box-card">
+                                            <table class="table">
+                                                <tr>
+                                                    <td>修改者</td>
+                                                    <td>欄位</td>
+                                                    <td>原本</td>
+                                                    <td>修改後</td>
+                                                    <td>時間</td>
+                                                </tr>
+                                                <tr v-for="o in changeMessageList" :key="o" class="text item">
+                                                    <td>{{o.name }}</td>
+                                                    <td>{{o.filed}} </td>
+                                                    <td>{{o.source}}</td>
+                                                    <td>{{o.after}}</td>
+                                                    <td>{{o.createtime}}</td>
+                                                </tr>
+                                            </table>
+                                        </el-card>
                                     </div>
-                                    <div class="col-md-2">紀錄</div>
-                                    <div class="col-md-2" v-on:click="showbosMassage">留言</div>
-                                </div>
+
+
+
+
+
+
+
+
+
+
+
+                                    <%-- 留言區塊--%>
+                                        <div class="bosMessagediv">
+                                            <el-card class="box-card" style="background-color: #EEE">
+                                                <div slot="header" class="clearfix">
+                                                    <el-input type="textarea" v-model="bosMassage" placeholder="留言"
+                                                        maxlength="200" show-word-limit>
+                                                    </el-input>
+                                                    <el-button icon="el-icon-upload" style="width: 100%"
+                                                        @click="sendBosMessage">送出
+                                                    </el-button>
+                                                </div>
+                                                <table class="table table-success">
+                                                    <tr v-for="(s, index) in bosMassageList" :key="index">
+                                                        <td style="width: 100px;">{{s.name}}</td>
+                                                        <td style="width: 400px;">{{s.message}}</td>
+                                                        <td><i class="el-icon-delete" style="cursor: pointer;"
+                                                                @click="reomveBosMessage(s.bosmessageid)"></td>
+                                                    </tr>
+                                                </table>
+                                            </el-card>
+                                        </div>
+                                        <%-- 行動區塊--%>
+                                            <div class="row act" style="height: 30px;">
+                                                <a class="col-md-3" href="#" onclick="goClient()">轉成客戶</a>
+                                                <a class="col-md-3" href="#" onclick="goContact()">建立聯絡⼈</a>
+                                                <a class="col-md-3" href="#" onclick="goMarket()">新增銷售機會</a>
+                                                <a class="col-md-3" href="#" onclick="goWork()">新增工作項目</a>
+                                            </div>
+                                            <div class="dockbar row shadow  ">
+                                                <div class="col-md-2 offset-md-1" style="border-left: black 1px solid;"
+                                                    onclick="javascript:$('.act').toggle();$('.bosMessagediv').hide();$('.recorddiv').hide();">
+                                                    行動
+                                                </div>
+                                                <div class="col-md-2" onclick="javascript:$('.recorddiv').toggle();$('.bosMessagediv').hide();$('.act').hide()">紀錄
+                                                </div>
+                                                <div class="col-md-2" v-on:click="showbosMassage">留言</div>
+                                            </div>
                             </div>
                         </c:if>
                     </div>
@@ -605,7 +647,7 @@
             </div>
         </body>
         <script>
-
+            $('.recorddiv').hide();
             $('.act').hide();
             $(function () {
                 $("#draggable").draggable();
@@ -634,32 +676,7 @@
             });
 
             $(function () {
-                //表單驗證
-                // 密碼驗證
-                jQuery.validator.setDefaults({
-                    submitHandler: function () {
-                        form.submit();
-                    }
-                });
-                $.extend($.validator.messages, {
-                    required: "這是必填字段",
-                    email: "請输入有效的電子郵件地址",
-                    url: "请输入有效的网址",
-                    date: "请输入有效的日期",
-                    dateISO: "请输入有效的日期 (YYYY-MM-DD)",
-                    number: "请输入有效的数字",
-                    digits: "只能输入数字",
-                    creditcard: "请输入有效的信用卡号码",
-                    equalTo: "你的输入不相同",
-                    extension: "请输入有效的后缀",
-                    maxlength: $.validator.format("最多可以输入 {0} 个字符"),
-                    minlength: $.validator.format("最少要输入 {0} 个字符"),
-                    rangelength: $.validator.format("请输入长度在 {0} 到 {1} 之间的字符串"),
-                    range: $.validator.format("请输入范围在 {0} 到 {1} 之间的数值"),
-                    max: $.validator.format("请输入不大于 {0} 的数值"),
-                    min: $.validator.format("请输入不小于 {0} 的数值")
-                });
-                $(".basefrom").validate();
+
 
                 // 地區ui
                 $("#twzipcode").twzipcode({
@@ -797,14 +814,17 @@
                 el: '.app',
                 data() {
                     return {
-                        
-                        bosMassage: "",
+                        changeMessageList: [],//修改資訊
+                        oldCustomer: {},//暫存表
+                        customer: {},//
+                        bosMassage: "",//主管留言欄位
                         bosMassageList: [],//組長留言資料
                         //各個欄位
                         department: "${bean.department}", jobtitle: "${bean.jobtitle}", director: "${bean.director}",
                         email: "${bean.email}", phone: "${bean.phone}", fax: "${bean.fax}", source: "${bean.source}",
                         moblie: "${bean.moblie}", line: "${bean.line}", address: "${bean.address}", remark: "${bean.remark}",
                         companynum: "${bean.companynum}", companyName: "${bean.company}", city: "${bean.city}",
+
                         contact: {},
                         company: {},
                         name: "${bean.name}",
@@ -840,24 +860,19 @@
                     if (this.important == "") this.important = '低';
                     //要求追蹤資訊
                     axios
-                        .get('${pageContext.request.contextPath}/Potential/client/${bean.customerid}')
+                        .get('${pageContext.request.contextPath}/Potential/init/${bean.customerid}')
                         .then(response => (
-                            this.TrackList = response.data
-                        ))
-                        .catch(function (error) { // 请求失败处理
-                            console.log("沒有追蹤資訊");
-                        });
-                    axios
-                        .get('${pageContext.request.contextPath}/director/getMessage/${bean.customerid}')
-                        .then(response => (
-                            this.bosMassageList = response.data
-                        ))
-                        .catch(function (error) { // 请求失败处理
-                            console.log("沒有追蹤資訊");
-                        });
-                        
-                        $('.bosMessagediv').hide();
+                            this.TrackList = response.data.track,
+                            this.bosMassageList = response.data.bosmessage,
+                            this.oldCustomer = response.data.customer,
+                            this.customer = Object.assign({}, this.oldCustomer),
+                            this.changeMessageList = response.data.changeMessage
 
+                        ))
+                        .catch(function (error) {
+                            console.log("沒有追蹤資訊");
+                        });
+                    $('.bosMessagediv').hide();
                 },
                 watch: {
                     company: {
@@ -871,18 +886,43 @@
                         }
                     }
                 },
-
-
                 methods: {
-                    showbosMassage(){
+                    submitForm() {//送出表單
+                        var keys = Object.keys(this.customer);
+                        var data = {};
+                        for (const iterator of keys) {
+                            if (this.customer[iterator] == this.oldCustomer[iterator]) {
+
+                            } else {
+                                data[iterator] = [this.customer[iterator], this.oldCustomer[iterator]];
+                            }
+
+                        }
+
+                        axios
+                            .post('${pageContext.request.contextPath}/changeMessage/${bean.customerid}', data)
+                            .then(
+                                response => (
+                                    this.send(response.data)
+                                ))
+                    },
+                    send(b) {
+                        if (b) {
+                            $('.basefrom').submit();
+                        }
+                    },
+
+                    showbosMassage() {//點擊留言
+                        $('.recorddiv').hide();
                         $('.bosMessagediv').toggle();
+                        $('.act').hide();
                     },
                     reomveBosMessage(bosmessageid) {//刪除主管留言
                         console.log(bosmessageid);
                         axios
-                            .post('${pageContext.request.contextPath}/director/reomveBosMessage/'+bosmessageid)
+                            .post('${pageContext.request.contextPath}/director/reomveBosMessage/' + bosmessageid)
                             .then(
-                                response => (                               
+                                response => (
                                     this.bosMassageList = response.data
                                 ))
                             .catch(function (error) {
@@ -898,7 +938,7 @@
                         axios
                             .post('${pageContext.request.contextPath}/director/SaveMessage', data)
                             .then(
-                                response => (                                 
+                                response => (
                                     this.bosMassageList = response.data
                                 ))
                             .catch(function (error) {

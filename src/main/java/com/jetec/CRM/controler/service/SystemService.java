@@ -8,6 +8,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.jetec.CRM.model.*;
+import com.jetec.CRM.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,36 +20,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jetec.CRM.Tool.ZeroTools;
-import com.jetec.CRM.model.AdminBean;
-import com.jetec.CRM.model.AdminMailBean;
-import com.jetec.CRM.model.BillboardAdviceBean;
-import com.jetec.CRM.model.BillboardBean;
-import com.jetec.CRM.model.BillboardFileBean;
-import com.jetec.CRM.model.BillboardGroupBean;
-import com.jetec.CRM.model.BillboardReadBean;
-import com.jetec.CRM.model.BillboardReplyBean;
-import com.jetec.CRM.model.BillboardTopBean;
-import com.jetec.CRM.model.ForgetAuthorizeBean;
-import com.jetec.CRM.model.ReplyAdviceBbean;
-import com.jetec.CRM.model.ReplyreplyBean;
-import com.jetec.CRM.repository.AdminMailRepository;
-import com.jetec.CRM.repository.AdminRepository;
-import com.jetec.CRM.repository.BillboardAdviceRepository;
-import com.jetec.CRM.repository.BillboardFileRepository;
-import com.jetec.CRM.repository.BillboardGroupRepository;
-import com.jetec.CRM.repository.BillboardReadRepository;
-import com.jetec.CRM.repository.BillboardReplyRepository;
-import com.jetec.CRM.repository.BillboardRepository;
-import com.jetec.CRM.repository.BillboardTopRepository;
-import com.jetec.CRM.repository.ForgetAuthorizeRepository;
-import com.jetec.CRM.repository.ReplyAdviceRepository;
-import com.jetec.CRM.repository.ReplyFileRepository;
-import com.jetec.CRM.repository.ReplyreplyRepository;
 
 @Service
 @Transactional
 public class SystemService {
 
+	@Autowired
+	ChangeMessageRepository cmr;
 	@Autowired
 	AdminRepository ar;
 	// mail顯示未讀用
@@ -698,5 +677,9 @@ public class SystemService {
 			return null;
 		}
 	}
-
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//儲存修改
+	public void saveChangeMesssage(ChangeMessageBean cmbean) {
+		cmr.save(cmbean);
+	}
 }

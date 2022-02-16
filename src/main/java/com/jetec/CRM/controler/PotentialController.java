@@ -11,6 +11,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import com.jetec.CRM.controler.service.DirectorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -43,8 +44,24 @@ public class PotentialController {
 	TrackRepository tr;
 	@Autowired
 	ClientService CS;
+	@Autowired
+	DirectorService DS;
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//初始化
+	@RequestMapping("/init/{customerid}")
+	public Map<String,Object> init(@PathVariable("customerid") String customerid) {
+		Map<String,Object> result = new HashMap<>();
+		result.put("customer",PCS.getById(customerid));
+		result.put("track",PCS.getTrackByCustomerid(customerid));
+		result.put("bosmessage",DS.getBosMessageList(customerid));
+		result.put("changeMessage",DS.getChangeMessage(customerid));
+		System.out.println(DS.getChangeMessage(customerid));
+		return result;
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取潛在客戶列表
 	@RequestMapping("/CustomerList")
 	public List<PotentialCustomerBean> clientList(@RequestParam("pag") Integer pag) {

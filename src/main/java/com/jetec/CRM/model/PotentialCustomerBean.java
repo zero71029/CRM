@@ -28,7 +28,7 @@ public class PotentialCustomerBean {
 	private String department;
 	private String 	director;
 	private String industry;
-	private Integer companynum;
+	private String companynum;
 	private String source;
 	private String 	fromactivity;
 	private String user;
@@ -224,12 +224,15 @@ public class PotentialCustomerBean {
 	public void setIndustry(String industry) {
 		this.industry = industry;
 	}
-	public Integer getCompanynum() {
+
+	public String getCompanynum() {
 		return companynum;
 	}
-	public void setCompanynum(Integer companynum) {
+
+	public void setCompanynum(String companynum) {
 		this.companynum = companynum;
 	}
+
 	public String getSource() {
 		return source;
 	}
@@ -272,12 +275,39 @@ public class PotentialCustomerBean {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
+
+
 	@Override
 	public String toString() {
-		return "PotentialCustomerBean [trackbean=" + trackbean + ", helper=" + helper + ", work=" + work + "]";
+		return "PotentialCustomerBean{" +
+				"customerid='" + customerid + '\'' +
+				", name='" + name + '\'' +
+				", company='" + company + '\'' +
+				", jobtitle='" + jobtitle + '\'' +
+				", email='" + email + '\'' +
+				", phone='" + phone + '\'' +
+				", moblie='" + moblie + '\'' +
+				", fax='" + fax + '\'' +
+				", department='" + department + '\'' +
+				", director='" + director + '\'' +
+				", industry='" + industry + '\'' +
+				", companynum=" + companynum +
+				", source='" + source + '\'' +
+				", fromactivity='" + fromactivity + '\'' +
+				", user='" + user + '\'' +
+				", contacttime='" + contacttime + '\'' +
+				", status='" + status + '\'' +
+				", city='" + city + '\'' +
+				", town='" + town + '\'' +
+				", postal='" + postal + '\'' +
+				", address='" + address + '\'' +
+				", remark='" + remark + '\'' +
+				", createtime=" + createtime +
+				", important='" + important + '\'' +
+				", line='" + line + '\'' +
+				", trackbean=" + trackbean +
+				", helper=" + helper +
+				", work=" + work +
+				'}';
 	}
-
-
-	
-	
 }
