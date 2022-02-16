@@ -30,7 +30,7 @@
         </head>
 
         <body>
-            <div class="container-fluid" >
+            <div class="container-fluid">
                 <div class="row">
                     <!-- <%-- 插入側邊欄--%> -->
                     <jsp:include page="/Sidebar.jsp"></jsp:include>
@@ -178,8 +178,8 @@
                                             <button class="accordion-button collapsed" type="button"
                                                 data-bs-toggle="collapse" data-bs-target="#i6" aria-expanded="false"
                                                 aria-controls="flush-collapseThree">
-                                              <i class="el-icon-c-scale-to-original
-                                              "></i>&nbsp;  來源
+                                                <i class="el-icon-c-scale-to-original
+                                              "></i>&nbsp; 來源
                                             </button>
                                         </h2>
                                         <div id="i6" class="accordion-collapse collapse"
@@ -319,16 +319,19 @@
                             <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                                 <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off"
                                     onclick="javascript:location.href='${pageContext.request.contextPath}/Market/potentialcustomer.jsp'">
-                                <label class="btn btn-outline-primary state1" for="btncheck1"><i class="bi bi-clipboard-check"></i> 新增</label>
+                                <label class="btn btn-outline-primary state1" for="btncheck1"><i
+                                        class="bi bi-clipboard-check"></i> 新增</label>
                                 <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
-                                <label class="btn btn-outline-primary state2" for="btncheck2" onclick="sta()"><i class="el-icon-delete"></i> 刪除</label>
+                                <label class="btn btn-outline-primary state2" for="btncheck2" onclick="sta()"><i
+                                        class="el-icon-delete"></i> 刪除</label>
                                 <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off">
-                                <label class="btn btn-outline-primary" for="btncheck3"
-                                    @click="aadmin(admin)"><i class="bi bi-person-square"></i> {{admin}}</label>
+                                <label class="btn btn-outline-primary" for="btncheck3" @click="aadmin(admin)"><i
+                                        class="bi bi-person-square"></i> {{admin}}</label>
 
 
                                 <label class="btn btn-outline-primary" for="btncheck4" data-bs-toggle="offcanvas"
-                                    data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i class="bi-search"></i> 搜索</label>
+                                    data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i
+                                        class="bi-search"></i> 搜索</label>
                             </div>
                         </div>
 
@@ -373,8 +376,20 @@
                                         {{s.company}}</td>
                                     <td v-on:click="customer(s.customerid)">
                                         {{s.name}}</td>
-                                    <td v-on:click="customer(s.customerid)">
-                                        <div style="width: 600px;word-break: break-all;">{{s.remark}}</div>
+
+
+
+
+                                    <td v-if="s.remark.length <100 " style="width: 500px;cursor: pointer;" v-on:click="customer(s.customerid)">{{s.remark}}</td>
+
+                                    <td v-on:click="customer(s.customerid)" v-if="s.remark.length >=100 ">
+
+                                        <el-popover placement="top-start" width="300" trigger="hover"
+                                            :content="s.remark">
+                                            <el-button slot="reference" class="text-truncate text-start"
+                                                style="width: 500px; color: #000;" type="text">{{s.remark}}</el-button>
+                                        </el-popover>
+
                                     </td>
 
                                     <td v-on:click="customer(s.customerid)">
@@ -497,7 +512,7 @@
                 el: '.app',
                 data: {
                     currentPage1: 1,//當前分頁
-                    MaxPag:1,//所有筆數
+                    MaxPag: 1,//所有筆數
                     list: [],
                     name: "",
                     admin: '${user.name}',
@@ -544,7 +559,7 @@
                             .then(response => (
                                 this.MaxPag = response.data
                             ))
-                            .catch(function (error) { 
+                            .catch(function (error) {
                                 console.log(error);
                             });
                     } else {

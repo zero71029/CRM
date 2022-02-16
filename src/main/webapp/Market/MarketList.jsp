@@ -10,12 +10,9 @@
             <link rel="preconnect" href="https://fonts.gstatic.com">
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
 
-
-
-
             <!-- <%-- 主要的CSS、JS放在這裡--%> -->
             <!-- <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css"> -->
-         
+
             <style>
                 .marketbar {
                     /* 按鈕顏色 */
@@ -62,60 +59,42 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                         <!-- <%-- 中間主體--%> -->
                         <transition-group name="slide-fade" appear>
                             <table class="Table table-striped orderTable" key="1" v-if="show">
-
-
                                 <tr>
                                     <td><input type="checkbox" id="activity"></td>
+                                    <td>階段</td>
                                     <td>名稱</td>
                                     <td>客戶</td>
                                     <td>負責人</td>
-                                    <td>產業</td>
-                                    <td>階段</td>
+
+
                                     <td>機率</td>
                                     <td @click="sortItem('important')"><a href="#">重要性</a></td>
-                                    <td>終止時間</td>
+
+                                    <td>建立時間</td>
                                 </tr>
+
+
                                 <tr class="item" v-for="(s, index) in list" :key="index">
                                     <td><input type="checkbox" :value="s.marketid" name="mak"></td>
+                                    <td v-on:click="market(s.marketid)">
+                                        {{s.stage}}</td>
                                     <td v-on:click="market(s.marketid)">
                                         {{s.name}}</td>
                                     <td v-on:click="market(s.marketid)">
                                         {{s.client}}</td>
                                     <td v-on:click="market(s.marketid)">
                                         {{s.user}}</td>
-                                    <td v-on:click="market(s.marketid)">
-                                        {{s.type}}</td>
-                                    <td v-on:click="market(s.marketid)">
-                                        {{s.stage}}</td>
+
                                     <td v-on:click="market(s.marketid)">
                                         {{s.clinch}}</td>
                                     <td v-on:click="market(s.marketid)" :class="'important'+index">
                                         {{s.important}}</td>
+
                                     <td v-on:click="market(s.marketid)">
-                                        {{s.endtime}}</td>
+                                        {{s.aaa}}</td>
                                 </tr>
                             </table>
                             <!-- 分頁 -->
@@ -428,7 +407,7 @@
                                             aria-labelledby="flush-headingThree"
                                             data-bs-parent="#accordionFlushExample">
                                             <div class="accordion-body">
-                                                <el-rate v-model="clinch" show-text
+                                                <el-rate v-model="clinch" 
                                                     :texts="['極差', '失望', '一般', '滿意', '驚喜']" style="height: 30px;"
                                                     :colors="{ 2: '#99A9BF', 3:  '#F7BA2A', 4: '#FF9900', 5: 'red' }">
                                                 </el-rate>
@@ -666,7 +645,7 @@
                                 this.list = response.data,
                                 this.show = true
                             ))
-                            .catch(function (error) {  
+                            .catch(function (error) {
                                 console.log(error);
                             });
                         axios

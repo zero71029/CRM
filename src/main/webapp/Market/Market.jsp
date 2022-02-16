@@ -260,9 +260,6 @@
 
                                                 <!-- onclick="contact()"> -->
                                             </div>
-                                            <div class="col-md-1 "> </div>
-                                            <div class="col-md-1 cell">機會編號</div>
-                                            <div class="col-md-2 ">${bean.marketid}</div>
                                         </div>
 
                                         <div class="row">
@@ -386,7 +383,7 @@
                                                     v-model="important">
                                                     <option value="高">高</option>
                                                     <option value="中">中</option>
-                                                    <option value="低" >低</option>
+                                                    <option value="低">低</option>
                                                     <option value="無">無</option>
                                                 </select>
                                             </div>
@@ -570,7 +567,7 @@
                                             <div class="col-md-1 cell">成交機率</div>
 
                                             <div class="col-md-2 FormPadding">
-                                                <el-rate v-model="value"
+                                                <el-rate v-model="value" @click="clickClinch"
                                                     :colors="{ 2: '#99A9BF', 3:  '#F7BA2A', 4: '#FF9900', 5: 'red' }">
                                                 </el-rate>
                                                 <input type="hidden" name="clinch" v-model="value">
@@ -970,7 +967,7 @@
                 el: '.app',
                 data() {
                     return {
-                        value: clinch,
+                        value: clinch,//成交機率
                         show: false,
                         loading: true,
                         outerVisible: false,
@@ -1004,6 +1001,15 @@
                         TrackList: {},
                     }
                 },
+                watch: {
+                    value: {
+                        handler(newValue, oldValue) {
+                            if (oldValue != 0) {
+                                this.value = 0
+                            }
+                        }
+                    }
+                },
                 created() {
                     this.show = true;
                     this.loading = false;
@@ -1023,6 +1029,7 @@
                     }
                 },
                 methods: {
+
                     open(s) {//修改追蹤資訊
                         this.$alert('<form action="${pageContext.request.contextPath}/Market/changeTrackByMarket/${bean.marketid}" method = "post" >\
                                                     <div class="row">\

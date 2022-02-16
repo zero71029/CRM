@@ -95,7 +95,7 @@ public class MarketControler {
 	public List<MarketBean> Market(@RequestParam("pag") Integer pag) {
 		System.out.println("*****讀取銷售機會列表****");
 		pag--;
-		System.out.println(ms.getList(pag));
+
 		return ms.getList(pag);
 	}
 

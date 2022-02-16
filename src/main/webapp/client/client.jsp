@@ -100,7 +100,7 @@
                                 <div class="row">
                                     <div class="col-lg-1"></div>
                                     <div class="col-lg-10">
-                                        <h3>各戶</h3>
+                                        <h3>客戶</h3>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -323,208 +323,6 @@
                                     <div class="col-lg-8"></div>
                                 </div>
 
-                                <c:if test='${not empty bean}'>
-                                    <!-- ///////////////////////////////其他地址/////////////////////////////////// ..-->
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-lg-1"></div>
-                                        <div class="col-lg-10 log">
-                                            <h5>其他地址</h5>
-                                        </div>
-                                    </div>
-
-                                    <c:if test="${not empty bean.address}">
-                                        <c:forEach varStatus="loop" begin="0" end="${bean.address.size()-1}"
-                                            items="${bean.address}" var="s">
-                                            <div class="row ">
-                                                <div class="col-lg-1"></div>
-                                                <div class="col-lg-10 row contact"
-                                                    style="margin: 0%; position: relative;"
-                                                    onclick="ClientAddress('${s.city}','${s.town}','${s.address}','${s.addressid}')">
-                                                    <div class="col-lg-11">${s.city} ${s.town}[${s.postal}] ${s.address}
-                                                    </div>
-                                                    <div class="col-lg-1"> <a class="delClientAddress"
-                                                            href="${pageContext.request.contextPath}/CRM/delClientAddress/${s.addressid}/${bean.clientid}">remove</a>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </c:forEach>
-                                    </c:if>
-                                    <div class="row">
-                                        <div class="col-lg-1"></div>
-                                        <div class="col-lg-10 row contact" onclick="newAddress()" style="margin: 0%;">
-                                            <div class="col-lg-2">新增</div>
-                                            <div class="col-lg-2"></div>
-                                            <div class="col-lg-2"></div>
-                                            <div class="col-lg-2"></div>
-                                            <div class="col-lg-2"></div>
-                                            <div class="col-lg-2"></div>
-                                        </div>
-                                    </div>
-
-
-                                    <!-- ///////////////////////////////聯絡人/////////////////////////////////// ..-->
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-lg-1"></div>
-                                        <div class="col-lg-10 log">
-                                            <h5>聯絡人</h5>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-1"></div>
-                                        <div class="col-lg-10 row">
-                                            <div class="col-lg-2">名稱</div>
-                                            <div class="col-lg-2">職務</div>
-                                            <div class="col-lg-2">電話</div>
-                                            <div class="col-lg-2">手機</div>
-                                            <div class="col-lg-2">Email</div>
-                                            <div class="col-lg-2">備註</div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-1"></div>
-                                        <div class="col-lg-10">
-                                            <hr>
-                                        </div>
-                                    </div>
-                                    <c:if test="${not empty bean.contact}">
-                                        <c:forEach varStatus="loop" begin="0" end="${bean.contact.size()-1}"
-                                            items="${bean.contact}" var="s">
-                                            <div class="row ">
-                                                <div class="col-lg-1"></div>
-                                                <div class="col-lg-10 row contact" style="margin: 0%;"
-                                                    onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/contact/${s.contactid}'">
-                                                    <div class="col-lg-2">${s.name}</div>
-                                                    <div class="col-lg-2">${s.jobtitle}</div>
-                                                    <div class="col-lg-2">${s.phone}</div>
-                                                    <div class="col-lg-2">${s.moblie}</div>
-                                                    <div class="col-lg-2">Email</div>
-                                                    <div class="col-lg-2">${s.remark}</div>
-                                                </div>
-                                            </div>
-                                        </c:forEach>
-                                    </c:if>
-                                    <div class="row">
-                                        <div class="col-lg-1"></div>
-                                        <div class="col-lg-10 row contact" onclick="changeContact()"
-                                            style="margin: 0%;">
-                                            <div class="col-lg-2">新增</div>
-                                            <div class="col-lg-2"></div>
-                                            <div class="col-lg-2"></div>
-                                            <div class="col-lg-2"></div>
-                                            <div class="col-lg-2"></div>
-                                            <div class="col-lg-2"></div>
-                                        </div>
-                                    </div>
-
-                                    <!-- ///////////////////////////////銷售機會/////////////////////////////////// -->
-                                    <hr>
-                                    <br>
-                                    <div class="row">
-                                        <div class="col-lg-1"></div>
-                                        <div class="col-lg-10 log">
-                                            <h5>銷售機會</h5>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-1"></div>
-                                        <div class="col-lg-10 row">
-                                            <div class="col-lg-2">編號</div>
-                                            <div class="col-lg-2">名稱</div>
-                                            <div class="col-lg-2">聯絡人</div>
-                                            <div class="col-lg-2">負責人</div>
-                                            <div class="col-lg-2">金額</div>
-                                            <div class="col-lg-2">階段</div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <c:if test="${not empty market}">
-                                            <c:forEach varStatus="loop" begin="0" end="${market.size()-1}"
-                                                items="${market}" var="s">
-                                                <div class="row ">
-                                                    <div class="col-lg-1"></div>
-                                                    <div class="col-lg-10 row contact" style="margin: 0%;"
-                                                        onclick="javascript:location.href='${pageContext.request.contextPath}/Market/Market/${s.marketid}'">
-                                                        <div class="col-lg-2">${s.marketid}</div>
-                                                        <div class="col-lg-2">${s.name}</div>
-                                                        <div class="col-lg-2">${s.contactname}</div>
-                                                        <div class="col-lg-2">${s.user}</div>
-                                                        <div class="col-lg-2">${s.cost}</div>
-                                                        <div class="col-lg-2">${s.stage}</div>
-                                                    </div>
-                                                </div>
-                                            </c:forEach>
-                                        </c:if>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-1"></div>
-                                        <div class="col-lg-10 row contact" onclick="changeMarket()" style="margin: 0%;">
-                                            <div class="col-lg-2">新增</div>
-                                            <div class="col-lg-2"></div>
-                                            <div class="col-lg-2"></div>
-                                            <div class="col-lg-2"></div>
-                                            <div class="col-lg-2"></div>
-                                            <div class="col-lg-2"></div>
-                                        </div>
-                                    </div>
-
-                                    <!-- ///////////////////////////////工作項目/////////////////////////////////// -->
-                                    <hr>
-                                    <br>
-                                    <div class="row">
-                                        <div class="col-lg-1"></div>
-                                        <div class="col-lg-10 log">
-                                            <h5>工作項目</h5>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-1"></div>
-                                        <div class="col-lg-10 row">
-                                            <div class="col-lg-4">主題</div>
-                                            <div class="col-lg-2">到期日</div>
-                                            <div class="col-lg-2">負責人</div>
-                                            <div class="col-lg-2">狀態</div>
-                                            <div class="col-lg-2">重要性</div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <c:if test="${not empty bean.work}">
-                                            <c:forEach varStatus="loop" begin="0" end="${bean.work.size()-1}"
-                                                items="${bean.work}" var="s">
-                                                <div class="row ">
-                                                    <div class="col-lg-1"></div>
-                                                    <div class="col-lg-10 row contact"
-                                                        onclick="javascript:location.href='${pageContext.request.contextPath}/work/detail/${s.workid}'">
-                                                        <div class="col-lg-4">${s.name}</div>
-                                                        <div class="col-lg-2">${s.endtime}</div>
-                                                        <div class="col-lg-2">${s.user}</div>
-                                                        <div class="col-lg-2">${s.state}</div>
-                                                        <div class="col-lg-2">${s.important}</div>
-
-                                                    </div>
-                                                </div>
-                                            </c:forEach>
-                                        </c:if>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-lg-1"></div>
-                                        <div class="col-lg-10 row contact" onclick="changeWork()">
-                                            <div class="col-lg-2">新增</div>
-                                            <div class="col-lg-2"></div>
-                                            <div class="col-lg-2"></div>
-                                            <div class="col-lg-2"></div>
-                                            <div class="col-lg-2"></div>
-                                            <div class="col-lg-2"></div>
-                                        </div>
-                                    </div>
-                                    <div class="row">&nbsp;</div>
-                                    <div class="row">&nbsp;</div>
-
-                                    <!-- ////////////////////////////////////////////////////////////////// -->
-                                </c:if>
                             </div>
                             <div class="col-lg-4">
                                 <div class="row">&nbsp;</div>
@@ -535,7 +333,7 @@
                                 <div class="row">&nbsp;</div>
                                 <div class="row">&nbsp;</div>
                                 <div class="row">
-                                    <div class="col-lg-3 cell">各戶負責人*</div>
+                                    <div class="col-lg-3 cell">客戶負責人*</div>
                                     <div class="col-lg-8 cell FormPadding">
                                         <select name="user" class="form-select cellFrom" v-model="user"
                                             aria-label="Default select example">
@@ -684,6 +482,214 @@
 
                             </div>
                         </div>
+                        <c:if test='${not empty bean}'>
+                            <!-- ///////////////////////////////其他地址/////////////////////////////////// ..-->
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-10 log">
+                                    <h5>其他地址</h5>
+                                </div>
+                            </div>
+
+                            <c:if test="${not empty bean.address}">
+                                <c:forEach varStatus="loop" begin="0" end="${bean.address.size()-1}"
+                                    items="${bean.address}" var="s">
+                                    <div class="row ">
+                                        <div class="col-lg-1"></div>
+                                        <div class="col-lg-10 row contact"
+                                            style="margin: 0%; position: relative;"
+                                            onclick="ClientAddress('${s.city}','${s.town}','${s.address}','${s.addressid}')">
+                                            <div class="col-lg-11">${s.city} ${s.town}[${s.postal}] ${s.address}
+                                            </div>
+                                            <div class="col-lg-1"> <a class="delClientAddress"
+                                                    href="${pageContext.request.contextPath}/CRM/delClientAddress/${s.addressid}/${bean.clientid}">remove</a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </c:forEach>
+                            </c:if>
+                            <div class="row">
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-10 row contact" onclick="newAddress()" style="margin: 0%;">
+                                    <div class="col-lg-2">新增</div>
+                                    <div class="col-lg-2"></div>
+                                    <div class="col-lg-2"></div>
+                                    <div class="col-lg-2"></div>
+                                    <div class="col-lg-2"></div>
+                                    <div class="col-lg-2"></div>
+                                </div>
+                            </div>
+
+
+                            <!-- ///////////////////////////////聯絡人/////////////////////////////////// ..-->
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-10 log">
+                                    <h5>聯絡人</h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-10 row">
+                                    <div class="col-lg-2">名稱</div>
+                                    <div class="col-lg-2">職務</div>
+                                    <div class="col-lg-2">電話</div>
+                                    <div class="col-lg-2">手機</div>
+                                    <div class="col-lg-2">Email</div>
+                                    <div class="col-lg-2">備註</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-10">
+                                    <hr>
+                                </div>
+                            </div>
+                            <c:if test="${not empty bean.contact}">
+                                <c:forEach varStatus="loop" begin="0" end="${bean.contact.size()-1}"
+                                    items="${bean.contact}" var="s">
+                                    <div class="row ">
+                                        <div class="col-lg-1"></div>
+                                        <div class="col-lg-10 row contact" style="margin: 0%;"
+                                            onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/contact/${s.contactid}'">
+                                            <div class="col-lg-2">${s.name}</div>
+                                            <div class="col-lg-2">${s.jobtitle}</div>
+                                            <div class="col-lg-2">${s.phone}</div>
+                                            <div class="col-lg-2">${s.moblie}</div>
+                                            <div class="col-lg-2">Email</div>
+                                            <div class="col-lg-2">${s.remark}</div>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </c:if>
+                            <div class="row">
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-10 row contact" onclick="changeContact()"
+                                    style="margin: 0%;">
+                                    <div class="col-lg-2">新增</div>
+                                    <div class="col-lg-2"></div>
+                                    <div class="col-lg-2"></div>
+                                    <div class="col-lg-2"></div>
+                                    <div class="col-lg-2"></div>
+                                    <div class="col-lg-2"></div>
+                                </div>
+                            </div>
+
+                            <!-- ///////////////////////////////銷售機會/////////////////////////////////// -->
+                            <hr>
+                            <br>
+                            <div class="row">
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-10 log">
+                                    <h5>銷售機會</h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-10 row">
+                                     
+                                    <div class="col-lg-4">名稱</div>
+                                    <div class="col-lg-2">聯絡人</div>
+                                    <div class="col-lg-2">負責人</div>
+                                    <div class="col-lg-2">金額</div>
+                                    <div class="col-lg-2">階段</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <c:if test="${not empty market}">
+                                    <c:forEach varStatus="loop" begin="0" end="${market.size()-1}"
+                                        items="${market}" var="s">
+                                        <div class="row ">
+                                            <div class="col-lg-1"></div>
+                                            <div class="col-lg-10 row contact" style="margin: 0%;"
+                                                onclick="javascript:location.href='${pageContext.request.contextPath}/Market/Market/${s.marketid}'">
+                                              
+                                                <div class="col-lg-4">${s.name}</div>
+                                                <div class="col-lg-2">${s.contactname}</div>
+                                                <div class="col-lg-2">${s.user}</div>
+                                                <div class="col-lg-2">${s.cost}</div>
+                                                <div class="col-lg-2">${s.stage}</div>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+                                </c:if>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-10 row contact" onclick="changeMarket()" style="margin: 0%;">
+                                    <div class="col-lg-2">新增</div>
+                                    <div class="col-lg-2"></div>
+                                    <div class="col-lg-2"></div>
+                                    <div class="col-lg-2"></div>
+                                    <div class="col-lg-2"></div>
+                                    <div class="col-lg-2"></div>
+                                </div>
+                            </div>
+
+                            <!-- ///////////////////////////////工作項目/////////////////////////////////// -->
+                            <hr>
+                            <br>
+                            <div class="row">
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-10 log">
+                                    <h5>工作項目</h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-10 row">
+                                    <div class="col-lg-4">主題</div>
+                                    <div class="col-lg-2">到期日</div>
+                                    <div class="col-lg-2">負責人</div>
+                                    <div class="col-lg-2">狀態</div>
+                                    <div class="col-lg-2">重要性</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <c:if test="${not empty bean.work}">
+                                    <c:forEach varStatus="loop" begin="0" end="${bean.work.size()-1}"
+                                        items="${bean.work}" var="s">
+                                        <div class="row ">
+                                            <div class="col-lg-1"></div>
+                                            <div class="col-lg-10 row contact"
+                                                onclick="javascript:location.href='${pageContext.request.contextPath}/work/detail/${s.workid}'">
+                                                <div class="col-lg-4">${s.name}</div>
+                                                <div class="col-lg-2">${s.endtime}</div>
+                                                <div class="col-lg-2">${s.user}</div>
+                                                <div class="col-lg-2">${s.state}</div>
+                                                <div class="col-lg-2">${s.important}</div>
+
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+                                </c:if>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-10 row contact" onclick="changeWork()">
+                                    <div class="col-lg-2">新增</div>
+                                    <div class="col-lg-2"></div>
+                                    <div class="col-lg-2"></div>
+                                    <div class="col-lg-2"></div>
+                                    <div class="col-lg-2"></div>
+                                    <div class="col-lg-2"></div>
+                                </div>
+                            </div>
+                            <div class="row">&nbsp;</div>
+                            <div class="row">&nbsp;</div>
+
+                            <!-- ////////////////////////////////////////////////////////////////// -->
+                        </c:if>
+
+
+
+
+
+
                     </div>
                     <!-- 其他地址彈窗 -->
                     <div class="AddressDiv " title="其他地址">
@@ -863,7 +869,7 @@
                 data() {
                     return {
                         email: "${bean.email}",
-                        user: "",//各戶負責人
+                        user: "",//客戶負責人
                         newTag: "",//新增標籤
                         tags: [],//標籤列表
                         industry: "${bean.industry}",//產業
@@ -901,7 +907,7 @@
                         });
                 },
                 watch: {
-                    user: {//各戶負責人改變
+                    user: {//客戶負責人改變
                         handler(newValue, oldValue) {
                             console.log(newValue);
                             $.ajax({

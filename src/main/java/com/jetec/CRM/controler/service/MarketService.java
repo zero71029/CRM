@@ -59,6 +59,15 @@ public class MarketService {
 		Pageable p = (Pageable) PageRequest.of(pag, 20);
 		Page<MarketBean> page = (Page<MarketBean>) mr.findStage(p);
 		List<MarketBean> result = page.getContent();
+
+		for (MarketBean bean:result			 ) {
+			System.out.println(bean);
+			System.out.println(bean.getTrackbean());
+		}
+
+
+
+
 //		Sort sort = Sort.by(Direction.DESC, "marketid");
 //		List<MarketBean> result = mr.findByStage("尚未處理", sort);
 //		result.addAll(mr.findByStage("需求確認", sort));

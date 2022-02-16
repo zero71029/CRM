@@ -50,7 +50,7 @@ public class MarketBean {
 	
 	
 	// 追蹤資訊
-	@OneToMany(targetEntity = TrackBean.class, mappedBy = "customerid", cascade = CascadeType.ALL)
+	@OneToMany( mappedBy = "customerid", cascade = CascadeType.ALL)
 	private List<TrackBean> trackbean;
 
 //	//舊
