@@ -80,13 +80,7 @@
 
             }
 
-            .box .recorddiv {
-                position: absolute;
-                width: 705px;
-                bottom: 0px;
-                right: 20px;
-                padding: 0%;
-            }
+
 
             .box .bosMessagediv {
                 position: absolute;
@@ -116,6 +110,9 @@
             }
 
             /* 右下角按鈕////////////////結束 */
+            [v-cloak] {
+                display: none;
+            }
         </style>
 
         <body>
@@ -127,7 +124,7 @@
                     <script src="${pageContext.request.contextPath}/js/jquery.twzipcode.min.js"></script>
                     <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
                     <script src="${pageContext.request.contextPath}/bootstrap/js/bootstrap.bundle.min.js"></script>
-                    <div class="col-md-11 app">
+                    <div class="col-md-11 app" v-cloak>
                         <!-- <%-- 中間主體--%> -->
                         <br>
                         <div class="row">
@@ -579,27 +576,7 @@
 
 
                             <div class="row box" id="draggable">
-                                <!-- <%--記錄區塊--%> -->
-                                <div class="recorddiv" >
-                                    <el-card class="box-card overflow-auto" style="height: 500px;">
-                                        <table class="table">
-                                            <tr>
-                                                <td>修改者</td>
-                                                <td>欄位</td>
-                                                <td>原本</td>
-                                                <td>修改後</td>
-                                                <td>時間</td>
-                                            </tr>
-                                            <tr v-for="(o,index) in changeMessageList" :key="index" class="text item">
-                                                <td>{{o.name }}</td>
-                                                <td>{{o.filed}} </td>
-                                                <td class="text-break">{{o.source}}</td>
-                                                <td class="text-break">{{o.after}}</td>
-                                                <td style="width:130px">{{o.createtime}}</td>
-                                            </tr>
-                                        </table>
-                                    </el-card>
-                                </div>
+
 
 
 
@@ -641,17 +618,30 @@
                                         </div>
                                         <div class="dockbar row shadow  ">
                                             <div class="col-md-2 offset-md-1" style="border-left: black 1px solid;"
-                                                onclick="javascript:$('.act').toggle();$('.bosMessagediv').hide();$('.recorddiv').hide();">
+                                                onclick="javascript:$('.act').toggle();$('.bosMessagediv').hide();">
                                                 行動
                                             </div>
-                                            <div class="col-md-2"
-                                                onclick="javascript:$('.recorddiv').toggle();$('.bosMessagediv').hide();$('.act').hide()">
+                                            <div class="col-md-2" @click="changeTableVisible = true">
                                                 紀錄
                                             </div>
-                                            <div class="col-md-2" v-on:click="showbosMassage">留言</div>
+                                            <div class="col-md-2" v-on:click="showbosMassage">留言 <span
+                                                    class="badge rounded-pill bg-danger">{{bosMassageList.length ==
+                                                    0?"":bosMassageList.length}}</span></div>
                                         </div>
+
                             </div>
                         </c:if>
+                        <!-- 修改紀錄Table -->
+                        <el-dialog title="修改紀錄" :visible.sync="changeTableVisible">
+                            <el-table :data="changeMessageList" height="450">
+                                <el-table-column property="name" label="姓名"></el-table-column>
+                                <el-table-column property="filed" label="欄位"></el-table-column>
+                                <el-table-column property="source" label="原本"></el-table-column>
+                                <el-table-column property="after" label="修改後"></el-table-column>
+                                <el-table-column property="createtime" label="日期" width="120">
+                                </el-table-column>
+                            </el-table>
+                        </el-dialog>
                     </div>
                     <!-- 動作區塊 -->
 
@@ -660,7 +650,7 @@
             </div>
         </body>
         <script>
-            $('.recorddiv').hide();
+            
             $('.act').hide();
             $(function () {
                 $("#draggable").draggable();
@@ -827,9 +817,10 @@
                 el: '.app',
                 data() {
                     return {
+                        changeTableVisible: false,
                         changeMessageList: [],//修改資訊
                         oldCustomer: {},//暫存表
-                        customer: {},//
+                        customer: {},//bean
                         bosMassage: "",//主管留言欄位
                         bosMassageList: [],//組長留言資料
 
@@ -880,7 +871,7 @@
 
                         ))
                         .catch(function (error) {
-                            console.log("沒有資訊");
+                            console.log("沒有取得資訊");
                         });
                     $('.bosMessagediv').hide();
                 },
@@ -952,7 +943,7 @@
                     },
 
                     showbosMassage() {//點擊留言
-                        $('.recorddiv').hide();
+                        
                         $('.bosMessagediv').toggle();
                         $('.act').hide();
                     },

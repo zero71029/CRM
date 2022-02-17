@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.jetec.CRM.controler.service.DirectorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -46,7 +47,8 @@ public class MarketControler {
 	AdminRepository ar;
 	@Autowired
 	ZeroTools zTools;
-
+	@Autowired
+	DirectorService DS;
 
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -57,6 +59,7 @@ public class MarketControler {
 		Map<String,Object> result = new HashMap<>();
 		MarketBean marketBean = ms.getById(id);
 		result.put("bean",marketBean);
+		result.put("changeMessageList",DS.getChangeMessage(id));
 		return result;
 	}
 

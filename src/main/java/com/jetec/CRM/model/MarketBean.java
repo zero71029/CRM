@@ -40,15 +40,17 @@ public class MarketBean {
 	private String important;//重要性
 	private String line;
 	private String customerid;//追蹤資訊
+	private String contactmethod;//聯絡方式
 
-	
-	
-	
-	
-	
-	
-	
-	
+
+	public String getContactmethod() {
+		return contactmethod;
+	}
+
+	public void setContactmethod(String contactmethod) {
+		this.contactmethod = contactmethod;
+	}
+
 	// 追蹤資訊
 	@OneToMany( mappedBy = "customerid", cascade = CascadeType.ALL)
 	private List<TrackBean> trackbean;

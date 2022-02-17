@@ -670,16 +670,16 @@ public class PublicControl {
             String key = it.next();
             cmbean.setFiled(key);
             System.out.printf("key:%s,value:%s\n", key, map.get(key));
-            List<String> list = (List<String>) map.get(key);
+            List<Object> list = (List<Object>) map.get(key);
 
-           if(list.get(1) == null || list.get(1).isEmpty()){//如果 來源為空 不儲存
+           if(list.get(1) == null  ){//如果 來源為空 不儲存
            }else{
-               if(list.get(0) == null || list.get(0).isEmpty()){//目的地為空
+               if(list.get(0) == null  ){//目的地為空
                    cmbean.setAfter("");
                }else{
-                   cmbean.setAfter(list.get(0));
+                   cmbean.setAfter(list.get(0).toString());
                }
-               cmbean.setSource(list.get(1));
+               cmbean.setSource(list.get(1).toString());
                ss.saveChangeMesssage(cmbean);
            }
         }

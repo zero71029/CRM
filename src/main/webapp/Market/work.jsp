@@ -20,14 +20,14 @@
                 background-color: #afe3d5;
             }
 
-            .cell {
+            .cellz {
                 border: 0px solid black;
                 border-bottom: 1px solid black;
                 background-color: #CCC;
 
             }
 
-            .cellFrom {
+            .cellzFrom {
                 border: 0px solid black;
                 /* width: 33%; */
             }
@@ -50,6 +50,74 @@
 
             .error {
                 color: red;
+            }
+
+            /* 右下角按鈕 */
+            .row .box {
+                height: 0px;
+                width: 560px;
+                position: fixed;
+                z-index: 1000;
+                bottom: 30px;
+                right: 0px;
+                background-color: #fff;
+
+                padding: 0%;
+                border-radius: 15px 0 0 15px;
+                margin: 0%;
+            }
+
+            .row .dockbar {
+                opacity: 1;
+                width: 560px;
+                height: 30px;
+                background-color: #ddd;
+
+                border-radius: 15px 0 0 15px;
+            }
+
+            .dockbar div {
+                border-right: 1px solid black;
+                cursor: pointer;
+            }
+
+            .dockbar div:hover {
+                background-color: #aaa;
+
+            }
+
+
+
+            .box .bosMessagediv {
+                position: absolute;
+                width: 505px;
+                bottom: 0px;
+                right: 20px;
+                padding: 0%;
+            }
+
+            .box .act {
+                position: absolute;
+                background-color: #aaa;
+                width: 505px;
+                bottom: 0px;
+                right: 25px;
+                color: white;
+                padding: 0%;
+            }
+
+            .box .act a {
+                color: white;
+                display: block;
+                border: 1px solid white;
+                background-color: #569b92;
+                text-align: center;
+                text-decoration: none;
+            }
+
+            /* 右下角按鈕////////////////結束 */
+            [v-cloak] {
+                display: none;
             }
         </style>
 
@@ -96,86 +164,81 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-1"></div>
-                                    <div class="col-md-1 cell">主題*</div>
+                                    <div class="col-md-1 cellz">主題 <span style="color: red;">*</span></div>
                                     <div class="col-md-3   FormPadding">
-                                        <input type="text" class=" form-control cellFrom" name="name"
-                                            value="${bean.name}" maxlength="95" required>
+                                        <input type="text" class=" form-control cellzFrom" name="name"
+                                            v-model="bean.name" maxlength="95" required>
                                     </div>
                                     <div class="col-md-2"></div>
-                                    <div class="col-md-1 cell">項目編號</div>
-                                    <div class="col-md-2 cell">${bean.workid}
-                                    </div>
-
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-1 cell">到期日</div>
-                                    <div class="col-md-3   FormPadding">
-                                        <input type="text" class="form-control cellFrom endtime" name="endtime"
-                                            value="${bean.endtime}" maxlength="20" readonly>
-                                    </div>
-
-                                    <div class="col-md-2"></div>
-                                    <div class="col-md-1 cell">負責人*</div>
-                                    <div class="col-md-2 cell FormPadding">
-                                        <select name="user" class="form-select cellFrom"
+                                    <div class="col-md-1 cellz">負責人</div>
+                                    <div class="col-md-2 cellz FormPadding">
+                                        <select name="user" class="form-select cellzFrom" v-model="bean.user"
                                             aria-label="Default select example">
-                                            <option value="無" ${bean.user=="無" ?"selected":null}>無</option>
+                                            <option value="無">無</option>
                                             <c:if test="${not empty admin}">
                                                 <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}"
                                                     items="${admin}" var="s">
-                                                    <option value="${s.name}" ${bean.user==s.name ?"selected":null}>
+                                                    <option value="${s.name}">
                                                         ${s.name}</option>
                                                 </c:forEach>
                                             </c:if>
                                         </select>
                                     </div>
+
                                 </div>
                                 <div class="row">
                                     <div class="col-md-1"></div>
-                                    <div class="col-md-1 cell">重要性</div>
-                                    <div class="col-md-3 cell FormPadding">
-                                        <input type="text" class="form-control cellFrom" name="important"
-                                            value="${bean.important}" maxlength="10" list="important">
+                                    <div class="col-md-1 cellz">到期日</div>
+                                    <div class="col-md-3   FormPadding">
+                                        <input type="text" class="form-control cellzFrom endtime" name="endtime"
+                                            v-model="bean.endtime" maxlength="20" readonly>
+                                    </div>
+                                    <div class="col-md-2"></div>
+                                    <div class="col-md-1 cellz">狀態</div>
+                                    <div class="col-md-2 cellz FormPadding">
+                                        <select class=" form-select cellzFrom" name="state" v-model="bean.state">
+                                            <option value="尚未處理" selected>
+                                                尚未處理</option>
+                                            <option value="需求確認">
+                                                需求確認</option>
+                                            <option value="聯繫中">
+                                                聯繫中 </option>
+                                            <option value="處理中">
+                                                處理中</option>
+                                            <option value="已報價">
+                                                已報價</option>
+                                            <option value="成功結案">
+                                                成功結案</option>
+                                            <option value="失敗結案">
+                                                失敗結案</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1 cellz">重要性</div>
+                                    <div class="col-md-3 cellz FormPadding">
+                                        <input type="text" class="form-control cellzFrom" name="important"
+                                            v-model="bean.important" maxlength="10" list="important">
                                         <datalist id="important">
                                             <option value="高"></option>
                                             <option value="中"></option>
                                             <option value="低"></option>
+                                            <option value="無"></option>
                                         </datalist>
                                     </div>
-                                    <div class="col-md-2"></div>
-                                    <div class="col-md-1 cell">狀態</div>
-                                    <div class="col-md-2 cell FormPadding">
-                                        <select class=" form-select cellFrom" name="state">
-                                            <option value="尚未處理" class="selItemOff" selected>
-                                                尚未處理</option>
-                                            <option value="需求確認" class="selItemOff" ${bean.state=="需求確認"
-                                                ?"selected":null}>
-                                                需求確認</option>
-                                            <option value="聯繫中" class="selItemOff" ${bean.state=="聯繫中"
-                                                ?"selected":null}>
-                                                聯繫中 </option>
-                                            <option value="處理中" class="selItemOff" ${bean.state=="處理中"
-                                                ?"selected":null}>
-                                                處理中</option>
-                                            <option value="已報價" class="selItemOff" ${bean.state=="已報價"
-                                                ?"selected":null}>
-                                                已報價</option>
-                                            <option value="成功結案" class="selItemOff" ${bean.state=="成功結案"
-                                                ?"selected":null}>
-                                                成功結案</option>
-                                            <option value="失敗結案" class="selItemOff" ${bean.state=="失敗結案"
-                                                ?"selected":null}>
-                                                失敗結案</option>
-                                        </select>
-                                    </div>
+
                                 </div>
                                 <div class="row">
                                     <div class="col-md-1"></div>
-                                    <div class="col-md-1 cell">備註</div>
-                                    <div class="col-md-3 cell FormPadding">
-                                        <textarea name="remake" id="" style="width: 100%;" rows="5" maxlength="490"
-                                            required>${bean.remake}</textarea>
+                                    <div class="col-md-1 cellz">備註<span style="color: red;">*</span></div>
+                                    <div class="col-md-3 cellz FormPadding beanremake">
+                                        <el-input type="textarea" maxlength="500" v-model="bean.remake" name="remake"
+                                            show-word-limit rows="4">
+                                        </el-input>
+
+
                                     </div>
                                 </div>
                                 <div class="row">&nbsp; </div>
@@ -189,41 +252,41 @@
                                             <div class="col-md-12 log">關聯資訊</div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-3 cell">客戶</div>
+                                            <div class="col-md-3 cellz">客戶</div>
                                             <div class="col-md-9   FormPadding " @click="dialogTableVisible = true ">
                                                 <a :href="'${pageContext.request.contextPath}/CRM/client/'+clientid"
                                                     target="_blank" class="clientName">{{client}}</a>
-                                                <input type="hidden" name='clientid' :value="clientid">
+                                                <input type="hidden" name='clientid' v-model="clientid">
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-3 cell">聯絡人</div>
-                                            <div class="col-md-9 cell FormPadding">
-                                                <select name="contactid" class="form-select cellFrom"
-                                                    v-model="contactid">
+                                            <div class="col-md-3 cellz">聯絡人</div>
+                                            <div class="col-md-9 cellz FormPadding">
+                                                <select name="contactid" class="form-select cellzFrom"
+                                                    v-model="bean.contactid">
                                                     <option v-for="(contact, index) in contactList" :key="index"
                                                         :value="contact.contactid">{{contact.name}}</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-3 cell">潛在顧客</div>
+                                            <div class="col-md-3 cellz">潛在顧客</div>
                                             <div class="col-md-9   FormPadding" onclick="showCustomer()">
                                                 <a href="${pageContext.request.contextPath}/Market/potentialcustomer/${bean.customerid}"
                                                     target="_blank" class="customerName">${bean.customername}</a>
-                                                <input type="hidden" name="customerid" value="${bean.customerid}"
+                                                <input type="hidden" name="customerid" v-model="bean.customerid"
                                                     maxlength="20">
-                                                <input type="hidden" name="customername" value="${bean.customername}">
+                                                <input type="hidden" name="customername" v-model="bean.customername">
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-3 cell">銷售機會${MarketName}</div>
+                                            <div class="col-md-3 cellz">銷售機會${MarketName}</div>
                                             <div class="col-md-9   FormPadding" onclick="showMarket()">
                                                 <a href="${pageContext.request.contextPath}/Market/Market/${bean.marketid}"
                                                     target="_blank" class="marketName">${bean.marketname}</a>
-                                                <input type="hidden" name="marketid" value="${bean.marketid}"
+                                                <input type="hidden" name="marketid" v-model="bean.marketid"
                                                     maxlength="20">
-                                                <input type="hidden" name="marketname" value="${bean.marketname}">
+                                                <input type="hidden" name="marketname">
                                             </div>
                                         </div>
                                     </div>
@@ -247,7 +310,7 @@
                                     <div class="row">
                                         <div class="col-md-4"></div>
                                         <div class="col-md-4 FormPadding">
-                                            <button type="submit"
+                                            <button type="button" @click="submitForm"
                                                 style="width: 100%;background-color: rgb(36, 101, 164);color: white;"
                                                 class="btn">送出</button>
                                         </div>
@@ -288,7 +351,7 @@
                             </div>
                             <!--  -->
                             <form action="" method="post" id="SaveTrack" class="row g-3 needs-validation" novalidate>
-                                <input type="hidden" class=" form-control cellFrom" name="remark" maxlength="190"
+                                <input type="hidden" class=" form-control cellzFrom" name="remark" maxlength="190"
                                     value="${user.name}">
                                 <input type="hidden" name="customerid" value="${bean.track}">
                                 <div class="row">
@@ -450,19 +513,72 @@
 
                             </table>
                         </div>
-                        <!-- 銷售機會彈窗/// -->
+                        <!-- 銷售機會彈窗結束  -->
+
+
+
+
+
+                        <!-- 動作區塊 -->
+                        <c:if test="${not empty bean}">
+                            <div class="row box" id="draggable">
+                                <!-- 行動區塊 -->
+                                <!-- <div class="row act" style="height: 30px;">
+                                    <a href="#" onclick="goWork()">新增工作項目</a>
+                                </div> -->
+                                <!-- <%--記錄區塊--%> -->
+
+                                <!--  -->
+                                <div class="dockbar row shadow  ">
+
+                                    <div class="col-md-2 offset-md-1" style="border-left: black 1px solid;"
+                                        onclick="javascript:$('.act').toggle();">
+                                        行動
+                                    </div>
+                                    <div class="col-md-2" @click="changeTableVisible = true"
+                                        >紀錄</div>
+                                    <div class="col-md-2">留言</div>
+                                </div>
+                            </div>
+                        </c:if>
+                        <!-- <%-- 動作區塊結束/////////////////////////////////////--%> -->
+                        <!-- 修改紀錄Table -->          
+                        <el-dialog  title="修改紀錄" :visible.sync="changeTableVisible" >
+                            <el-table :data="changeMessageList" height="450" >                                
+                                <el-table-column property="name" label="姓名" ></el-table-column>
+                                <el-table-column property="filed" label="欄位" ></el-table-column>
+                                <el-table-column property="source" label="原本" ></el-table-column>
+                                <el-table-column property="after" label="修改後" ></el-table-column>
+                                <el-table-column property="createtime" label="日期" width="120"></el-table-column>
+                            </el-table>
+                        </el-dialog>
+
+
+
+
+
+
+
 
                     </div>
-
+                    <!-- 中間主體結束 -->
                 </div>
             </div>
 
+
+
+
+
         </body>
         <script>
-
             $(".market").show();
-            // 日期UI
+            
+            $('.act').hide();
+            $(function () {//行動區塊 拖動
+                $("#draggable").draggable();
+            });
             $(function () {
+                // 日期UI
                 $(".endtime").datepicker({
                     changeMonth: true,
                     changeYear: true,
@@ -471,31 +587,6 @@
                         inst.dpDiv.css({ marginTop: -input.offsetHeight + 'px' });
                     }
                 });
-                // 密碼驗證
-                jQuery.validator.setDefaults({
-                    submitHandler: function () {
-                        if (confirm("提交確認")) form.submit();
-                    }
-                });
-                $.extend($.validator.messages, {
-                    required: "這是必填字段",
-                    email: "請输入有效的電子郵件地址",
-                    url: "请输入有效的网址",
-                    date: "请输入有效的日期",
-                    dateISO: "请输入有效的日期 (YYYY-MM-DD)",
-                    number: "请输入有效的数字",
-                    digits: "只能输入数字",
-                    creditcard: "请输入有效的信用卡号码",
-                    equalTo: "你的输入不相同",
-                    extension: "请输入有效的后缀",
-                    maxlength: $.validator.format("最多可以输入 {0} 个字符"),
-                    minlength: $.validator.format("最少要输入 {0} 个字符"),
-                    rangelength: $.validator.format("请输入长度在 {0} 到 {1} 之间的字符串"),
-                    range: $.validator.format("请输入范围在 {0} 到 {1} 之间的数值"),
-                    max: $.validator.format("请输入不大于 {0} 的数值"),
-                    min: $.validator.format("请输入不小于 {0} 的数值")
-                });
-                $("#myform").validate();
             });
 
 
@@ -591,7 +682,7 @@
                 $("input[name='customerid']").val(id);
                 $("input[name='customername']").val(name);
                 $('.CustomerWork').dialog("close");
-                
+
             }
             $(".clientName").click(function (event) {
                 event.stopPropagation();
@@ -636,6 +727,11 @@
                 el: ".app",
                 data() {
                     return {
+                        changeTableVisible: false,//show 紀錄
+
+                        bean: {},
+                        oldBean: {},
+                        changeMessageList: [],//修改資訊
                         contact: {},
                         contactid: "",//聯絡人
                         contactList: [],//聯絡人列表
@@ -649,6 +745,19 @@
                     }
                 },
                 created() {
+                    if ("${bean.workid}" != "") {
+                        axios//初始化
+                            .get('${pageContext.request.contextPath}/work/init/${bean.workid}')
+                            .then(response => (
+                                this.bean = response.data.bean,
+                                this.changeMessageList = response.data.changeMessageList,
+                                this.oldBean = Object.assign({}, this.bean)
+                            ))
+                            .catch(function (error) {
+                                console.log("每有取得bean");
+                            });
+                    }
+
                     axios//取得客戶列表
                         .get('${pageContext.request.contextPath}/work/clientList')
                         .then(response => (
@@ -679,16 +788,18 @@
                             });
                     }
                     if ('${bean.track}' != '') {
-                        axios
+                        axios//追蹤資訊
                             .get('${pageContext.request.contextPath}/Potential/client/${bean.track}')
                             .then(response => (
                                 this.TrackList = response.data
                             ))
-                            .catch(function (error) { // 请求失败处理
-                                console.log(error);
+                            .catch(function (error) {
+                                console.log("每有取得追蹤資訊");
                             });
                     }
                 }, watch: {
+
+
                     clientList: {
                         handler(newValue, oldValue) {
                             for (const iterator of newValue) {
@@ -713,6 +824,42 @@
                         }
                     }
                 }, methods: {
+                    submitForm() {//送出表單                         
+                        //表單驗證
+                        var isok = true;
+
+                        if (this.bean.name == null || this.bean.name == "") {
+                            $("input[name='name']").css("border", "red 1px solid");
+                            isok = false;
+                        }
+                        if (this.bean.remake == null || this.bean.remake == "") {
+                            $(".beanremake").css("border", "red 1px solid");
+                            isok = false;
+                        }
+                        if (isok) {//通過驗證
+                            if ("${bean.workid}" == "") {//如果是新資料 就 提交表單
+                                $('.basefrom').submit();
+                            } else {//如果不是新資料 就 紀錄修改
+                                var keys = Object.keys(this.bean);
+                                var data = {};
+                                for (const iterator of keys) {
+                                    if (this.bean[iterator] == this.oldBean[iterator]) {
+
+                                    } else {
+                                        data[iterator] = [this.bean[iterator], this.oldBean[iterator]];
+                                    }
+
+                                }
+                                axios
+                                    .post('${pageContext.request.contextPath}/changeMessage/${bean.workid}', data)
+                                    .then(
+                                        response => (
+                                            $('.basefrom').submit()
+                                        ))
+                            }
+                        }
+                    },
+
                     open(s) {//修改追蹤資訊
                         this.$alert('<form action="${pageContext.request.contextPath}/work/changeTrackByMarket/${bean.workid}" method = "post" >\
                                                     <div class="row">\
