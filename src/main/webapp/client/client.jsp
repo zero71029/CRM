@@ -144,8 +144,15 @@
                                             <div class="col-lg-1"></div>
                                             <div class="col-lg-1 cell">電話</div>
                                             <div class="col-lg-3 cell FormPadding">
-                                                <input type="text" class=" form-control cellFrom" name="phone"
-                                                    value="${bean.phone}" maxlength="20">
+                                                <div class="input-group ppp">
+                                                    <input type="text" class="form-control ppp" name="phone" value="${bean.phone}"
+                                                         maxlength="20">
+                                                    <span class="input-group-text">-</span>
+                                                    <input type="text" class="form-control" name="extension" value="${bean.extension}"
+                                                         maxlength="10" placeholder="分機">
+                                                </div>
+                                                <!-- <input type="text" class=" form-control cellFrom" name="phone"
+                                                    value="${bean.phone}" maxlength="20"> -->
                                             </div>
                                             <div class="col-lg-2 cell">聯絡人</div>
                                             <div class="col-lg-4 cell FormPadding">
@@ -309,8 +316,9 @@
                                     <div class="row">
                                         <div class="col-lg-1"></div>
                                         <div class="col-lg-10 FormPadding">
-                                            <button type="submit" style="width: 100%;background-color: #0d6efd; color: white;"
-                                                class="btn log" >儲存</button>
+                                            <button type="submit"
+                                                style="width: 100%;background-color: #0d6efd; color: white;"
+                                                class="btn log">儲存</button>
                                         </div>
 
 
@@ -497,8 +505,7 @@
                                     items="${bean.address}" var="s">
                                     <div class="row ">
                                         <div class="col-lg-1"></div>
-                                        <div class="col-lg-10 row contact"
-                                            style="margin: 0%; position: relative;"
+                                        <div class="col-lg-10 row contact" style="margin: 0%; position: relative;"
                                             onclick="ClientAddress('${s.city}','${s.town}','${s.address}','${s.addressid}')">
                                             <div class="col-lg-11">${s.city} ${s.town}[${s.postal}] ${s.address}
                                             </div>
@@ -567,8 +574,7 @@
                             </c:if>
                             <div class="row">
                                 <div class="col-lg-1"></div>
-                                <div class="col-lg-10 row contact" onclick="changeContact()"
-                                    style="margin: 0%;">
+                                <div class="col-lg-10 row contact" onclick="changeContact()" style="margin: 0%;">
                                     <div class="col-lg-2">新增</div>
                                     <div class="col-lg-2"></div>
                                     <div class="col-lg-2"></div>
@@ -590,7 +596,7 @@
                             <div class="row">
                                 <div class="col-lg-1"></div>
                                 <div class="col-lg-10 row">
-                                     
+
                                     <div class="col-lg-4">名稱</div>
                                     <div class="col-lg-2">聯絡人</div>
                                     <div class="col-lg-2">負責人</div>
@@ -600,13 +606,13 @@
                             </div>
                             <div class="row">
                                 <c:if test="${not empty market}">
-                                    <c:forEach varStatus="loop" begin="0" end="${market.size()-1}"
-                                        items="${market}" var="s">
+                                    <c:forEach varStatus="loop" begin="0" end="${market.size()-1}" items="${market}"
+                                        var="s">
                                         <div class="row ">
                                             <div class="col-lg-1"></div>
                                             <div class="col-lg-10 row contact" style="margin: 0%;"
                                                 onclick="javascript:location.href='${pageContext.request.contextPath}/Market/Market/${s.marketid}'">
-                                              
+
                                                 <div class="col-lg-4">${s.name}</div>
                                                 <div class="col-lg-2">${s.contactname}</div>
                                                 <div class="col-lg-2">${s.user}</div>
@@ -991,6 +997,15 @@
 
             select[name='town'] {
                 height: 30px;
+            }
+
+            /* 電話關注 */
+            .ppp:focus {
+                width: 300px;
+            }
+
+            .form-control:focus {
+                color: #276ace;
             }
         </style>
 

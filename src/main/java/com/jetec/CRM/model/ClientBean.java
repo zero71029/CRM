@@ -26,6 +26,7 @@ public class ClientBean {
 	private String industry;//產業
 	private String uniformnumber;//統一號碼
 	private String phone;//
+	private String extension;//電話分機
 	private String fax;//
 	private String peoplenumber;//員工人數
 	private String billcity;//帳單城市
@@ -58,10 +59,16 @@ public class ClientBean {
 	@OneToMany(targetEntity = ClientTagBean.class ,mappedBy = "clientid", cascade = CascadeType.ALL)
 	@OrderBy("name")
 	private List<ClientTagBean> tag;
-	
-	
-	
-	
+
+
+	public String getExtension() {
+		return extension;
+	}
+
+	public void setExtension(String extension) {
+		this.extension = extension;
+	}
+
 	public List<ClientTagBean> getTag() {
 		return tag;
 	}

@@ -426,6 +426,15 @@ public class MarketControler {
 	@RequestMapping("/changeMarket")
 	public String changeMarket(Model model, PotentialCustomerBean pBean) {
 		System.out.println("潛在各戶轉銷售機會");
+		model.addAttribute("changeMarket", "changeMarket");
+		model.addAttribute("changeid", pBean.getCustomerid());
+		return "/Market/Market";
+	}
+	@RequestMapping("/getchange/{id}")
+	@ResponseBody
+	public Map<String,Object> getchange(@PathVariable("id") String id) {
+		System.out.println("潛在各戶轉銷售機會");
+		PotentialCustomerBean pBean = PCS.getById(id);
 		MarketBean bean = new MarketBean();
 		bean.setClient(pBean.getCompany());
 		bean.setPhone(pBean.getPhone());
@@ -440,8 +449,14 @@ public class MarketControler {
 		bean.setImportant(pBean.getImportant());
 		bean.setLine(pBean.getLine());
 		bean.setCustomerid(pBean.getCustomerid());
-		model.addAttribute("bean", bean);
-		return "/Market/Market";
+		bean.setStage("尚未處理");
+
+
+		Map<String,Object> result = new HashMap<>();
+		result.put("bean",bean);
+		result.put("changeMessageList",DS.getChangeMessage(id));
+		System.out.println(bean);
+		return result;
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

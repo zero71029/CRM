@@ -46,10 +46,31 @@ public class WorkBean {
 	@JoinColumn(name = "contactid", referencedColumnName = "contactid", insertable = false, updatable = false)
 	private ContactBean contact;
 
-	
-	
-	
-	
+
+	@Override
+	public String toString() {
+		return "WorkBean{" +
+				"workid='" + workid + '\'' +
+				", name='" + name + '\'' +
+				", endtime='" + endtime + '\'' +
+				", important='" + important + '\'' +
+				", remake='" + remake + '\'' +
+				", user='" + user + '\'' +
+				", state='" + state + '\'' +
+				", clientid=" + clientid +
+				", contactid=" + contactid +
+				", customerid='" + customerid + '\'' +
+				", marketid='" + marketid + '\'' +
+				", createtime=" + createtime +
+				", track='" + track + '\'' +
+				", marketname='" + marketname + '\'' +
+				", customername='" + customername + '\'' +
+				", client=" + client +
+				", contact=" + contact +
+				", trackList=" + trackList +
+				'}';
+	}
+
 	@JsonIgnore
 	@OrderBy("tracktime DESC")
 	@OneToMany(mappedBy = "customerid", cascade = CascadeType.ALL)
@@ -170,9 +191,5 @@ public class WorkBean {
 	}
 	public void setCreatetime(Date createtime) {
 		this.createtime = createtime;
-	}
-	@Override
-	public String toString() {
-		return "WorkBean [track=" + track + ", trackList=" + trackList + "]";
 	}
 }

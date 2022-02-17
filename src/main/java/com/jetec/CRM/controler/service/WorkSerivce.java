@@ -53,6 +53,7 @@ public class WorkSerivce {
 		Page<WorkBean> page = (Page<WorkBean>) wr.findStage(p);
 //		List<WorkBean> result = page.getContent();		
 		Map<String, Object> map = new HashMap<>();
+		System.out.println( page.getContent());
 		map.put("list", page.getContent());
 		map.put("total", page.getTotalElements());
 

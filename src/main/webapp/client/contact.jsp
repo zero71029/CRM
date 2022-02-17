@@ -161,8 +161,15 @@
                                     <div class="col-md-1"></div>
                                     <div class="col-md-1 cell">電話</div>
                                     <div class="col-md-3 cell FormPadding">
-                                        <input type="text" class=" form-control cellFrom" name="phone"
-                                            value="${bean.phone}" maxlength="20">
+                                        <div class="input-group ppp">
+                                            <input type="text" class="form-control ppp" name="phone" value="${bean.phone}"
+                                                 maxlength="20">
+                                            <span class="input-group-text">-</span>
+                                            <input type="text" class="form-control" name="extension" value="${bean.extension}"
+                                                 maxlength="10" placeholder="分機">
+                                        </div>
+                                        <!-- <input type="text" class=" form-control cellFrom" name="phone"
+                                            value="${bean.phone}" maxlength="20"> -->
                                     </div>
                                 </div>
                                 <div class="row">

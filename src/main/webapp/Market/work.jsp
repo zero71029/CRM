@@ -262,8 +262,8 @@
                                         <div class="row">
                                             <div class="col-md-3 cellz">聯絡人</div>
                                             <div class="col-md-9 cellz FormPadding">
-                                                <select name="contactid" class="form-select cellzFrom"
-                                                    v-model="bean.contactid">
+                                                <select name="contactid" class="form-select cellzFrom" 
+                                                    v-model="contactid">
                                                     <option v-for="(contact, index) in contactList" :key="index"
                                                         :value="contact.contactid">{{contact.name}}</option>
                                                 </select>
@@ -275,7 +275,7 @@
                                                 <a href="${pageContext.request.contextPath}/Market/potentialcustomer/${bean.customerid}"
                                                     target="_blank" class="customerName">${bean.customername}</a>
                                                 <input type="hidden" name="customerid" v-model="bean.customerid"
-                                                    maxlength="20">
+                                                    >
                                                 <input type="hidden" name="customername" v-model="bean.customername">
                                             </div>
                                         </div>
@@ -284,9 +284,9 @@
                                             <div class="col-md-9   FormPadding" onclick="showMarket()">
                                                 <a href="${pageContext.request.contextPath}/Market/Market/${bean.marketid}"
                                                     target="_blank" class="marketName">${bean.marketname}</a>
-                                                <input type="hidden" name="marketid" v-model="bean.marketid"
+                                                <input type="text" name="marketid" v-model="bean.marketid"
                                                     maxlength="20">
-                                                <input type="hidden" name="marketname">
+                                                <input type="text" name="marketname"    v-model="bean.marketname" >
                                             </div>
                                         </div>
                                     </div>
@@ -294,10 +294,10 @@
                                     <div class="col-md-4" v-show="Object.keys(client).length !=0">
                                         公司地址:{{clientbean.billcity}} {{clientbean.billtown}}({{clientbean.billpostal}})
                                         {{clientbean.billaddress}}<br>
-                                        公司電話: {{clientbean.phone}}<br>
+                                        公司電話: {{clientbean.phone}} - {{clientbean.extension}} <br>
                                         公司傳真: {{clientbean.fax}}<br>
                                         聯絡人地址:{{contact.address}} <br>
-                                        聯絡人電話:{{contact.phone}} <br>
+                                        聯絡人電話:{{contact.phone}} - {{contact.phone}}<br>
                                         聯絡人手機: {{contact.moblie}}<br>
                                         聯絡人LIne:{{contact.line}} <br>
 
@@ -453,11 +453,11 @@
 
                         <el-dialog title="客戶" :visible.sync="dialogTableVisible">
                             <div class="input-group mb-3" style="width: 95%; padding-left: 50px;">
-                                <input type="text" class="form-control selectclient"
+                                <input type="text" class="form-control selectclient" v-model="selectName"
                                     placeholder=" 名稱  or 統編 or 負責人or 電話" aria-label="Recipient's username"
                                     aria-describedby="button-addon2">
                                 <button class="btn btn-outline-secondary " type="submit"
-                                    onclick="selectclient()">搜索</button>
+                                    @click="selectclient">搜索</button>
                             </div>
                             <table class="Table table-striped clientTable">
                                 <tr>
@@ -651,26 +651,7 @@
                 });
             }
 
-            //點選客戶後
-            // function clickClient(name, id) {
-            //     $(".clientName").text(name);
-            //     $(".clientName").attr("href", "${pageContext.request.contextPath}/CRM/client/" + id);
-            //     $("input[name='clientid']").val(id);
-            //     // $('.clientwork').dialog("close");
-            //     $.ajax({
-            //         url: '${pageContext.request.contextPath}/work/selectContact/' + name,//接受請求的Servlet地址
-            //         type: 'POST',
-            //         success: function (list) {
-            //             $("select[name='contactid']").empty();
-            //             for (var bean of list) {
-            //                 $("select[name='contactid']").append('<option value="' + bean.contactid + '" selected>' + bean.name + '</option>');
-            //             }
-            //         },
-            //         error: function (returndata) {
-            //             console.log(returndata);
-            //         }
-            //     });
-            // }
+ 
             $(".clientName").click(function (event) {
                 event.stopPropagation();
             });
@@ -680,7 +661,9 @@
                 $(".customerName").text(name);
                 $(".customerName").attr("href", "${pageContext.request.contextPath}/Market/potentialcustomer/" + id);
                 $("input[name='customerid']").val(id);
+                vm.bean.customerid=id;
                 $("input[name='customername']").val(name);
+                vm.bean.customername=name;
                 $('.CustomerWork').dialog("close");
 
             }
@@ -728,7 +711,7 @@
                 data() {
                     return {
                         changeTableVisible: false,//show 紀錄
-
+                        selectName:"",//搜索客戶
                         bean: {},
                         oldBean: {},
                         changeMessageList: [],//修改資訊
@@ -796,7 +779,17 @@
                             .catch(function (error) {
                                 console.log("每有取得追蹤資訊");
                             });
+                    } 
+                    this.bean.marketid = '${bean.marketid }';
+                    this.bean.marketname = '${bean.marketname}';                   
+                    this.bean.customerid = '${bean.customerid}';
+                    this.bean.customername = '${bean.customername}';
+                    
+                    if(this.bean.state == undefined || this.bean.state == ""){
+                        this.oldBean.state ='尚未處理';
+                        this.bean.state ='尚未處理';
                     }
+                   
                 }, watch: {
 
 
@@ -809,6 +802,8 @@
                     },
                     contactid: {
                         handler(newValue, oldValue) {
+                            this.bean.contactid = newValue;   
+                            console.log(this.bean.contactid)                       
                             for (const iterator of this.contactList) {
                                 if (iterator.contactid == newValue) this.contact = iterator
                             }
@@ -979,7 +974,8 @@
                     },
                     //選取客戶後 換聯絡人列表
                     clickClient: function (bean) {
-                        this.clientid = bean.clientId;
+                        this.clientid = bean.clientid;
+                        this.bean.clientid = this.clientid;
                         this.client = bean.name;
                         this.clientbean = bean;
                         this.dialogTableVisible = false;
@@ -992,6 +988,19 @@
                             .catch(function (error) {
                                 console.log(error);
                             });
+
+                    },
+                    //搜索客戶
+                    selectclient(){
+                        axios
+                            .get('${pageContext.request.contextPath}/work/selectclient/' + this.selectName)
+                            .then(response => (
+                                this.clientList = response.data
+                                
+                            ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });                            
 
                     }
                 },
