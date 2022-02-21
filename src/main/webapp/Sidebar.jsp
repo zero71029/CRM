@@ -17,7 +17,7 @@
         <!-- <script src="${pageContext.request.contextPath}/js/vue.js"></script> -->
 
         <!-- 引入样式 vue-->
-        <script src="${pageContext.request.contextPath}/js/vue.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/vue.js"></script>
         <script src="${pageContext.request.contextPath}/js/axios.min.js"></script>
         <!-- 引入element-ui样式 -->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/js/element-ui.css">
@@ -85,6 +85,9 @@
                     <button class="system"
                         onclick="javascript:location.href='${pageContext.request.contextPath}/system/billboardList?pag=1'">討論區管理</button>
                 </c:if>
+                <button class="list-group-item" onclick="javascript:location.href='${pageContext.request.contextPath}/Task/TaskList.jsp'">
+                    每日任務
+                </button>
             </ul>
             <!-- session 認證-->
             <c:if test='${empty user}'>

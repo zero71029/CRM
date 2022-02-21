@@ -284,9 +284,9 @@
                                             <div class="col-md-9   FormPadding" onclick="showMarket()">
                                                 <a href="${pageContext.request.contextPath}/Market/Market/${bean.marketid}"
                                                     target="_blank" class="marketName">${bean.marketname}</a>
-                                                <input type="text" name="marketid" v-model="bean.marketid"
+                                                <input type="hidden" name="marketid" v-model="bean.marketid"
                                                     maxlength="20">
-                                                <input type="text" name="marketname"    v-model="bean.marketname" >
+                                                <input type="hidden" name="marketname" v-model="bean.marketname" >
                                             </div>
                                         </div>
                                     </div>

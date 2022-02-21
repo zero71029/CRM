@@ -465,7 +465,6 @@ public class MarketControler {
 	@RequestMapping("/selectMarket/{name}")
 	public List<MarketBean> selectName(@PathVariable("name") String name) {
 		System.out.println("搜索銷售機會");
-
 		return ms.selectMarket(name);
 	}
 

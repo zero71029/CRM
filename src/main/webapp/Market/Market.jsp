@@ -620,9 +620,18 @@
                                             <div class="col-md-1"></div>
                                             <div class="col-md-1 cellz">描述<span style="color: red;">*</span></div>
                                             <div class="col-md-5 FormPadding">
-                                                <textarea name="message" class="col-md-12" id="message" maxlength="9000"
-                                                    v-model.trim="bean.message" style=" height:75px;"
-                                                    required> </textarea>
+
+
+
+
+                                                <el-input type="textarea" v-model.trim="bean.message" rows="5"
+                                                id="message" maxlength="950" show-word-limit name="message">
+
+
+
+
+
+
                                             </div><br><br>
                                         </div>
                                         <p>&nbsp;</p>
