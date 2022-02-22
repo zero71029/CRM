@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,11 +47,19 @@ public class TaskService {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //任務列表
     public Map<String, Object> getList(Integer pag) {
-        Pageable p =   PageRequest.of(pag, 20);
-        Page<EvaluateBean> page = (Page<EvaluateBean>) er.findAll(p);
-
+        Pageable p =   PageRequest.of(pag, 20, Sort.Direction.DESC,"createtime");
+        Page<EvaluateBean> page =  er.findAll(p);
         Map<String, Object> map = new HashMap<>();
-        System.out.println( page.getContent());
+        map.put("list", page.getContent());
+        map.put("total", page.getTotalElements());
+
+        return map;
+    }
+
+    public Map<String, Object> getList(Integer pag, String name) {
+        Pageable p =   PageRequest.of(pag, 20,Sort.Direction.DESC,"createtime");
+        Page<EvaluateBean> page = er.findByName(name,p);
+        Map<String, Object> map = new HashMap<>();
         map.put("list", page.getContent());
         map.put("total", page.getTotalElements());
 

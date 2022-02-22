@@ -16,6 +16,7 @@ public class EvaluateBean {
     private String name;//姓名
     private String evaluatedate;//日期
     private String remark;//備註
+    private String score;//評語
     private String assessment;//考評
     private String director;//主管
     private String hr;//人事
@@ -23,6 +24,7 @@ public class EvaluateBean {
     private String costtime;//總花費時間
     //任務
     @JsonIgnore
+    @OrderBy("taskid")
     @OneToMany(targetEntity = EvaluateTaskBean.class ,mappedBy = "evaluateid", cascade = CascadeType.ALL)
     private List<EvaluateTaskBean> task;
 
@@ -38,6 +40,13 @@ public class EvaluateBean {
         this.evaluatedate = evaluatedate;
     }
 
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
+    }
 
     public String getEvaluateid() {
         return evaluateid;

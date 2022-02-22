@@ -407,30 +407,27 @@
                                         </ul>
                                     </nav>
                                 </c:if>
-                          
+
                                 <!-- 分頁 ＿////////////////////-->
                                 <!-- 彈窗 -->
-
-
-
 
 
                                 <c:if test="${not empty unread}">
                                     <c:forEach varStatus="loop" begin="0" end="${unread.size()}" items="${unread}"
                                         var="unread">
-                                        <div class="unread " title="未讀">
+                                        <div class="unread a${unread.billboardid}" title="未讀">
                                             <a href='${pageContext.request.contextPath}/billboardReply/${unread.billboardid}'
                                                 style="color:red">${unread.theme}</a>
                                             <i class="bi bi-hand-thumbs-up" style="float: right;cursor: pointer;"
                                                 onclick="read('${unread.billboardid}')"></i>
-                                            <p>${unread.content}</p>
+                                            <p>${unread.content} </p>
                                         </div>
                                     </c:forEach>
                                 </c:if>
                                 <c:if test="${not empty advice}">
                                     <c:forEach varStatus="loop" begin="0" end="${advice.size()}" items="${advice}"
                                         var="advice">
-                                        <div class="dialog" title="@">
+                                        <div class="dialog ${advice.billboardid}" title="@">
                                             <a href='${pageContext.request.contextPath}/billboardReply/${advice.billboardid}'
                                                 style="color:red">${advice.theme}</a>
                                             <i class="bi bi-hand-thumbs-up" style="float: right;cursor: pointer;"
@@ -478,14 +475,19 @@
                     $('.unread').dialog("open");
                 }
                 function read(billboardid) {
-                    vm.read(billboardid);
+
+                    $( ".unread").dialog( "close" );
+                    $('.dialog').dialog( "close" );
+
+                    
+                    // vm.read(billboardid);
                 }
 
                 const vm = new Vue({
                     el: '.app',
                     data() {
                         return {
-                            dialogVisible:false,
+                            dialogVisible: true,
                         }
                     },
                     methods: {

@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface EvaluateTaskRepository extends JpaRepository<EvaluateTaskBean,String> {
+public interface EvaluateTaskRepository extends JpaRepository<EvaluateTaskBean,Integer> {
     List<EvaluateTaskBean> findByEvaluateid(String id);
 }

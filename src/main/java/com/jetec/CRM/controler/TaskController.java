@@ -58,10 +58,12 @@ public class TaskController {
         } else {
             bean.setName(bean.getName());
         }
+        int i = 0;
         for (EvaluateTaskBean task : bean.getTask()) {
-            if (task.getTaskid() == null || task.getTaskid().isEmpty()) {
-                task.setTaskid(zTools.getUUID());
-            }
+//            if (task.getTaskid() == null || task.getTaskid().isEmpty()) {
+//                task.setTaskid(zTools.getUUID());
+//                i++;
+//            }
             task.setEvaluateid(bean.getEvaluateid());
             task.setTaskdate(ddd);
         }
@@ -109,10 +111,29 @@ public class TaskController {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //任務列表
     @ResponseBody
-    @RequestMapping("/taskList")
-    public Map<String, Object> workList(@RequestParam("pag") Integer pag) {
+    @RequestMapping("/directorTaskList")
+    public Map<String, Object> directorTaskList(@RequestParam("pag") Integer pag) {
         System.out.println("任務列表");
         pag--;
         return TS.getList(pag);
     }
+
+    @ResponseBody
+    @RequestMapping("/taskList")
+    public Map<String, Object> workList(@RequestParam("pag") Integer pag, @RequestParam("name") String name) {
+        System.out.println("任務列表");
+        pag--;
+        return TS.getList(pag, name);
+    }
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @RequestMapping("/print/{id}")
+    public String print(Model model, @PathVariable("id") String id) {
+        System.out.println("列印任務");
+        model.addAttribute("bean", TS.getById(id));
+        return "/Task/print";
+    }
+
 }

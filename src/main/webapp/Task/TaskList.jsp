@@ -9,6 +9,7 @@
 
             <link rel="preconnect" href="https://fonts.gstatic.com">
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+           
 
             <title>每⽇任務評估書</title>
             <style>
@@ -41,15 +42,28 @@
                                     onclick="javascript:location.href='${pageContext.request.contextPath}/Task/Task.jsp'">
                                 <label class="btn btn-outline-primary state1" for="btncheck1">新增</label>
 
-                                <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
-                                <label class="btn btn-outline-primary state2" for="btncheck2" onclick="sta()">刪除</label>
+
+                                <c:if test="${user.position== '主管' || user.position== '系統'}">
+                                    <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
+                                    <label class="btn btn-outline-primary state2" for="btncheck2"
+                                        onclick="sta()">XXX</label>
+                                </c:if>
+
+
+
+
+
+
+
+
+                                <!-- 
                                 <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off">
                                 <label class="btn btn-outline-primary" for="btncheck3">XXX</label>
 
 
                                 <input type="checkbox" class="btn-check" id="btncheck4" autocomplete="off">
                                 <label class="btn btn-outline-primary" for="btncheck4"
-                                    onclick="javascript:location.href='${pageContext.request.contextPath}/task/closed'">XXX</label>
+                                    onclick="javascript:location.href='${pageContext.request.contextPath}/task/closed'">XXX</label> -->
                             </div>
                         </div>
                         <!-- <%-- 中間表格--%> -->
@@ -61,10 +75,10 @@
 
                             </tr>
                             <tr class="item" v-for="(s, index) in list" :key="index">
-                                <td><input type="checkbox" :value="s.evaluateid" name="mak"></td>
-                                <td @click="detail(s.evaluateid)">
+                                <td><input type="checkbox" :value="s.evaluateid" name="mak" ></td>
+                                <td @click="detail(s.evaluateid)" style="cursor: pointer;">
                                     {{s.evaluatedate}}</td>
-                                <td @click="detail(s.evaluateid)">
+                                <td @click="detail(s.evaluateid)" style="cursor: pointer;">
                                     {{s.name}}</td>
 
                             </tr>
@@ -89,55 +103,6 @@
             </div>
         </body>
         <script>
-            $(".market").show();
-            // 勾選單項
-            var $all = $("input[name=mak]");
-            $("input[type=checkbox][name=mak]").change(function () {
-                var $zx = $("input[name=mak]:checked");
-                $("#activity").prop("checked", $zx.length == $all.length);
-            });
-            // 勾選全部
-            $("#activity").change(function () {
-                $all.prop("checked", this.checked);
-            });
-            //  刪除按鈕
-            function sta() {
-                var $zx = $("input[name=mak]:checked");
-                if ($zx.length == 0) {
-                    alert("須勾選要刪除項目");
-                } else {
-                    if (confirm("警告 ! 確定修改?")) {
-                        var parm = "";
-                        for (var a = 0; a < $zx.length; a++) {
-                            parm += "id=" + $($zx[a]).val();
-                            if (a < $zx.length - 1) parm += "&";
-                        }
-                        console.log(parm);
-                        $.ajax({
-                            url: '${pageContext.request.contextPath}/task/deltask',//接受請求的Servlet地址
-                            type: 'POST',
-                            data: parm,
-                            // dataType:"json",
-                            // async: false,//同步請求
-                            // cache: false,//不快取頁面
-                            // contentType: false,//當form以multipart/form-data方式上傳檔案時，需要設定為false
-                            // processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
-
-                            success: function (json) {
-                                alert(json);
-                                window.location.href = "${pageContext.request.contextPath}/Market/taskList.jsp";
-                            },
-                            error: function (returndata) {
-                                console.log(returndata);
-                            }
-                        });
-                    }
-                }
-
-            }
-
-        </script>
-        <script>
             const vm = new Vue({
                 el: '.app',
                 data() {
@@ -148,19 +113,23 @@
                         selectIn: ""//搜索框
                     }
                 },
-                created() {                    
+                created() {
+                    if ("${user.position}" == "主管" || "${user.position}" == "系統") {
+                        var url = '${pageContext.request.contextPath}/task/directorTaskList?pag=1';
+                    } else {
+                        var url = '${pageContext.request.contextPath}/task/taskList?pag=1&name=${user.name}';
+                    }
                     axios
-                        .get('${pageContext.request.contextPath}/task/taskList?pag=1')//銷售機會列表
+                        .get(url)//銷售機會列表
                         .then(response => (
                             this.list = response.data.list,
-                            this.total = response.data.total,
-                            console.log(response.data),
-                            console.log(response.data.list),
-                            console.log(response.data.total)
+                            this.total = response.data.total
                         ))
                         .catch(function (error) {
                             console.log(error);
                         });
+
+                        
 
                 },
                 methods: {
@@ -193,6 +162,56 @@
 
             })
         </script>
+        <script>
 
+            // 勾選單項
+            var $all = $("input[name=mak]");
+            $("input[type=checkbox][name=mak]").change(function () {
+                alert("name=mak");
+                var $zx = $("input[name=mak]:checked");
+                $("#activity").prop("checked", $zx.length == $all.length);
+            });
+            // 勾選全部            
+            $("#activity").change(function () {
+                console.log("#activity");
+                $all.prop("checked", this.checked);
+            });
+            //  刪除按鈕
+            function sta() {
+                var $zx = $("input[name=mak]:checked");
+                if ($zx.length == 0) {
+                    alert("須勾選要刪除項目");
+                } else {
+                    if (confirm("警告 ! 確定修改?")) {
+                        var parm = "";
+                        for (var a = 0; a < $zx.length; a++) {
+                            parm += "id=" + $($zx[a]).val();
+                            if (a < $zx.length - 1) parm += "&";
+                        }
+                        
+                        $.ajax({
+                            url: '${pageContext.request.contextPath}/task/deltask',//接受請求的Servlet地址
+                            type: 'POST',
+                            data: parm,
+                            // dataType:"json",
+                            // async: false,//同步請求
+                            // cache: false,//不快取頁面
+                            // contentType: false,//當form以multipart/form-data方式上傳檔案時，需要設定為false
+                            // processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
+
+                            success: function (json) {
+                                alert(json);
+                                window.location.href = "${pageContext.request.contextPath}/Market/taskList.jsp";
+                            },
+                            error: function (returndata) {
+                                console.log(returndata);
+                            }
+                        });
+                    }
+                }
+
+            }
+
+        </script>
 
         </html>

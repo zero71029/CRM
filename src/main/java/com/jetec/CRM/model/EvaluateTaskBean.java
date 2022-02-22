@@ -1,8 +1,6 @@
 package com.jetec.CRM.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -10,7 +8,8 @@ import java.util.Date;
 public class EvaluateTaskBean {
 
     @Id
-    private String taskid;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer taskid;
     private String evaluateid;
     private String finish;
     private String content;
@@ -23,7 +22,7 @@ public class EvaluateTaskBean {
     public EvaluateTaskBean() {
     }
 
-    public EvaluateTaskBean(String taskid, String evaluateid, String content, String important, String taskdate) {
+    public EvaluateTaskBean(Integer taskid, String evaluateid, String content, String important, String taskdate) {
         this.taskid = taskid;
         this.evaluateid = evaluateid;
         this.content = content;
@@ -31,11 +30,11 @@ public class EvaluateTaskBean {
         this.taskdate = taskdate;
     }
 
-    public String getTaskid() {
+    public Integer getTaskid() {
         return taskid;
     }
 
-    public void setTaskid(String taskid) {
+    public void setTaskid(Integer taskid) {
         this.taskid = taskid;
     }
 
