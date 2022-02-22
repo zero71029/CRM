@@ -117,19 +117,19 @@
                                                 </td>
                                                 <td>
                                                     <!--  重要度-->
-                                                    <select class="form-select" :name="'task['+index+'].important'"
+                                                    <select class="form-select" :name="'task['+index+'].important'" style="font-size: 24px;"
                                                         v-model="s.important">
-                                                        <option value="低">低
+                                                        <option value="H">H
                                                         </option>
-                                                        <option value="中">中
+                                                        <option value="M">M
                                                         </option>
-                                                        <option value="高">高
+                                                        <option value="L">L
                                                         </option>
                                                     </select>
                                                 </td>
                                                 <td>
                                                     <!-- 耗時 -->
-                                                    <input type="text" class="form-control"
+                                                    <input type="text" class="form-control" style="font-size: 24px;"
                                                         :name="'task['+index+'].costtime'" v-model="s.costtime">
                                                 </td>
 
@@ -152,11 +152,17 @@
                                                 <td colspan="6">
                                                     主管考評 (A,B,C,F): <br>
                                                     <div class="row">
-                                                        <div class="col-lg-2">
-                                                            <el-input type="textarea" placeholder="評分" maxlength="50"
-                                                                v-model="bean.score" name="score"></el-input>
+                                                        <div class="col-lg-1">
+                                                            <select class="form-select"   v-model="bean.score" name="score" style="font-size: 30px;">
+                                                                <option value="A">A</option>
+                                                                <option value="B">B</option>
+                                                                <option value="C">C</option>
+                                                                <option value="F">D</option>
+                                                            </select>
+                                                            <!-- <el-input type="textarea" placeholder="評分" maxlength="50"
+                                                                v-model="bean.score" name="score"></el-input> -->
                                                         </div>
-                                                        <div class="col-lg-10 ">
+                                                        <div class="col-lg-11">
                                                             <el-input type="textarea" placeholder="主管專填:評語"
                                                                 maxlength="200" show-word-limit
                                                                 v-model="bean.assessment" name="assessment">
@@ -209,7 +215,7 @@
                             evaluatedate: new Date(),//日期
                             remark: "",//備註
                             score: "",//評分
-                            assessment: "",//評語
+                            assessment: "A",//評語
                             director: "", //主管
                             hr: "",//人事
                             createtime: "",

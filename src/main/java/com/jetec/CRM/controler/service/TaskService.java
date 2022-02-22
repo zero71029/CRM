@@ -65,4 +65,11 @@ public class TaskService {
 
         return map;
     }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//刪除每日任務
+    public void delMarket(List<String> id) {
+        for (String i : id) {
+           er.deleteById(i);
+        }
+    }
 }

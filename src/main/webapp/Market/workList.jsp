@@ -108,16 +108,6 @@
         </body>
         <script>
             $(".market").show();
-            // 勾選單項
-            var $all = $("input[name=mak]");
-            $("input[type=checkbox][name=mak]").change(function () {
-                var $zx = $("input[name=mak]:checked");
-                $("#activity").prop("checked", $zx.length == $all.length);
-            });
-            // 勾選全部
-            $("#activity").change(function () {
-                $all.prop("checked", this.checked);
-            });
             //  刪除按鈕
             function sta() {
                 var $zx = $("input[name=mak]:checked");
@@ -166,7 +156,7 @@
                         selectIn: ""//搜索框
                     }
                 },
-                created() {                    
+                created() {
                     axios
                         .get('${pageContext.request.contextPath}/work/workList?pag=1')//銷售機會列表
                         .then(response => (
@@ -221,6 +211,18 @@
                 },
 
             })
+            // 勾選單項
+
+            $("input[type=checkbox][name=mak]").change(function () {
+                var $all = $("input[name=mak]");
+                var $zx = $("input[name=mak]:checked");
+                $("#activity").prop("checked", $zx.length == $all.length);
+            });
+            // 勾選全部
+            $("#activity").change(function () {
+                var $all = $("input[name=mak]");
+                $all.prop("checked", this.checked);
+            });
         </script>
 
 

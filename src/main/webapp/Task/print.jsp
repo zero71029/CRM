@@ -99,7 +99,7 @@
                                             <!--任務內容  -->
                                             {{s.content}}
                                         </td>
-                                        <td>
+                                        <td style="font-size: 20px;">
                                             <!--  重要度-->
                                             {{s.important}}
 
@@ -123,7 +123,7 @@
                                         <td colspan="6">
                                             主管考評 (A,B,C,F): <br>
                                             <div class="row">
-                                                <div class="col-lg-2 text-wrap">
+                                                <div class="col-lg-2 text-wrap" style="font-size: 30px;">
                                                     {{bean.score}}
      
                                                 </div>

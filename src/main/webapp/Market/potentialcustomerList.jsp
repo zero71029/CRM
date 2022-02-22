@@ -380,7 +380,8 @@
 
 
 
-                                    <td v-if="s.remark.length <100 " style="width: 500px;cursor: pointer;" v-on:click="customer(s.customerid)">{{s.remark}}</td>
+                                    <td v-if="s.remark.length <100 " style="width: 500px;cursor: pointer;"
+                                        v-on:click="customer(s.customerid)">{{s.remark}}</td>
 
                                     <td v-on:click="customer(s.customerid)" v-if="s.remark.length >=100 ">
 
@@ -412,16 +413,7 @@
         </body>
         <script>
             $(".market").show();
-            // 勾選單項
-            var $all = $("input[name=mak]");
-            $("input[type=checkbox][name=mak]").change(function () {
-                var $zx = $("input[name=mak]:checked");
-                $("#activity").prop("checked", $zx.length == $all.length);
-            });
-            // 勾選全部
-            $("#activity").change(function () {
-                $all.prop("checked", this.checked);
-            });
+
             //  刪除按鈕            
             function sta() {
 
@@ -686,20 +678,18 @@
                 },
             })
         </script>
-        <!-- 日期UI -->
-        <script>
 
-            $(function () {
-                $("#from").datepicker({
-                    changeMonth: true,
-                    changeYear: true,
-                    dateFormat: "yy-mm-dd"
-                });
-                $("#to").datepicker({
-                    changeMonth: true,
-                    changeYear: true,
-                    dateFormat: "yy-mm-dd"
-                });
+        <script>
+            // 勾選單項           
+            $("input[type=checkbox][name=mak]").change(function () {
+                var $all = $("input[name=mak]");
+                var $zx = $("input[name=mak]:checked");
+                $("#activity").prop("checked", $zx.length == $all.length);
+            });
+            // 勾選全部
+            $("#activity").change(function () {
+                var $all = $("input[name=mak]");
+                $all.prop("checked", this.checked);
             });
         </script>
         <style>

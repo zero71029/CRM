@@ -136,4 +136,14 @@ public class TaskController {
         return "/Task/print";
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//刪除每日任務
+    @RequestMapping("/delTask")
+    @ResponseBody
+    public String delTask(@RequestParam("id") List<String> id) {
+        System.out.println("*****刪除每日任務*****");
+        TS.delMarket(id);
+        return "刪除成功";
+    }
+
 }

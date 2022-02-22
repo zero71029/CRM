@@ -409,8 +409,8 @@
                                             aria-labelledby="flush-headingThree"
                                             data-bs-parent="#accordionFlushExample">
                                             <div class="accordion-body">
-                                                <el-rate v-model="clinch" 
-                                                    :texts="['極差', '失望', '一般', '滿意', '驚喜']" style="height: 30px;"
+                                                <el-rate v-model="clinch" :texts="['極差', '失望', '一般', '滿意', '驚喜']"
+                                                    style="height: 30px;"
                                                     :colors="{ 2: '#99A9BF', 3:  '#F7BA2A', 4: '#FF9900', 5: 'red' }">
                                                 </el-rate>
                                                 <el-button type="primary" @click="selectClinch" style="width: 100%;">送出
@@ -472,16 +472,6 @@
         </body>
         <script>
             $(".market").show();
-            // 勾選單項
-            var $all = $("input[name=mak]");
-            $("input[type=checkbox][name=mak]").change(function () {
-                var $zx = $("input[name=mak]:checked");
-                $("#activity").prop("checked", $zx.length == $all.length);
-            });
-            // 勾選全部
-            $("#activity").change(function () {
-                $all.prop("checked", this.checked);
-            });
             //  刪除按鈕
             function sta() {
 
@@ -849,17 +839,17 @@
             })
         </script>
         <script>
-            $(function () {
-                $("#from").datepicker({
-                    changeMonth: true,
-                    changeYear: true,
-                    dateFormat: "yy-mm-dd"
-                });
-                $("#to").datepicker({
-                    changeMonth: true,
-                    changeYear: true,
-                    dateFormat: "yy-mm-dd"
-                });
+            // 勾選單項            
+            $("input[type=checkbox][name=mak]").change(function () {
+                var $all = $("input[name=mak]");
+                var $zx = $("input[name=mak]:checked");
+                $("#activity").prop("checked", $zx.length == $all.length);
+            });
+            // 勾選全部
+            $("#activity").change(function () {
+                console.log("dddddddd");
+                var $all = $("input[name=mak]");
+                $all.prop("checked", this.checked);
             });
         </script>
         <style>

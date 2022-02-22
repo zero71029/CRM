@@ -17,6 +17,7 @@
 
 
         <style>
+
             .body {
                 background-color: white;
                 width: 100%;
@@ -218,10 +219,8 @@
                                 <!-- 導覽列/////////////////////////////////////////// -->
                             </div>
                         </div>
-
                         <div class="row ">
                             <div class="col-lg-8">
-
                                 <!-- <%-- 中間主體--%> -->
                                 <h1 style="color: red;">${param.mess=="1"?"權限不夠":""}</h1>
                                 <h1 style="color: red;">${param.mess=="2"?"須先登入":""}</h1>
@@ -456,7 +455,7 @@
                     location.href = '${pageContext.request.contextPath}/';
                 }, 600000);
                 // 彈窗
-                $(".dialog").dialog({
+                $(".dialog").dialog({                   
                     autoOpen: false,
                     position: {
                         at: "right top"
@@ -465,7 +464,7 @@
                 function sh() {
                     $('.dialog').dialog("open");
                 }
-                $(".unread").dialog({
+                $(".unread").dialog({                  
                     autoOpen: false,
                     position: {
                         at: "right top"
@@ -475,12 +474,9 @@
                     $('.unread').dialog("open");
                 }
                 function read(billboardid) {
-
-                    $( ".unread").dialog( "close" );
-                    $('.dialog').dialog( "close" );
-
-                    
-                    // vm.read(billboardid);
+                    $(".unread").dialog("close");
+                    $('.dialog').dialog("close");
+                    vm.read(billboardid);
                 }
 
                 const vm = new Vue({
@@ -517,19 +513,7 @@
                         }
                     }
                 })
-
-
-
-
-
-
-
             </script>
-
-
-
-
-
 
         </body>
 

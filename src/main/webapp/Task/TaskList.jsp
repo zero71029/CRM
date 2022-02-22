@@ -9,7 +9,7 @@
 
             <link rel="preconnect" href="https://fonts.gstatic.com">
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
-           
+
 
             <title>每⽇任務評估書</title>
             <style>
@@ -46,7 +46,7 @@
                                 <c:if test="${user.position== '主管' || user.position== '系統'}">
                                     <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
                                     <label class="btn btn-outline-primary state2" for="btncheck2"
-                                        onclick="sta()">XXX</label>
+                                        onclick="sta()">刪除</label>
                                 </c:if>
 
 
@@ -72,10 +72,12 @@
                                 <td><input type="checkbox" id="activity"></td>
                                 <td>日期</td>
                                 <td>姓名</td>
-
                             </tr>
                             <tr class="item" v-for="(s, index) in list" :key="index">
-                                <td><input type="checkbox" :value="s.evaluateid" name="mak" ></td>
+
+
+
+                                <td><input type="checkbox" :value="s.evaluateid" name="mak" @change="changeMak"></td>
                                 <td @click="detail(s.evaluateid)" style="cursor: pointer;">
                                     {{s.evaluatedate}}</td>
                                 <td @click="detail(s.evaluateid)" style="cursor: pointer;">
@@ -129,7 +131,7 @@
                             console.log(error);
                         });
 
-                        
+
 
                 },
                 methods: {
@@ -158,22 +160,20 @@
                                 });
                         }
                     },
+                    changeMak() {// 勾選單項                       
+                        var $all = $("input[name=mak]");
+                        var $zx = $("input[name=mak]:checked");
+                        $("#activity").prop("checked", $zx.length == $all.length);
+                    }
                 },
 
             })
         </script>
         <script>
 
-            // 勾選單項
-            var $all = $("input[name=mak]");
-            $("input[type=checkbox][name=mak]").change(function () {
-                alert("name=mak");
-                var $zx = $("input[name=mak]:checked");
-                $("#activity").prop("checked", $zx.length == $all.length);
-            });
             // 勾選全部            
             $("#activity").change(function () {
-                console.log("#activity");
+                var $all = $("input[name=mak]");
                 $all.prop("checked", this.checked);
             });
             //  刪除按鈕
@@ -188,9 +188,9 @@
                             parm += "id=" + $($zx[a]).val();
                             if (a < $zx.length - 1) parm += "&";
                         }
-                        
+
                         $.ajax({
-                            url: '${pageContext.request.contextPath}/task/deltask',//接受請求的Servlet地址
+                            url: '${pageContext.request.contextPath}/task/delTask',//接受請求的Servlet地址
                             type: 'POST',
                             data: parm,
                             // dataType:"json",
@@ -201,7 +201,7 @@
 
                             success: function (json) {
                                 alert(json);
-                                window.location.href = "${pageContext.request.contextPath}/Market/taskList.jsp";
+                                window.location.href = "${pageContext.request.contextPath}/Task/TaskList.jsp";
                             },
                             error: function (returndata) {
                                 console.log(returndata);
@@ -209,7 +209,6 @@
                         });
                     }
                 }
-
             }
 
         </script>
