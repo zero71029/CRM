@@ -29,7 +29,7 @@ public class MarketBean {
     private String contactemail;// 聯絡人email
     private String type;// 產業
     private String source;// 機會來源
-    private String clinch;// 成交機率
+    private Integer clinch;// 成交機率
     private String stage;// 階段
     private String need;// 需求確認(沒使用了)
     private String roianalyze;// ROI分析(沒使用了)
@@ -43,6 +43,7 @@ public class MarketBean {
     private String line;
     private String customerid;//追蹤資訊
     private String contactmethod;//聯絡方式
+    private  Integer clicks;//點擊數
 
 
 
@@ -69,6 +70,14 @@ public class MarketBean {
 //	@OneToMany(targetEntity = WorkBean.class, mappedBy = "marketid", cascade = CascadeType.ALL)
 //	private List<WorkBean> work;
 
+
+    public Integer getClicks() {
+        return clicks;
+    }
+
+    public void setClicks(Integer clicks) {
+        this.clicks = clicks;
+    }
 
     public String getContactextension() {
         return contactextension;
@@ -199,11 +208,11 @@ public class MarketBean {
         this.source = source;
     }
 
-    public String getClinch() {
+    public Integer getClinch() {
         return clinch;
     }
 
-    public void setClinch(String clinch) {
+    public void setClinch(Integer clinch) {
         this.clinch = clinch;
     }
 

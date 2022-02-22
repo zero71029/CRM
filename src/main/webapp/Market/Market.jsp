@@ -222,6 +222,7 @@
                                     class="basefrom g-3 ">
                                     <input type="hidden" name="customerid" value="${bean.customerid}">
                                     <input type="hidden" name="aaa" value="${bean.aaa}">
+                                    <input type="hidden" name="clicks" value="${bean.clicks}">
                                     <div class="row">
                                         <input type="hidden" name="marketid" value="${bean.marketid}">
                                         <div class="row" style="text-align: center;">
@@ -594,9 +595,6 @@
                                                     :colors="{ 2: '#99A9BF', 3:  '#F7BA2A', 4: '#FF9900', 5: 'red' }">
                                                 </el-rate>
                                                 <input type="hidden" name="clinch" v-model.trim="bean.clinch">
-
-
-
                                             </div>
                                         </div>
 
@@ -1063,9 +1061,7 @@
                 methods: {
                     submitForm() {//送出表單                       
                         //表單驗證
-                        var isok = true;
-
-                        console.log(this.bean.clinch);
+                        var isok = true;                        
                         if (this.bean.name == null || this.bean.name == "") {
                             $("input[name='name']").css("border", "red 1px solid");
                             isok = false;
@@ -1090,8 +1086,7 @@
                             $("input[name='product']").css("border", "red 1px solid");
                             isok = false;
                         }
-                        if (this.bean.clinch == null || this.bean.clinch == 0) {
-                            console.log(isok, "clinch");
+                        if (this.bean.clinch == null || this.bean.clinch == 0) {                           
                             $(".clinch").css("border", "red 1px solid");
                             isok = false;
                         }

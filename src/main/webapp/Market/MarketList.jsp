@@ -68,12 +68,13 @@
                                     <td>名稱</td>
                                     <td>客戶</td>
                                     <td>負責人</td>
-
-
                                     <td>機率</td>
                                     <td @click="sortItem('important')"><a href="#">重要性</a></td>
                                     <td>追蹤次數</td>
-                                    <td>建立時間</td>
+                                    <td>建立時間${user.position }</td>
+                                    <c:if test="${user.position == '主管' || user.position == '系統'}">
+                                        <td>點擊數</td>
+                                    </c:if>
                                 </tr>
 
 
@@ -93,9 +94,14 @@
                                         {{s.clinch}}</td>
                                     <td v-on:click="market(s.marketid)" :class="'important'+index">
                                         {{s.important}}</td>
-                                    <td>{{s.trackbean.length}}</td>
+                                    <!-- 追蹤次數 -->
+                                    <td v-on:click="market(s.marketid)" :class="'important'+index">
+                                        {{s.trackbean.length}}</td>
                                     <td v-on:click="market(s.marketid)">
                                         {{s.aaa}}</td>
+                                    <c:if test="${user.position == '主管' || user.position == '系統'}">
+                                        <td>{{s.clicks}}</td>
+                                    </c:if>
                                 </tr>
 
                             </table>
@@ -688,11 +694,19 @@
                         this.isSource = checkedCount > 0 && checkedCount < this.sources.length;
                     },
                     ////////////////////////////來源結束
-                    market: function (id) {
+                    market: function (id) {//進入詳細頁面                        
+                        $.ajax({
+                            url: '${pageContext.request.contextPath}/Market/clicks/' + id,//接受請求的Servlet地址
+                            type: 'POST',
+                            success: function (url) {
+
+                            },
+                        });
                         this.show = false
                         setTimeout(function () {
                             location.href = '${pageContext.request.contextPath}/Market/Market/' + id
                         }, 200)
+
 
                     },
                     closed: function () {

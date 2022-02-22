@@ -602,4 +602,18 @@ public class MarketControler {
 
 		return "redirect:/Market/Market/" + marketid;
 	}
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//點擊數
+	@RequestMapping("/clicks/{id}")
+	@ResponseBody
+	public String clicks(Model model, @PathVariable("id") String id) {
+		System.out.println("點擊數");
+		MarketBean mBean = ms.getById(id);
+		Integer clicks =mBean.getClicks();
+		if(clicks == null)clicks = 0 ;
+		clicks++;
+		mBean.setClicks(clicks);
+		ms.save(mBean);
+		return "嘿嘿";
+	}
 }

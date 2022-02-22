@@ -71,18 +71,18 @@
                                         <table class="table table-bordered">
                                             <tr>
                                                 <td>部門</td>
-                                                <td>
-                                                    <el-input v-model="bean.department" maxlength="20"
+                                                <td >
+                                                    <el-input v-model="bean.department" maxlength="20" style="font-size: 20px;"
                                                         name="department">
                                                     </el-input>
                                                 </td>
                                                 <td>姓名</td>
                                                 <td>
-                                                    <el-input v-model="bean.name" maxlength="20" name="name"></el-input>
+                                                    <el-input v-model="bean.name" maxlength="20" name="name" style="font-size: 20px;"></el-input>
                                                 </td>
                                                 <td>日期</td>
                                                 <td style="width:220px ;">
-                                                    <el-date-picker v-model="bean.evaluatedate" type="date"
+                                                    <el-date-picker v-model="bean.evaluatedate" type="date" style="font-size: 20px;"
                                                         placeholder="选择日期" name="evaluatedate">
                                                     </el-date-picker>
                                                 </td>
