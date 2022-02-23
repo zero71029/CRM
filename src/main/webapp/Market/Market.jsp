@@ -414,7 +414,6 @@
                                                     <option value="電話">
                                                     <option value="手機">
                                                     <option value="email"></option>
-
                                                 </datalist>
                                             </div>
 
@@ -623,7 +622,7 @@
 
 
                                                 <el-input type="textarea" v-model.trim="bean.message" rows="5"
-                                                id="message" maxlength="950" show-word-limit name="message">
+                                                    id="message" maxlength="950" show-word-limit name="message">
 
 
 
@@ -993,7 +992,7 @@
                             "農、林、漁、牧業",
                             "礦業及土石採取業",
                             "製造業",
-                            "電子及半導體生產", "機械設備製造業",
+                            "電子及半導體設備製造", "機械設備製造業",
                             "電力及燃氣供應業",
                             "用水供應及污染整治業",
                             "營建工程業",
@@ -1018,7 +1017,7 @@
                     this.show = true;
                     this.loading = false;
                     if (this.important == "") this.important = '低';
-                    if ('${bean.marketid}' != '' ) {
+                    if ('${bean.marketid}' != '') {
                         var url = '${pageContext.request.contextPath}/Market/init/${bean.marketid}';
 
                     }
@@ -1061,7 +1060,7 @@
                 methods: {
                     submitForm() {//送出表單                       
                         //表單驗證
-                        var isok = true;                        
+                        var isok = true;
                         if (this.bean.name == null || this.bean.name == "") {
                             $("input[name='name']").css("border", "red 1px solid");
                             isok = false;
@@ -1086,7 +1085,7 @@
                             $("input[name='product']").css("border", "red 1px solid");
                             isok = false;
                         }
-                        if (this.bean.clinch == null || this.bean.clinch == 0) {                           
+                        if (this.bean.clinch == null || this.bean.clinch == 0) {
                             $(".clinch").css("border", "red 1px solid");
                             isok = false;
                         }

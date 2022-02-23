@@ -321,10 +321,15 @@
                                     onclick="javascript:location.href='${pageContext.request.contextPath}/Market/potentialcustomer.jsp'">
                                 <label class="btn btn-outline-primary state1" for="btncheck1"><i
                                         class="bi bi-clipboard-check"></i> 新增</label>
-                                <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
-                                <label class="btn btn-outline-primary state2" for="btncheck2" onclick="sta()"><i
-                                        class="el-icon-delete"></i> 刪除</label>
-                                <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off">
+
+                                        <c:if test="${user.position == '主管' || user.position == '系統'}">                                    
+                                            <label class="btn btn-outline-primary state2" for="btncheck2"
+                                                onclick="sta()"><i   class="el-icon-delete"></i>刪除</label>
+                                        </c:if>
+
+
+
+                              
                                 <label class="btn btn-outline-primary" for="btncheck3" @click="aadmin(admin)"><i
                                         class="bi bi-person-square"></i> {{admin}}</label>
 
@@ -365,7 +370,7 @@
 
                                 </tr>
                                 <tr class="item" v-for="(s, index) in list" :key="s.customerid">
-                                    <td><input type="checkbox" :value="s.customerid" name="mak"></td>
+                                    <td><input type="checkbox" :value="s.customerid" name="mak" @change="clickmak"></td>
                                     <td v-on:click="customer(s.customerid)">
                                         {{s.status}}</td>
                                     <td v-on:click="customer(s.customerid)">
@@ -514,7 +519,7 @@
                         "農、林、漁、牧業",
                         "礦業及土石採取業",
                         "製造業",
-                        "電子及半導體生產",
+                        "電子及半導體設備製造",
                         "機械設備製造業",
                         "電力及燃氣供應業",
                         "用水供應及污染整治業",
@@ -674,18 +679,17 @@
                             }
                         }
                     },
+                    clickmak: function () {// 勾選單項    
+                        var $all = $("input[name=mak]");
+                        var $zx = $("input[name=mak]:checked");
+                        $("#activity").prop("checked", $zx.length == $all.length);
+                    }
 
                 },
             })
         </script>
 
-        <script>
-            // 勾選單項           
-            $("input[type=checkbox][name=mak]").change(function () {
-                var $all = $("input[name=mak]");
-                var $zx = $("input[name=mak]:checked");
-                $("#activity").prop("checked", $zx.length == $all.length);
-            });
+        <script>  
             // 勾選全部
             $("#activity").change(function () {
                 var $all = $("input[name=mak]");

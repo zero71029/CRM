@@ -38,8 +38,10 @@
                                     onclick="javascript:location.href='${pageContext.request.contextPath}/client/contact.jsp'">
                                 <label class="btn btn-outline-primary state1" for="btncheck1">新增</label>
 
-                                <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
-                                <label class="btn btn-outline-primary state2" for="btncheck2" onclick="sta()">刪除</label>
+                                <c:if test="${user.position == '主管' || user.position == '系統'}">                                    
+                                    <label class="btn btn-outline-primary state2" for="btncheck2"
+                                        onclick="sta()">刪除</label>
+                                </c:if>
 
                                 <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off">
                                 <label class="btn btn-outline-primary" for="btncheck3" onclick="">XXX</label>

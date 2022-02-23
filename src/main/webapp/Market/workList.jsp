@@ -41,8 +41,10 @@
                                     onclick="javascript:location.href='${pageContext.request.contextPath}/Market/work.jsp'">
                                 <label class="btn btn-outline-primary state1" for="btncheck1">新增</label>
 
-                                <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
-                                <label class="btn btn-outline-primary state2" for="btncheck2" onclick="sta()">刪除</label>
+                                <c:if test="${user.position == '主管' || user.position == '系統'}">                                    
+                                    <label class="btn btn-outline-primary state2" for="btncheck2"
+                                        onclick="sta()">刪除</label>
+                                </c:if>
                                 <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off">
                                 <label class="btn btn-outline-primary" for="btncheck3">XXX</label>
 
@@ -73,7 +75,7 @@
                                 <td>狀態</td>
                             </tr>
                             <tr class="item" v-for="(s, index) in list" :key="index">
-                                <td><input type="checkbox" :value="s.workid" name="mak"></td>
+                                <td><input type="checkbox" :value="s.workid" name="mak" @change="clickmak"></td>
                                 <td @click="detail(s.workid)">
                                     {{s.name}}</td>
                                 <td @click="detail(s.workid)">
@@ -207,6 +209,11 @@
                             .catch(function (error) {
                                 console.log(error);
                             });
+                    },
+                    clickmak: function () {// 勾選單項    
+                        var $all = $("input[name=mak]");
+                        var $zx = $("input[name=mak]:checked");
+                        $("#activity").prop("checked", $zx.length == $all.length);
                     }
                 },
 

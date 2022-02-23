@@ -243,10 +243,16 @@
                                             <!-- <input type="text" class=" form-control cellFrom" name="phone"
                                     v-model.trim="customer.phone" maxlength="20"> -->
                                         </div>
-                                        <div class="col-md-2 cellz">公司人數</div>
+                                        <div class="col-md-2 cellz">聯絡方式<span style="color: red;">*</span></div>
                                         <div class="col-md-3 cellz FormPadding"><input type="text"
                                                 v-model.trim="customer.companynum" class=" form-control cellFrom"
-                                                name="companynum" maxlength="20"></div>
+                                                name="companynum" maxlength="20" list="contactmethod"></div>
+                                                <datalist id="contactmethod">
+                                                    <option value="Line">
+                                                    <option value="電話">
+                                                    <option value="手機">
+                                                    <option value="email"></option>
+                                                </datalist>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1"></div>
@@ -255,7 +261,7 @@
                                             <input type="text" class=" form-control cellFrom" name="fax"
                                                 v-model.trim="customer.fax" maxlength="20">
                                         </div>
-                                        <div class="col-md-2 cellz">來源 <span style="color: red;">*</span></div>
+                                        <div class="col-md-2 cellz">來源 </div>
                                         <div class="col-md-3 cellz FormPadding">
                                             <select class="form-select cellFrom" name="source"
                                                 v-model.trim="customer.source">
@@ -827,7 +833,8 @@
                             "農、林、漁、牧業",
                             "礦業及土石採取業",
                             "製造業",
-                            "電子及半導體生產", "機械設備製造業",
+                            "電子及半導體設備製造", 
+                            "機械設備製造業",
                             "電力及燃氣供應業",
                             "用水供應及污染整治業",
                             "營建工程業",
@@ -900,8 +907,8 @@
                             $("input[name='email']").css("border", "red 1px solid");
                             isok = false;
                         }
-                        if (this.customer.source == null || this.customer.source == "") {
-                            $("select[name='source']").css("border", "red 1px solid");
+                        if (this.customer.companynum == null || this.customer.companynum == "") {
+                            $("input[name='companynum']").css("border", "red 1px solid");
                             isok = false;
                         }
                         if (this.customer.remark == null || this.customer.remark == "") {
@@ -929,6 +936,8 @@
                                             this.send(response.data)
                                         ))
                             }
+                        }else{
+                            alert("紅框要輸入")
                         }
                     },
                     send(b) {

@@ -44,26 +44,26 @@
                                     onclick="javascript:location.href='${pageContext.request.contextPath}/Market/Market.jsp'">
                                 <label class="btn btn-outline-primary state1" for="btncheck1">新增</label>
 
-                                <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
-                                <label class="btn btn-outline-primary state2" for="btncheck2" onclick="sta()">刪除</label>
-                                <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off">
+
+                                <c:if test="${user.position == '主管' || user.position == '系統'}">                                    
+                                    <label class="btn btn-outline-primary state2" for="btncheck2"
+                                        onclick="sta()">刪除</label>
+                                </c:if>
+
+                             
                                 <label class="btn btn-outline-primary" for="btncheck3"
                                     @click="aadmin(admin)">{{admin}}</label>
 
-                                <input type="checkbox" class="btn-check" id="btncheck4" autocomplete="off">
+                                
                                 <label class="btn btn-outline-primary" for="btncheck4" data-bs-toggle="offcanvas"
                                     data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">搜索</label>
                             </div>
                         </div>
-
-
-
-
                         <!-- <%-- 中間主體--%> -->
                         <transition-group name="slide-fade" appear>
                             <table class="Table table-striped orderTable" key="1" v-if="show">
                                 <tr>
-                                    <td><input type="checkbox" id="activity"></td>
+                                    <td><input type="checkbox" id="activity" @change="changeActivity"></td>
                                     <td>階段</td>
                                     <td>名稱</td>
                                     <td>客戶</td>
@@ -80,7 +80,7 @@
 
 
                                 <tr class="item" v-for="(s, index) in list" :key="index">
-                                    <td><input type="checkbox" :value="s.marketid" name="mak"></td>
+                                    <td><input type="checkbox" :value="s.marketid" name="mak" @change="clickmak"></td>
                                     <td v-on:click="market(s.marketid)">
                                         {{s.stage}}</td>
                                     <td v-on:click="market(s.marketid)">
@@ -602,7 +602,7 @@
                         "農、林、漁、牧業",
                         "礦業及土石採取業",
                         "製造業",
-                        "電子及半導體生產", "機械設備製造業",
+                        "電子及半導體設備製造", "機械設備製造業",
                         "電力及燃氣供應業",
                         "用水供應及污染整治業",
                         "營建工程業",
@@ -849,6 +849,17 @@
                             }
                         }
                     },
+                    changeActivity: function () {// 勾選全部
+                        console.log("dddddddd");
+                        console.log($("#activity").prop("checked"));
+                        var $all = $("input[name=mak]");
+                        $all.prop("checked", $("#activity").prop("checked"));
+                    },
+                    clickmak: function () {// 勾選單項    
+                        var $all = $("input[name=mak]");
+                        var $zx = $("input[name=mak]:checked");
+                        $("#activity").prop("checked", $zx.length == $all.length);
+                    }
                 },
             })
         </script>
@@ -861,7 +872,6 @@
             });
             // 勾選全部
             $("#activity").change(function () {
-                console.log("dddddddd");
                 var $all = $("input[name=mak]");
                 $all.prop("checked", this.checked);
             });

@@ -157,7 +157,7 @@
                                                                 <option value="A">A</option>
                                                                 <option value="B">B</option>
                                                                 <option value="C">C</option>
-                                                                <option value="F">D</option>
+                                                                <option value="F">F</option>
                                                             </select>
                                                             <!-- <el-input type="textarea" placeholder="評分" maxlength="50"
                                                                 v-model="bean.score" name="score"></el-input> -->
@@ -214,8 +214,8 @@
                             name: "${user.name}",//姓名
                             evaluatedate: new Date(),//日期
                             remark: "",//備註
-                            score: "",//評分
-                            assessment: "A",//評語
+                            score: "A",//評分
+                            assessment: "",//評語
                             director: "", //主管
                             hr: "",//人事
                             createtime: "",
