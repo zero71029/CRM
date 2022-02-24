@@ -45,16 +45,16 @@
                                 <label class="btn btn-outline-primary state1" for="btncheck1">新增</label>
 
 
-                                <c:if test="${user.position == '主管' || user.position == '系統'}">                                    
+                                <c:if test="${user.position == '主管' || user.position == '系統'}">
                                     <label class="btn btn-outline-primary state2" for="btncheck2"
                                         onclick="sta()">刪除</label>
                                 </c:if>
 
-                             
+
                                 <label class="btn btn-outline-primary" for="btncheck3"
                                     @click="aadmin(admin)">{{admin}}</label>
 
-                                
+
                                 <label class="btn btn-outline-primary" for="btncheck4" data-bs-toggle="offcanvas"
                                     data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">搜索</label>
                             </div>
@@ -64,6 +64,7 @@
                             <table class="Table table-striped orderTable" key="1" v-if="show">
                                 <tr>
                                     <td><input type="checkbox" id="activity" @change="changeActivity"></td>
+                                    <td></td>
                                     <td>階段</td>
                                     <td>名稱</td>
                                     <td>客戶</td>
@@ -71,7 +72,7 @@
                                     <td>機率</td>
                                     <td @click="sortItem('important')"><a href="#">重要性</a></td>
                                     <td>追蹤次數</td>
-                                    <td>建立時間${user.position }</td>
+                                    <td>建立時間</td>
                                     <c:if test="${user.position == '主管' || user.position == '系統'}">
                                         <td>點擊數</td>
                                     </c:if>
@@ -81,6 +82,7 @@
 
                                 <tr class="item" v-for="(s, index) in list" :key="index">
                                     <td><input type="checkbox" :value="s.marketid" name="mak" @change="clickmak"></td>
+                                    <td>{{index+1}}</td>
                                     <td v-on:click="market(s.marketid)">
                                         {{s.stage}}</td>
                                     <td v-on:click="market(s.marketid)">
@@ -97,6 +99,7 @@
                                     <!-- 追蹤次數 -->
                                     <td v-on:click="market(s.marketid)" :class="'important'+index">
                                         {{s.trackbean.length}}</td>
+                                    <!--  建立時間-->
                                     <td v-on:click="market(s.marketid)">
                                         {{s.aaa}}</td>
                                     <c:if test="${user.position == '主管' || user.position == '系統'}">
@@ -145,6 +148,25 @@
                                             <div class="accordion-body">
                                                 <ul class=" ">
                                                     <c:if test="${not empty admin}">
+
+
+
+                                                        <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}"
+                                                            items="${admin}" var="s">
+                                                            <c:if test="${s.department == '業務' }">
+                                                                <li><a v-on:click="aadmin('${s.name}')"
+                                                                        href="#">${s.name}</a>
+                                                                </li>
+                                                            </c:if>
+                                                        </c:forEach>
+                                                        <hr>
+
+
+
+
+
+
+
                                                         <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}"
                                                             items="${admin}" var="s">
                                                             <li><a v-on:click="aadmin('${s.name}')"
@@ -695,17 +717,15 @@
                     },
                     ////////////////////////////來源結束
                     market: function (id) {//進入詳細頁面                        
-                        $.ajax({
-                            url: '${pageContext.request.contextPath}/Market/clicks/' + id,//接受請求的Servlet地址
+                        $.ajax({//點擊數
+                            url: '${pageContext.request.contextPath}/Market/clicks/' + id,
                             type: 'POST',
                             success: function (url) {
-
+                                window.open('${pageContext.request.contextPath}/Market/Market/' + id);
+                               
                             },
                         });
-                        this.show = false
-                        setTimeout(function () {
-                            location.href = '${pageContext.request.contextPath}/Market/Market/' + id
-                        }, 200)
+
 
 
                     },
@@ -733,7 +753,6 @@
                     },
                     selfUpdate(val) {//搜索建立日期
                         console.log(val)
-
                         axios
                             .get('${pageContext.request.contextPath}/Market/selectDate?from=' + val[0] + "&to=" + val[1])
                             .then(response => (

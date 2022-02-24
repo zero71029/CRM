@@ -35,6 +35,7 @@ public class WorkBean {
 	private String track;
 	private String marketname;
 	private String customername;
+	private String aaa;//創造時間
 	//客戶
 	@JsonIgnore
 	@ManyToOne(targetEntity = ClientBean.class,fetch = FetchType.EAGER)
@@ -75,9 +76,16 @@ public class WorkBean {
 	@OrderBy("tracktime DESC")
 	@OneToMany(mappedBy = "customerid", cascade = CascadeType.ALL)
 	private List<TrackBean> trackList;
-	
-	
-	
+
+
+	public String getAaa() {
+		return aaa;
+	}
+
+	public void setAaa(String aaa) {
+		this.aaa = aaa;
+	}
+
 	public String getMarketname() {
 		return marketname;
 	}

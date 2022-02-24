@@ -61,6 +61,8 @@ public class WorkControler {
         System.out.println("存工作項目");
         System.out.println(worKBean);
         if (worKBean.getWorkid() == null || worKBean.getWorkid().isEmpty()) worKBean.setWorkid(zTools.getUUID());
+        if (worKBean.getAaa() == null || worKBean.getAaa().isEmpty())
+            worKBean.setAaa(zTools.getTime(new Date()));
         WorkBean save = ws.SaveWork(worKBean);
         return "redirect:/work/detail/" + save.getWorkid();
     }
@@ -182,6 +184,8 @@ public class WorkControler {
 // 插入Customerid
         if (trackBean.getCustomerid() == null || trackBean.getCustomerid().isEmpty()) {
             trackBean.setCustomerid(uuid);
+
+
             WorkBean wBean = ws.getById(workid);
             wBean.setTrack(uuid);
             ws.SaveWork(wBean);

@@ -59,6 +59,7 @@
                                 <td><input type="checkbox" id="activity"></td>
                                 <td>日期</td>
                                 <td>姓名</td>
+                                <td>職務</td>
                             </tr>
                             <tr class="item" v-for="(s, index) in list" :key="index">
                                 <td><input type="checkbox" :value="s.evaluateid" name="mak" @change="changeMak"></td>
@@ -66,6 +67,7 @@
                                     {{s.evaluatedate}}</td>
                                 <td @click="detail(s.evaluateid)" style="cursor: pointer;">
                                     {{s.name}}</td>
+                                <td>職務</td>
                             </tr>
                         </table>
                         <!-- 分頁 -->

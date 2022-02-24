@@ -153,6 +153,7 @@
                         <form action="${pageContext.request.contextPath}/work/SaveWork" method="post" id="myform"
                             class="basefrom g-3 ">
                             <div class="row">
+                                <input type="hidden" name="aaa" value="${bean.aaa}">
                                 <input type="hidden" name="track" value="${bean.track}">
                                 <input type="hidden" name="workid" value="${bean.workid}">
                                 <div class="row">
@@ -351,17 +352,17 @@
                             </div>
                             <!--  -->
                             <form action="" method="post" id="SaveTrack" class="row g-3 needs-validation" novalidate>
-                                <input type="hidden" class=" form-control cellzFrom" name="remark" maxlength="190"
+                                <input type="hidden" class=" form-control cellzFrom" name="remark" maxlength="950"
                                     value="${user.name}">
                                 <input type="hidden" name="customerid" value="${bean.track}">
                                 <div class="row">
                                     <div class="col-md-1"></div>
                                     <div class="col-md-4 FormPadding">
-                                        <textarea class="form-control" name="trackdescribe" rows="1" maxlength="190"
+                                        <textarea class="form-control" name="trackdescribe" rows="2" maxlength="950"
                                             required></textarea>
                                     </div>
                                     <div class="col-md-4 FormPadding">
-                                        <textarea class="form-control" name="result" rows="1" maxlength="95"></textarea>
+                                        <textarea class="form-control" name="result" rows="2" maxlength="95"></textarea>
                                     </div>
                                     <div class="col-md-1" style="padding: 0%;">
                                         <button style="width: 100%; background-color: #569b92;" type="button"
@@ -383,11 +384,21 @@
                                     <!-- {{s}} -->
                                     <div class="row" style="min-height: 70px;">
                                         <div class="row">
-                                            <div class="col-md-4" style="position: relative; word-wrap:break-word;">
-                                                {{s.trackdescribe}}
+                                            <div class="col-md-4"
+                                                style="position: relative; word-wrap:break-word;">
+                                            </el-input>                                                    
+                                            <el-input  type="textarea"                                                    
+                                              v-model="s.trackdescribe"  
+                                             class="aaaa"                                         
+                                            >                                                      
                                             </div>
-                                            <div class="col-md-4" style="position: relative; word-wrap:break-word;">
-                                                {{s.result}}
+                                            <div class="col-md-4"
+                                                style="position: relative; word-wrap:break-word;">
+                                                <el-input  type="textarea"                                                    
+                                                v-model="s.result"  
+                                               class="aaaa"                                         
+                                              >   
+                                                
                                             </div>
                                             <div class="col-md-3" style="color: #569b92;">
                                                 {{s.remark}} {{s.tracktime}}</div>
@@ -819,7 +830,7 @@
                         }
                     }
                 }, methods: {
-                    submitForm() {//送出表單                         
+                    submitForm() {//送出表單  存工作項目                       
                         //表單驗證
                         var isok = true;
 
@@ -859,12 +870,12 @@
                         this.$alert('<form action="${pageContext.request.contextPath}/work/changeTrackByMarket/${bean.workid}" method = "post" >\
                                                     <div class="row">\
                                                         <div class="col-md-5 FormPadding">\
-                                                            <textarea class="form-control" name="trackdescribe" rows="1"\
-                                                                maxlength="190" required>'+ s.trackdescribe + '</textarea>\
+                                                            <textarea class="form-control" name="trackdescribe" rows="2"\
+                                                                maxlength="950" required>'+ s.trackdescribe + '</textarea>\
                                                         </div>\
                                                         <div class="col-md-5 FormPadding">\
-                                                            <textarea class="form-control" name="result" rows="1"\
-                                                                maxlength="195">'+ s.result + '</textarea>\
+                                                            <textarea class="form-control" name="result" rows="2"\
+                                                                maxlength="950">'+ s.result + '</textarea>\
                                                         </div>\
                                                         <div class="col-md-2" style="padding: 0%;">\
                                                             <button style="width: 100%; background-color: #569b92;"\
@@ -886,7 +897,7 @@
                     },
                     removeTrack(bean) {//刪除追蹤資訊
                         this.$confirm('此操作將永久删除, 是否繼續?', '提示', {
-                            confirmButtonText: '缺定',
+                            confirmButtonText: '確定',
                             cancelButtonText: '取消',
                             type: 'warning'
                         }).then(() => {
@@ -913,7 +924,7 @@
                         });
                     }, removeTrackremark(remark) {
                         this.$confirm('此操作將永久删除 "' + remark.content + '" 是否繼續?', '提示', {
-                            confirmButtonText: '缺定',
+                            confirmButtonText: '確定',
                             cancelButtonText: '取消',
                             type: 'warning'
                         }).then(() => {

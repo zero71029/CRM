@@ -155,6 +155,7 @@
                         <form action="${pageContext.request.contextPath}/Market/SavePotentialCustomer" method="post"
                             class="basefrom g-3 needs-validation AAA" novalidate>
                             <input type="hidden" name="customerid" value="${bean.customerid}">
+                            <input type="hidden" name="aaa" value="${bean.aaa}">
                             <input type="hidden" name="fromactivity" value="${bean.fromactivity}" maxlength="50">
                             <div class="row">
                                 <!-- 基本資料 -->
@@ -172,7 +173,7 @@
                                         <div class="col-md-8 cellz FormPadding">
                                             <input type="text" class="col-md-9 form-control cellFrom client"
                                                 @blur="changeCompany" v-model.trim="companyName" name="company"
-                                                list="company" maxlength="20" required>
+                                                list="company" maxlength="100" required>
                                             <datalist id="company">
                                                 <c:if test="${not empty client}">
                                                     <c:forEach varStatus="loop" begin="0" end="${client.size()-1}"
@@ -231,28 +232,38 @@
                                         <div class="col-md-1"></div>
                                         <div class="col-md-2 cellz">電話</div>
                                         <div class="col-md-3 cellz FormPadding">
-                                            <div class="input-group ppp">
+                                            
                                                 <input type="text" class="form-control ppp" name="phone"
                                                     v-model.trim=" customer.phone" maxlength="20">
-                                                <span class="input-group-text">-</span>
+                                                
                                                 <input type="text" class="form-control" name="extension"
                                                     placeholder="分機" maxlength="10" v-model.trim="customer.extension">
-                                            </div>
-
+                                           
 
                                             <!-- <input type="text" class=" form-control cellFrom" name="phone"
                                     v-model.trim="customer.phone" maxlength="20"> -->
                                         </div>
                                         <div class="col-md-2 cellz">聯絡方式<span style="color: red;">*</span></div>
-                                        <div class="col-md-3 cellz FormPadding"><input type="text"
+                                        <div class="col-md-3 cellz FormPadding">
+                                            <input type="text"
                                                 v-model.trim="customer.companynum" class=" form-control cellFrom"
-                                                name="companynum" maxlength="20" list="contactmethod"></div>
+                                                name="companynum" maxlength="20" list="contactmethod">
+                                            
                                                 <datalist id="contactmethod">
                                                     <option value="Line">
                                                     <option value="電話">
                                                     <option value="手機">
                                                     <option value="email"></option>
+                                                    <option value="網頁留言"></option>
                                                 </datalist>
+                                                <input type="text" class="form-control" name=""
+                                                placeholder="" maxlength="10" >
+                                            
+                                            
+                                            
+                                            
+                                            </div>
+
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1"></div>
@@ -327,7 +338,7 @@
                                         <div class="col-md-2 cellz">客人詢問 <span style="color: red;">*</span></div>
                                         <div class="col-md-8 cellz FormPadding">
 
-                                            <el-input type="textarea" v-model.trim="customer.remark" rows="5"
+                                            <el-input type="textarea" v-model="customer.remark" rows="5"
                                                 id="remark" maxlength="500" show-word-limit name="remark">
 
 
@@ -349,8 +360,13 @@
                                                     <option value="無">無</option>
                                                     <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}"
                                                         items="${admin}" var="s">
-                                                        <option value="${s.name}">
-                                                            ${s.name}</option>
+
+
+                                                        <c:if test="${s.department == '業務' }">
+                                                            <option value="${s.name}">
+                                                                ${s.name}</option>
+                                                        </c:if>                                                       
+
                                                     </c:forEach>
                                                 </select>
                                             </c:if>
@@ -401,7 +417,7 @@
 
                                         <div class="col-md-3 cellz" style="font-size: 14px;">建立時間</div>
                                         <div class="col-md-7  FormPadding">
-                                            ${bean.createtime}
+                                            ${bean.aaa}
                                         </div>
                                     </div>
                                     <div class="row">
@@ -479,11 +495,11 @@
                                 <div class="row">
                                     <div class="col-md-1"></div>
                                     <div class="col-md-4 FormPadding">
-                                        <textarea class="form-control" name="trackdescribe" rows="1" maxlength="190"
+                                        <textarea class="form-control" name="trackdescribe" rows="2" maxlength="950"
                                             required></textarea>
                                     </div>
                                     <div class="col-md-4 FormPadding">
-                                        <textarea class="form-control" name="result" rows="1" maxlength="95"></textarea>
+                                        <textarea class="form-control" name="result" rows="2" maxlength="950"></textarea>
                                     </div>
                                     <div class="col-md-1" style="padding: 0%;">
                                         <button style="width: 100%; background-color: #569b92;"
@@ -506,15 +522,24 @@
                                     <!-- {{s}} -->
                                     <div class="row" style="min-height: 70px;">
                                         <div class="row">
-                                            <div class="col-md-4" style="position: relative; word-wrap:break-word;">
-                                                {{s.trackdescribe}}
+                                            <div class="col-md-4"
+                                                style="position: relative; word-wrap:break-word;">
+                                            </el-input>                                                    
+                                            <el-input  type="textarea"                                                    
+                                              v-model="s.trackdescribe"  
+                                             class="aaaa"                                         
+                                            >                                                      
                                             </div>
-                                            <div class="col-md-4" style="position: relative; word-wrap:break-word;">
-                                                {{s.result}}
+                                            <div class="col-md-4"
+                                                style="position: relative; word-wrap:break-word;">
+                                                <el-input  type="textarea"                                                    
+                                                v-model="s.result"  
+                                               class="aaaa"                                         
+                                              >   
+                                                
                                             </div>
                                             <div class="col-md-3" style="color: #569b92;">
-                                                {{s.remark}} {{s.tracktime}}
-                                            </div>
+                                                {{s.remark}} {{s.tracktime}}</div>
                                         </div>
                                     </div>
                                     <!-- 留言的控制 -->
@@ -933,16 +958,12 @@
                                     .post('${pageContext.request.contextPath}/changeMessage/${bean.customerid}', data)
                                     .then(
                                         response => (
-                                            this.send(response.data)
+                                            $('.basefrom').submit()
+                                            
                                         ))
                             }
                         }else{
                             alert("紅框要輸入")
-                        }
-                    },
-                    send(b) {
-                        if (b) {
-                            $('.basefrom').submit();
                         }
                     },
 
@@ -1008,12 +1029,12 @@
                         this.$alert('<form action="${pageContext.request.contextPath}/Market/SaveTrack" method = "post" >\
                                                     <div class="row">\
                                                         <div class="col-md-5 FormPadding">\
-                                                            <textarea class="form-control" name="trackdescribe" rows="1"\
-                                                                maxlength="190" required>' + s.trackdescribe + '</textarea>\
+                                                            <textarea class="form-control" name="trackdescribe" rows="2"\
+                                                                maxlength="950" required>' + s.trackdescribe + '</textarea>\
                                                         </div>\
                                                         <div class="col-md-5 FormPadding">\
-                                                            <textarea class="form-control" name="result" rows="1"\
-                                                                maxlength="195">' + s.result + '</textarea>\
+                                                            <textarea class="form-control" name="result" rows="2"\
+                                                                maxlength="950">' + s.result + '</textarea>\
                                                         </div>\
                                                         <div class="col-md-2" style="padding: 0%;">\
                                                             <button style="width: 100%; background-color: #569b92;"\
@@ -1056,7 +1077,7 @@
                     },
                     removeTrack(bean) {//刪除追蹤資訊
                         this.$confirm('此操作將永久删除, 是否繼續?', '提示', {
-                            confirmButtonText: '缺定',
+                            confirmButtonText: '確定',
                             cancelButtonText: '取消',
                             type: 'warning'
                         }).then(() => {
@@ -1083,7 +1104,7 @@
                         });
                     }, removeTrackremark(remark) {//
                         this.$confirm('此操作將永久删除 "' + remark.content + '" 是否繼續?', '提示', {
-                            confirmButtonText: '缺定',
+                            confirmButtonText: '確定',
                             cancelButtonText: '取消',
                             type: 'warning'
                         }).then(() => {

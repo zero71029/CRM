@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import com.jetec.CRM.controler.service.DirectorService;
+import com.jetec.CRM.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -25,11 +26,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jetec.CRM.controler.service.ClientService;
 import com.jetec.CRM.controler.service.PotentialCustomerService;
-import com.jetec.CRM.model.AdminBean;
-import com.jetec.CRM.model.ClientBean;
-import com.jetec.CRM.model.PotentialCustomerBean;
-import com.jetec.CRM.model.PotentialCustomerHelperBean;
-import com.jetec.CRM.model.TrackBean;
 import com.jetec.CRM.repository.TrackRepository;
 
 @Controller
@@ -182,6 +178,7 @@ public class PotentialController {
 //讀取追蹤資訊
 	@RequestMapping("/client/{customerid}")
 	public List<TrackBean> client(@PathVariable("customerid") String customerid) {
+		System.out.println("讀取追蹤資訊");
 		return PCS.getTrackByCustomerid(customerid);
 	}
 
@@ -224,6 +221,16 @@ public class PotentialController {
 		map.put("company", cBean);
 		map.put("contact", CS.getByNameAndCompany(cBean.getUser(), company));
 		return map;
+	}
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//搜索詢問內容
+	@RequestMapping("/selectcontent")
+	public List<MarketBean> selectcontent(@RequestBody Map<String,String> data) {
+		System.out.println("搜索詢問內容");
+		System.out.println(data.get("selectcontent"));
+		System.out.println(PCS.selectcontent(data.get("selectcontent")));
+
+		return PCS.selectcontent(data.get("selectcontent"));
 	}
 
 }

@@ -68,6 +68,17 @@
                                             aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                                             <div class="accordion-body">
                                                 <ul class=" ">
+
+
+                                                    <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}"
+                                                        items="${admin}" var="s">
+                                                        <c:if test="${s.department == '業務' }">
+                                                            <li><a v-on:click="aadmin('${s.name}')"
+                                                                    href="#">${s.name}</a>
+                                                            </li>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                    <hr>
                                                     <c:if test="${not empty admin}">
                                                         <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}"
                                                             items="${admin}" var="s">
@@ -93,6 +104,28 @@
                                             aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
                                             <div class="accordion-body">
                                                 <dp @update="selectDate"></dp>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <!-- 建立日期 -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="flush-headingTwo">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#selectContent">
+                                                &nbsp; 詢問內容
+                                            </button>
+                                        </h2>
+                                        <div id="selectContent" class="accordion-collapse collapse"
+                                            data-bs-parent="#accordionFlushExample">
+                                            <div class="accordion-body">
+                                                <div class="input-group mb-3">
+                                                    <input type="text" class="form-control" v-model="content"
+                                                        placeholder="未完成" name="name">
+                                                    <button class="btn btn-outline-secondary" type="submit"
+                                                        v-on:click="selectcontent">搜索</button>
+                                                </div>
+
                                             </div>
                                         </div>
 
@@ -322,14 +355,14 @@
                                 <label class="btn btn-outline-primary state1" for="btncheck1"><i
                                         class="bi bi-clipboard-check"></i> 新增</label>
 
-                                        <c:if test="${user.position == '主管' || user.position == '系統'}">                                    
-                                            <label class="btn btn-outline-primary state2" for="btncheck2"
-                                                onclick="sta()"><i   class="el-icon-delete"></i>刪除</label>
-                                        </c:if>
+                                <c:if test="${user.position == '主管' || user.position == '系統'}">
+                                    <label class="btn btn-outline-primary state2" for="btncheck2" onclick="sta()"><i
+                                            class="el-icon-delete"></i>刪除</label>
+                                </c:if>
 
 
 
-                              
+
                                 <label class="btn btn-outline-primary" for="btncheck3" @click="aadmin(admin)"><i
                                         class="bi bi-person-square"></i> {{admin}}</label>
 
@@ -357,6 +390,7 @@
                             <table class="Table table-striped orderTable" v-if="show" key="1">
                                 <tr>
                                     <td><input type="checkbox" id="activity"></td>
+                                    <td></td>
                                     <td style="width: 90px;">狀態</td>
                                     <td style="width: 90px;">負責人</td>
                                     <td style="width: 110px;">建立時間</td>
@@ -371,12 +405,14 @@
                                 </tr>
                                 <tr class="item" v-for="(s, index) in list" :key="s.customerid">
                                     <td><input type="checkbox" :value="s.customerid" name="mak" @change="clickmak"></td>
+                                    <td>{{index+1}}</td>
                                     <td v-on:click="customer(s.customerid)">
                                         {{s.status}}</td>
                                     <td v-on:click="customer(s.customerid)">
                                         {{s.user}}</td>
+                                    <!-- 建立時間 -->
                                     <td v-on:click="customer(s.customerid)">
-                                        {{s.createtime}}</td>
+                                        {{s.aaa}}</td>
                                     <td v-on:click="customer(s.customerid)">
                                         {{s.company}}</td>
                                     <td v-on:click="customer(s.customerid)">
@@ -508,6 +544,7 @@
             const vm = new Vue({
                 el: '.app',
                 data: {
+                    content: "",//
                     currentPage1: 1,//當前分頁
                     MaxPag: 1,//所有筆數
                     list: [],
@@ -576,10 +613,7 @@
                             });
                     },
                     customer: function (id) {
-                        this.show = false
-                        setTimeout(function () {
-                            location.href = '${pageContext.request.contextPath}/Market/potentialcustomer/' + id
-                        }, 100)
+                        window.open('${pageContext.request.contextPath}/Market/potentialcustomer/' + id)
 
                     },
                     selfUpdate(val) {//搜索上次聯絡時間
@@ -683,13 +717,26 @@
                         var $all = $("input[name=mak]");
                         var $zx = $("input[name=mak]:checked");
                         $("#activity").prop("checked", $zx.length == $all.length);
-                    }
+                    },
+                    selectcontent: function () {//搜索詢問內容
 
+                        axios
+                            .post('${pageContext.request.contextPath}/Potential/selectcontent', { "selectcontent": this.content })
+                            .then(response => (
+                                alert(response.data)
+                             
+                            ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+
+
+                    },
                 },
             })
         </script>
 
-        <script>  
+        <script>
             // 勾選全部
             $("#activity").change(function () {
                 var $all = $("input[name=mak]");

@@ -58,4 +58,6 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
 	@Query(value = "SELECT  count(*)  from market where stage != '失敗結案' AND stage != '成功結案' order by marketid DESC ", nativeQuery = true)
 	Integer getTotal();
 
+	@Query(value = "SELECT  *  from market where stage != '失敗結案' AND stage != '成功結案' AND(aaa BETWEEN ?1 AND ?2 )", nativeQuery = true)
+	List<MarketBean> findAaa(String startTime, String endTime);
 }

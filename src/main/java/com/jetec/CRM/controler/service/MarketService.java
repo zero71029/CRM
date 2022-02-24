@@ -205,8 +205,8 @@ public class MarketService {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 搜索銷售機會by日期
-    public List<MarketBean> selectDate(Date startTime, Date endTime) {
-        return mr.findCreatetime(startTime, endTime);
+    public List<MarketBean> selectDate(String startTime, String endTime) {
+        return mr.findAaa(startTime, endTime);
 
     }
 

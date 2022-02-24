@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.jetec.CRM.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,10 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jetec.CRM.Tool.ZeroTools;
-import com.jetec.CRM.model.PotentialCustomerBean;
-import com.jetec.CRM.model.PotentialCustomerHelperBean;
-import com.jetec.CRM.model.TrackBean;
-import com.jetec.CRM.model.TrackRemarkBean;
 import com.jetec.CRM.repository.AdminRepository;
 import com.jetec.CRM.repository.PotentialCustomerHelperRepository;
 import com.jetec.CRM.repository.PotentialCustomerRepository;
@@ -52,7 +49,7 @@ public class PotentialCustomerService {
 //讀取潛在客戶列表
 	public List<PotentialCustomerBean> getList(Integer pag) {
 
-		Pageable p = PageRequest.of(pag, 20,Direction.DESC, "createtime");
+		Pageable p = PageRequest.of(pag, 20,Direction.DESC, "aaa");
 		Page<PotentialCustomerBean> page = PCR.findStatus(p);
 //		全部有幾頁
 //		page.getTotalPages();
@@ -227,6 +224,13 @@ public class PotentialCustomerService {
 		Sort sort = Sort.by(Direction.DESC,"tracktime");
 		return tr.findByCustomerid(customerid,sort);
 	}
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//搜索詢問內容
 
+	public List<MarketBean> selectcontent(String selectcontent) {
+
+
+		return PCR.findByRemarkIgnoreCase("%" +selectcontent+ "%");
+	}
 
 }

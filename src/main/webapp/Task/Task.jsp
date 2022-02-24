@@ -5,14 +5,10 @@
         <head>
             <meta charset="UTF-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-           
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">           
             <link rel="preconnect" href="https://fonts.gstatic.com">
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
             <link rel="stylesheet" href="${pageContext.request.contextPath}\icons\bootstrap-icons.css">
-
-
-
             <title>每⽇任務</title>
         </head>
         <style>
@@ -112,8 +108,6 @@
                                                         class="contentTextarea" @input="intextarea(index)" rows="3"
                                                         :id="'intextarea'+index"
                                                         :name="'task['+index+'].content'" maxlength="200"></textarea>
-
-
                                                 </td>
                                                 <td>
                                                     <!--  重要度-->
@@ -132,7 +126,6 @@
                                                     <input type="text" class="form-control" style="font-size: 24px;"
                                                         :name="'task['+index+'].costtime'" v-model="s.costtime">
                                                 </td>
-
                                             </tr>
                                             <tr>
                                                 <td>
@@ -201,8 +194,6 @@
             </div>
         </body>
         <script>
-
-
             const vm = new Vue({
                 el: ".app",
                 data() {

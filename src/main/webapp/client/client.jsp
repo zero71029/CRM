@@ -136,7 +136,7 @@
                                             <div class="col-lg-1 cell">名稱*</div>
                                             <div class="col-lg-9 cell FormPadding">
                                                 <input type="text" class=" form-control cellFrom" name="name"
-                                                    value="${bean.name}" maxlength="20" required>
+                                                    value="${bean.name}" maxlength="100" required>
                                             </div>
                                             <div class="col-lg-1"></div>
                                         </div>
@@ -144,13 +144,13 @@
                                             <div class="col-lg-1"></div>
                                             <div class="col-lg-1 cell">電話</div>
                                             <div class="col-lg-3 cell FormPadding">
-                                                <div class="input-group ppp">
+                                               
                                                     <input type="text" class="form-control ppp" name="phone" value="${bean.phone}"
                                                          maxlength="20">
-                                                    <span class="input-group-text">-</span>
+                                                   
                                                     <input type="text" class="form-control" name="extension" value="${bean.extension}"
                                                          maxlength="10" placeholder="分機">
-                                                </div>
+                                             
                                                 <!-- <input type="text" class=" form-control cellFrom" name="phone"
                                                     value="${bean.phone}" maxlength="20"> -->
                                             </div>

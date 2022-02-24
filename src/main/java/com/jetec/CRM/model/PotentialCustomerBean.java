@@ -43,6 +43,7 @@ public class PotentialCustomerBean {
 	private String important;
 	private String line;
 	private String extension;//電話分機
+	private String aaa;//創建時間
 	
 	@JsonIgnore
 	@OrderBy("tracktime DESC")
@@ -58,6 +59,13 @@ public class PotentialCustomerBean {
 	@OneToMany(targetEntity = WorkBean.class ,mappedBy = "customerid", cascade = CascadeType.ALL)
 	private List<WorkBean> work;
 
+	public String getAaa() {
+		return aaa;
+	}
+
+	public void setAaa(String aaa) {
+		this.aaa = aaa;
+	}
 
 	public String getExtension() {
 		return extension;
