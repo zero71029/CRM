@@ -91,11 +91,14 @@ public class MarketControler {
 //銷售機會列表
     @ResponseBody
     @RequestMapping("/MarketList")
-    public List<MarketBean> Market(@RequestParam("pag") Integer pag) {
+    public Map<String ,Object> Market(@RequestParam("pag") Integer pag) {
         System.out.println("*****讀取銷售機會列表****");
         pag--;
+        Map<String ,Object> result = new HashMap();
+        result.put("list", ms.getList(pag));
+        result.put("todayTotal", ms.gettodayTotal());
 
-        return ms.getList(pag);
+        return result;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -441,6 +444,7 @@ public class MarketControler {
         System.out.println("潛在各戶轉銷售機會");
         PotentialCustomerBean pBean = PCS.getById(id);
         MarketBean bean = new MarketBean();
+        ClientBean clientBean = cs.getCompanyByName(pBean.getCompany());
         bean.setClient(pBean.getCompany());
         bean.setPhone(pBean.getPhone());
         bean.setUser(pBean.getUser());
@@ -457,7 +461,7 @@ public class MarketControler {
         bean.setExtension(pBean.getExtension());
         bean.setContactextension(pBean.getExtension());
         bean.setStage("尚未處理");
-
+        bean.setClientid(clientBean.getClientid());
 
         Map<String, Object> result = new HashMap<>();
         result.put("bean", bean);
@@ -472,6 +476,7 @@ public class MarketControler {
     @RequestMapping("/selectMarket/{name}")
     public List<MarketBean> selectName(@PathVariable("name") String name) {
         System.out.println("搜索銷售機會");
+        System.out.println(ms.selectMarket(name));
         return ms.selectMarket(name);
     }
 

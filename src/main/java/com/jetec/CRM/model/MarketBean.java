@@ -44,7 +44,8 @@ public class MarketBean {
     private String customerid;//追蹤資訊
     private String contactmethod;//聯絡方式
     private  Integer clicks;//點擊數
-
+    private String fax;//傳真
+    private Integer clientid;//客戶id
 
 
     public String getContactmethod() {
@@ -56,7 +57,7 @@ public class MarketBean {
     }
 
     // 追蹤資訊
-    @OneToMany(mappedBy = "customerid", cascade = CascadeType.ALL)
+    @OneToMany(targetEntity =  TrackBean.class, mappedBy = "customerid", cascade = CascadeType.ALL)
     private List<TrackBean> trackbean;
 
 //	//舊
@@ -70,6 +71,22 @@ public class MarketBean {
 //	@OneToMany(targetEntity = WorkBean.class, mappedBy = "marketid", cascade = CascadeType.ALL)
 //	private List<WorkBean> work;
 
+
+    public Integer getClientid() {
+        return clientid;
+    }
+
+    public void setClientid(Integer clientid) {
+        this.clientid = clientid;
+    }
+
+    public String getFax() {
+        return fax;
+    }
+
+    public void setFax(String fax) {
+        this.fax = fax;
+    }
 
     public Integer getClicks() {
         return clicks;
@@ -312,23 +329,13 @@ public class MarketBean {
         this.trackbean = trackbean;
     }
 
-//	public List<WorkBean> getWork() {
-//		return work;
-//	}
-//
-//	public void setWork(List<WorkBean> work) {
-//		this.work = work;
-//	}
+
 
     @Override
     public String toString() {
-        return "MarketBean [marketid=" + marketid + ", name=" + name + ", user=" + user + ", createtime=" + createtime
-                + ", endtime=" + endtime + ", message=" + message + ", cost=" + cost + ", client=" + client
-                + ", contactname=" + contactname + ", contactphone=" + contactphone + ", contactmoblie=" + contactmoblie
-                + ", contactemail=" + contactemail + ", type=" + type + ", source=" + source + ", clinch=" + clinch
-                + ", stage=" + stage + ", need=" + need + ", roianalyze=" + roianalyze + ", ccc=" + ccc + ", product="
-                + product + ", producttype=" + producttype + ", phone=" + phone + ", aaa=" + aaa + ", important="
-                + important + ", line=" + line + ", customerid=" + customerid + ", trackbean=" + trackbean + "]";
+        return "MarketBean{" +
+                "trackbean=" + trackbean +
+                '}';
     }
 
 }

@@ -60,10 +60,13 @@ public class PotentialController {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取潛在客戶列表
 	@RequestMapping("/CustomerList")
-	public List<PotentialCustomerBean> clientList(@RequestParam("pag") Integer pag) {
+	public Map<String ,Object> clientList(@RequestParam("pag") Integer pag) {
 		System.out.println("*****讀取潛在客戶列表*****");
 		pag--;
-		return PCS.getList(pag);
+		Map<String ,Object> result = new HashMap();
+		result.put("list", PCS.getList(pag));
+		result.put("todayTotal", PCS.gettodayTotal());
+		return result;
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -96,29 +99,34 @@ public class PotentialController {
 //搜索日期
 	@RequestMapping("/selectDate")
 	public List<PotentialCustomerBean> selectDate(@RequestParam("from") String from, @RequestParam("to") String to) {
-		System.out.println("搜索銷售機會 日期");
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-// 設定日期格式
-		if (from.equals("")) {
-			from = "2020-11-30";
-		}
-		if (to.equals("")) {
-			to = sdf.format(new Date());
-		} else {
-			to = to + " 23:59:59";
-		}
-		from = from + " 00:00:00";
-// 進行轉換
-		Date formDate;
-		Date toDate;
-		try {
-			formDate = sdf.parse(from);
-			toDate = sdf.parse(to);
-			return PCS.selectDate(formDate, toDate);
-		} catch (ParseException e) {
-
-		}
-		return null;
+		System.out.println("搜索潛在客戶 日期");
+		to  = to +" 24:00";
+		return PCS.selectDate(from, to);
+		
+		
+		
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//// 設定日期格式
+//		if (from.equals("")) {
+//			from = "2020-11-30";
+//		}
+//		if (to.equals("")) {
+//			to = sdf.format(new Date());
+//		} else {
+//			to = to + " 23:59:59";
+//		}
+//		from = from + " 00:00:00";
+//// 進行轉換
+//		Date formDate;
+//		Date toDate;
+//		try {
+//			formDate = sdf.parse(from);
+//			toDate = sdf.parse(to);
+//			return PCS.selectDate(formDate, toDate);
+//		} catch (ParseException e) {
+//
+//		}
+//		return null;
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -225,11 +233,10 @@ public class PotentialController {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索詢問內容
 	@RequestMapping("/selectcontent")
-	public List<MarketBean> selectcontent(@RequestBody Map<String,String> data) {
+	public List<PotentialCustomerBean> selectcontent(@RequestBody Map<String,String> data) {
 		System.out.println("搜索詢問內容");
 		System.out.println(data.get("selectcontent"));
 		System.out.println(PCS.selectcontent(data.get("selectcontent")));
-
 		return PCS.selectcontent(data.get("selectcontent"));
 	}
 

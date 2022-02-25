@@ -1,6 +1,7 @@
 package com.jetec.CRM.controler.service;
 
 import java.sql.SQLOutput;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -93,13 +94,14 @@ public class PotentialCustomerService {
 	public List<PotentialCustomerBean> selectPotentialCustomer(String name) {
 		List<PotentialCustomerBean> result = new ArrayList<PotentialCustomerBean>();
 		boolean boo = true;
+		Sort sort = Sort.by(Direction.DESC,"aaa");
 // 搜索名稱
-		for (PotentialCustomerBean p : PCR.findByNameLikeIgnoreCase("%" + name + "%")) {
+		for (PotentialCustomerBean p : PCR.findByNameLikeIgnoreCase("%" + name + "%",sort)) {
 			result.add(p);
 		}
 
 // 用業務搜索
-		for (PotentialCustomerBean p : PCR.findByUserLikeIgnoreCase("%" + name + "%")) {
+		for (PotentialCustomerBean p : PCR.findByUserLikeIgnoreCase("%" + name + "%",sort)) {
 			for (PotentialCustomerBean bean : result) {
 				if (bean.getCustomerid() == p.getCustomerid()) {
 					boo = false;
@@ -110,7 +112,7 @@ public class PotentialCustomerService {
 			boo = true;
 		}
 // 用公司搜索
-		for (PotentialCustomerBean p : PCR.findByCompanyLikeIgnoreCase("%" + name + "%")) {
+		for (PotentialCustomerBean p : PCR.findByCompanyLikeIgnoreCase("%" + name + "%",sort)) {
 			for (PotentialCustomerBean bean : result) {
 				if (bean.getCustomerid() == p.getCustomerid()) {
 					boo = false;
@@ -127,7 +129,7 @@ public class PotentialCustomerService {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索創造日期
-	public List<PotentialCustomerBean> selectDate(Date formDate, Date toDate) {
+	public List<PotentialCustomerBean> selectDate(String formDate, String toDate) {
 		return PCR.findCreatetime(formDate, toDate);
 	}
 
@@ -227,10 +229,16 @@ public class PotentialCustomerService {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索詢問內容
 
-	public List<MarketBean> selectcontent(String selectcontent) {
-
-
-		return PCR.findByRemarkIgnoreCase("%" +selectcontent+ "%");
+	public List<PotentialCustomerBean> selectcontent(String selectcontent) {
+		return PCR.findByRemarkLikeIgnoreCase("%"+selectcontent+"%");
 	}
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//今天總計
+	public Integer gettodayTotal() {
+		SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
+		String ddd = sdf.format(new Date());
 
+		return PCR.gettodayTotal(ddd+" 00:00",ddd+" 23:59");
+
+	}
 }

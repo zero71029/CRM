@@ -1,10 +1,8 @@
 package com.jetec.CRM.controler.service;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
+import com.jetec.CRM.Tool.ZeroTools;
+import com.jetec.CRM.model.*;
+import com.jetec.CRM.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,18 +12,10 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jetec.CRM.Tool.ZeroTools;
-import com.jetec.CRM.model.AgreementBean;
-import com.jetec.CRM.model.MarketBean;
-import com.jetec.CRM.model.MarketRemarkBean;
-import com.jetec.CRM.model.QuotationBean;
-import com.jetec.CRM.model.QuotationDetailBean;
-import com.jetec.CRM.model.TrackBean;
-import com.jetec.CRM.repository.AgreementRepository;
-import com.jetec.CRM.repository.MarketRemarkRepository;
-import com.jetec.CRM.repository.MarketRepository;
-import com.jetec.CRM.repository.QuotationRepository;
-import com.jetec.CRM.repository.TrackRepository;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service
 @Transactional
@@ -56,13 +46,12 @@ public class MarketService {
     // 銷售機會列表
     public List<MarketBean> getList(Integer pag) {
 
-        Pageable p =  PageRequest.of(pag, 20 ,Direction.DESC, "aaa");
-        Page<MarketBean> page =  mr.findStage(p);
+        Pageable p = PageRequest.of(pag, 20, Direction.DESC, "aaa");
+        Page<MarketBean> page = mr.findStage(p);
         List<MarketBean> result = page.getContent();
-        System.out.println(result);
-        Sort sort = Sort.by(Direction.DESC,"tracktime");
+        Sort sort = Sort.by(Direction.DESC, "tracktime");
         for (MarketBean bean : result) {
-            List<TrackBean> list = tr.findByCustomerid(bean.getCustomerid(),sort);
+            List<TrackBean> list = tr.findByCustomerid(bean.getCustomerid(), sort);
             bean.setTrackbean(list);
         }
         return result;
@@ -107,13 +96,14 @@ public class MarketService {
         name = name.trim();
         List<MarketBean> result = new ArrayList<MarketBean>();
         boolean boo = true;
+        Sort sort = Sort.by(Direction.DESC, "aaa");
         // 搜索名稱
-        for (MarketBean p : mr.findByNameLikeIgnoreCase("%" + name + "%")) {
+        for (MarketBean p : mr.findByNameLikeIgnoreCase("%" + name + "%", sort)) {
             result.add(p);
         }
 
         // 用業務搜索
-        for (MarketBean p : mr.findByUserLikeIgnoreCase("%" + name + "%")) {
+        for (MarketBean p : mr.findByUserLikeIgnoreCase("%" + name + "%", sort)) {
             for (MarketBean bean : result) {
                 if (bean.getMarketid() == p.getMarketid()) {
                     boo = false;
@@ -123,7 +113,7 @@ public class MarketService {
                 result.add(p);
         }
         // 用客戶搜索
-        for (MarketBean p : mr.findByClientLikeIgnoreCase("%" + name + "%")) {
+        for (MarketBean p : mr.findByClientLikeIgnoreCase("%" + name + "%", sort)) {
             for (MarketBean bean : result) {
                 if (bean.getMarketid() == p.getMarketid()) {
                     boo = false;
@@ -133,7 +123,7 @@ public class MarketService {
                 result.add(p);
         }
         // 用聯絡人搜索
-        for (MarketBean p : mr.findByContactnameLikeIgnoreCase("%" + name + "%")) {
+        for (MarketBean p : mr.findByContactnameLikeIgnoreCase("%" + name + "%", sort)) {
             for (MarketBean bean : result) {
                 if (bean.getMarketid() == p.getMarketid()) {
                     boo = false;
@@ -272,4 +262,13 @@ public class MarketService {
     }
 
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//今天總計
+    public Integer gettodayTotal() {
+        SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
+        String ddd = sdf.format(new Date());
+
+        return mr.gettodayTotal(ddd+" 00:00",ddd+" 23:59");
+
+    }
 }

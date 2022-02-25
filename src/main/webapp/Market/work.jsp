@@ -362,7 +362,7 @@
                                             required></textarea>
                                     </div>
                                     <div class="col-md-4 FormPadding">
-                                        <textarea class="form-control" name="result" rows="2" maxlength="95"></textarea>
+                                        <textarea class="form-control" name="result" rows="2" maxlength="950"></textarea>
                                     </div>
                                     <div class="col-md-1" style="padding: 0%;">
                                         <button style="width: 100%; background-color: #569b92;" type="button"

@@ -104,7 +104,31 @@
                                     <div class="col-md-2"></div>
                                     <div class="col-md-1 cell">負責人*</div>
                                     <div class="col-md-2 cell FormPadding">
-                                        <select name="user" class="form-select cellFrom"
+                                        <c:if test="${user.position != '職員' }">
+                                            <select name="user" class="form-select cellzFrom" 
+                                                aria-label="Default select example">
+                                                <option value="無">無</option>
+                                                <c:if test="${not empty admin}">
+                                                    <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}"
+                                                        items="${admin}" var="s">
+                                                        <c:if test="${s.department == '業務' }">
+                                                            <option value="${s.name}" ${bean.user == s.name? "selected":""} >
+                                                                ${s.name}</option>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                    <option value="系統管理"> 系統管理</option>
+                                                </c:if>
+                                            </select>
+                                        </c:if>
+                                        <c:if test="${user.position == '職員' }">
+                                            <input type="hidden" name="user" value="${bean.user}">
+                                            {{user}}
+                                        </c:if>
+
+
+
+
+                                        <!-- <select name="user" class="form-select cellFrom"
                                             aria-label="Default select example">
                                             <option value="無" ${bean.user=="無" ?"selected":null}>無</option>
                                             <c:if test="${not empty admin}">
@@ -114,7 +138,7 @@
                                                         ${s.name}</option>
                                                 </c:forEach>
                                             </c:if>
-                                        </select>
+                                        </select> -->
                                     </div>
                                 </div>
                                 <div class="row">
@@ -154,7 +178,7 @@
                                     <div class="col-md-1 cell">Email</div>
                                     <div class="col-md-3 cell FormPadding">
                                         <input type="text" class=" form-control cellFrom" name="email"
-                                            value="${bean.email}" maxlength="20">
+                                            value="${bean.email}" maxlength="100">
                                     </div>
                                 </div>
                                 <div class="row">

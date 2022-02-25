@@ -214,7 +214,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1"></div>
-                                        <div class="col-md-2 cellz">Email<span style="color: red;">*</span></div>
+                                        <div class="col-md-2 cellz">Email</div>
                                         <div class="col-md-3 cellz FormPadding">
                                             <input type="email" class=" form-control cellFrom" name="email"
                                                 v-model.trim="customer.email" maxlength="50">
@@ -232,37 +232,37 @@
                                         <div class="col-md-1"></div>
                                         <div class="col-md-2 cellz">電話</div>
                                         <div class="col-md-3 cellz FormPadding">
-                                            
-                                                <input type="text" class="form-control ppp" name="phone"
-                                                    v-model.trim=" customer.phone" maxlength="20">
-                                                
-                                                <input type="text" class="form-control" name="extension"
-                                                    placeholder="分機" maxlength="10" v-model.trim="customer.extension">
-                                           
+
+                                            <input type="text" class="form-control ppp" name="phone"
+                                                v-model.trim=" customer.phone" maxlength="20">
+
+                                            <input type="text" class="form-control" name="extension" placeholder="分機"
+                                                maxlength="10" v-model.trim="customer.extension">
+
 
                                             <!-- <input type="text" class=" form-control cellFrom" name="phone"
                                     v-model.trim="customer.phone" maxlength="20"> -->
                                         </div>
-                                        <div class="col-md-2 cellz">聯絡方式<span style="color: red;">*</span></div>
+                                        <div class="col-md-2 cellz">聯絡方式</div>
                                         <div class="col-md-3 cellz FormPadding">
-                                            <input type="text"
-                                                v-model.trim="customer.companynum" class=" form-control cellFrom"
-                                                name="companynum" maxlength="20" list="contactmethod">
-                                            
-                                                <datalist id="contactmethod">
-                                                    <option value="Line">
-                                                    <option value="電話">
-                                                    <option value="手機">
-                                                    <option value="email"></option>
-                                                    <option value="網頁留言"></option>
-                                                </datalist>
-                                                <input type="text" class="form-control" name=""
-                                                placeholder="" maxlength="10" >
-                                            
-                                            
-                                            
-                                            
-                                            </div>
+                                            <input type="text" v-model.trim="customer.companynum"
+                                                class=" form-control cellFrom" name="companynum" maxlength="20"
+                                                list="contactmethod">
+
+                                            <datalist id="contactmethod">
+                                                <option value="Line">
+                                                <option value="電話">
+                                                <option value="手機">
+                                                <option value="email"></option>
+                                                <option value="網頁留言"></option>
+                                            </datalist>
+                                            <input type="text" class="form-control" name="" placeholder=""
+                                                maxlength="10">
+
+
+
+
+                                        </div>
 
                                     </div>
                                     <div class="row">
@@ -338,8 +338,8 @@
                                         <div class="col-md-2 cellz">客人詢問 <span style="color: red;">*</span></div>
                                         <div class="col-md-8 cellz FormPadding">
 
-                                            <el-input type="textarea" v-model="customer.remark" rows="5"
-                                                id="remark" maxlength="500" show-word-limit name="remark">
+                                            <el-input type="textarea" v-model="customer.remark" rows="5" id="remark"
+                                                maxlength="500" show-word-limit name="remark">
 
 
                                                 <!-- <textarea class="form-control " id="validationTextarea" name="remark"
@@ -356,7 +356,7 @@
                                         <div class="col-md-7 cellz FormPadding">
                                             <c:if test="${user.position != '職員' }">
                                                 <select name="user" class="form-select cellFrom"
-                                                    v-model.trim="customer.user" aria-label="Default select example">
+                                                    v-model="customer.user" aria-label="Default select example">
                                                     <option value="無">無</option>
                                                     <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}"
                                                         items="${admin}" var="s">
@@ -365,15 +365,16 @@
                                                         <c:if test="${s.department == '業務' }">
                                                             <option value="${s.name}">
                                                                 ${s.name}</option>
-                                                        </c:if>                                                       
+                                                        </c:if>
 
                                                     </c:forEach>
+                                                    <option value="系統管理"> 系統管理</option>
                                                 </select>
                                             </c:if>
                                             <c:if test="${user.position == '職員' }">
-                                                <input type="hidden" name="user" value="${bean.user}"
+                                                <input type="hidden" name="user" 
                                                     v-model.trim="customer.user">
-                                                ${bean.user}
+                                                {{customer.user}}
                                             </c:if>
 
                                         </div>
@@ -423,14 +424,17 @@
                                     <div class="row">
                                         <div class="col-md-3 cellz">狀態</div>
                                         <div class="col-md-7 cellz FormPadding">
-                                            <select name="status" class="form-select cellFrom"
+                                            <select name="status" class="form-select cellFrom" @change="changeStatus"
                                                 v-model.trim="customer.status" aria-label="Default select example">
                                                 <option value="未處理">未處理
                                                 </option>
                                                 <option value="已聯繫">已聯繫
                                                 </option>
-                                                <option value="不合格">不合格
-                                                </option>
+                                                <option value="提交主管">不合格:提交主管</option>
+                                                <c:if test="${user.position != '職員' }">
+                                                    <option value="不合格">不合格
+                                                    </option>
+                                                </c:if>
                                                 <option value="合格">合格</option>
                                             </select>
                                         </div>
@@ -499,7 +503,8 @@
                                             required></textarea>
                                     </div>
                                     <div class="col-md-4 FormPadding">
-                                        <textarea class="form-control" name="result" rows="2" maxlength="950"></textarea>
+                                        <textarea class="form-control" name="result" rows="2"
+                                            maxlength="950"></textarea>
                                     </div>
                                     <div class="col-md-1" style="padding: 0%;">
                                         <button style="width: 100%; background-color: #569b92;"
@@ -522,21 +527,13 @@
                                     <!-- {{s}} -->
                                     <div class="row" style="min-height: 70px;">
                                         <div class="row">
-                                            <div class="col-md-4"
-                                                style="position: relative; word-wrap:break-word;">
-                                            </el-input>                                                    
-                                            <el-input  type="textarea"                                                    
-                                              v-model="s.trackdescribe"  
-                                             class="aaaa"                                         
-                                            >                                                      
+                                            <div class="col-md-4" style="position: relative; word-wrap:break-word;">
+                                                </el-input>
+                                                <el-input type="textarea" v-model="s.trackdescribe" class="aaaa">
                                             </div>
-                                            <div class="col-md-4"
-                                                style="position: relative; word-wrap:break-word;">
-                                                <el-input  type="textarea"                                                    
-                                                v-model="s.result"  
-                                               class="aaaa"                                         
-                                              >   
-                                                
+                                            <div class="col-md-4" style="position: relative; word-wrap:break-word;">
+                                                <el-input type="textarea" v-model="s.result" class="aaaa">
+
                                             </div>
                                             <div class="col-md-3" style="color: #569b92;">
                                                 {{s.remark}} {{s.tracktime}}</div>
@@ -612,14 +609,16 @@
                                 <%-- 留言區塊--%>
                                     <div class="bosMessagediv">
                                         <el-card class="box-card" style="background-color: #EEE">
-                                            <div slot="header" class="clearfix">
-                                                <el-input type="textarea" v-model.trim="bosMassage" placeholder="留言"
-                                                    maxlength="200" show-word-limit>
-                                                </el-input>
-                                                <el-button icon="el-icon-upload" style="width: 100%"
-                                                    @click="sendBosMessage">送出
-                                                </el-button>
-                                            </div>
+                                            <c:if test="${user.position != '職員' }">
+                                                <div slot="header" class="clearfix">
+                                                    <el-input type="textarea" v-model.trim="bosMassage" placeholder="留言"
+                                                        maxlength="200" show-word-limit>
+                                                    </el-input>
+                                                    <el-button icon="el-icon-upload" style="width: 100%"
+                                                        @click="sendBosMessage">送出
+                                                    </el-button>
+                                                </div>
+                                            </c:if>
                                             <table class="table table-success">
                                                 <tr v-for="(s, index) in bosMassageList" :key="index">
                                                     <td style="width: 100px;">{{s.name}}</td>
@@ -632,6 +631,7 @@
                                     </div>
                                     <%-- 行動區塊--%>
                                         <div class="row act" style="height: 30px;">
+
                                             <a class="col-md-3" href="#" onclick="goClient()">轉成客戶</a>
                                             <a class="col-md-3" href="#" onclick="goContact()">建立聯絡⼈</a>
                                             <a class="col-md-3" href="#" onclick="goMarket()">新增銷售機會</a>
@@ -796,10 +796,37 @@
                 $(".AAA")[0].submit();
             }
 
-            //新增工作項目
+            //新增銷售機會
             function goMarket() {
-                $(".AAA").attr("action", "${pageContext.request.contextPath}/Market/changeMarket");
-                $(".AAA")[0].submit();
+                var formData = new FormData($(".AAA")[0]);
+                console.log(formData.values());
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/Market/existsClient',//接受請求的Servlet地址
+                    type: 'POST',
+                    data: formData,
+                    async: false,//同步請求
+                    cache: false,//不快取頁面
+                    contentType: false,//當form以multipart/form-data方式上傳檔案時，需要設定為false
+                    processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
+                    success: function (json) {
+                        if (json == "客戶已存在") {
+                            $(".AAA").attr("action", "${pageContext.request.contextPath}/Market/changeMarket");
+                            $(".AAA")[0].submit();
+                            return;
+                        }
+                        if (json == "不存在") {
+                            alert("需先新增客戶");
+                            return;
+                        }
+                        alert("錯誤");
+                    },
+                    error: function (returndata) {
+                        console.log(returndata);
+
+                    }
+
+                });
+
             }
 
             // 添加協助者
@@ -838,6 +865,7 @@
                 el: '.app',
                 data() {
                     return {
+                        isEligible: false,
                         changeTableVisible: false,
                         changeMessageList: [],//修改資訊
                         oldCustomer: {},//暫存表
@@ -858,7 +886,7 @@
                             "農、林、漁、牧業",
                             "礦業及土石採取業",
                             "製造業",
-                            "電子及半導體設備製造", 
+                            "電子及半導體設備製造",
                             "機械設備製造業",
                             "電力及燃氣供應業",
                             "用水供應及污染整治業",
@@ -928,13 +956,12 @@
                             $("input[name='name']").css("border", "red 1px solid");
                             isok = false;
                         }
-                        if (this.customer.email == null || this.customer.email == "") {
+                        if (this.customer.email == null && this.customer.phone == null && this.customer.moblie == null) {
                             $("input[name='email']").css("border", "red 1px solid");
+                            $("input[name='phone']").css("border", "red 1px solid");
+                            $("input[name='moblie']").css("border", "red 1px solid");
                             isok = false;
-                        }
-                        if (this.customer.companynum == null || this.customer.companynum == "") {
-                            $("input[name='companynum']").css("border", "red 1px solid");
-                            isok = false;
+                            alert("手機 電話 Email 必填一項")
                         }
                         if (this.customer.remark == null || this.customer.remark == "") {
                             $("#remark").css("border", "red 1px solid");
@@ -959,10 +986,10 @@
                                     .then(
                                         response => (
                                             $('.basefrom').submit()
-                                            
+
                                         ))
                             }
-                        }else{
+                        } else {
                             alert("紅框要輸入")
                         }
                     },
@@ -994,6 +1021,7 @@
                             .post('${pageContext.request.contextPath}/director/SaveMessage', data)
                             .then(
                                 response => (
+                                    console.log(response.data),
                                     this.bosMassageList = response.data
                                 ))
                             .catch(function (error) {
@@ -1129,6 +1157,13 @@
                                 message: '已取消删除'
                             });
                         });
+                    },changeStatus:function(){
+                        if(this.customer.status == "提交主管"){
+                            this.customer.user = "玟嫣";                            
+                        }else{
+                            this.customer.user = '${bean.user}';
+                        }
+                        
                     },
                 },
             })

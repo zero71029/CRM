@@ -220,11 +220,13 @@
                                 <br>
                                 <form action="${pageContext.request.contextPath}/Market/SaveMarket" method="post"
                                     class="basefrom g-3 ">
+                                    <input type="hidden" name="clientid" v-model="bean.clientid">
                                     <input type="hidden" name="customerid" v-model="bean.customerid">
                                     <input type="hidden" name="aaa" value="${bean.aaa}">
                                     <input type="hidden" name="clicks" value="${bean.clicks}">
+                                    <input type="hidden" name="marketid" value="${bean.marketid}">
                                     <div class="row">
-                                        <input type="hidden" name="marketid" value="${bean.marketid}">
+
                                         <div class="row" style="text-align: center;">
                                             <div class="col-md-1"></div>
                                             <div class="col-md-6 bg-danger text-white"
@@ -247,18 +249,15 @@
                                         <div class="row">
                                             <div class="col-md-1"></div>
                                             <div class="col-md-1 cellz">公司名<span style="color: red;">*</span></div>
-                                            <div class="col-md-2 FormPadding">
-                                                <input type="text" class="col-md-4 form-control cellzFrom client"
-                                                    v-model.trim="bean.client" name="client" list="company"
-                                                    maxlength="100" required>
-                                                <datalist id="company">
-                                                    <c:if test="${not empty client}">
-                                                        <c:forEach varStatus="loop" begin="0" end="${client.size()-1}"
-                                                            items="${client}" var="s">
-                                                            <option value="${s.name}">
-                                                        </c:forEach>
-                                                    </c:if>
-                                                </datalist>
+                                            <div class="col-md-2 FormPadding" style="background-color: #EEE;"
+                                                @click="openClient">
+
+                                                <a href="#" @click.stop.prevent="goClient">{{bean.client}}</a>
+
+
+                                                <input type="hidden" class="col-md-4 form-control cellzFrom client"
+                                                    v-model.trim="bean.client" name="client" maxlength="100" readonly>
+
                                             </div>
 
 
@@ -304,22 +303,33 @@
                                             <div class="col-md-1 "> </div>
                                             <div class="col-md-1 cellz">負責人</div>
                                             <div class="col-md-2 FormPadding">
-                                                <select name="user" class="form-select cellzFrom"
-                                                    v-model.trim="bean.user" aria-label="Default select example">
-                                                    <option value="無">無</option>
-                                                    <c:if test="${not empty admin}">
-                                                        <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}"
-                                                            items="${admin}" var="s">
+                                                <c:if test="${user.position != '職員' }">
+                                                    <select name="user" class="form-select cellzFrom"
+                                                        v-model.trim="bean.user" aria-label="Default select example">
+                                                        <option value="無">無</option>
+                                                        <c:if test="${not empty admin}">
+                                                            <c:forEach varStatus="loop" begin="0"
+                                                                end="${admin.size()-1}" items="${admin}" var="s">
+                                                                <c:if test="${s.department == '業務' }">
+                                                                    <option value="${s.name}">
+                                                                        ${s.name}</option>
+                                                                </c:if>
+                                                            </c:forEach>
+                                                            <option value="系統管理"> 系統管理</option>
+                                                        </c:if>
+                                                    </select>
+                                                </c:if>
+                                                <c:if test="${user.position == '職員' }">
+                                                    <input type="hidden" name="user" v-model.trim="bean.user">
+                                                    {{bean.user}}
+                                                </c:if>
 
 
 
-                                                            <c:if test="${s.department == '業務' }">
-                                                                <option value="${s.name}">
-                                                                    ${s.name}</option>
-                                                            </c:if>
-                                                        </c:forEach>
-                                                    </c:if>
-                                                </select>
+
+
+
+
                                             </div>
                                         </div>
                                         <div class="row">
@@ -342,7 +352,7 @@
                                             <div class="col-md-1 cellz">階段</div>
                                             <div class="col-md-2 FormPadding">
                                                 <select class=" form-select cellzFrom" name="stage"
-                                                    v-model.trim="bean.stage">
+                                                    @change="changeStatus" v-model="bean.stage">
                                                     <option value="尚未處理" selected>
                                                         尚未處理</option>
                                                     <option value="需求確認">
@@ -353,10 +363,13 @@
                                                         處理中</option>
                                                     <option value="已報價">
                                                         已報價</option>
+                                                    <option value="提交主管">不合格:提交主管</option>
+                                                    <c:if test="${user.position != '職員' }">
+                                                        <option value="失敗結案">失敗結案
+                                                        </option>
+                                                    </c:if>
                                                     <option value="成功結案">
                                                         成功結案</option>
-                                                    <option value="失敗結案">
-                                                        失敗結案</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -390,7 +403,7 @@
                                                 </select>
                                             </div>
 
-                                            <div class="col-md-1 cellz">聯絡人Email<span style="color: red;">*</span></div>
+                                            <div class="col-md-1 cellz">聯絡人Email </div>
                                             <div class="col-md-2 FormPadding">
                                                 <input type="text" class="col-md- form-control cellzFrom"
                                                     v-model.trim="bean.contactemail" name="contactemail" maxlength="50">
@@ -429,356 +442,349 @@
                                                     v-model.trim="bean.line" maxlength="200">
                                             </div>
                                         </div>
-                                        <!-- ////////////////////////////////////////////////////////////////////////////////// -->
-                                        <div class="row">&nbsp;</div>
-                                        <div class="row" style="text-align: center;">
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-6 bg-danger text-white"
-                                                style="font-size: 1.5rem;border-radius: 5px 5px 0 0 ;">
-                                                需求</div>
-                                        </div>
                                         <div class="row">
+
                                             <div class="col-md-1"></div>
-                                            <div class="col-md-1 cellz">產品類別<span style="color: red;">*</span></div>
+                                            <div class="col-md-1 cellz">傳真</div>
                                             <div class="col-md-2 FormPadding">
-                                                <select name="producttype" id="Product_Type"
-                                                    v-model.trim="bean.producttype" class=" form-select cellzFrom">
-                                                    <option ${bean.producttype=="尚未分類" ?"selected":null} value="尚未分類"
-                                                        selected="selected">請選擇...</option>
-                                                    <option ${bean.producttype=="大型顯示器" ?"selected":null} value="大型顯示器">
-                                                        大型顯示器
-                                                    </option>
-                                                    <option ${bean.producttype=="空氣品質" ?"selected":null} value="空氣品質">
-                                                        空氣品質
-                                                    </option>
-                                                    <option ${bean.producttype=="流量-AICHI" ?"selected":null}
-                                                        value="流量-AICHI">
-                                                        流量-AICHI</option>
-                                                    <option ${bean.producttype=="流量-RGL" ?"selected":null}
-                                                        value="流量-RGL">
-                                                        流量-RGL
-                                                    </option>
-                                                    <option ${bean.producttype=="流量-Siargo" ?"selected":null}
-                                                        value="流量-Siargo">
-                                                        流量-Siargo</option>
-                                                    <option ${bean.producttype=="流量-其他" ?"selected":null} value="流量-其他">
-                                                        流量-其他
-                                                    </option>
-                                                    <option ${bean.producttype=="記錄器" ?"selected":null} value="記錄器">記錄器
-                                                    </option>
-                                                    <option ${bean.producttype=="資料收集器-JETEC" ?"selected":null}
-                                                        value="資料收集器-JETEC">
-                                                        資料收集器-JETEC</option>
-                                                    <option ${bean.producttype=="資料收集器-其他" ?"selected":null}
-                                                        value="資料收集器-其他">
-                                                        資料收集器-其他</option>
-                                                    <option ${bean.producttype=="溫濕-JETEC" ?"selected":null}
-                                                        value="溫濕-JETEC">
-                                                        溫濕-JETEC</option>
-                                                    <option ${bean.producttype=="溫濕-GALLTEC" ?"selected":null}
-                                                        value="溫濕-GALLTEC">
-                                                        溫濕-GALLTEC</option>
-                                                    <option ${bean.producttype=="溫濕-E+E" ?"selected":null}
-                                                        value="溫濕-E+E">
-                                                        溫濕-E+E
-                                                    </option>
-                                                    <option ${bean.producttype=="溫濕-其他" ?"selected":null} value="溫濕-其他">
-                                                        溫濕-其他
-                                                    </option>
-                                                    <option ${bean.producttype=="紅外線" ?"selected":null} value="紅外線">紅外線
-                                                    </option>
-                                                    <option ${bean.producttype=="壓力-JETEC" ?"selected":null}
-                                                        value="壓力-JETEC">
-                                                        壓力-JETEC</option>
-                                                    <option ${bean.producttype=="壓力-HUBA" ?"selected":null}
-                                                        value="壓力-HUBA">
-                                                        壓力-HUBA
-                                                    </option>
-                                                    <option ${bean.producttype=="壓力-COPAL" ?"selected":null}
-                                                        value="壓力-COPAL">
-                                                        壓力-COPAL</option>
-                                                    <option ${bean.producttype=="壓力-其他" ?"selected":null} value="壓力-其他">
-                                                        壓力-其他
-                                                    </option>
-                                                    <option ${bean.producttype=="差壓" ?"selected":null} value="差壓">差壓
-                                                    </option>
-                                                    <option ${bean.producttype=="氣體-JETEC" ?"selected":null}
-                                                        value="氣體-JETEC">
-                                                        氣體-JETEC</option>
-                                                    <option ${bean.producttype=="氣體-Senko" ?"selected":null}
-                                                        value="氣體-Senko">
-                                                        氣體-Senko</option>
-                                                    <option ${bean.producttype=="氣體-GASDNA" ?"selected":null}
-                                                        value="氣體-GASDNA">
-                                                        氣體-GASDNA</option>
-                                                    <option ${bean.producttype=="氣體-手持" ?"selected":null} value="氣體-手持">
-                                                        氣體-手持
-                                                    </option>
-                                                    <option ${bean.producttype=="氣體-其他" ?"selected":null} value="氣體-其他">
-                                                        氣體-其他
-                                                    </option>
-                                                    <option ${bean.producttype=="氣象儀器-土壤/pH" ?"selected":null}
-                                                        value="氣象儀器-土壤/pH">
-                                                        氣象儀器-土壤/pH</option>
-                                                    <option ${bean.producttype=="氣象儀器-日照/紫外線" ?"selected":null}
-                                                        value="氣象儀器-日照/紫外線">
-                                                        氣象儀器-日照/紫外線</option>
-                                                    <option ${bean.producttype=="氣象儀器-風速/風向" ?"selected":null}
-                                                        value="氣象儀器-風速/風向">
-                                                        氣象儀器-風速/風向</option>
-                                                    <option ${bean.producttype=="氣象儀器-雨量" ?"selected":null}
-                                                        value="氣象儀器-雨量">
-                                                        氣象儀器-雨量
-                                                    </option>
-                                                    <option ${bean.producttype=="氣象儀器-其他" ?"selected":null}
-                                                        value="氣象儀器-其他">
-                                                        氣象儀器-其他
-                                                    </option>
-                                                    <option ${bean.producttype=="水質相關" ?"selected":null} value="水質相關">
-                                                        水質相關
-                                                    </option>
-                                                    <option ${bean.producttype=="液位/料位-JETEC" ?"selected":null}
-                                                        value="液位/料位-JETEC">
-                                                        液位/料位-JETEC</option>
-                                                    <option ${bean.producttype=="液位/料位-DINEL" ?"selected":null}
-                                                        value="液位/料位-DINEL">
-                                                        液位/料位-DINEL</option>
-                                                    <option ${bean.producttype=="液位/料位-HONDA" ?"selected":null}
-                                                        value="液位/料位-HONDA">
-                                                        液位/料位-HONDA</option>
-                                                    <option ${bean.producttype=="液位/料位-其他" ?"selected":null}
-                                                        value="液位/料位-其他">
-                                                        液位/料位-其他</option>
-                                                    <option ${bean.producttype=="溫度貼紙" ?"selected":null} value="溫度貼紙">
-                                                        溫度貼紙
-                                                    </option>
-                                                    <option ${bean.producttype=="溫控器-TOHO" ?"selected":null}
-                                                        value="溫控器-TOHO">
-                                                        溫控器-TOHO</option>
-                                                    <option ${bean.producttype=="溫控器-其他" ?"selected":null}
-                                                        value="溫控器-其他">
-                                                        溫控器-其他
-                                                    </option>
-                                                    <option ${bean.producttype=="感溫線棒" ?"selected":null} value="感溫線棒">
-                                                        感溫線棒
-                                                    </option>
-                                                    <option ${bean.producttype=="無線傳輸" ?"selected":null} value="無線傳輸">
-                                                        無線傳輸
-                                                    </option>
-                                                    <option ${bean.producttype=="編碼器/電位計" ?"selected":null}
-                                                        value="編碼器/電位計">
-                                                        編碼器/電位計
-                                                    </option>
-                                                    <option ${bean.producttype=="能源管理控制" ?"selected":null}
-                                                        value="能源管理控制">
-                                                        能源管理控制
-                                                    </option>
-                                                    <option ${bean.producttype=="食品" ?"selected":null} value="食品">食品
-                                                    </option>
-                                                    <option ${bean.producttype=="其它" ?"selected":null} value="其它">其它
-                                                    </option>
-                                                </select>
+                                                <input type="text" class="form-control cellzFrom" name="fax"
+                                                    v-model.trim="bean.fax" maxlength="20">
+
                                             </div>
-                                            <div class="col-md-1 cellz">產品名稱<span style="color: red;">*</span></div>
-                                            <div class="col-md-2 FormPadding">
-                                                <input type="text" class=" form-control cellzFrom" name="product"
-                                                    v-model.trim="bean.product" maxlength="20">
-                                            </div>
+
+
                                         </div>
 
-                                        <div class="row">
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-1 cellz">預算</div>
-                                            <div class="col-md-2 FormPadding">
-                                                <input type="number" class=" form-control cellzFrom" name="cost"
-                                                    v-model.trim="bean.cost" maxlength="30">
-                                            </div>
-                                            <div class="col-md-1 cellz">成交機率<span style="color: red;">*</span></div>
-
-                                            <div class="col-md-2 FormPadding clinch">
-                                                <el-rate v-model.trim="bean.clinch"
-                                                    :colors="{ 2: '#99A9BF', 3:  '#F7BA2A', 4: '#FF9900', 5: 'red' }">
-                                                </el-rate>
-                                                <input type="hidden" name="clinch" v-model.trim="bean.clinch">
-                                            </div>
-                                        </div>
-
-
-                                        <div class="row">
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-1 cellz">開始時間</div>
-                                            <div class="col-md-2 FormPadding">
-                                                <input type="text" class="  form-control cellzFrom CreateTime"
-                                                    v-model.trim="bean.createtime" name="createtime" readonly>
-                                            </div>
-                                            <div class="col-md-1 cellz">結束時間</div>
-                                            <div class="col-md-2 FormPadding">
-                                                <input type="text" class=" form-control cellzFrom EndTime"
-                                                    name="endtime" v-model.trim="bean.endtime" readonly>
-                                            </div>
-                                        </div>
-
-                                        <!-- /////////////////////////////////////////////////////////////////////////// -->
-                                        <div class="row">
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-1 cellz">描述<span style="color: red;">*</span></div>
-                                            <div class="col-md-5 FormPadding">
-
-
-
-
-                                                <el-input type="textarea" v-model="bean.message" rows="5" id="message"
-                                                    maxlength="950" show-word-limit name="message">
-
-
-
-
-
-
-                                            </div><br><br>
-                                        </div>
-                                        <p>&nbsp;</p>
-                                        <div class="row">
-                                            <div class="col-md-3"></div>
-                                            <div class="col-md-6 FormPadding">
-                                                <button type="button" style="width: 100%;" class="btn btn-danger"
-                                                    @click="submitForm">完畢儲存</button>
-                                            </div>
-                                        </div>
                                     </div>
-                                </form>
-                                <!-- ///////////////////////////////////////////////////////////////////////////// -->
-                                <hr>
-
-                                <!-- ////////////////////////////////////////追蹤資訊///////////////////////////////////// -->
-                                <br><br><br>
-
-                                <div class="row">
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-9 bg-danger text-white"
-                                        style="text-align: center; color: white;">
-                                        <h5>追蹤資訊</h5>
+                                    <!-- ////////////////////////////////////////////////////////////////////////////////// -->
+                                    <div class="row">&nbsp;</div>
+                                    <div class="row" style="text-align: center;">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-6 bg-danger text-white"
+                                            style="font-size: 1.5rem;border-radius: 5px 5px 0 0 ;">
+                                            需求</div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-4">客人描述</div>
-                                    <div class="col-md-3">追蹤結果</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-9">
-                                        <hr>
-                                    </div>
-                                </div>
-                                <!--  -->
-                                <form action="" method="post" id="SaveTrack" class="row g-3 needs-validation"
-                                    novalidate>
-                                    <input type="hidden" class=" form-control cellzFrom" name="remark" maxlength="950"
-                                        value="${user.name}">
-                                    <input type="hidden" name="customerid" value="${bean.customerid}">
                                     <div class="row">
                                         <div class="col-md-1"></div>
-                                        <div class="col-md-4 FormPadding">
-                                            <textarea class="form-control" name="trackdescribe" rows="2"
-                                                maxlength="950"></textarea>
+                                        <div class="col-md-1 cellz">產品類別<span style="color: red;">*</span></div>
+                                        <div class="col-md-2 FormPadding">
+                                            <select name="producttype" id="Product_Type" v-model.trim="bean.producttype"
+                                                class=" form-select cellzFrom">
+                                                <option ${bean.producttype=="尚未分類" ?"selected":null} value="尚未分類"
+                                                    selected="selected">請選擇...</option>
+                                                <option ${bean.producttype=="大型顯示器" ?"selected":null} value="大型顯示器">
+                                                    大型顯示器
+                                                </option>
+                                                <option ${bean.producttype=="空氣品質" ?"selected":null} value="空氣品質">
+                                                    空氣品質
+                                                </option>
+                                                <option ${bean.producttype=="流量-AICHI" ?"selected":null}
+                                                    value="流量-AICHI">
+                                                    流量-AICHI</option>
+                                                <option ${bean.producttype=="流量-RGL" ?"selected":null} value="流量-RGL">
+                                                    流量-RGL
+                                                </option>
+                                                <option ${bean.producttype=="流量-Siargo" ?"selected":null}
+                                                    value="流量-Siargo">
+                                                    流量-Siargo</option>
+                                                <option ${bean.producttype=="流量-其他" ?"selected":null} value="流量-其他">
+                                                    流量-其他
+                                                </option>
+                                                <option ${bean.producttype=="記錄器" ?"selected":null} value="記錄器">記錄器
+                                                </option>
+                                                <option ${bean.producttype=="資料收集器-JETEC" ?"selected":null}
+                                                    value="資料收集器-JETEC">
+                                                    資料收集器-JETEC</option>
+                                                <option ${bean.producttype=="資料收集器-其他" ?"selected":null}
+                                                    value="資料收集器-其他">
+                                                    資料收集器-其他</option>
+                                                <option ${bean.producttype=="溫濕-JETEC" ?"selected":null}
+                                                    value="溫濕-JETEC">
+                                                    溫濕-JETEC</option>
+                                                <option ${bean.producttype=="溫濕-GALLTEC" ?"selected":null}
+                                                    value="溫濕-GALLTEC">
+                                                    溫濕-GALLTEC</option>
+                                                <option ${bean.producttype=="溫濕-E+E" ?"selected":null} value="溫濕-E+E">
+                                                    溫濕-E+E
+                                                </option>
+                                                <option ${bean.producttype=="溫濕-其他" ?"selected":null} value="溫濕-其他">
+                                                    溫濕-其他
+                                                </option>
+                                                <option ${bean.producttype=="紅外線" ?"selected":null} value="紅外線">紅外線
+                                                </option>
+                                                <option ${bean.producttype=="壓力-JETEC" ?"selected":null}
+                                                    value="壓力-JETEC">
+                                                    壓力-JETEC</option>
+                                                <option ${bean.producttype=="壓力-HUBA" ?"selected":null} value="壓力-HUBA">
+                                                    壓力-HUBA
+                                                </option>
+                                                <option ${bean.producttype=="壓力-COPAL" ?"selected":null}
+                                                    value="壓力-COPAL">
+                                                    壓力-COPAL</option>
+                                                <option ${bean.producttype=="壓力-其他" ?"selected":null} value="壓力-其他">
+                                                    壓力-其他
+                                                </option>
+                                                <option ${bean.producttype=="差壓" ?"selected":null} value="差壓">差壓
+                                                </option>
+                                                <option ${bean.producttype=="氣體-JETEC" ?"selected":null}
+                                                    value="氣體-JETEC">
+                                                    氣體-JETEC</option>
+                                                <option ${bean.producttype=="氣體-Senko" ?"selected":null}
+                                                    value="氣體-Senko">
+                                                    氣體-Senko</option>
+                                                <option ${bean.producttype=="氣體-GASDNA" ?"selected":null}
+                                                    value="氣體-GASDNA">
+                                                    氣體-GASDNA</option>
+                                                <option ${bean.producttype=="氣體-手持" ?"selected":null} value="氣體-手持">
+                                                    氣體-手持
+                                                </option>
+                                                <option ${bean.producttype=="氣體-其他" ?"selected":null} value="氣體-其他">
+                                                    氣體-其他
+                                                </option>
+                                                <option ${bean.producttype=="氣象儀器-土壤/pH" ?"selected":null}
+                                                    value="氣象儀器-土壤/pH">
+                                                    氣象儀器-土壤/pH</option>
+                                                <option ${bean.producttype=="氣象儀器-日照/紫外線" ?"selected":null}
+                                                    value="氣象儀器-日照/紫外線">
+                                                    氣象儀器-日照/紫外線</option>
+                                                <option ${bean.producttype=="氣象儀器-風速/風向" ?"selected":null}
+                                                    value="氣象儀器-風速/風向">
+                                                    氣象儀器-風速/風向</option>
+                                                <option ${bean.producttype=="氣象儀器-雨量" ?"selected":null} value="氣象儀器-雨量">
+                                                    氣象儀器-雨量
+                                                </option>
+                                                <option ${bean.producttype=="氣象儀器-其他" ?"selected":null} value="氣象儀器-其他">
+                                                    氣象儀器-其他
+                                                </option>
+                                                <option ${bean.producttype=="水質相關" ?"selected":null} value="水質相關">
+                                                    水質相關
+                                                </option>
+                                                <option ${bean.producttype=="液位/料位-JETEC" ?"selected":null}
+                                                    value="液位/料位-JETEC">
+                                                    液位/料位-JETEC</option>
+                                                <option ${bean.producttype=="液位/料位-DINEL" ?"selected":null}
+                                                    value="液位/料位-DINEL">
+                                                    液位/料位-DINEL</option>
+                                                <option ${bean.producttype=="液位/料位-HONDA" ?"selected":null}
+                                                    value="液位/料位-HONDA">
+                                                    液位/料位-HONDA</option>
+                                                <option ${bean.producttype=="液位/料位-其他" ?"selected":null}
+                                                    value="液位/料位-其他">
+                                                    液位/料位-其他</option>
+                                                <option ${bean.producttype=="溫度貼紙" ?"selected":null} value="溫度貼紙">
+                                                    溫度貼紙
+                                                </option>
+                                                <option ${bean.producttype=="溫控器-TOHO" ?"selected":null}
+                                                    value="溫控器-TOHO">
+                                                    溫控器-TOHO</option>
+                                                <option ${bean.producttype=="溫控器-其他" ?"selected":null} value="溫控器-其他">
+                                                    溫控器-其他
+                                                </option>
+                                                <option ${bean.producttype=="感溫線棒" ?"selected":null} value="感溫線棒">
+                                                    感溫線棒
+                                                </option>
+                                                <option ${bean.producttype=="無線傳輸" ?"selected":null} value="無線傳輸">
+                                                    無線傳輸
+                                                </option>
+                                                <option ${bean.producttype=="編碼器/電位計" ?"selected":null} value="編碼器/電位計">
+                                                    編碼器/電位計
+                                                </option>
+                                                <option ${bean.producttype=="能源管理控制" ?"selected":null} value="能源管理控制">
+                                                    能源管理控制
+                                                </option>
+                                                <option ${bean.producttype=="食品" ?"selected":null} value="食品">食品
+                                                </option>
+                                                <option ${bean.producttype=="其它" ?"selected":null} value="其它">其它
+                                                </option>
+                                            </select>
                                         </div>
-                                        <div class="col-md-4 FormPadding">
-                                            <textarea class="form-control" name="result" rows="2"
-                                                maxlength="95"></textarea>
+                                        <div class="col-md-1 cellz">產品名稱<span style="color: red;">*</span></div>
+                                        <div class="col-md-2 FormPadding">
+                                            <input type="text" class=" form-control cellzFrom" name="product"
+                                                v-model.trim="bean.product" maxlength="20">
                                         </div>
-                                        <div class="col-md-1" style="padding: 0%;">
-                                            <button style="width: 100%; background-color: #569b92;" type="button"
-                                                class="btn btn-outline-dark" @click="SaveTrackByMarket">新增</button>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-1 cellz">預算</div>
+                                        <div class="col-md-2 FormPadding">
+                                            <input type="number" class=" form-control cellzFrom" name="cost"
+                                                v-model.trim="bean.cost" maxlength="30">
+                                        </div>
+                                        <div class="col-md-1 cellz">成交機率<span style="color: red;">*</span></div>
+
+                                        <div class="col-md-2 FormPadding clinch">
+                                            <el-rate v-model.trim="bean.clinch"
+                                                :colors="{ 2: '#99A9BF', 3:  '#F7BA2A', 4: '#FF9900', 5: 'red' }">
+                                            </el-rate>
+                                            <input type="hidden" name="clinch" v-model.trim="bean.clinch">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-1 cellz">開始時間</div>
+                                        <div class="col-md-2 FormPadding">
+                                            <input type="text" class="  form-control cellzFrom CreateTime"
+                                                v-model.trim="bean.createtime" name="createtime" readonly>
+                                        </div>
+                                        <div class="col-md-1 cellz">結束時間</div>
+                                        <div class="col-md-2 FormPadding">
+                                            <input type="text" class=" form-control cellzFrom EndTime" name="endtime"
+                                                v-model.trim="bean.endtime" readonly>
+                                        </div>
+                                    </div>
+
+                                    <!-- /////////////////////////////////////////////////////////////////////////// -->
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-1 cellz">描述<span style="color: red;">*</span></div>
+                                        <div class="col-md-5 FormPadding">
+                                            <el-input type="textarea" v-model="bean.message" rows="5" id="message"
+                                                maxlength="950" show-word-limit name="message">
+                                        </div><br><br>
+                                    </div>
+                                    <p>&nbsp;</p>
+                                    <div class="row">
+                                        <div class="col-md-3"></div>
+                                        <div class="col-md-6 FormPadding">
+                                            <button type="button" style="width: 100%;" class="btn btn-danger"
+                                                @click="submitForm">完畢儲存</button>
                                         </div>
                                     </div>
                                 </form>
-                                <!--  -->
+                            </div>
+                        </transition-group>
+                        <!-- ///////////////////////////////////////////////////////////////////////////// -->
+                        <hr>
+
+                        <!-- ////////////////////////////////////////追蹤資訊///////////////////////////////////// -->
+                        <br><br><br>
+
+                        <div class="row">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-9 bg-danger text-white" style="text-align: center; color: white;">
+                                <h5>追蹤資訊</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-4">客人描述</div>
+                            <div class="col-md-3">追蹤結果</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-9">
+                                <hr>
+                            </div>
+                        </div>
+                        <!--  -->
+                        <form action="" method="post" id="SaveTrack" class="row g-3 needs-validation" novalidate>
+                            <input type="hidden" class=" form-control cellzFrom" name="remark" maxlength="950"
+                                value="${user.name}">
+                            <input type="hidden" name="customerid" value="${bean.customerid}">
+                            <div class="row">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-4 FormPadding">
+                                    <textarea class="form-control" name="trackdescribe" rows="2"
+                                        maxlength="950"></textarea>
+                                </div>
+                                <div class="col-md-4 FormPadding">
+                                    <textarea class="form-control" name="result" rows="2" maxlength="950"></textarea>
+                                </div>
+                                <div class="col-md-1" style="padding: 0%;">
+                                    <button style="width: 100%; background-color: #569b92;" type="button"
+                                        class="btn btn-outline-dark" @click="SaveTrackByMarket">新增</button>
+                                </div>
+                            </div>
+                        </form>
+                        <!--  -->
 
 
-                                <div class="row replyImg" v-for="(s, index) in TrackList" :key="index">
+                        <div class="row replyImg" v-for="(s, index) in TrackList" :key="index">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-11">
+                                <div class="row">
+                                    <div class="col-md-10" style=" padding: 0%;">
+                                        <hr style="color: #569b92; opacity: 1;">
+                                    </div>
+                                </div>
+                                <!-- {{s}} -->
+                                <div class="row" style="min-height: 70px;">
+                                    <div class="row">
+                                        <div class="col-md-4" style="position: relative; word-wrap:break-word;">
+                                            </el-input>
+                                            <el-input type="textarea" v-model="s.trackdescribe" class="aaaa">
+                                        </div>
+                                        <div class="col-md-4" style="position: relative; word-wrap:break-word;">
+                                            <el-input type="textarea" v-model="s.result" class="aaaa">
+
+                                        </div>
+                                        <div class="col-md-3" style="color: #569b92;">
+                                            {{s.remark}} {{s.tracktime}}</div>
+                                    </div>
+                                </div>
+                                <!-- 留言的控制 -->
+                                <div class="row replyA" style="font-size: 12;">
                                     <div class="col-md-1"></div>
-                                    <div class="col-md-11">
+                                    <div class="col-md-6 "
+                                        style="position: relative; word-wrap:break-word;color: #8e8e8e; ">
+
+                                    </div>
+                                    <div class="col-md-3 ccc" style="text-align: right;">
+                                        <el-button v-show="s.remark == '${user.name}'" type="text" @click="open(s)">
+                                            修改</el-button>&nbsp;&nbsp;&nbsp;
+                                        <el-button v-show="s.remark == '${user.name}'" type="text"
+                                            @click="removeTrack(s)">刪除</el-button>&nbsp;&nbsp;&nbsp;
+                                        <el-button type="text" @click="trackremark(s.trackid)">回覆
+                                        </el-button>
+                                        &nbsp;&nbsp;&nbsp;
+                                    </div>
+                                </div>
+                                <!-- 留言的附件 -->
+                                <c:if test="${not empty s.file}">
+                                    <c:forEach varStatus="loop" begin="0" end="${s.file.size()-1}" items="${s.file}"
+                                        var="file">
                                         <div class="row">
-                                            <div class="col-md-10" style=" padding: 0%;">
-                                                <hr style="color: #569b92; opacity: 1;">
+                                            <div class="col-md-1" style="color: #569b92;">
+                                                附件</div>
+                                            <div class="col-md-5 ">
+                                                <a href="${pageContext.request.contextPath}/file/${file.url}"
+                                                    target="_blank">${file.name}</a>
                                             </div>
                                         </div>
-                                        <!-- {{s}} -->
-                                        <div class="row" style="min-height: 70px;">
-                                            <div class="row">
-                                                <div class="col-md-4" style="position: relative; word-wrap:break-word;">
-                                                    </el-input>
-                                                    <el-input type="textarea" v-model="s.trackdescribe" class="aaaa">
-                                                </div>
-                                                <div class="col-md-4" style="position: relative; word-wrap:break-word;">
-                                                    <el-input type="textarea" v-model="s.result" class="aaaa">
-
-                                                </div>
-                                                <div class="col-md-3" style="color: #569b92;">
-                                                    {{s.remark}} {{s.tracktime}}</div>
+                                    </c:forEach>
+                                </c:if>
+                                <!-- 評論 -->
+                                <div class="row" v-for="(remark, index) in s.trackremark" :key="index">
+                                    <div class="col-md-2"></div>
+                                    <div class="col-md-8 ">
+                                        <div class="row replyA">
+                                            <hr>
+                                            <div class="col-md-2 " style="color: #569b92;">
+                                                {{remark.name}}
                                             </div>
-                                        </div>
-                                        <!-- 留言的控制 -->
-                                        <div class="row replyA" style="font-size: 12;">
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-6 "
-                                                style="position: relative; word-wrap:break-word;color: #8e8e8e; ">
-
+                                            <div class="col-md-7" style="word-wrap:break-word;">
+                                                {{remark.content}}
                                             </div>
-                                            <div class="col-md-3 ccc" style="text-align: right;">
-                                                <el-button v-show="s.remark == '${user.name}'" type="text"
-                                                    @click="open(s)">
-                                                    修改</el-button>&nbsp;&nbsp;&nbsp;
-                                                <el-button v-show="s.remark == '${user.name}'" type="text"
-                                                    @click="removeTrack(s)">刪除</el-button>&nbsp;&nbsp;&nbsp;
-                                                <el-button type="text" @click="trackremark(s.trackid)">回覆
+                                            <div class="col-md-3 ">
+                                                {{remark.createtime}}&nbsp;&nbsp;&nbsp;
+                                                <el-button v-show="remark.name == '${user.name}'" type="text"
+                                                    @click="removeTrackremark(remark)">刪除
                                                 </el-button>
-                                                &nbsp;&nbsp;&nbsp;
-                                            </div>
-                                        </div>
-                                        <!-- 留言的附件 -->
-                                        <c:if test="${not empty s.file}">
-                                            <c:forEach varStatus="loop" begin="0" end="${s.file.size()-1}"
-                                                items="${s.file}" var="file">
-                                                <div class="row">
-                                                    <div class="col-md-1" style="color: #569b92;">
-                                                        附件</div>
-                                                    <div class="col-md-5 ">
-                                                        <a href="${pageContext.request.contextPath}/file/${file.url}"
-                                                            target="_blank">${file.name}</a>
-                                                    </div>
-                                                </div>
-                                            </c:forEach>
-                                        </c:if>
-                                        <!-- 評論 -->
-                                        <div class="row" v-for="(remark, index) in s.trackremark" :key="index">
-                                            <div class="col-md-2"></div>
-                                            <div class="col-md-8 ">
-                                                <div class="row replyA">
-                                                    <hr>
-                                                    <div class="col-md-2 " style="color: #569b92;">
-                                                        {{remark.name}}
-                                                    </div>
-                                                    <div class="col-md-7" style="word-wrap:break-word;">
-                                                        {{remark.content}}
-                                                    </div>
-                                                    <div class="col-md-3 ">
-                                                        {{remark.createtime}}&nbsp;&nbsp;&nbsp;
-                                                        <el-button v-show="remark.name == '${user.name}'" type="text"
-                                                            @click="removeTrackremark(remark)">刪除
-                                                        </el-button>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
 
-                                <br>
-                                <br><br><br><br><br>
-                                <div class="row">&nbsp;</div>
-                        </transition-group>
+                        <br>
+                        <br><br><br><br><br>
+                        <div class="row">&nbsp;</div>
+
                         <!-- <%-- 彈窗--%> -->
 
                         <el-dialog title="選擇聯絡人" :visible.sync="outerVisible" width="50%" :before-close="handleClose"
@@ -816,10 +822,34 @@
                                 </div>
                         </el-dialog>
                         <!-- <%-- 彈窗結束/////////////////////////////////////--%> -->
+                        <!-- <%-- 公司彈窗--%> -->
+                        <el-dialog title="搜索不到,請先新增客戶" :visible.sync="dialogVisible" width="30%"
+                            :before-close="handleClose">
+
+
+                            <div style="margin-top: 15px;">
+                                <el-input placeholder="名稱or統編or電話" class="input-with-select" v-model="inclient">
+
+                                    <el-button slot="append" icon="el-icon-search" @click="selectclient"></el-button>
+                                </el-input>
+                            </div><br>
+
+                            <table class="table table-primary table-striped table-hover">
+
+                                <tr v-for="(s, index) in clientList" :key="index">
+                                    <td @click="clickClient(s)">{{s.name}}</td>
+                                </tr>
+
+                            </table>
 
 
 
+                            <span slot="footer" class="dialog-footer">
+                                <el-button @click="dialogVisible = false">取消</el-button>
+                            </span>
+                        </el-dialog>
 
+                        <!-- <%-- 公司彈窗結束--%> -->
 
 
                         <!-- 動作區塊 -->
@@ -986,8 +1016,15 @@
                 el: '.app',
                 data() {
                     return {
+                        inclient: "",//搜索客戶輸入
                         changeTableVisible: false,
-                        bean: {},
+                        dialogVisible: false,//公司彈窗
+                        clientList: [],//客戶列表
+                        bean: {
+                            phone: "",
+                            stage: "",
+                            customerid: "",
+                        },
                         oldBean: {},
                         changeMessageList: [],//修改資訊
                         show: false,
@@ -1030,24 +1067,26 @@
                     if ("${changeMarket}" == "changeMarket") {
                         var url = "${pageContext.request.contextPath}/Market/getchange/${changeid}";
                     }
-                    console.log(url);
-                    $.ajax({
-                        url: url,//接受請求的Servlet地址
-                        type: 'POST',
-                        async: false,//同步請求
-                        cache: false,//不快取頁面
-                        success: (response => (
-                            this.bean = response.bean,
-                            this.changeMessageList = response.changeMessageList,
-                            this.bean.phone = formatPhone(this.bean.phone),
-                            this.bean.contactphone = formatPhone(this.bean.contactphone),
-                            this.bean.contactmoblie = formatPhone(this.bean.contactmoblie),
-                            this.oldBean = Object.assign({}, this.bean)
-                        )),
-                        error: function (returndata) {
-                            console.log(returndata);
-                        }
-                    });
+                    console.log(url, "url");
+                    if (url != null)
+                        $.ajax({
+                            url: url,//接受請求的Servlet地址
+                            type: 'POST',
+                            async: false,//同步請求
+                            cache: false,//不快取頁面
+                            success: (response => (
+                                this.bean = response.bean,
+                                console.log(this.bean, "bean"),
+                                this.changeMessageList = response.changeMessageList,
+                                // this.bean.phone = formatPhone(this.bean.phone),
+                                this.bean.contactphone = formatPhone(this.bean.contactphone),
+                                this.bean.contactmoblie = formatPhone(this.bean.contactmoblie),
+                                this.oldBean = Object.assign({}, this.bean)
+                            )),
+                            error: function (returndata) {
+                                console.log(returndata);
+                            }
+                        });
                     axios
                         .get('${pageContext.request.contextPath}/Potential/client/' + this.bean.customerid)
                         .then(response => (
@@ -1078,10 +1117,7 @@
                             $("input[name='client']").css("border", "red 1px solid");
                             isok = false;
                         }
-                        if (this.bean.contactemail == null || this.bean.contactemail == "") {
-                            $("input[name='contactemail']").css("border", "red 1px solid");
-                            isok = false;
-                        }
+
                         if (this.bean.contactname == null || this.bean.contactname == "") {
                             $("input[name='contactname']").css("border", "red 1px solid");
                             isok = false;
@@ -1264,7 +1300,56 @@
                         }, 200)
 
                     },
+                    openClient: function () {
+                        $.ajax({
+                            url: '${pageContext.request.contextPath}/CRM/getclientList',
+                            type: 'POST',
+                            async: false,//同步請求
+                            cache: false,//不快取頁面
+                            success: (response => (
+                                this.clientList = response,
+                                this.dialogVisible = true
+                            )),
+                            error: function (returndata) {
+                                console.log(returndata);
+                            }
+                        });
 
+                    },
+                    clickClient: function (s) {
+                        console.log(s, "client");
+                        this.bean.client = s.name;
+                        this.bean.phone = s.phone;
+                        this.bean.extension = s.extension;
+                        this.bean.fax = s.fax;
+                        this.bean.type = s.industry;
+                        this.dialogVisible = false;
+                        this.bean.clientid = s.clientid;
+                    },
+                    selectclient: function () {
+                        $.ajax({
+                            url: '${pageContext.request.contextPath}/CRM/selectclientResponseBody/' + this.inclient,
+                            type: 'POST',
+                            async: false,//同步請求
+                            cache: false,//不快取頁面
+                            success: (response => (
+                                this.clientList = response
+
+                            )),
+                            error: function (returndata) {
+                                console.log(returndata);
+                            }
+                        });
+                    }, goClient: function () {
+                        window.open('${pageContext.request.contextPath}/CRM/client/' + this.bean.clientid);
+                    }, changeStatus: function () {
+                        if (this.bean.stage == "提交主管") {
+                            this.bean.user = "玟嫣";
+                        } else {
+                            this.bean.user = '${bean.user}';
+                        }
+
+                    },
                 },
             })
 

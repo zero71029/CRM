@@ -18,29 +18,29 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class PotentialCustomerBean {
 	@Id
 	private String customerid;
-	private String name;
-	private String company;
-	private String jobtitle;
+	private String name;//名稱
+	private String company;//公司
+	private String jobtitle;//職稱
 	private String email;
 	private String phone;
-	private String moblie;
+	private String moblie;//手機
 	private String fax;
-	private String department;
-	private String 	director;
-	private String industry;
-	private String companynum;
-	private String source;
-	private String 	fromactivity;
-	private String user;
-	private String contacttime;
+	private String department;//部門
+	private String 	director;//主管
+	private String industry;//產業
+	private String companynum;//改 聯絡方式
+	private String source;//來源
+	private String 	fromactivity;//來自活動
+	private String user;//業務
+	private String contacttime;//上次聯絡時間
 	private String status;
 	private String city;
 	private String town;
 	private String postal;
 	private String address;
-	private String remark;
-	private Date createtime;
-	private String important;
+	private String remark;//備註
+	private Date createtime;//創建時間
+	private String important;//重要性
 	private String line;
 	private String extension;//電話分機
 	private String aaa;//創建時間
@@ -58,6 +58,26 @@ public class PotentialCustomerBean {
 	@JsonIgnore
 	@OneToMany(targetEntity = WorkBean.class ,mappedBy = "customerid", cascade = CascadeType.ALL)
 	private List<WorkBean> work;
+	
+	//工作項目
+	@OneToMany(targetEntity = BosMessageBean.class ,mappedBy = "bosid", cascade = CascadeType.ALL)
+	private List<BosMessageBean> bm;
+
+	
+	
+	
+	
+	
+	
+	
+
+	public List<BosMessageBean> getBm() {
+		return bm;
+	}
+
+	public void setBm(List<BosMessageBean> bm) {
+		this.bm = bm;
+	}
 
 	public String getAaa() {
 		return aaa;
@@ -290,38 +310,11 @@ public class PotentialCustomerBean {
 		this.remark = remark;
 	}
 
-
 	@Override
 	public String toString() {
-		return "PotentialCustomerBean{" +
-				"customerid='" + customerid + '\'' +
-				", name='" + name + '\'' +
-				", company='" + company + '\'' +
-				", jobtitle='" + jobtitle + '\'' +
-				", email='" + email + '\'' +
-				", phone='" + phone + '\'' +
-				", moblie='" + moblie + '\'' +
-				", fax='" + fax + '\'' +
-				", department='" + department + '\'' +
-				", director='" + director + '\'' +
-				", industry='" + industry + '\'' +
-				", companynum=" + companynum +
-				", source='" + source + '\'' +
-				", fromactivity='" + fromactivity + '\'' +
-				", user='" + user + '\'' +
-				", contacttime='" + contacttime + '\'' +
-				", status='" + status + '\'' +
-				", city='" + city + '\'' +
-				", town='" + town + '\'' +
-				", postal='" + postal + '\'' +
-				", address='" + address + '\'' +
-				", remark='" + remark + '\'' +
-				", createtime=" + createtime +
-				", important='" + important + '\'' +
-				", line='" + line + '\'' +
-				", trackbean=" + trackbean +
-				", helper=" + helper +
-				", work=" + work +
-				'}';
+		return "PotentialCustomerBean [customerid=" + customerid + ", name=" + name + ", bm=" + bm + "]";
 	}
+
+
+
 }

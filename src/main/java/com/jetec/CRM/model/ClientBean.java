@@ -40,7 +40,8 @@ public class ClientBean {
 	private String remark;//描述
 	private String user;//負責人
 	private Integer state;//狀態
-	
+	private String serialnumber;//編號
+
 	
 	//聯繫人
 	@JsonIgnore
@@ -60,6 +61,13 @@ public class ClientBean {
 	@OrderBy("name")
 	private List<ClientTagBean> tag;
 
+	public String getSerialnumber() {
+		return serialnumber;
+	}
+
+	public void setSerialnumber(String serialnumber) {
+		this.serialnumber = serialnumber;
+	}
 
 	public String getExtension() {
 		return extension;
@@ -255,13 +263,36 @@ public class ClientBean {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
+
 	@Override
 	public String toString() {
-		return "ClientBean [clientid=" + clientid + ", name=" + name + ", sort=" + sort + ", url=" + url + ", industry="
-				+ industry + ", uniformnumber=" + uniformnumber + ", phone=" + phone + ", fax=" + fax
-				+ ", peoplenumber=" + peoplenumber + ", billcity=" + billcity + ", billpostal=" + billpostal
-				+ ", billaddress=" + billaddress + ", delivercity=" + delivercity + ", deliverpostal=" + deliverpostal
-				+ ", deliveraddress=" + deliveraddress + ", remark=" + remark + "]";
+		return "ClientBean{" +
+				"clientid=" + clientid +
+				", name='" + name + '\'' +
+				", sort='" + sort + '\'' +
+				", url='" + url + '\'' +
+				", email='" + email + '\'' +
+				", industry='" + industry + '\'' +
+				", uniformnumber='" + uniformnumber + '\'' +
+				", phone='" + phone + '\'' +
+				", extension='" + extension + '\'' +
+				", fax='" + fax + '\'' +
+				", peoplenumber='" + peoplenumber + '\'' +
+				", billcity='" + billcity + '\'' +
+				", billtown='" + billtown + '\'' +
+				", billpostal='" + billpostal + '\'' +
+				", billaddress='" + billaddress + '\'' +
+				", delivercity='" + delivercity + '\'' +
+				", delivertown='" + delivertown + '\'' +
+				", deliverpostal='" + deliverpostal + '\'' +
+				", deliveraddress='" + deliveraddress + '\'' +
+				", remark='" + remark + '\'' +
+				", user='" + user + '\'' +
+				", state=" + state +
+				", contact=" + contact +
+				", work=" + work +
+				", address=" + address +
+				", tag=" + tag +
+				'}';
 	}
-	
 }

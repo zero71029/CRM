@@ -40,8 +40,8 @@
                         <!-- <%-- 抬頭按鈕--%> -->
                         <div class="row">
                             <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-                                <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off"
-                                    onclick="javascript:location.href='${pageContext.request.contextPath}/Market/Market.jsp'">
+                                <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off"                                  
+                                    onclick="javascript: window.open('${pageContext.request.contextPath}/Market/Market.jsp')">
                                 <label class="btn btn-outline-primary state1" for="btncheck1">新增</label>
 
 
@@ -114,8 +114,9 @@
                                     :page-size="20" layout="  prev, pager, next" :total="total">
                                 </el-pagination>
                             </div>
+                            <div key="3">今天筆數 : {{todayTotal}}</div>
                         </transition-group>
-
+                        
                         <!-- 滑塊 -->
                         <div class="offcanvas offcanvas-end " tabindex="0" id="offcanvasRight"
                             aria-labelledby="offcanvasRightLabel" style="width: 450px;">
@@ -613,6 +614,7 @@
             const vm = new Vue({
                 el: '.app',
                 data: {
+                    todayTotal:"",//
                     currentPage1: 1,//當前分頁
                     total: 1,//所有筆數
                     list: [],
@@ -662,7 +664,9 @@
                         axios
                             .get('${pageContext.request.contextPath}/Market/MarketList?pag=1')//銷售機會列表
                             .then(response => (
-                                this.list = response.data,
+                                this.list = response.data.list,
+                                console.log(response.data.list),
+                                this.todayTotal =response.data.todayTotal,
                                 this.show = true
                             ))
                             .catch(function (error) {
@@ -682,11 +686,11 @@
                     }
                 },
                 methods: {
-                    handleCurrentChange(val) {//點擊分頁
+                    handleCurrentChange(val) {//點擊分頁                        
                         axios
                             .get('${pageContext.request.contextPath}/Market/MarketList?pag=' + val)
-                            .then(response => (
-                                this.list = response.data
+                            .then(response => (                                
+                                this.list = response.data.list
                             ))
                             .catch(function (error) {
                                 console.log(error);

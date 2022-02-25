@@ -17,32 +17,30 @@
         <!-- <script src="${pageContext.request.contextPath}/js/vue.js"></script> -->
 
         <!-- 引入样式 vue-->
-        <script src="${pageContext.request.contextPath}/js/vue.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/vue.js"></script>
         <script src="${pageContext.request.contextPath}/js/axios.min.js"></script>
         <!-- 引入element-ui样式 -->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/js/element-ui.css">
         <!-- 引入element-ui组件库 -->
         <script src="${pageContext.request.contextPath}/js/element-ui.js"></script>
 
+        <style>
 
+        </style>
 
         <!-- <%-- 抬頭--%> -->
         <header class="mainColor headtop">
             <div class="row">
-                <a href='${pageContext.request.contextPath}/' class='col-lg-2' style="font-size: 2.5rem;">久德資訊平台</a>
+                <a href='${pageContext.request.contextPath}/' class='col-lg-2' style="font-size: 2rem;">久德資訊平台</a>
                 <div class='col-lg-7'></div>
-                <span class='col-lg-3 username' style="font-size: 2.5rem;">${user.name}
+                <span class='col-lg-3 username' style="font-size: 2rem;"><span class='workitem'
+                        style="cursor: pointer;"></span>
                     <c:if test='${empty user}'>
                         <a href="${pageContext.request.contextPath}/newAdmin.jsp">註冊</a>
                     </c:if> /
                     <a class="Signout" href="${pageContext.request.contextPath}/logout">登出 </a>
                 </span><br>
             </div>
-            <div class="row">
-                <div class='col-lg-9'></div>
-                <div class='col-lg-1 workitem' style="cursor: pointer;"></div>
-                <div class='col-lg-2 helpItem'>
-                </div>
         </header>
         <!--側邊欄  -->
         <div class="col-lg-1 navfix mainColor" style="padding: 0%;">
@@ -85,7 +83,8 @@
                     <button class="system"
                         onclick="javascript:location.href='${pageContext.request.contextPath}/system/billboardList?pag=1'">討論區管理</button>
                 </c:if>
-                <button class="list-group-item" onclick="javascript:location.href='${pageContext.request.contextPath}/Task/TaskList.jsp'">
+                <button class="list-group-item"
+                    onclick="javascript:location.href='${pageContext.request.contextPath}/Task/TaskList.jsp'">
                     每日任務
                 </button>
             </ul>
@@ -161,7 +160,7 @@
                 url: '${pageContext.request.contextPath}/workitem/${user.name}', //接受請求的Servlet地址
                 type: 'POST',
                 success: function (json) {
-                    $('.workitem').html("工作項目<span class='badge bg-primary'>" + (json.length) + "</span>");
+                    $('.workitem').html("${user.name}<span class='badge bg-primary'>" + (json.length) + "</span>");
                     $('.workTable').empty();
                     $('.workTable').append("<tr><td width='100'> </td><td>主題</td> <td width='100'>狀態</td></tr>");
 
@@ -177,7 +176,7 @@
                         url: '${pageContext.request.contextPath}/marketitem/${user.name}', //接受請求的Servlet地址
                         type: 'POST',
                         success: function (market) {
-                            $('.workitem').html("工作項目<span class='badge bg-primary'>" + (json.length + market.length) + "</span>");
+                            $('.workitem').html("${user.name}<span class='badge bg-primary'>" + (json.length + market.length) + "</span>");
                             for (var bean of market) {
                                 $('.workTable').append('<tr class="www workTR" onclick="gomarket(' + bean.marketid + ')"><td>銷售機會</td><td>' + bean.name + '</td><td>' + bean.stage + '</td></tr>');
                             }
@@ -186,7 +185,7 @@
                                 url: '${pageContext.request.contextPath}/PotentialItem/${user.name}', //接受請求的Servlet地址
                                 type: 'POST',
                                 success: function (customer) {
-                                    $('.workitem').html("工作項目<span class='badge bg-primary'>" + (json.length + market.length + customer.length) + "</span>");
+                                    $('.workitem').html("${user.name}<span class='badge bg-primary' >" + (json.length + market.length + customer.length) + "</span>");
                                     for (var bean of customer) {
                                         $('.workTable').append('<tr class="www workTR" onclick="goPotential(' + bean.customerid + ')"><td>潛在顧客</td><td>' + bean.name + '</td><td>' + bean.status + '</td></tr>');
                                     }

@@ -77,7 +77,6 @@ body {
 /* 左邊側邊欄 */
 
 .headtop {
-    min-height: 80px;
     position: sticky;
     top: 0px;
     z-index: 5;

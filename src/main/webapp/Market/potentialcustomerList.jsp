@@ -121,7 +121,7 @@
                                             <div class="accordion-body">
                                                 <div class="input-group mb-3">
                                                     <input type="text" class="form-control" v-model="content"
-                                                        placeholder="未完成" name="name">
+                                                        name="name">
                                                     <button class="btn btn-outline-secondary" type="submit"
                                                         v-on:click="selectcontent">搜索</button>
                                                 </div>
@@ -348,10 +348,11 @@
 
 
                         <!-- <%-- 抬頭按鈕--%> -->
+
                         <div class="row">
                             <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                                 <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off"
-                                    onclick="javascript:location.href='${pageContext.request.contextPath}/Market/potentialcustomer.jsp'">
+                                    onclick="javascript: window.open('${pageContext.request.contextPath}/Market/potentialcustomer.jsp')">
                                 <label class="btn btn-outline-primary state1" for="btncheck1"><i
                                         class="bi bi-clipboard-check"></i> 新增</label>
 
@@ -382,11 +383,9 @@
                         </div>
 
 
-
-
-
                         <transition-group name="slide-fade" appear>
                             <!-- <%-- 中間主體--%> -->
+
                             <table class="Table table-striped orderTable" v-if="show" key="1">
                                 <tr>
                                     <td><input type="checkbox" id="activity"></td>
@@ -405,7 +404,9 @@
                                 </tr>
                                 <tr class="item" v-for="(s, index) in list" :key="s.customerid">
                                     <td><input type="checkbox" :value="s.customerid" name="mak" @change="clickmak"></td>
-                                    <td>{{index+1}}</td>
+                                    <td>{{index+1}}   <span
+                                        class="badge rounded-pill bg-danger" v-show="s.bm.length > 0">{{s.bm.length ==
+                                        0?"":s.bm.length}} </td>
                                     <td v-on:click="customer(s.customerid)">
                                         {{s.status}}</td>
                                     <td v-on:click="customer(s.customerid)">
@@ -417,10 +418,6 @@
                                         {{s.company}}</td>
                                     <td v-on:click="customer(s.customerid)">
                                         {{s.name}}</td>
-
-
-
-
                                     <td v-if="s.remark.length <100 " style="width: 500px;cursor: pointer;"
                                         v-on:click="customer(s.customerid)">{{s.remark}}</td>
 
@@ -443,6 +440,7 @@
                                 </tr>
                             </table>
                         </transition-group>
+                        <div>今天筆數 : {{todayTotal}}</div>
                     </div>
                 </div>
             </div>
@@ -544,6 +542,7 @@
             const vm = new Vue({
                 el: '.app',
                 data: {
+                    todayTotal:"",
                     content: "",//
                     currentPage1: 1,//當前分頁
                     MaxPag: 1,//所有筆數
@@ -579,10 +578,14 @@
                 created: function () {
                     if (this.admin != "") {
                         //要求列表
+
+
                         axios
                             .get('${pageContext.request.contextPath}/Potential/CustomerList?pag=' + this.currentPage1)
                             .then(response => (
-                                this.list = response.data
+                                this.list = response.data.list,
+                                this.todayTotal=response.data.todayTotal,
+                                console.log(response.data)
                             ))
                             .catch(function (error) { // 请求失败处理
                                 console.log(error);
@@ -718,19 +721,16 @@
                         var $zx = $("input[name=mak]:checked");
                         $("#activity").prop("checked", $zx.length == $all.length);
                     },
-                    selectcontent: function () {//搜索詢問內容
-
+                    //搜索詢問內容
+                    selectcontent: function () {
                         axios
                             .post('${pageContext.request.contextPath}/Potential/selectcontent', { "selectcontent": this.content })
                             .then(response => (
-                                alert(response.data)
-                             
+                                this.list = response.data
                             ))
                             .catch(function (error) {
                                 console.log(error);
                             });
-
-
                     },
                 },
             })

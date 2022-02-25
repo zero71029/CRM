@@ -171,7 +171,7 @@ public class ClientService {
 			result.add(p);
 		}
 
-		// 用公司搜索
+		// 用統編搜索
 		for (ClientBean p : cr.findByUniformnumberLikeIgnoreCase("%" + name + "%")) {
 			for (ClientBean bean : result) {
 				if (bean.getClientid() == p.getClientid()) {
@@ -181,7 +181,7 @@ public class ClientService {
 			if (boo)
 				result.add(p);
 		}
-		// 用客戶搜索
+		// 用電話搜索
 		for (ClientBean p : cr.findByPhoneLikeIgnoreCase("%" + name + "%")) {
 			for (ClientBean bean : result) {
 				if (bean.getClientid() == p.getClientid()) {

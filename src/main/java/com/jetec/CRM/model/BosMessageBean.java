@@ -10,11 +10,11 @@ import java.util.Date;
 public class BosMessageBean {
 
     @Id
-    private String  bosmessageid;
-    private String  bosid;
-    private String  name;
-    private String  message;
-    private Date createtime;
+    private String  bosmessageid;//id
+    private String  bosid;//上一層外鍵	
+    private String  name;//留言者
+    private String  message;//留言內容
+    private Date createtime;//創建時間
     public BosMessageBean(){
 
     }

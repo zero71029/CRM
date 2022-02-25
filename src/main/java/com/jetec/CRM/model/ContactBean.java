@@ -261,11 +261,29 @@ public class ContactBean {
 
     @Override
     public String toString() {
-        return "ContactBean [contactid=" + contactid + ", clientid=" + clientid + ", name=" + name + ", company="
-                + company + ", jobtitle=" + jobtitle + ", email=" + email + ", phone=" + phone + ", moblie=" + moblie
-                + ", address=" + address + ", department=" + department + ", director=" + director + ", fax=" + fax
-                + ", remark=" + remark + ", user=" + user + ", contacttime=" + contacttime + "]";
+        return "ContactBean{" +
+                "contactid=" + contactid +
+                ", clientid=" + clientid +
+                ", name='" + name + '\'' +
+                ", company='" + company + '\'' +
+                ", jobtitle='" + jobtitle + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", extension='" + extension + '\'' +
+                ", moblie='" + moblie + '\'' +
+                ", city='" + city + '\'' +
+                ", town='" + town + '\'' +
+                ", postal='" + postal + '\'' +
+                ", address='" + address + '\'' +
+                ", department='" + department + '\'' +
+                ", director='" + director + '\'' +
+                ", fax='" + fax + '\'' +
+                ", remark='" + remark + '\'' +
+                ", user='" + user + '\'' +
+                ", contacttime='" + contacttime + '\'' +
+                ", line='" + line + '\'' +
+                ", client=" + client +
+                ", work=" + work +
+                '}';
     }
-
-
 }
