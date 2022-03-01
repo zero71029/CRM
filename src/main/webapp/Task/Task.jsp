@@ -79,7 +79,7 @@
                                                 <td>日期</td>
                                                 <td style="width:220px ;">
                                                     <el-date-picker v-model="bean.evaluatedate" type="date" style="font-size: 20px;"
-                                                        placeholder="选择日期" name="evaluatedate">
+                                                        placeholder="選擇日期" name="evaluatedate">
                                                     </el-date-picker>
                                                 </td>
                                             </tr>

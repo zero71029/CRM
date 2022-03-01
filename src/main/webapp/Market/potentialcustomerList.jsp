@@ -36,7 +36,7 @@
                     <jsp:include page="/Sidebar.jsp"></jsp:include>
                     <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
 
-                    <div class="col-md-10 app" v-cloak>
+                    <div class="col-md-11 app" v-cloak>
                         <!-- 滑塊 -->
                         <div class="offcanvas offcanvas-end" tabindex="0" id="offcanvasRight"
                             aria-labelledby="offcanvasRightLabel" style="width: 450px;">
@@ -381,33 +381,28 @@
                                 :page-size="20" layout="  prev, pager, next" :total="MaxPag">
                             </el-pagination>
                         </div>
-
-
                         <transition-group name="slide-fade" appear>
                             <!-- <%-- 中間主體--%> -->
-
                             <table class="Table table-striped orderTable" v-if="show" key="1">
                                 <tr>
                                     <td><input type="checkbox" id="activity"></td>
                                     <td></td>
-                                    <td style="width: 90px;">狀態</td>
+                                    <td style="width: 90px;" @click="sortState('state')"><a href="#">狀態</a></td>
                                     <td style="width: 90px;">負責人</td>
-                                    <td style="width: 110px;">建立時間</td>
+                                    <td style="width: 130px;">建立時間</td>
                                     <td>客戶名稱</td>
                                     <td>聯絡人</td>
                                     <td>詢問內容</td>
                                     <td>產業</td>
                                     <!-- 詢問產品種類		客戶來源	備註 -->
                                     <td @click="sortItem('important')"><a href="#">重要性</a></td>
-
-
                                 </tr>
                                 <tr class="item" v-for="(s, index) in list" :key="s.customerid">
                                     <td><input type="checkbox" :value="s.customerid" name="mak" @change="clickmak"></td>
                                     <td>{{index+1}}   <span
                                         class="badge rounded-pill bg-danger" v-show="s.bm.length > 0">{{s.bm.length ==
                                         0?"":s.bm.length}} </td>
-                                    <td v-on:click="customer(s.customerid)">
+                                    <td v-on:click="customer(s.customerid)" :class="'state'+index">
                                         {{s.status}}</td>
                                     <td v-on:click="customer(s.customerid)">
                                         {{s.user}}</td>
@@ -420,23 +415,17 @@
                                         {{s.name}}</td>
                                     <td v-if="s.remark.length <100 " style="width: 500px;cursor: pointer;"
                                         v-on:click="customer(s.customerid)">{{s.remark}}</td>
-
                                     <td v-on:click="customer(s.customerid)" v-if="s.remark.length >=100 ">
-
                                         <el-popover placement="top-start" width="300" trigger="hover"
                                             :content="s.remark">
                                             <el-button slot="reference" class="text-truncate text-start"
                                                 style="width: 500px; color: #000;" type="text">{{s.remark}}</el-button>
                                         </el-popover>
-
                                     </td>
-
                                     <td v-on:click="customer(s.customerid)">
                                         {{s.industry}}</td>
                                     <td v-on:click="customer(s.customerid)" :class="'important'+index">
                                         {{s.important}}</td>
-
-
                                 </tr>
                             </table>
                         </transition-group>
@@ -444,11 +433,6 @@
                     </div>
                 </div>
             </div>
-
-
-
-
-
         </body>
         <script>
             $(".market").show();
@@ -578,8 +562,6 @@
                 created: function () {
                     if (this.admin != "") {
                         //要求列表
-
-
                         axios
                             .get('${pageContext.request.contextPath}/Potential/CustomerList?pag=' + this.currentPage1)
                             .then(response => (
@@ -731,6 +713,33 @@
                             .catch(function (error) {
                                 console.log(error);
                             });
+                    },//階段 排序  
+                    sortState: function (direct) {                      
+                        var d = $('.' + direct + '0').text().trim();
+                        var oldList = this.list;
+                        const imp = ["未處理", "已聯繫", "提交主管", "不合格","合格"];//先輪替這列表
+                        var nimp = []
+                        this.list = [];//清空
+                        var b = false;
+                       
+                        var i = imp.indexOf(d);//找到輸入第幾個
+                       
+                        //重整列表
+                        for (let index = i + 1; index < 5; index++) {
+                            nimp.push(imp[index])
+                        }                        
+                        for (let index = 0; index <= i; index++) {
+                            nimp.push(imp[index])
+                        }
+
+                        console.log(nimp);
+                        //根據列表抓數據
+                        for (const iterator of nimp) {
+                            for (var o of oldList) {
+                                if (o.status == iterator) this.list.push(o)
+                            }
+                        }
+                    
                     },
                 },
             })

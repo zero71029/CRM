@@ -39,7 +39,7 @@ public interface PotentialCustomerRepository extends JpaRepository<PotentialCust
     List<PotentialCustomerBean> findByTrackbeanTracktimeBetween(String from, String to, Sort sort);
 
 
-    @Query(value = "SELECT  *  from potentialcustomer where status = '未處理' OR status = '已聯繫' ", nativeQuery = true)
+    @Query(value = "SELECT  *  from potentialcustomer where status = '未處理' OR status = '已聯繫' OR status = '提交主管'", nativeQuery = true)
     Page<PotentialCustomerBean> findStatus(Pageable p);
 
 

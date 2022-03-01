@@ -248,9 +248,9 @@
 
                                         <div class="row">
                                             <div class="col-md-1"></div>
-                                            <div class="col-md-1 cellz">公司名<span style="color: red;">*</span></div>
+                                            <div class="col-md-1 cellz">公司名<span style="color: red;">*</span> <el-button type="text" icon="el-icon-search" @click="openClient" style="float:right"></el-button></div>
                                             <div class="col-md-2 FormPadding" style="background-color: #EEE;"
-                                                @click="openClient">
+                                                >
 
                                                 <a href="#" @click.stop.prevent="goClient">{{bean.client}}</a>
 
@@ -352,7 +352,7 @@
                                             <div class="col-md-1 cellz">階段</div>
                                             <div class="col-md-2 FormPadding">
                                                 <select class=" form-select cellzFrom" name="stage"
-                                                    @change="changeStatus" v-model="bean.stage">
+                                                    v-model="bean.stage">
                                                     <option value="尚未處理" selected>
                                                         尚未處理</option>
                                                     <option value="需求確認">
@@ -828,7 +828,7 @@
 
 
                             <div style="margin-top: 15px;">
-                                <el-input placeholder="名稱or統編or電話" class="input-with-select" v-model="inclient">
+                                <el-input placeholder="名稱or統編or電話" class="input-with-select" v-model="inclient" @change="selectclient">
 
                                     <el-button slot="append" icon="el-icon-search" @click="selectclient"></el-button>
                                 </el-input>
@@ -1029,8 +1029,7 @@
                         changeMessageList: [],//修改資訊
                         show: false,
                         loading: true,
-                        outerVisible: false,
-
+                        outerVisible: false,                        
                         typeList: ["尚未分類",
                             "農、林、漁、牧業",
                             "礦業及土石採取業",
@@ -1340,16 +1339,9 @@
                                 console.log(returndata);
                             }
                         });
-                    }, goClient: function () {
+                    }, goClient: function () {//點擊客戶名開新分頁
                         window.open('${pageContext.request.contextPath}/CRM/client/' + this.bean.clientid);
-                    }, changeStatus: function () {
-                        if (this.bean.stage == "提交主管") {
-                            this.bean.user = "玟嫣";
-                        } else {
-                            this.bean.user = '${bean.user}';
-                        }
-
-                    },
+                    }, 
                 },
             })
 

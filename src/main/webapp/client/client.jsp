@@ -10,7 +10,7 @@
             <link rel="preconnect" href="https://fonts.gstatic.com">
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
 
-
+            <title>CRM客戶管理系統</title>
 
         </head>
         <style>
@@ -90,7 +90,7 @@
                     <script src="${pageContext.request.contextPath}/js/jquery.twzipcode.min.js"></script>
                     <!-- 驗證UI -->
                     <script src="${pageContext.request.contextPath}/js/jquery.validate.min.js"></script>
-                    <title>CRM客戶管理系統</title>
+                    
                     <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
                     <div class="col-lg-11 app">
                         <div class="row">

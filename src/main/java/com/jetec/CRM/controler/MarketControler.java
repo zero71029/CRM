@@ -91,10 +91,10 @@ public class MarketControler {
 //銷售機會列表
     @ResponseBody
     @RequestMapping("/MarketList")
-    public Map<String ,Object> Market(@RequestParam("pag") Integer pag) {
+    public Map<String, Object> Market(@RequestParam("pag") Integer pag) {
         System.out.println("*****讀取銷售機會列表****");
         pag--;
-        Map<String ,Object> result = new HashMap();
+        Map<String, Object> result = new HashMap();
         result.put("list", ms.getList(pag));
         result.put("todayTotal", ms.gettodayTotal());
 
@@ -112,17 +112,17 @@ public class MarketControler {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索聯絡人電話
-    @ResponseBody
-    @RequestMapping("/selectContantPhone/{phone}")
-    public List<MarketBean> selectContantPhone(@PathVariable("phone") String phone) {
-        System.out.println("*****搜索聯絡人電話****");
-        phone = phone.trim();
-        phone = phone.replace("-", "");
-        phone = phone.replace("(", "");
-        phone = phone.replace(")", "");
-        phone = phone.replace(" ", "");
-        return ms.selectContantPhone(phone);
-    }
+//    @ResponseBody
+//    @RequestMapping("/selectContantPhone/{phone}")
+//    public List<MarketBean> selectContantPhone(@PathVariable("phone") String phone) {
+//        System.out.println("*****搜索聯絡人電話****");
+//        phone = phone.trim();
+//        phone = phone.replace("-", "");
+//        phone = phone.replace("(", "");
+//        phone = phone.replace(")", "");
+//        phone = phone.replace(" ", "");
+//        return ms.selectContantPhone(phone);
+//    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //銷售機會列表(結案)
@@ -484,74 +484,63 @@ public class MarketControler {
 //搜索銷售機會by日期
     @RequestMapping("/selectDate")
     @ResponseBody
-    public List<MarketBean> selectDate(@RequestParam("from") String from, @RequestParam("to") String to) {
+    public List<MarketBean> selectDate(@RequestParam("from") String startDay, @RequestParam("to") String endDay) {
         System.out.println("搜索銷售機會 日期");
-        to = to + " 24:00";
-        return ms.selectDate(from, to);
+        if (startDay == null ||startDay == "") {
+            startDay = zTools.getTime(new Date());
+            startDay = startDay.substring(0,10);
+            startDay = startDay + " 00:00";
+        }
+        if (endDay == "") {
+            endDay = zTools.getTime(new Date());
+        } else {
+            endDay = endDay + " 24:00";
+        }
 
-//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//		// 設定日期格式
-//		if (from.equals("")) {
-//			from = "2020-11-30";
-//		}
-//		if (to.equals("")) {
-//			to = sdf.format(new Date());
-//		} else {
-//			to = to + " 23:59:59";
-//		}
-//		from = from + " 00:00:00";
-//		// 進行轉換
-//		Date formDate;
-//		Date toDate;
-//		try {
-//			formDate = sdf.parse(from);
-//			toDate = sdf.parse(to);
-//
-//			return ms.selectDate(formDate, toDate);
-//		} catch (ParseException e) {
-//
-//		}
-//		return null;
+        System.out.println(startDay);
+        System.out.println(endDay);
+        return ms.selectDate(startDay, endDay);
+
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//搜索銷售機會by狀態
-    @RequestMapping("/selectStage/{name}")
-    @ResponseBody
-    public List<MarketBean> selectStage(@PathVariable("name") String name) {
-        System.out.println("搜索銷售機會");
-        return ms.selectStage(name);
-    }
+////搜索銷售機會by狀態
+//    @RequestMapping("/selectStage/{name}")
+//    @ResponseBody
+//    public List<MarketBean> selectStage(@PathVariable("name") String name) {
+//        System.out.println("搜索銷售機會");
+//        return ms.selectStage(name);
+//    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//搜索銷售機會by產品類別
-    @RequestMapping("/selectProductType")
-    @ResponseBody
-    public List<MarketBean> selectProductType(@RequestBody List<String> data) {
-        System.out.println("搜索銷售機會by產品類別");
-        System.out.println(data);
-        return ms.selectProductType(data);
-    }
+////搜索銷售機會by產品類別
+//    @RequestMapping("/selectProductType")
+//    @ResponseBody
+//    public List<MarketBean> selectProductType(@RequestBody List<String> data) {
+//        System.out.println("搜索銷售機會by產品類別");
+//        System.out.println(data);
+//        return ms.selectProductType(data);
+//    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索銷售機會by產業
-    @RequestMapping("/selectIndustry")
-    @ResponseBody
-    public List<MarketBean> selectIndustry(@RequestBody List<String> data) {
-        System.out.println("搜索銷售機會by產業");
-        System.out.println(data);
-        return ms.selectIndustry(data);
-    }
+//    @RequestMapping("/selectIndustry")
+//    @ResponseBody
+//    public List<MarketBean> selectIndustry(@RequestBody List<String> data) {
+//        System.out.println("搜索銷售機會by產業");
+//        System.out.println(data);
+//        return ms.selectIndustry(data);
+//    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索銷售機會by來源
-    @RequestMapping("/selectSource")
-    @ResponseBody
-    public List<MarketBean> selectSource(@RequestBody List<String> data) {
-        System.out.println("搜索銷售機會by來源");
-        System.out.println(data);
-        return ms.selectProductType(data);
-    }
+//    @RequestMapping("/selectSource")
+//    @ResponseBody
+//    public List<MarketBean> selectSource(@RequestBody List<String> data) {
+//        System.out.println("搜索銷售機會by來源");
+//        System.out.println(data);
+//        return ms.selectProductType(data);
+//    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索銷售機會by成交機率

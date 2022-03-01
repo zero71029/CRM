@@ -700,8 +700,6 @@
             });
 
             $(function () {
-
-
                 // 地區ui
                 $("#twzipcode").twzipcode({
                     countySel: "${bean.city}",
@@ -872,12 +870,10 @@
                         customer: {},//bean
                         bosMassage: "",//主管留言欄位
                         bosMassageList: [],//組長留言資料
-
-
                         companyName: "${bean.company}",
                         contact: {},
                         company: {},
-                        name: "${bean.name}",
+                        name: "${bean.name}",//聯絡人名稱
                         visible: false,
                         admin: '${user.name}',//使用者名稱
                         important: '${bean.important}',

@@ -87,7 +87,7 @@
                                         {{s.name}}</td>
                                     <td v-on:click="market(s.marketid)">
                                         {{s.client}}</td>
-                                    <td v-on:click="market(s.marketid)">
+                                    <td v-on:click="market(s.marketid)" >
                                         {{s.user}}</td>
 
                                     <td v-on:click="market(s.marketid)">
@@ -114,6 +114,7 @@
                             </div>
                             <div key="3">今天筆數 : {{todayTotal}}</div>
                         </transition-group>
+
                         <!-- 滑塊 -->
                         <div class="offcanvas offcanvas-end " tabindex="0" id="offcanvasRight"
                             aria-labelledby="offcanvasRightLabel" style="width: 450px;">
@@ -124,13 +125,6 @@
                             </div>
                             <div class="offcanvas-body">
                                 <div class="accordion accordion-flush" id="accordionFlushExample">
-                                    <div class="accordion-body">
-                                        <el-date-picker v-model="inDay" type="daterange" align="right" unlink-panels
-                                            range-separator="到" start-placeholder="開始日期" end-placeholder="結束日期"
-                                            :picker-options="pickerOptions" value-format="yyyy-MM-dd">
-                                        </el-date-picker>
-                                        <input type="submit" value="送出" @click="selectList">
-                                    </div>
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingOne">
                                             <button class="accordion-button collapsed" type="button"
@@ -144,42 +138,75 @@
                                         <h2 class="accordion-header" id="flush-headingOne">
                                             <button class="accordion-button collapsed" type="button"
                                                 data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
-                                                aria-controls="flush-collapseOne">
+                                                aria-expanded="false" aria-controls="flush-collapseOne">
                                                 負責人
                                             </button>
                                         </h2>
                                         <div id="flush-collapseOne" class="accordion-collapse collapse"
-                                            aria-labelledby="flush-headingOne">
+                                            aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                                             <div class="accordion-body">
-                                                <el-checkbox-group v-model="inUserList">
+                                                <ul class=" ">
                                                     <c:if test="${not empty admin}">
                                                         <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}"
                                                             items="${admin}" var="s">
                                                             <c:if test="${s.department == '業務' }">
-                                                                <el-checkbox label="${s.name}"></el-checkbox>
+                                                                <li><a v-on:click="aadmin('${s.name}')"
+                                                                        href="#">${s.name}</a>
+                                                                </li>
                                                             </c:if>
                                                         </c:forEach>
+                                                        <hr>
+                                                        <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}"
+                                                            items="${admin}" var="s">
+                                                            <li><a v-on:click="aadmin('${s.name}')"
+                                                                    href="#">${s.name}</a>
+                                                            </li>
+                                                        </c:forEach>
                                                     </c:if>
-                                                </el-checkbox-group>
+                                                </ul>
                                             </div>
                                         </div>
+                                    </div>
+                                    <!-- 建立日期 -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="flush-headingTwo">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo"
+                                                aria-expanded="false" aria-controls="flush-collapseTwo">
+                                                建立日期
+                                            </button>
+                                        </h2>
+                                        <div id="flush-collapseTwo" class="accordion-collapse collapse"
+                                            aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                                            <div class="accordion-body">
+
+                                                <dp @update="selfUpdate"></dp>
+
+
+                                            </div>
+                                        </div>
+
                                     </div>
                                     <!-- 機會名稱-->
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingThree">
                                             <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#flush-collapseThree">
+                                                data-bs-toggle="collapse" data-bs-target="#flush-collapseThree"
+                                                aria-expanded="false" aria-controls="flush-collapseThree">
                                                 機會名稱
                                             </button>
                                         </h2>
                                         <div id="flush-collapseThree" class="accordion-collapse collapse"
-                                            aria-labelledby="flush-headingThree">
+                                            aria-labelledby="flush-headingThree"
+                                            data-bs-parent="#accordionFlushExample">
                                             <div class="accordion-body">
+
                                                 <div class="input-group mb-3">
                                                     <input type="text" class="form-control" placeholder=""
-                                                        v-model="name">
-                                                    <button class="btn btn-outline-secondary"
-                                                        @click="selectList">搜索</button>
+                                                        aria-label="Recipient's username" v-model="name"
+                                                        aria-describedby="button-addon2" name="name">
+                                                    <button class="btn btn-outline-secondary" @click="selectCustomer"
+                                                        id="selectProduct">搜索</button>
                                                 </div>
 
                                             </div>
@@ -189,18 +216,22 @@
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingThree">
                                             <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#i4">
+                                                data-bs-toggle="collapse" data-bs-target="#i4" aria-expanded="false"
+                                                aria-controls="flush-collapseThree">
                                                 客戶
                                             </button>
                                         </h2>
                                         <div id="i4" class="accordion-collapse collapse"
-                                            aria-labelledby="flush-headingThree">
+                                            aria-labelledby="flush-headingThree"
+                                            data-bs-parent="#accordionFlushExample">
                                             <div class="accordion-body">
+
                                                 <div class="input-group mb-3">
                                                     <input type="text" class="form-control" placeholder=""
-                                                        v-model="name" list="company">
-                                                    <button class="btn btn-outline-secondary"
-                                                        @click="selectList">搜索</button>
+                                                        v-model="name" aria-label="Recipient's username"
+                                                        aria-describedby="button-addon2" name="name" list="company">
+                                                    <button class="btn btn-outline-secondary" @click="selectCustomer"
+                                                        id="selectProduct">搜索</button>
                                                     <datalist id="company">
                                                         <c:if test="${not empty client}">
                                                             <c:forEach varStatus="loop" begin="0"
@@ -218,24 +249,32 @@
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingThree">
                                             <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#i5">
+                                                data-bs-toggle="collapse" data-bs-target="#i5" aria-expanded="false"
+                                                aria-controls="flush-collapseThree">
                                                 狀態
                                             </button>
                                         </h2>
                                         <div id="i5" class="accordion-collapse collapse"
-                                            aria-labelledby="flush-headingThree">
+                                            aria-labelledby="flush-headingThree"
+                                            data-bs-parent="#accordionFlushExample">
                                             <div class="accordion-body">
+                                                <ul class=" ">
+                                                    <li><a href="#" @click="selectStatus('尚未處理')">尚未處理</a>
+                                                    </li>
+                                                    <li><a href="#" @click="selectStatus('需求確認')">需求確認</a>
+                                                    </li>
+                                                    <li><a href="#" @click="selectStatus('聯繫中')">聯繫中</a>
+                                                    </li>
+                                                    <li><a href="#" @click="selectStatus('處理中')">處理中</a>
+                                                    </li>
+                                                    <li><a href="#" @click="selectStatus('已報價')">已報價</a>
+                                                    </li>
+                                                    <li><a href="#" @click="selectStatus('成功結案')">成功結案</a>
+                                                    </li>
+                                                    <li><a href="#" @click="selectStatus('失敗結案')">失敗結案</a>
+                                                    </li>
 
-
-                                                <el-checkbox-group v-model="inStateList">
-                                                    <el-checkbox label="尚未處理"></el-checkbox>
-                                                    <el-checkbox label="需求確認"></el-checkbox>
-                                                    <el-checkbox label="聯繫中"></el-checkbox>
-                                                    <el-checkbox label="已報價"></el-checkbox>
-                                                    <el-checkbox label="提交主管"></el-checkbox>
-                                                    <el-checkbox label="成功結案"></el-checkbox>
-                                                    <el-checkbox label="失敗結案"></el-checkbox>
-                                                </el-checkbox-group>
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
@@ -243,19 +282,23 @@
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingThree">
                                             <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#i6">
+                                                data-bs-toggle="collapse" data-bs-target="#i6" aria-expanded="false"
+                                                aria-controls="flush-collapseThree">
                                                 聯絡人
                                             </button>
                                         </h2>
                                         <div id="i6" class="accordion-collapse collapse"
-                                            aria-labelledby="flush-headingThree">
+                                            aria-labelledby="flush-headingThree"
+                                            data-bs-parent="#accordionFlushExample">
                                             <div class="accordion-body">
                                                 <div class="input-group mb-3">
                                                     <input type="text" class="form-control" placeholder=""
-                                                        v-model="inContact">
-                                                    <button class="btn btn-outline-secondary"
-                                                        @click="selectList">搜索</button>
+                                                        aria-label="Recipient's username" v-model="name"
+                                                        aria-describedby="button-addon2" name="name">
+                                                    <button class="btn btn-outline-secondary" @click="selectCustomer"
+                                                        id="selectProduct">搜索</button>
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -263,18 +306,21 @@
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingThree">
                                             <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#i7">
+                                                data-bs-toggle="collapse" data-bs-target="#i7" aria-expanded="false"
+                                                aria-controls="flush-collapseThree">
                                                 聯絡人電話
                                             </button>
                                         </h2>
                                         <div id="i7" class="accordion-collapse collapse"
-                                            aria-labelledby="flush-headingThree">
+                                            aria-labelledby="flush-headingThree"
+                                            data-bs-parent="#accordionFlushExample">
                                             <div class="accordion-body">
                                                 <div class="input-group mb-3">
                                                     <input type="text" class="form-control" placeholder=""
-                                                        v-model="ContantPhone">
+                                                        aria-label="Recipient's username" v-model="ContantPhone"
+                                                        aria-describedby="button-addon2" name="ContantPhone">
                                                     <button class="btn btn-outline-secondary"
-                                                        @click="selectList">搜索</button>
+                                                        @click="selectContantPhone" id="selectProduct">搜索</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -283,12 +329,14 @@
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingThree">
                                             <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#i99">
+                                                data-bs-toggle="collapse" data-bs-target="#i99" aria-expanded="false"
+                                                aria-controls="flush-collapseThree">
                                                 產業
                                             </button>
                                         </h2>
                                         <div id="i99" class="accordion-collapse collapse"
-                                            aria-labelledby="flush-headingThree">
+                                            aria-labelledby="flush-headingThree"
+                                            data-bs-parent="#accordionFlushExample">
                                             <div class="accordion-body">
                                                 <div class="form-check" v-for="(s, index) in ind" :key="index">
                                                     <input class="form-check-input" type="checkbox" :value="s"
@@ -298,20 +346,22 @@
                                                     </label>
                                                 </div>
                                             </div>
-                                            <button class="btn btn-outline-secondary"
-                                                v-on:click="selectList">搜索</button>
+                                            <button class="btn btn-outline-secondary" v-on:click="selectIndustry"
+                                                id="selectProduct">搜索</button>
                                         </div>
                                     </div>
                                     <!--  產品類別-->
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingThree">
                                             <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#i8">
+                                                data-bs-toggle="collapse" data-bs-target="#i8" aria-expanded="false"
+                                                aria-controls="flush-collapseThree">
                                                 產品類別
                                             </button>
                                         </h2>
                                         <div id="i8" class="accordion-collapse collapse"
-                                            aria-labelledby="flush-headingThree">
+                                            aria-labelledby="flush-headingThree"
+                                            data-bs-parent="#accordionFlushExample">
                                             <div class="accordion-body">
                                                 <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll"
                                                     @change="handleCheckAllChange">全选</el-checkbox>
@@ -325,8 +375,10 @@
                                                         </div>
                                                     </div>
                                                 </el-checkbox-group>
-                                                <el-button type="primary" @click="selectList" style="width: 100%;">送出
-                                                </el-button>
+                                                <el-button type="primary" @click="selectProductType"
+                                                    style="width: 100%;">送出</el-button>
+
+
                                             </div>
                                         </div>
                                     </div>
@@ -334,12 +386,14 @@
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingThree">
                                             <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#i9">
+                                                data-bs-toggle="collapse" data-bs-target="#i9" aria-expanded="false"
+                                                aria-controls="flush-collapseThree">
                                                 機會來源
                                             </button>
                                         </h2>
                                         <div id="i9" class="accordion-collapse collapse"
-                                            aria-labelledby="flush-headingThree">
+                                            aria-labelledby="flush-headingThree"
+                                            data-bs-parent="#accordionFlushExample">
                                             <div class="accordion-body">
                                                 <el-checkbox :indeterminate="isSource" v-model="sourceAll"
                                                     @change="CheckSourceAllChange">全选</el-checkbox>
@@ -353,7 +407,7 @@
                                                         </div>
                                                     </div>
                                                 </el-checkbox-group>
-                                                <el-button type="primary" @click="selectList" style="width: 100%;">送出
+                                                <el-button type="primary" @click="selectSource" style="width: 100%;">送出
                                                 </el-button>
 
                                             </div>
@@ -363,33 +417,36 @@
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingThree">
                                             <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#i10">
+                                                data-bs-toggle="collapse" data-bs-target="#i10" aria-expanded="false"
+                                                aria-controls="flush-collapseThree">
                                                 成交機率
                                             </button>
                                         </h2>
                                         <div id="i10" class="accordion-collapse collapse"
-                                            aria-labelledby="flush-headingThree">
+                                            aria-labelledby="flush-headingThree"
+                                            data-bs-parent="#accordionFlushExample">
                                             <div class="accordion-body">
                                                 <el-rate v-model="clinch" :texts="['極差', '失望', '一般', '滿意', '驚喜']"
                                                     style="height: 30px;"
                                                     :colors="{ 2: '#99A9BF', 3:  '#F7BA2A', 4: '#FF9900', 5: 'red' }">
                                                 </el-rate>
-                                                <el-button type="primary" @click="selectList" style="width: 100%;">送出
+                                                <el-button type="primary" @click="selectClinch" style="width: 100%;">送出
                                                 </el-button>
                                             </div>
                                         </div>
                                     </div>
                                     <!--  預算-->
-                                    <!-- <div class="accordion-item">
+                                    <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingThree">
                                             <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#i11" 
-                                                >
+                                                data-bs-toggle="collapse" data-bs-target="#i11" aria-expanded="false"
+                                                aria-controls="flush-collapseThree">
                                                 預算
                                             </button>
                                         </h2>
                                         <div id="i11" class="accordion-collapse collapse"
-                                            aria-labelledby="flush-headingThree">
+                                            aria-labelledby="flush-headingThree"
+                                            data-bs-parent="#accordionFlushExample">
                                             <div class="accordion-body">
                                                 <div class="input-group mb-3">
                                                     <input type="text" class="form-control" v-model="budget1">
@@ -401,7 +458,26 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <!--  XXXXX-->
+                                    <!-- <div class="accordion-item">
+                                        <h2 class="accordion-header" id="flush-headingThree">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#i13" aria-expanded="false"
+                                                aria-controls="flush-collapseThree">
+                                                XXXXX
+                                            </button>
+                                        </h2>
+                                        <div id="i13" class="accordion-collapse collapse"
+                                            aria-labelledby="flush-headingThree"
+                                            data-bs-parent="#accordionFlushExample">
+                                            <div class="accordion-body">
+                                                ke itf how this would look in a real-world application.
+                                            </div>
+                                        </div>
                                     </div> -->
+
                                 </div>
 
                             </div>
@@ -451,6 +527,59 @@
         </script>
         <script>
             //element-ui時間選擇器
+            Vue.component('dp', {
+                template:
+                    '<div class="block"> <el-date-picker v-model="value2"      type="daterange"      align="right"      unlink-panels      range-separator="到"      start-placeholder="開始b日期"      end-placeholder="結束日期" :picker-options="pickerOptions" value-format="yyyy-MM-dd"></el-date-picker> <input type="submit" value="送出" v-on:click="updateText"> </div>',
+                data() {
+                    return {
+                        pickerOptions: {
+                            shortcuts: [
+                                {
+                                    text: '今天',
+                                    onClick(picker) {
+                                        const end = new Date();
+                                        const start = new Date();
+                                        start.setTime(start.getTime() - 3600 * 1000 * 24);
+                                        picker.$emit('pick', [start, end]);
+                                    }
+                                }, {
+                                    text: '最近一周',
+                                    onClick(picker) {
+                                        const end = new Date();
+                                        const start = new Date();
+                                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                                        picker.$emit('pick', [start, end]);
+                                    }
+                                }, {
+                                    text: '最近一個月',
+                                    onClick(picker) {
+                                        const end = new Date();
+                                        const start = new Date();
+                                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                                        picker.$emit('pick', [start, end]);
+                                    }
+                                }, {
+                                    text: '最近三個月',
+                                    onClick(picker) {
+                                        const end = new Date();
+                                        const start = new Date();
+                                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                                        picker.$emit('pick', [start, end]);
+                                    }
+                                }]
+                        },
+                        value1: '',
+                        value2: ''
+                    };
+                },
+                methods: {
+                    updateText() {
+                        //事件名稱 //value =>this.message是指子層的噢！
+                        this.$emit('update', this.value2);
+                    }
+                },
+
+            })
             const cityOptions = ['尚未分類', '大型顯示器', '空氣品質', '流量-AICHI', '流量-RGL', '流量-其他'
                 , '記錄器', '資料收集器-JETEC', '資料收集器-其他'
                 , '溫濕-JETEC', '溫濕-GALLTEC'
@@ -480,7 +609,7 @@
                     name: "",
                     show: false,
                     admin: '${user.name}',
-
+                    source: [],
                     ind: ["尚未分類",
                         "農、林、漁、牧業",
                         "礦業及土石採取業",
@@ -507,61 +636,16 @@
                     //產品類別
                     checkAll: false,
                     isIndeterminate: true,
-                    cities: cityOptions,                    
+                    cities: cityOptions,
+                    checkedCities: ['尚未分類'],
                     //來源
                     sourceAll: false,
                     isSource: false,
                     sources: sourceOptions,
                     checkedSources: [],
-
+                    clinch: null,
                     budget1: "0",
                     budget2: "",
-                    //搜索區資料
-                    oldList:[],
-                    source: [],//產業
-                    inDay: [],
-                    inUserList: [],//負責人
-                    inStateList: [],//狀態
-                    inContact:"",//聯絡人
-                    checkedCities: [],//產品類別
-                    checkedSources: [],//機會來源
-                    clinch: null,//成交率
-                    pickerOptions: {
-                        shortcuts: [
-                            {
-                                text: '今天',
-                                onClick(picker) {
-                                    const end = new Date();
-                                    const start = new Date();
-                                    start.setTime(start.getTime());
-                                    picker.$emit('pick', [start, end]);
-                                }
-                            }, {
-                                text: '最近一周',
-                                onClick(picker) {
-                                    const end = new Date();
-                                    const start = new Date();
-                                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-                                    picker.$emit('pick', [start, end]);
-                                }
-                            }, {
-                                text: '最近一個月',
-                                onClick(picker) {
-                                    const end = new Date();
-                                    const start = new Date();
-                                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-                                    picker.$emit('pick', [start, end]);
-                                }
-                            }, {
-                                text: '最近三個月',
-                                onClick(picker) {
-                                    const end = new Date();
-                                    const start = new Date();
-                                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-                                    picker.$emit('pick', [start, end]);
-                                }
-                            }]
-                    },
                 },
                 created: function () {
                     if (this.admin != "") {
@@ -633,6 +717,9 @@
 
                             },
                         });
+
+
+
                     },
                     closed: function () {
                         axios
@@ -656,114 +743,90 @@
                                 console.log(error);
                             });
                     },
-                    selectList: function () {//搜索
-                        if (this.inDay == "") {//沒輸入日期                  
-                            this.inDay[0] = "";
-                            this.inDay[1] = "";
-                        }else{
-                            this.inDay[0] += " 00:00";
-                        }
-                        $.ajax({
-                            url: '${pageContext.request.contextPath}/Market/selectDate?from=' + this.inDay[0] + "&to=" + this.inDay[1],
-                            type: 'POST',
-                            async: false,//同步請求
-                            cache: false,//不快取頁面
-                            success:(response => (
-                                this.list = response,                                
-                                this.total=this.list.length
-                            )),
-                            error: function (returndata) {
-                                console.log(returndata);
-                            }
-                        });
-                        if(this.inUserList != ""){//負責人
-                            this.oldList = this.list;
-                            this.list = []
-                            for(var u of this.inUserList )
-                                for(var bean of this.oldList){
-                                    if(u == bean.user){
-                                        this.list.push(bean);                                        
-                                    }
-                                }                            
-                        }
-                        if(this.name != ""){//機會民稱 客戶
-                            this.oldList = this.list;
-                            this.list = [];
-                            for(var bean of this.oldList){
-                                if(bean.name.indexOf(this.name) >= 0 || bean.client.indexOf(this.name) >= 0 ){
-                                    this.list.push(bean);
-                                }
-                            }
-                        }
-                        if(this.inStateList != ""){//狀態
-                            this.oldList = this.list;
-                            this.list = [];
-                            for(var u of this.inStateList )
-                                for(var bean of this.oldList){
-                                    if(u == bean.stage){
-                                        this.list.push(bean);                                        
-                                    }
-                                }   
-                        }
-                        if(this.inContact != ""){//聯絡人
-                            this.oldList = this.list;
-                            this.list = [];
-                            for(var bean of this.oldList){
-                                if(bean.contactname.indexOf(this.inContact) >= 0 ){
-                                    this.list.push(bean);
-                                }
-                            }
-                        }
-                        if(this.ContantPhone != ""){//聯絡人電話
-                            this.oldList = this.list;
-                            this.list = [];
-                            for(var bean of this.oldList){
-                                if(bean.contactphone.indexOf(this.ContantPhone) >= 0 ){
-                                    this.list.push(bean);
-                                }
-                            }
-                        }
-                        if(this.source != ""){//產業
-                            this.oldList = this.list;
-                            this.list = [];
-                            for(var u of this.source )
-                                for(var bean of this.oldList){
-                                    if(u == bean.type){
-                                        this.list.push(bean);                                        
-                                    }
-                                }   
-                        }
-                        if(this.checkedCities != ""){//產品類別
-                            this.oldList = this.list;
-                            this.list = [];
-                            for(var u of this.checkedCities )
-                                for(var bean of this.oldList){
-                                    if(u == bean.producttype){
-                                        this.list.push(bean);                                        
-                                    }
-                                }   
-                        }
-                        if(this.checkedSources != ""){//機會來源
-                            this.oldList = this.list;
-                            this.list = [];
-                            for(var u of this.checkedSources )
-                                for(var bean of this.oldList){
-                                    if(u == bean.source){
-                                        this.list.push(bean);                                        
-                                    }
-                                }   
-                        }
-                        if(this.clinch != ""){//成交機率
-                            this.oldList = this.list;
-                            this.list = [];
-                            for(var bean of this.oldList){
-                                if(bean.clinch== this.clinch){
-                                    this.list.push(bean);
-                                }
-                            }
-                        }
-                        this.inDay =[];
-                        console.log(this.list.length,"this.list.length");
+                    selfUpdate(val) {//搜索建立日期
+                        console.log(val)
+                        axios
+                            .get('${pageContext.request.contextPath}/Market/selectDate?from=' + val[0] + "&to=" + val[1])
+                            .then(response => (
+                                this.list = response.data,
+                                console.log(this.list)
+                            ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    },
+                    selectCustomer: function () {//搜索客戶
+                        axios
+                            .get('${pageContext.request.contextPath}/Market/selectMarket/' + this.name)
+                            .then(response => (
+                                this.list = response.data
+                            ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    },
+                    selectStatus: function (status) {//搜索狀態
+                        axios
+                            .get('${pageContext.request.contextPath}/Market/selectStage/' + status)
+                            .then(response => (
+                                this.list = response.data
+                            ))
+                            .catch(function (error) { // 请求失败处理
+                                console.log(error);
+                            });
+                    },
+                    selectContantPhone: function () {
+                        axios
+                            .get('${pageContext.request.contextPath}/Market/selectContantPhone/' + this.ContantPhone)
+                            .then(response => (
+                                this.list = response.data
+                            ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    },
+                    //select產品類別
+                    selectProductType: function () {
+                        axios
+                            .post('${pageContext.request.contextPath}/Market/selectProductType', this.checkedCities)
+                            .then(response => (
+                                this.list = response.data
+                            ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    },
+                    //select來源
+                    selectSource: function () {
+                        axios
+                            .post('${pageContext.request.contextPath}/Market/selectSource', this.source)
+                            .then(response => (
+                                this.list = response.data
+                            ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    },
+                    //select產業
+                    selectIndustry: function () {
+                        axios
+                            .post('${pageContext.request.contextPath}/Market/selectIndustry', this.source)
+                            .then(response => (
+                                this.list = response.data
+                            ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    },
+                    selectClinch: function () {
+                        axios
+                            .post('${pageContext.request.contextPath}/Market/selectClinch/' + this.clinch)
+                            .then(response => (
+                                this.list = response.data
+                            ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
                     },
                     selectBudget: function () {//select預算                        
                         axios
@@ -800,17 +863,17 @@
                     sortState: function (direct) {
                         var d = $('.' + direct + '0').text().trim();
                         var oldList = this.list;
-                        const imp = ["尚未處理", "需求確認", "聯繫中", "處理中", "已報價", "提交主管", "失敗結案", "成功結案"];//先輪替這列表
+                        const imp = ["尚未處理", "需求確認", "聯繫中", "處理中","已報價","提交主管","失敗結案","成功結案"];//先輪替這列表
                         var nimp = []
                         this.list = [];//清空
                         var b = false;
-                        console.log(d, "d");
+                        console.log(d,"d");
                         var i = imp.indexOf(d);//找到輸入第幾個
-                        console.log(i, "i");
+                        console.log(i,"i");
                         //重整列表
                         for (let index = i + 1; index < 8; index++) {
                             nimp.push(imp[index])
-                        }
+                        }                        
                         for (let index = 0; index <= i; index++) {
                             nimp.push(imp[index])
                         }
@@ -824,6 +887,8 @@
                         }
                     },
                     changeActivity: function () {// 勾選全部
+                        console.log("dddddddd");
+                        console.log($("#activity").prop("checked"));
                         var $all = $("input[name=mak]");
                         $all.prop("checked", $("#activity").prop("checked"));
                     },
@@ -835,7 +900,19 @@
                 },
             })
         </script>
-
+        <script>
+            // 勾選單項            
+            $("input[type=checkbox][name=mak]").change(function () {
+                var $all = $("input[name=mak]");
+                var $zx = $("input[name=mak]:checked");
+                $("#activity").prop("checked", $zx.length == $all.length);
+            });
+            // 勾選全部
+            $("#activity").change(function () {
+                var $all = $("input[name=mak]");
+                $all.prop("checked", this.checked);
+            });
+        </script>
         <style>
             .el-date-editor--daterange.el-input__inner {
                 width: auto;

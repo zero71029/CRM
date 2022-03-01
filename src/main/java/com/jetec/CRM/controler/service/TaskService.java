@@ -42,12 +42,13 @@ public class TaskService {
     }
     //讀取任務列表
     public List<EvaluateTaskBean> getTaskList(String id) {
+
         return  etr.findByEvaluateid(id);
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //任務列表
     public Map<String, Object> getList(Integer pag) {
-        Pageable p =   PageRequest.of(pag, 20, Sort.Direction.DESC,"createtime");
+        Pageable p =   PageRequest.of(pag, 20, Sort.Direction.DESC,"evaluatedate");
         Page<EvaluateBean> page =  er.findAll(p);
         Map<String, Object> map = new HashMap<>();
         map.put("list", page.getContent());
@@ -57,7 +58,7 @@ public class TaskService {
     }
 
     public Map<String, Object> getList(Integer pag, String name) {
-        Pageable p =   PageRequest.of(pag, 20,Sort.Direction.DESC,"createtime");
+        Pageable p =   PageRequest.of(pag, 20,Sort.Direction.DESC,"evaluatedate");
         Page<EvaluateBean> page = er.findByName(name,p);
         Map<String, Object> map = new HashMap<>();
         map.put("list", page.getContent());
