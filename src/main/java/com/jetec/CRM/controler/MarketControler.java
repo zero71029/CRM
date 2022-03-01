@@ -490,6 +490,8 @@ public class MarketControler {
             startDay = zTools.getTime(new Date());
             startDay = startDay.substring(0,10);
             startDay = startDay + " 00:00";
+        }else {
+            startDay = startDay + " 00:00";
         }
         if (endDay == "") {
             endDay = zTools.getTime(new Date());

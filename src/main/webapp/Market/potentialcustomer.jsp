@@ -222,7 +222,7 @@
                                         <div class="col-md-2 cellz">產業</div>
                                         <div class="col-md-3 cellz FormPadding">
                                             <select name="industry" class=" form-select cellFrom"
-                                                v-model.trim="customer.industry" v-model.trim="customer.industry">
+                                                v-model="customer.industry" >
                                                 <option v-for="(item, index) in industryList" :key="index">{{item}}
                                                 </option>
                                             </select>
@@ -905,7 +905,7 @@
                 },
                 created() {
                     if (this.important == "") this.important = '低';
-                    //潛在客戶初始化
+                    //潛在客戶初始化                    
                     axios
                         .get('${pageContext.request.contextPath}/Potential/init/${bean.customerid}')
                         .then(response => (
@@ -920,6 +920,10 @@
                             console.log("沒有取得資訊");
                         });
                     $('.bosMessagediv').hide();
+                    if (this.customer.industry == undefined || this.customer.industry == "") {
+                        this.customer.industry = '尚未分類';
+                        this.oldCustomer.industry = '未處理';
+                    }
 
                     if (this.customer.status == undefined || this.customer.status == "") {
                         this.customer.status = '未處理';

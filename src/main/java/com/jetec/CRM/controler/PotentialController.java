@@ -1,32 +1,20 @@
 package com.jetec.CRM.controler;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpSession;
-
+import com.jetec.CRM.Tool.ZeroTools;
+import com.jetec.CRM.controler.service.ClientService;
 import com.jetec.CRM.controler.service.DirectorService;
+import com.jetec.CRM.controler.service.PotentialCustomerService;
 import com.jetec.CRM.model.*;
+import com.jetec.CRM.repository.TrackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import com.jetec.CRM.controler.service.ClientService;
-import com.jetec.CRM.controler.service.PotentialCustomerService;
-import com.jetec.CRM.repository.TrackRepository;
+import javax.servlet.http.HttpSession;
+import java.util.*;
 
 @Controller
 @ResponseBody
@@ -42,6 +30,8 @@ public class PotentialController {
 	ClientService CS;
 	@Autowired
 	DirectorService DS;
+	@Autowired
+	ZeroTools zTools;
 
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -98,10 +88,23 @@ public class PotentialController {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索日期
 	@RequestMapping("/selectDate")
-	public List<PotentialCustomerBean> selectDate(@RequestParam("from") String from, @RequestParam("to") String to) {
+	public List<PotentialCustomerBean> selectDate(@RequestParam("startDay") String startDay, @RequestParam("endDay") String endDay) {
 		System.out.println("搜索潛在客戶 日期");
-		to  = to +" 24:00";
-		return PCS.selectDate(from, to);
+		if (startDay == null ||startDay == "") {
+			startDay = zTools.getTime(new Date());
+			startDay = startDay.substring(0,10);
+			startDay = startDay + " 00:00";
+		}else {
+			startDay = startDay + " 00:00";
+		}
+		if (endDay == "") {
+			endDay = zTools.getTime(new Date());
+		} else {
+			endDay = endDay + " 24:00";
+		}
+		System.out.println(startDay);
+		System.out.println(endDay);
+		return PCS.selectDate(startDay, endDay);
 		
 		
 		

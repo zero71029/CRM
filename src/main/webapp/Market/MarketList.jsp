@@ -144,12 +144,12 @@
                                         <h2 class="accordion-header" id="flush-headingOne">
                                             <button class="accordion-button collapsed" type="button"
                                                 data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
-                                                aria-controls="flush-collapseOne">
+                                                >
                                                 負責人
                                             </button>
                                         </h2>
                                         <div id="flush-collapseOne" class="accordion-collapse collapse"
-                                            aria-labelledby="flush-headingOne">
+                                        >
                                             <div class="accordion-body">
                                                 <el-checkbox-group v-model="inUserList">
                                                     <c:if test="${not empty admin}">
@@ -660,8 +660,6 @@
                         if (this.inDay == "") {//沒輸入日期                  
                             this.inDay[0] = "";
                             this.inDay[1] = "";
-                        }else{
-                            this.inDay[0] += " 00:00";
                         }
                         $.ajax({
                             url: '${pageContext.request.contextPath}/Market/selectDate?from=' + this.inDay[0] + "&to=" + this.inDay[1],
@@ -762,6 +760,7 @@
                                 }
                             }
                         }
+                        this.total=20;
                         // this.inDay =[];
                         console.log(this.list.length,"this.list.length");
                     },
