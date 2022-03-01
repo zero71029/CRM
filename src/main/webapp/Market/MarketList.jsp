@@ -762,7 +762,7 @@
                                 }
                             }
                         }
-                        this.inDay =[];
+                        // this.inDay =[];
                         console.log(this.list.length,"this.list.length");
                     },
                     selectBudget: function () {//select預算                        
