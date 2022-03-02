@@ -5,7 +5,7 @@
         <head>
             <meta charset="UTF-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">           
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <link rel="preconnect" href="https://fonts.gstatic.com">
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
             <link rel="stylesheet" href="${pageContext.request.contextPath}\icons\bootstrap-icons.css">
@@ -67,19 +67,20 @@
                                         <table class="table table-bordered">
                                             <tr>
                                                 <td>部門</td>
-                                                <td >
-                                                    <el-input v-model="bean.department" maxlength="20" style="font-size: 20px;"
-                                                        name="department">
+                                                <td>
+                                                    <el-input v-model="bean.department" maxlength="20"
+                                                        style="font-size: 20px;" name="department">
                                                     </el-input>
                                                 </td>
                                                 <td>姓名</td>
                                                 <td>
-                                                    <el-input v-model="bean.name" maxlength="20" name="name" style="font-size: 20px;"></el-input>
+                                                    <el-input v-model="bean.name" maxlength="20" name="name"
+                                                        style="font-size: 20px;"></el-input>
                                                 </td>
                                                 <td>日期</td>
                                                 <td style="width:220px ;">
-                                                    <el-date-picker v-model="bean.evaluatedate" type="date" style="font-size: 20px;"
-                                                        placeholder="選擇日期" name="evaluatedate">
+                                                    <el-date-picker v-model="bean.evaluatedate" type="date"
+                                                        style="font-size: 20px;" placeholder="選擇日期" name="evaluatedate">
                                                     </el-date-picker>
                                                 </td>
                                             </tr>
@@ -98,21 +99,21 @@
                                                     <el-result icon="success" style="padding: 0px;"
                                                         v-show="s.finish == 'on'"></el-result>
                                                     <!-- 完成 -->
-                                                    <input class="form-check-input" type="hidden" v-model.trim="s.finish"
-                                                        :name="'task['+index+'].finish'">
+                                                    <input class="form-check-input" type="hidden"
+                                                        v-model.trim="s.finish" :name="'task['+index+'].finish'">
                                                 </td>
                                                 <td colspan="3" style="height: auto;">
                                                     <!--任務內容  -->
 
-                                                    <textarea style="overflow:hidden; width: 100%;" v-model.trim="s.content"  wrap="hard"
-                                                        class="contentTextarea" @input="intextarea(index)" rows="3"
-                                                        :id="'intextarea'+index"
+                                                    <textarea style="overflow:hidden; width: 100%;"
+                                                        v-model.trim="s.content" wrap="hard" class="contentTextarea"
+                                                        @input="intextarea(index)" rows="3" :id="'intextarea'+index"
                                                         :name="'task['+index+'].content'" maxlength="200"></textarea>
                                                 </td>
                                                 <td>
                                                     <!--  重要度-->
-                                                    <select class="form-select" :name="'task['+index+'].important'" style="font-size: 24px;"
-                                                        v-model="s.important">
+                                                    <select class="form-select" :name="'task['+index+'].important'"
+                                                        style="font-size: 24px;" v-model="s.important">
                                                         <option value="H">H
                                                         </option>
                                                         <option value="M">M
@@ -136,7 +137,8 @@
                                                 <td colspan="6"> 備註:
                                                     <div class="">
                                                         <el-input type="textarea" placeholder="本人專填" maxlength="500"
-                                                            show-word-limit v-model="bean.remark" name="remark">
+                                                            show-word-limit v-model="bean.remark" name="remark" @input="changeTextarea('remark')"
+                                                            id="remark" >
                                                         </el-input>
                                                     </div>
                                                 </td>
@@ -146,7 +148,8 @@
                                                     主管考評 (A,B,C,F): <br>
                                                     <div class="row">
                                                         <div class="col-lg-1">
-                                                            <select class="form-select"   v-model="bean.score" name="score" style="font-size: 30px;">
+                                                            <select class="form-select" v-model="bean.score"
+                                                                name="score" style="font-size: 30px;">
                                                                 <option value="A">A</option>
                                                                 <option value="B">B</option>
                                                                 <option value="C">C</option>
@@ -157,7 +160,8 @@
                                                         </div>
                                                         <div class="col-lg-11">
                                                             <el-input type="textarea" placeholder="主管專填:評語"
-                                                                maxlength="200" show-word-limit
+                                                                maxlength="200" show-word-limit id="assessment" @input="changeTextarea('assessment')"
+                                                               
                                                                 v-model="bean.assessment" name="assessment">
                                                             </el-input>
                                                         </div>
@@ -186,7 +190,9 @@
 
                                 </el-form>
                             </div>
-                            <div class="col-lg-2"><el-button  class="el-icon-printer" @click="printTable"></el-button></i></div>
+                            <div class="col-lg-2">
+                                <el-button class="el-icon-printer" @click="printTable"></el-button></i>
+                            </div>
                         </div>
                         <!-- 中間主體結束 -->
                     </div>
@@ -283,13 +289,16 @@
                     intextarea: function (index) {//調整textarea高度
                         console.log(index)
                         var textarea = document.querySelector('#intextarea' + index);
-                        // console.log(textarea.scrollHeight);
-
                         textarea.style.height = textarea.scrollHeight + 'px';
                     },
-                    printTable:function(){
-                        location.href="${pageContext.request.contextPath}/task/print/${bean.evaluateid}";
-                    }
+                    printTable: function () {
+                        location.href = "${pageContext.request.contextPath}/task/print/${bean.evaluateid}";
+                    },
+                    changeTextarea:function(id){                      
+                        var textarea = document.getElementById(id);
+                        textarea.style.height = (textarea.scrollHeight+10) + 'px';
+                    },
+
                 },
                 // mounted() {
                 //     for (var i = 0; i < this.taskList.length; i++) {
@@ -299,6 +308,7 @@
                 //     }
                 // },
             })
+
 
         </script>
         <style>

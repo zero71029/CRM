@@ -1,6 +1,8 @@
 package com.jetec.CRM.controler;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,7 +27,16 @@ import com.jetec.CRM.model.WorkBean;
 public class CustomerControler {
     @Autowired
     ClientService cs;
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//客戶列表初始化
+    @RequestMapping("/init")
+    @ResponseBody
+    public Map<String, Object> init(@RequestParam("pag") Integer pag) {
+        System.out.println("*****客戶列表初始化*****");
+        pag--;
+        return cs.init(pag);
 
+    }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //儲存客戶
     @RequestMapping("/SaveClient")
@@ -41,12 +52,12 @@ public class CustomerControler {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取客戶列表
-    @RequestMapping("/ClientList")
-    public String clientList(Model model) {
-        System.out.println("*****讀取客戶列表*****");
-        model.addAttribute("list", cs.getList());
-        return "/client/clientList";
-    }
+//    @RequestMapping("/ClientList")
+//    public String clientList(Model model) {
+//        System.out.println("*****讀取客戶列表*****");
+//        model.addAttribute("list", cs.getList());
+//        return "/client/clientList";
+//    }
 
     @RequestMapping("/getclientList")
     @ResponseBody

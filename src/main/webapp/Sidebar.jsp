@@ -56,11 +56,11 @@
                     onclick="javascript:location.href='${pageContext.request.contextPath}/Market/workList.jsp'">工作項目</button>
                 <!-- <button class="market"
                     onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/QuotationList'">報價單</button> -->
-                <button class="list-group-item" onclick="client()">
+                <button class="list-group-item" onclick="client()" >
                     客戶管理
                 </button>
                 <button class="client clientbar"
-                    onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/ClientList'">客戶</button>
+                    onclick="javascript:location.href='${pageContext.request.contextPath}/client/clientList.jsp'">客戶</button>
                 <button class="client contactbar"
                     onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/ContactList'">聯絡人</button>
                 <!-- <button class="client">流失客戶</button> -->
@@ -168,7 +168,7 @@
                         $('.workitem').empty()
                     } else {
                         for (var bean of json) {
-                            $('.workTable').append('<tr class="www workTR" onclick="gowork(' + bean.workid + ')"><td>工作項目</td><td>' + bean.name + '</td><td>' + bean.state + '</td></tr>');
+                            $('.workTable').append('<tr class="www workTR" onclick="gowork(`' + bean.workid + '`)"><td>工作項目</td><td>' + bean.name + '</td><td>' + bean.state + '</td></tr>');
                         }
                     }
                     //取得銷售機會
@@ -178,7 +178,7 @@
                         success: function (market) {
                             $('.workitem').html("${user.name}<span class='badge bg-primary'>" + (json.length + market.length) + "</span>");
                             for (var bean of market) {
-                                $('.workTable').append('<tr class="www workTR" onclick="gomarket(' + bean.marketid + ')"><td>銷售機會</td><td>' + bean.name + '</td><td>' + bean.stage + '</td></tr>');
+                                $('.workTable').append('<tr class="www workTR" onclick="gomarket(`' + bean.marketid + '`)"><td>銷售機會</td><td>' + bean.name + '</td><td>' + bean.stage + '</td></tr>');
                             }
                             //取得潛在顧客
                             $.ajax({
@@ -187,7 +187,7 @@
                                 success: function (customer) {
                                     $('.workitem').html("${user.name}<span class='badge bg-primary' >" + (json.length + market.length + customer.length) + "</span>");
                                     for (var bean of customer) {
-                                        $('.workTable').append('<tr class="www workTR" onclick="goPotential(' + bean.customerid + ')"><td>潛在顧客</td><td>' + bean.name + '</td><td>' + bean.status + '</td></tr>');
+                                        $('.workTable').append('<tr class="www workTR" onclick="goPotential(`' + bean.customerid + '`)"><td>潛在顧客</td><td>' + bean.name + '</td><td>' + bean.status + '</td></tr>');
                                     }
                                     $('.workTable').append('<br><br>')
                                 }

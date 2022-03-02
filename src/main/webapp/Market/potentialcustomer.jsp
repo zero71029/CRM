@@ -339,7 +339,7 @@
                                         <div class="col-md-8 cellz FormPadding">
 
                                             <el-input type="textarea" v-model="customer.remark" rows="5" id="remark"
-                                                maxlength="500" show-word-limit name="remark">
+                                                maxlength="500" show-word-limit name="remark"  @input="changeTextarea('remark')">
 
 
                                                 <!-- <textarea class="form-control " id="validationTextarea" name="remark"
@@ -424,7 +424,7 @@
                                     <div class="row">
                                         <div class="col-md-3 cellz">狀態</div>
                                         <div class="col-md-7 cellz FormPadding">
-                                            <select name="status" class="form-select cellFrom" @change="changeStatus"
+                                            <select name="status" class="form-select cellFrom" 
                                                 v-model.trim="customer.status" aria-label="Default select example">
                                                 <option value="未處理">未處理
                                                 </option>
@@ -499,11 +499,11 @@
                                 <div class="row">
                                     <div class="col-md-1"></div>
                                     <div class="col-md-4 FormPadding">
-                                        <textarea class="form-control" name="trackdescribe" rows="2" maxlength="950"
-                                            required></textarea>
+                                        <textarea class="form-control" name="trackdescribe" rows="2" maxlength="950" @input="changeTextarea('trackdescribe')"
+                                             id="trackdescribe"></textarea>
                                     </div>
                                     <div class="col-md-4 FormPadding">
-                                        <textarea class="form-control" name="result" rows="2"
+                                        <textarea class="form-control" name="result" rows="2" @input="changeTextarea('result')" id="result"
                                             maxlength="950"></textarea>
                                     </div>
                                     <div class="col-md-1" style="padding: 0%;">
@@ -529,10 +529,10 @@
                                         <div class="row">
                                             <div class="col-md-4" style="position: relative; word-wrap:break-word;">
                                                 </el-input>
-                                                <el-input type="textarea" v-model="s.trackdescribe" class="aaaa">
+                                                <el-input type="textarea" v-model="s.trackdescribe" class="aaaa" :id="'Tracktrackdescribe'+index" @input="changeTextarea('Tracktrackdescribe'+index)">
                                             </div>
                                             <div class="col-md-4" style="position: relative; word-wrap:break-word;">
-                                                <el-input type="textarea" v-model="s.result" class="aaaa">
+                                                <el-input type="textarea" v-model="s.result" class="aaaa" :id="'Trackresult'+index" @input="changeTextarea('Trackresult'+index)">
 
                                             </div>
                                             <div class="col-md-3" style="color: #569b92;">
@@ -1157,16 +1157,16 @@
                                 message: '已取消删除'
                             });
                         });
-                    },changeStatus:function(){
-                        if(this.customer.status == "提交主管"){
-                            this.customer.user = "玟嫣";                            
-                        }else{
-                            this.customer.user = '${bean.user}';
-                        }
-                        
+                    },
+                    //改變textarea高度
+                    changeTextarea:function(id){                      
+                        var textarea = document.getElementById(id);
+                        var h = textarea.scrollHeight+10;
+                        textarea.style.height = h + 'px';
                     },
                 },
             })
+            // textarea.style.height = textarea.scrollHeight + 'px';
         </script>
         <style>
             .el-message-box {

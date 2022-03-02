@@ -132,7 +132,9 @@ public class MarketService {
             if (boo)
                 result.add(p);
         }
-
+        for (MarketBean bean : result){
+            bean.setTrackbean(tr.findByCustomerid(bean.getCustomerid()));
+        }
         return result;
     }
 
@@ -196,6 +198,10 @@ public class MarketService {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 搜索銷售機會by日期
     public List<MarketBean> selectDate(String startTime, String endTime) {
+        List<MarketBean> result = mr.findAaa(startTime, endTime);
+        for (MarketBean bean :result){
+            bean.setTrackbean(tr.findByCustomerid(bean.getCustomerid()));
+        }
         return mr.findAaa(startTime, endTime);
 
     }
@@ -267,8 +273,6 @@ public class MarketService {
     public Integer gettodayTotal() {
         SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
         String ddd = sdf.format(new Date());
-
         return mr.gettodayTotal(ddd+" 00:00",ddd+" 23:59");
-
     }
 }

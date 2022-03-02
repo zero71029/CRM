@@ -248,9 +248,11 @@
 
                                         <div class="row">
                                             <div class="col-md-1"></div>
-                                            <div class="col-md-1 cellz">公司名<span style="color: red;">*</span> <el-button type="text" icon="el-icon-search" @click="openClient" style="float:right"></el-button></div>
-                                            <div class="col-md-2 FormPadding" style="background-color: #EEE;"
-                                                >
+                                            <div class="col-md-1 cellz">公司名<span style="color: red;">*</span>
+                                                <el-button type="text" icon="el-icon-search" @click="openClient"
+                                                    style="float:right"></el-button>
+                                            </div>
+                                            <div class="col-md-2 FormPadding" style="background-color: #EEE;">
 
                                                 <a href="#" @click.stop.prevent="goClient">{{bean.client}}</a>
 
@@ -643,7 +645,7 @@
                                         <div class="col-md-1 cellz">描述<span style="color: red;">*</span></div>
                                         <div class="col-md-5 FormPadding">
                                             <el-input type="textarea" v-model="bean.message" rows="5" id="message"
-                                                maxlength="950" show-word-limit name="message">
+                                                maxlength="950" show-word-limit name="message"   @input="changeTextarea('message')">
                                         </div><br><br>
                                     </div>
                                     <p>&nbsp;</p>
@@ -688,11 +690,11 @@
                             <div class="row">
                                 <div class="col-md-1"></div>
                                 <div class="col-md-4 FormPadding">
-                                    <textarea class="form-control" name="trackdescribe" rows="2"
+                                    <textarea class="form-control" name="trackdescribe" rows="2" @input="changeTextarea('trackdescribe')" id="trackdescribe"
                                         maxlength="950"></textarea>
                                 </div>
                                 <div class="col-md-4 FormPadding">
-                                    <textarea class="form-control" name="result" rows="2" maxlength="950"></textarea>
+                                    <textarea class="form-control" name="result" rows="2" maxlength="950" @input="changeTextarea('result')" id="result"></textarea>
                                 </div>
                                 <div class="col-md-1" style="padding: 0%;">
                                     <button style="width: 100%; background-color: #569b92;" type="button"
@@ -716,10 +718,10 @@
                                     <div class="row">
                                         <div class="col-md-4" style="position: relative; word-wrap:break-word;">
                                             </el-input>
-                                            <el-input type="textarea" v-model="s.trackdescribe" class="aaaa">
+                                            <el-input type="textarea" v-model="s.trackdescribe" class="aaaa"  :id="'Tracktrackdescribe'+index" @input="changeTextarea('Tracktrackdescribe'+index)">
                                         </div>
                                         <div class="col-md-4" style="position: relative; word-wrap:break-word;">
-                                            <el-input type="textarea" v-model="s.result" class="aaaa">
+                                            <el-input type="textarea" v-model="s.result" class="aaaa" :id="'Trackresult'+index" @input="changeTextarea('Trackresult'+index)">
 
                                         </div>
                                         <div class="col-md-3" style="color: #569b92;">
@@ -828,7 +830,8 @@
 
 
                             <div style="margin-top: 15px;">
-                                <el-input placeholder="名稱or統編or電話" class="input-with-select" v-model="inclient" @change="selectclient">
+                                <el-input placeholder="名稱or統編or電話" class="input-with-select" v-model="inclient"
+                                    @change="selectclient">
 
                                     <el-button slot="append" icon="el-icon-search" @click="selectclient"></el-button>
                                 </el-input>
@@ -1029,7 +1032,7 @@
                         changeMessageList: [],//修改資訊
                         show: false,
                         loading: true,
-                        outerVisible: false,                        
+                        outerVisible: false,
                         typeList: ["尚未分類",
                             "農、林、漁、牧業",
                             "礦業及土石採取業",
@@ -1342,6 +1345,11 @@
                     }, goClient: function () {//點擊客戶名開新分頁
                         window.open('${pageContext.request.contextPath}/CRM/client/' + this.bean.clientid);
                     }, 
+                    //改變textarea高度
+                    changeTextarea:function(id){                      
+                        var textarea = document.getElementById(id);
+                        textarea.style.height = (textarea.scrollHeight+10) + 'px';
+                    },
                 },
             })
 

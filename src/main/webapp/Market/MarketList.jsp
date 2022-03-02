@@ -81,24 +81,23 @@
                                     <td><input type="checkbox" :value="s.marketid" name="mak" @change="clickmak"></td>
                                     <td>{{index+1}}</td>
                                     <!-- 階段 -->
-                                    <td v-on:click="market(s.marketid)" :class="'state'+index">
+                                    <td v-on:click="market(s.marketid)" :class="'state'+index" style="cursor: pointer;">
                                         {{s.stage}}</td>
-                                    <td v-on:click="market(s.marketid)">
+                                    <td v-on:click="market(s.marketid)" style="cursor: pointer;">
                                         {{s.name}}</td>
-                                    <td v-on:click="market(s.marketid)">
+                                    <td >
                                         {{s.client}}</td>
-                                    <td v-on:click="market(s.marketid)">
+                                    <td v-on:click="market(s.marketid)" style="cursor: pointer;">
                                         {{s.user}}</td>
-
-                                    <td v-on:click="market(s.marketid)">
+                                    <td v-on:click="market(s.marketid)" style="cursor: pointer;">
                                         {{s.clinch}}</td>
-                                    <td v-on:click="market(s.marketid)" :class="'important'+index">
+                                    <td v-on:click="market(s.marketid)" :class="'important'+index" style="cursor: pointer;">
                                         {{s.important}}</td>
                                     <!-- 追蹤次數 -->
-                                    <td v-on:click="market(s.marketid)">
+                                    <td v-on:click="market(s.marketid)" style="cursor: pointer;">
                                         {{s.trackbean.length}}</td>
                                     <!--  建立時間-->
-                                    <td v-on:click="market(s.marketid)">
+                                    <td v-on:click="market(s.marketid)" style="cursor: pointer;">
                                         {{s.aaa}}</td>
                                     <c:if test="${user.position == '主管' || user.position == '系統'}">
                                         <td>{{s.clicks}}</td>
@@ -822,11 +821,12 @@
                             }
                         }
                     },
-                    changeActivity: function () {// 勾選全部
+                    changeActivity: function () {
                         var $all = $("input[name=mak]");
                         $all.prop("checked", $("#activity").prop("checked"));
                     },
-                    clickmak: function () {// 勾選單項    
+                    // 勾選單項   
+                    clickmak: function () {  
                         var $all = $("input[name=mak]");
                         var $zx = $("input[name=mak]:checked");
                         $("#activity").prop("checked", $zx.length == $all.length);

@@ -346,16 +346,16 @@
                                     <td>{{index+1}} <span class="badge rounded-pill bg-danger"
                                             v-show="s.bm.length > 0">{{s.bm.length ==
                                             0?"":s.bm.length}} </td>
-                                    <td v-on:click="customer(s.customerid)" :class="'state'+index">
+                                    <td v-on:click="customer(s.customerid)" style="cursor: pointer;" :class="'state'+index">
                                         {{s.status}}</td>
-                                    <td v-on:click="customer(s.customerid)">
+                                    <td v-on:click="customer(s.customerid)" style="cursor: pointer;">
                                         {{s.user}}</td>
                                     <!-- 建立時間 -->
-                                    <td v-on:click="customer(s.customerid)">
+                                    <td v-on:click="customer(s.customerid)" style="cursor: pointer;">
                                         {{s.aaa}}</td>
-                                    <td v-on:click="customer(s.customerid)">
+                                    <td >
                                         {{s.company}}</td>
-                                    <td v-on:click="customer(s.customerid)">
+                                    <td v-on:click="customer(s.customerid)" style="cursor: pointer;">
                                         {{s.name}}</td>
                                     <td v-if="s.remark.length <100 " style="width: 500px;cursor: pointer;"
                                         v-on:click="customer(s.customerid)">{{s.remark}}</td>
@@ -368,7 +368,7 @@
                                     </td>
                                     <td v-on:click="customer(s.customerid)">
                                         {{s.industry}}</td>
-                                    <td v-on:click="customer(s.customerid)" :class="'important'+index">
+                                    <td v-on:click="customer(s.customerid)" style="cursor: pointer;" :class="'important'+index">
                                         {{s.important}}</td>
                                 </tr>
                             </table>
