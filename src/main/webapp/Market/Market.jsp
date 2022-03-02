@@ -357,12 +357,10 @@
                                                     v-model="bean.stage">
                                                     <option value="尚未處理" selected>
                                                         尚未處理</option>
-                                                    <option value="需求確認">
-                                                        需求確認</option>
-                                                    <option value="聯繫中">
-                                                        聯繫中 </option>
-                                                    <option value="處理中">
-                                                        處理中</option>
+                                                    <option value="內部詢價中">
+                                                        內部詢價中</option>
+                                                    <option value="報價處理中">
+                                                        報價處理中 </option>
                                                     <option value="已報價">
                                                         已報價</option>
                                                     <option value="提交主管">不合格:提交主管</option>
@@ -645,7 +643,8 @@
                                         <div class="col-md-1 cellz">描述<span style="color: red;">*</span></div>
                                         <div class="col-md-5 FormPadding">
                                             <el-input type="textarea" v-model="bean.message" rows="5" id="message"
-                                                maxlength="950" show-word-limit name="message"   @input="changeTextarea('message')">
+                                                maxlength="950" show-word-limit name="message"
+                                                @input="changeTextarea('message')">
                                         </div><br><br>
                                     </div>
                                     <p>&nbsp;</p>
@@ -690,11 +689,13 @@
                             <div class="row">
                                 <div class="col-md-1"></div>
                                 <div class="col-md-4 FormPadding">
-                                    <textarea class="form-control" name="trackdescribe" rows="2" @input="changeTextarea('trackdescribe')" id="trackdescribe"
+                                    <textarea class="form-control" name="trackdescribe" rows="2"
+                                        @input="changeTextarea('trackdescribe')" id="trackdescribe"
                                         maxlength="950"></textarea>
                                 </div>
                                 <div class="col-md-4 FormPadding">
-                                    <textarea class="form-control" name="result" rows="2" maxlength="950" @input="changeTextarea('result')" id="result"></textarea>
+                                    <textarea class="form-control" name="result" rows="2" maxlength="950"
+                                        @input="changeTextarea('result')" id="result"></textarea>
                                 </div>
                                 <div class="col-md-1" style="padding: 0%;">
                                     <button style="width: 100%; background-color: #569b92;" type="button"
@@ -718,10 +719,13 @@
                                     <div class="row">
                                         <div class="col-md-4" style="position: relative; word-wrap:break-word;">
                                             </el-input>
-                                            <el-input type="textarea" v-model="s.trackdescribe" class="aaaa"  :id="'Tracktrackdescribe'+index" @input="changeTextarea('Tracktrackdescribe'+index)">
+                                            <el-input type="textarea" v-model="s.trackdescribe" class="aaaa"
+                                                :id="'Tracktrackdescribe'+index"
+                                                @input="changeTextarea('Tracktrackdescribe'+index)">
                                         </div>
                                         <div class="col-md-4" style="position: relative; word-wrap:break-word;">
-                                            <el-input type="textarea" v-model="s.result" class="aaaa" :id="'Trackresult'+index" @input="changeTextarea('Trackresult'+index)">
+                                            <el-input type="textarea" v-model="s.result" class="aaaa"
+                                                :id="'Trackresult'+index" @input="changeTextarea('Trackresult'+index)">
 
                                         </div>
                                         <div class="col-md-3" style="color: #569b92;">
@@ -891,7 +895,8 @@
             </div>
         </body>
         <script>
-
+            var myDate = new Date();
+            myDate.setDate(myDate.getDate() + 7);
             //    動作區塊
             $(function () {
                 $("#draggable").draggable();
@@ -902,6 +907,7 @@
                 $(".EndTime").datepicker({
                     changeMonth: true,
                     changeYear: true,
+                    'setDate': new Date(),
                     dateFormat: "yy-mm-dd"
                 });
                 $(".CreateTime").datepicker({
@@ -910,9 +916,6 @@
                     dateFormat: "yy-mm-dd"
                 });
             });
-
-
-
             function delRemark(id) {
                 if (confirm("確定刪除?")) {
                     window.location.href = "${pageContext.request.contextPath}/Market/delRemark/" + id + "/${bean.marketid}";
@@ -994,7 +997,7 @@
             };
             function formatPhone(sb) {
                 if (sb.length == 10) {
-                    sb = sb.insert(3, "-");
+                    sb = sb.insert(2, "-");
                     sb = sb.insert(7, "-");
                 }
                 if (sb.length == 9) {
@@ -1027,6 +1030,7 @@
                             phone: "",
                             stage: "",
                             customerid: "",
+                            endtime: myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate(),
                         },
                         oldBean: {},
                         changeMessageList: [],//修改資訊
@@ -1079,8 +1083,9 @@
                             success: (response => (
                                 this.bean = response.bean,
                                 console.log(this.bean, "bean"),
+                                console.log(this.bean.phone),
                                 this.changeMessageList = response.changeMessageList,
-                                // this.bean.phone = formatPhone(this.bean.phone),
+                                this.bean.phone = formatPhone(this.bean.phone),
                                 this.bean.contactphone = formatPhone(this.bean.contactphone),
                                 this.bean.contactmoblie = formatPhone(this.bean.contactmoblie),
                                 this.oldBean = Object.assign({}, this.bean)
@@ -1089,6 +1094,7 @@
                                 console.log(returndata);
                             }
                         });
+                    //取得追蹤資訊
                     axios
                         .get('${pageContext.request.contextPath}/Potential/client/' + this.bean.customerid)
                         .then(response => (
@@ -1105,6 +1111,10 @@
                     if (this.bean.user == undefined || this.bean.user == "") {
                         this.bean.user = '無';
                         this.oldBean.user = '無';
+                    }
+                    if (this.bean.endtime == undefined || this.bean.endtime == "") {
+                        this.bean.endtime = myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate();
+                        this.oldBean.endtime = myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate();
                     }
                 },
                 methods: {
@@ -1344,11 +1354,11 @@
                         });
                     }, goClient: function () {//點擊客戶名開新分頁
                         window.open('${pageContext.request.contextPath}/CRM/client/' + this.bean.clientid);
-                    }, 
+                    },
                     //改變textarea高度
-                    changeTextarea:function(id){                      
+                    changeTextarea: function (id) {
                         var textarea = document.getElementById(id);
-                        textarea.style.height = (textarea.scrollHeight+10) + 'px';
+                        textarea.style.height = (textarea.scrollHeight + 10) + 'px';
                     },
                 },
             })

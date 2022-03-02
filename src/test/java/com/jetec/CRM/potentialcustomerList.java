@@ -39,7 +39,7 @@ public class potentialcustomerList {
 
         //點擊淺在客戶
         driver.findElementByClassName("customerbar").click();
-		driver.findElementById("sec").click();
+        driver.findElementById("sec").click();
         driver.findElementById("i").click();
         //點一星期
         driver.findElement(By.xpath("/html/body/div[3]/div[1]/div[1]/button[2]")).click();

@@ -39,6 +39,7 @@ public class MarketService {
         if (marketBean.getAaa() == "") {
             marketBean.setAaa(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()));
         }
+
         return mr.save(marketBean);
     }
 
@@ -274,5 +275,12 @@ public class MarketService {
         SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
         String ddd = sdf.format(new Date());
         return mr.gettodayTotal(ddd+" 00:00",ddd+" 23:59");
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//過期任務
+    public List<MarketBean> getEndCast(String name) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        return mr.getEndCast(name,sdf.format(new Date()));
     }
 }

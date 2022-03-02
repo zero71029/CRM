@@ -67,7 +67,7 @@
                 <button class="list-group-item" onclick="javascript:location.href=''">
                     服務管理
                 </button>
-                <button class="list-group-item " onclick="javascript:location.href=''">
+                <button class="list-group-item " onclick="javascript:location.href='${pageContext.request.contextPath}/statistic/statistic.jsp'">
                     數據管理
                 </button>
                 <c:if test='${user.position == "主管" || user.position == "系統" ||user.position == "總經理"}'>
@@ -94,7 +94,7 @@
 
                     console.log("未登入");
                     $.ajax({
-                        url: '${pageContext.request.contextPath}/UserAuthorize', //接受請求的Servlet地址
+                        url: '${pageContext.request.contextPath}/UserAuthorize', 
                         type: 'POST',
                         success: function (json) {
                             if (json) {
@@ -157,7 +157,7 @@
             } else { }
             //取得工作項目
             $.ajax({
-                url: '${pageContext.request.contextPath}/workitem/${user.name}', //接受請求的Servlet地址
+                url: '${pageContext.request.contextPath}/workitem/${user.name}', 
                 type: 'POST',
                 success: function (json) {
                     $('.workitem').html("${user.name}<span class='badge bg-primary'>" + (json.length) + "</span>");
@@ -173,7 +173,7 @@
                     }
                     //取得銷售機會
                     $.ajax({
-                        url: '${pageContext.request.contextPath}/marketitem/${user.name}', //接受請求的Servlet地址
+                        url: '${pageContext.request.contextPath}/marketitem/${user.name}', 
                         type: 'POST',
                         success: function (market) {
                             $('.workitem').html("${user.name}<span class='badge bg-primary'>" + (json.length + market.length) + "</span>");
@@ -182,12 +182,12 @@
                             }
                             //取得潛在顧客
                             $.ajax({
-                                url: '${pageContext.request.contextPath}/PotentialItem/${user.name}', //接受請求的Servlet地址
+                                url: '${pageContext.request.contextPath}/PotentialItem/${user.name}', 
                                 type: 'POST',
                                 success: function (customer) {
                                     $('.workitem').html("${user.name}<span class='badge bg-primary' >" + (json.length + market.length + customer.length) + "</span>");
                                     for (var bean of customer) {
-                                        $('.workTable').append('<tr class="www workTR" onclick="goPotential(`' + bean.customerid + '`)"><td>潛在顧客</td><td>' + bean.name + '</td><td>' + bean.status + '</td></tr>');
+                                        $('.workTable').append('<tr class="www workTR" onclick="goPotential(`' + bean.customerid + '`)"><td>潛在顧客</td><td>' + bean.company + '</td><td>' + bean.status + '</td></tr>');
                                     }
                                     $('.workTable').append('<br><br>')
                                 }
@@ -206,7 +206,7 @@
 
             // 取得使用者
             // $.ajax({
-            //     url: '${pageContext.request.contextPath}/admin/${user.adminid}', //接受請求的Servlet地址
+            //     url: '${pageContext.request.contextPath}/admin/${user.adminid}', 
             //     type: 'POST',
             //     success: function (market) {
             //         $('.helpItem').text("協助工作:" );

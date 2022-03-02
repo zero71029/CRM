@@ -43,11 +43,11 @@ public class CustomerControler {
     public String SaveClient(ClientBean clientBean) {
         System.out.println("*****儲存客戶*****");
         System.out.println(clientBean);
-        String name = clientBean.getName().trim();
+
         clientBean.setState(1);
-        if (name.length() != 0)
+        ClientBean save =
             cs.SaveAdmin(clientBean);
-        return "redirect:/CRM/ClientList";
+        return "redirect:/CRM/client/"+save.getClientid();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -126,7 +126,7 @@ public class CustomerControler {
 //儲存聯絡人
     @RequestMapping("/SaveContact")
     public String SaveContact(ContactBean contactBean) {
-        System.out.println("*****儲存客戶*****");
+        System.out.println("*****儲存聯絡人*****");
         System.out.println(contactBean);
         cs.SaveContact(contactBean);
         return "redirect:/CRM/ContactList";

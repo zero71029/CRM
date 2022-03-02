@@ -222,7 +222,7 @@
                                         <div class="col-md-2 cellz">產業</div>
                                         <div class="col-md-3 cellz FormPadding">
                                             <select name="industry" class=" form-select cellFrom"
-                                                v-model="customer.industry" >
+                                                v-model="customer.industry">
                                                 <option v-for="(item, index) in industryList" :key="index">{{item}}
                                                 </option>
                                             </select>
@@ -339,7 +339,8 @@
                                         <div class="col-md-8 cellz FormPadding">
 
                                             <el-input type="textarea" v-model="customer.remark" rows="5" id="remark"
-                                                maxlength="500" show-word-limit name="remark"  @input="changeTextarea('remark')">
+                                                maxlength="500" show-word-limit name="remark"
+                                                @input="changeTextarea('remark')">
 
 
                                                 <!-- <textarea class="form-control " id="validationTextarea" name="remark"
@@ -355,8 +356,8 @@
                                         <div class="col-md-3 cellz">潛在客戶負責人</div>
                                         <div class="col-md-7 cellz FormPadding">
                                             <c:if test="${user.position != '職員' }">
-                                                <select name="user" class="form-select cellFrom"
-                                                    v-model="customer.user" aria-label="Default select example">
+                                                <select name="user" class="form-select cellFrom" v-model="customer.user"
+                                                    aria-label="Default select example">
                                                     <option value="無">無</option>
                                                     <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}"
                                                         items="${admin}" var="s">
@@ -372,8 +373,7 @@
                                                 </select>
                                             </c:if>
                                             <c:if test="${user.position == '職員' }">
-                                                <input type="hidden" name="user" 
-                                                    v-model.trim="customer.user">
+                                                <input type="hidden" name="user" v-model.trim="customer.user">
                                                 {{customer.user}}
                                             </c:if>
 
@@ -424,7 +424,7 @@
                                     <div class="row">
                                         <div class="col-md-3 cellz">狀態</div>
                                         <div class="col-md-7 cellz FormPadding">
-                                            <select name="status" class="form-select cellFrom" 
+                                            <select name="status" class="form-select cellFrom"
                                                 v-model.trim="customer.status" aria-label="Default select example">
                                                 <option value="未處理">未處理
                                                 </option>
@@ -499,12 +499,12 @@
                                 <div class="row">
                                     <div class="col-md-1"></div>
                                     <div class="col-md-4 FormPadding">
-                                        <textarea class="form-control" name="trackdescribe" rows="2" maxlength="950" @input="changeTextarea('trackdescribe')"
-                                             id="trackdescribe"></textarea>
+                                        <textarea class="form-control" name="trackdescribe" rows="2" maxlength="950"
+                                            @input="changeTextarea('trackdescribe')" id="trackdescribe"></textarea>
                                     </div>
                                     <div class="col-md-4 FormPadding">
-                                        <textarea class="form-control" name="result" rows="2" @input="changeTextarea('result')" id="result"
-                                            maxlength="950"></textarea>
+                                        <textarea class="form-control" name="result" rows="2"
+                                            @input="changeTextarea('result')" id="result" maxlength="950"></textarea>
                                     </div>
                                     <div class="col-md-1" style="padding: 0%;">
                                         <button style="width: 100%; background-color: #569b92;"
@@ -529,10 +529,14 @@
                                         <div class="row">
                                             <div class="col-md-4" style="position: relative; word-wrap:break-word;">
                                                 </el-input>
-                                                <el-input type="textarea" v-model="s.trackdescribe" class="aaaa" :id="'Tracktrackdescribe'+index" @input="changeTextarea('Tracktrackdescribe'+index)">
+                                                <el-input type="textarea" v-model="s.trackdescribe" class="aaaa"
+                                                    :id="'Tracktrackdescribe'+index"
+                                                    @input="changeTextarea('Tracktrackdescribe'+index)">
                                             </div>
                                             <div class="col-md-4" style="position: relative; word-wrap:break-word;">
-                                                <el-input type="textarea" v-model="s.result" class="aaaa" :id="'Trackresult'+index" @input="changeTextarea('Trackresult'+index)">
+                                                <el-input type="textarea" v-model="s.result" class="aaaa"
+                                                    :id="'Trackresult'+index"
+                                                    @input="changeTextarea('Trackresult'+index)">
 
                                             </div>
                                             <div class="col-md-3" style="color: #569b92;">
@@ -725,7 +729,7 @@
                 var formData = new FormData($(".AAA")[0]);
                 console.log(formData.values());
                 $.ajax({
-                    url: '${pageContext.request.contextPath}/Market/existsClient',//接受請求的Servlet地址
+                    url: '${pageContext.request.contextPath}/Market/existsClient',
                     type: 'POST',
                     data: formData,
                     async: false,//同步請求
@@ -734,12 +738,31 @@
                     processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
                     success: function (json) {
                         if (json == "客戶已存在") {
-                            alert(json);
+                            vm.$message({
+                                message: json,
+                                type: 'warning'
+                            });                            
                             return;
                         }
                         if (json == "不存在") {
-                            $(".AAA").attr("action", "${pageContext.request.contextPath}/Market/changeClient.action");
-                            $(".AAA")[0].submit();
+                            $.ajax({
+                                url: '${pageContext.request.contextPath}/Market/changeClient.action',
+                                type: 'POST',
+                                data: formData,
+                                async: false,//同步請求
+                                cache: false,//不快取頁面
+                                contentType: false,//當form以multipart/form-data方式上傳檔案時，需要設定為false
+                                processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
+                                success: function (url) {
+                                    vm.$message({
+                                        message: url,
+                                        type: 'success'
+                                    });
+                                },
+                                error: function (returndata) {
+                                    console.log(returndata);
+                                }
+                            });
                             return;
                         }
                         alert("錯誤");
@@ -757,7 +780,7 @@
                 var formData = new FormData($(".AAA")[0]);
                 console.log(formData.values());
                 $.ajax({
-                    url: '${pageContext.request.contextPath}/Market/existsContact',//接受請求的Servlet地址
+                    url: '${pageContext.request.contextPath}/Market/existsContact',
                     type: 'POST',
                     data: formData,
                     async: false,//同步請求
@@ -766,16 +789,40 @@
                     processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
                     success: function (json) {
                         if (json == "聯絡人已存在") {
-                            alert(json);
+                            vm.$message({
+                                message: json,
+                                type: 'warning'
+                            });    
                             return;
                         }
                         if (json == "公司不存在") {
-                            alert("公司不存在,請先轉客戶");
+                            vm.$message({
+                                message: "公司不存在,請先轉客戶",
+                                type: 'warning'
+                            });
                             return;
                         }
                         if (json == "不存在") {
-                            $(".AAA").attr("action", "${pageContext.request.contextPath}/Market/changeContact.action");
-                            $(".AAA")[0].submit();
+                            $.ajax({
+                                url: '${pageContext.request.contextPath}/Market/changeContact.action',
+                                type: 'POST',
+                                data: formData,
+                                async: false,//同步請求
+                                cache: false,//不快取頁面
+                                contentType: false,//當form以multipart/form-data方式上傳檔案時，需要設定為false
+                                processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
+                                success: function (url) {
+                                    vm.$message({
+                                        message: url,
+                                        type: 'success'
+                                    });
+                                },
+                                error: function (returndata) {
+                                    console.log(returndata);
+                                }
+                            });
+
+
                             return;
                         }
                         alert("錯誤");
@@ -799,7 +846,7 @@
                 var formData = new FormData($(".AAA")[0]);
                 console.log(formData.values());
                 $.ajax({
-                    url: '${pageContext.request.contextPath}/Market/existsClient',//接受請求的Servlet地址
+                    url: '${pageContext.request.contextPath}/Market/existsClient',
                     type: 'POST',
                     data: formData,
                     async: false,//同步請求
@@ -813,7 +860,17 @@
                             return;
                         }
                         if (json == "不存在") {
-                            alert("需先新增客戶");
+                            vm.$message({
+                                message: "需先新增客戶",
+                                type: 'warning'
+                            }); 
+                            return;
+                        }
+                        if (json == "聯絡人不存在") {
+                            vm.$message({
+                                message: "需先新增聯絡人",
+                                type: 'warning'
+                            }); 
                             return;
                         }
                         alert("錯誤");
@@ -830,7 +887,7 @@
             // 添加協助者
             function addHelper() {
                 $.ajax({
-                    url: '${pageContext.request.contextPath}/Potential/addHelper/${bean.customerid}/' + $("[name='helper']").val(),//接受請求的Servlet地址
+                    url: '${pageContext.request.contextPath}/Potential/addHelper/${bean.customerid}/' + $("[name='helper']").val(),
                     type: 'POST',
                     success: function (json) {
                         $(".helpList").empty();
@@ -848,7 +905,7 @@
             // 刪除協助者
             function delHelp(helperid) {
                 $.ajax({
-                    url: '${pageContext.request.contextPath}/Potential/delHelper/${bean.customerid}/' + helperid,//接受請求的Servlet地址
+                    url: '${pageContext.request.contextPath}/Potential/delHelper/${bean.customerid}/' + helperid,
                     type: 'POST',
                     success: function (json) {
                         $(".helpList").empty();
@@ -1159,9 +1216,9 @@
                         });
                     },
                     //改變textarea高度
-                    changeTextarea:function(id){                      
+                    changeTextarea: function (id) {
                         var textarea = document.getElementById(id);
-                        var h = textarea.scrollHeight+10;
+                        var h = textarea.scrollHeight + 10;
                         textarea.style.height = h + 'px';
                     },
                 },

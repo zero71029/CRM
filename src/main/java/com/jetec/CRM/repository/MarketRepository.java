@@ -64,4 +64,15 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
 
     @Query(value = "SELECT  COUNT(*)  from market where aaa BETWEEN ?1 AND ?2  ", nativeQuery = true)
     Integer gettodayTotal(String s, String s1);
+
+    @Query(value = "SELECT company as name FROM `potentialcustomer` WHERE `aaa` BETWEEN ?1 AND ?2\n" +
+            "UNION\n" +
+            "SELECT client as name FROM `market` WHERE `aaa` BETWEEN ?1 AND ?2", nativeQuery = true)
+    List<String> selectCompany(String startDay, String endDay);
+
+
+
+
+    @Query(value = "SELECT  *  from market WHERE user = ?1 AND ?2 >= endtime AND stage != '失敗結案' AND stage != '成功結案'", nativeQuery = true)
+    List<MarketBean> getEndCast(String name,String day);
 }

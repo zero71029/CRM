@@ -330,12 +330,14 @@ public class MarketBean {
     }
 
 
-
     @Override
     public String toString() {
         return "MarketBean{" +
-                "trackbean=" + trackbean +
+                "marketid='" + marketid + '\'' +
+                ", name='" + name + '\'' +
+                ", user='" + user + '\'' +
+                ", endtime='" + endtime + '\'' +
+                ", phone='" + phone + '\'' +
                 '}';
     }
-
 }

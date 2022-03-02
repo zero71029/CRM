@@ -183,7 +183,7 @@ public class PotentialCustomerBean {
 	public String getPhone() {
 		StringBuffer sb = new StringBuffer(phone);
 		if(sb.length()==10) {
-			sb.insert(3, "-");
+			sb.insert(2, "-");
 			sb.insert(7, "-");
 		}
 		if(sb.length()==9) {
@@ -219,7 +219,7 @@ public class PotentialCustomerBean {
 	public String getFax() {
 		StringBuffer sb = new StringBuffer(fax);
 		if(sb.length()==10) {
-			sb.insert(3, "-");
+			sb.insert(2, "-");
 			sb.insert(7, "-");
 		}
 		if(sb.length()==9) {

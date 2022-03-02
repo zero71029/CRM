@@ -81,7 +81,7 @@
                                 <td></td>
                             </tr>
                             <tr class="item" v-for="(s, index) in list" :key="index">
-                                <td><input type="checkbox" value="${s.clientid}" name="mak" @change="clickmak"></td>
+                                <td><input type="checkbox" :value="s.clientid" name="mak" @change="clickmak"></td>
                                 <td>
                                     {{s.clientid}}</td>
                                 <td>
@@ -129,6 +129,7 @@
             //  刪除按鈕
             function sta() {
                 var $zx = $("input[name=mak]:checked");
+                console.log($zx);
                 if ($zx.length == 0) {
                     alert("須勾選要刪除項目");
                 } else {
@@ -151,7 +152,7 @@
 
                             success: function (json) {
                                 alert(json);
-                                window.location.href = "${pageContext.request.contextPath}/CRM/ClientList";
+                                window.location.href = "${pageContext.request.contextPath}/client/clientList.jsp";
                             },
                             error: function (returndata) {
                                 console.log(returndata);

@@ -124,21 +124,6 @@
                                             <input type="hidden" name="user" value="${bean.user}">
                                             {{user}}
                                         </c:if>
-
-
-
-
-                                        <!-- <select name="user" class="form-select cellFrom"
-                                            aria-label="Default select example">
-                                            <option value="無" ${bean.user=="無" ?"selected":null}>無</option>
-                                            <c:if test="${not empty admin}">
-                                                <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}"
-                                                    items="${admin}" var="s">
-                                                    <option value="${s.name}" ${bean.user==s.name ?"selected":null}>
-                                                        ${s.name}</option>
-                                                </c:forEach>
-                                            </c:if>
-                                        </select> -->
                                     </div>
                                 </div>
                                 <div class="row">
@@ -161,16 +146,38 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-1"></div>
-                                    <div class="col-md-1 cell">職務</div>
+
+                                    <div class="col-md-1 cell">電話</div>
                                     <div class="col-md-3 cell FormPadding">
-                                        <input type="text" class="form-control cellFrom" name="jobtitle"
-                                            value="${bean.jobtitle}" maxlength="20">
+                                        <div class="input-group ppp">
+                                            <input type="text" class="form-control ppp" name="phone" value="${bean.phone}"
+                                                 maxlength="20">
+                                            <span class="input-group-text">-</span>
+                                            <input type="text" class="form-control" name="extension" value="${bean.extension}"
+                                                 maxlength="10" placeholder="分機">
+                                        </div>
                                     </div>
+
+
+
+
+
+
+
+   
                                     <div class="col-md-2"></div>
                                     <div class="col-md-1 cell">上次聯絡時間</div>
                                     <div class="col-md-2 cell FormPadding">
                                         <input type="text" class="form-control cellFrom contacttime" name="contacttime"
                                             value="${bean.contacttime}" maxlength="20" readonly>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-1 cell">傳真</div>
+                                    <div class="col-md-3 cell FormPadding">
+                                        <input type="text" class=" form-control cellFrom" name="fax" value="${bean.fax}"
+                                            maxlength="20">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -181,21 +188,7 @@
                                             value="${bean.email}" maxlength="100">
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-1 cell">電話</div>
-                                    <div class="col-md-3 cell FormPadding">
-                                        <div class="input-group ppp">
-                                            <input type="text" class="form-control ppp" name="phone" value="${bean.phone}"
-                                                 maxlength="20">
-                                            <span class="input-group-text">-</span>
-                                            <input type="text" class="form-control" name="extension" value="${bean.extension}"
-                                                 maxlength="10" placeholder="分機">
-                                        </div>
-                                        <!-- <input type="text" class=" form-control cellFrom" name="phone"
-                                            value="${bean.phone}" maxlength="20"> -->
-                                    </div>
-                                </div>
+
                                 <div class="row">
                                     <div class="col-md-1"></div>
                                     <div class="col-md-1 cell">手機</div>
@@ -250,20 +243,21 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-1"></div>
+                                    <div class="col-md-1 cell">職務</div>
+                                    <div class="col-md-3 cell FormPadding">
+                                        <input type="text" class="form-control cellFrom" name="jobtitle"
+                                            value="${bean.jobtitle}" maxlength="20">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-1"></div>
                                     <div class="col-md-1 cell">直屬主管</div>
                                     <div class="col-md-3 cell FormPadding">
                                         <input type="text" class=" form-control cellFrom" name="director"
                                             value="${bean.director}" maxlength="20">
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-1 cell">傳真</div>
-                                    <div class="col-md-3 cell FormPadding">
-                                        <input type="text" class=" form-control cellFrom" name="fax" value="${bean.fax}"
-                                            maxlength="20">
-                                    </div>
-                                </div>
+
                                 <div class="row">
                                     <div class="col-md-1"></div>
                                     <div class="col-md-1 cell">備註</div>

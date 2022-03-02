@@ -85,13 +85,14 @@
                                         {{s.stage}}</td>
                                     <td v-on:click="market(s.marketid)" style="cursor: pointer;">
                                         {{s.name}}</td>
-                                    <td >
+                                    <td>
                                         {{s.client}}</td>
                                     <td v-on:click="market(s.marketid)" style="cursor: pointer;">
                                         {{s.user}}</td>
                                     <td v-on:click="market(s.marketid)" style="cursor: pointer;">
                                         {{s.clinch}}</td>
-                                    <td v-on:click="market(s.marketid)" :class="'important'+index" style="cursor: pointer;">
+                                    <td v-on:click="market(s.marketid)" :class="'important'+index"
+                                        style="cursor: pointer;">
                                         {{s.important}}</td>
                                     <!-- 追蹤次數 -->
                                     <td v-on:click="market(s.marketid)" style="cursor: pointer;">
@@ -105,6 +106,8 @@
                                 </tr>
 
                             </table>
+
+
                             <!-- 分頁 -->
                             <div class="block text-center" key="2" v-if="show">
                                 <el-pagination @current-change="handleCurrentChange" :current-page.sync="currentPage1"
@@ -113,6 +116,15 @@
                             </div>
                             <div key="3">今天筆數 : {{todayTotal}}</div>
                         </transition-group>
+
+                        <!-- 到期任務 -->
+                        <el-dialog title="到期任務 (延長結束時間 或 結案)" :visible.sync="endCastVisible" :default-sort = "{prop: 'stage', order: 'descending'}">
+                            <el-table :data="endCast" @row-click="clickEndCast">
+                                <el-table-column property="client" label="公司"></el-table-column>
+                                <el-table-column property="message" label="描述"></el-table-column>
+                                <el-table-column property="stage" label="階段" sortable></el-table-column>
+                            </el-table>
+                        </el-dialog>
                         <!-- 滑塊 -->
                         <div class="offcanvas offcanvas-end " tabindex="0" id="offcanvasRight"
                             aria-labelledby="offcanvasRightLabel" style="width: 450px;">
@@ -142,13 +154,11 @@
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingOne">
                                             <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
-                                                >
+                                                data-bs-toggle="collapse" data-bs-target="#flush-collapseOne">
                                                 負責人
                                             </button>
                                         </h2>
-                                        <div id="flush-collapseOne" class="accordion-collapse collapse"
-                                        >
+                                        <div id="flush-collapseOne" class="accordion-collapse collapse">
                                             <div class="accordion-body">
                                                 <el-checkbox-group v-model="inUserList">
                                                     <c:if test="${not empty admin}">
@@ -228,6 +238,8 @@
 
                                                 <el-checkbox-group v-model="inStateList">
                                                     <el-checkbox label="尚未處理"></el-checkbox>
+                                                    <el-checkbox label="內部詢價中"></el-checkbox>
+                                                    <el-checkbox label="報價處理中"></el-checkbox>
                                                     <el-checkbox label="需求確認"></el-checkbox>
                                                     <el-checkbox label="聯繫中"></el-checkbox>
                                                     <el-checkbox label="已報價"></el-checkbox>
@@ -449,7 +461,6 @@
             }
         </script>
         <script>
-            //element-ui時間選擇器
             const cityOptions = ['尚未分類', '大型顯示器', '空氣品質', '流量-AICHI', '流量-RGL', '流量-其他'
                 , '記錄器', '資料收集器-JETEC', '資料收集器-其他'
                 , '溫濕-JETEC', '溫濕-GALLTEC'
@@ -465,9 +476,6 @@
                 , '溫控器-其他', '能源管理控制', '無線傳輸'
                 , '編碼器/電位計', '食品', '其它'];
             const sourceOptions = ['廣告', '員工推薦', '外部推薦', '合作夥伴', '參展', '網絡搜索', '口碑', '其他'];
-
-
-
             Vue.config.productionTip = false;
             const vm = new Vue({
                 el: '.app',
@@ -479,7 +487,8 @@
                     name: "",
                     show: false,
                     admin: '${user.name}',
-
+                    endCast: [],//到期資料
+                    endCastVisible: false,//到期資料彈窗
                     ind: ["尚未分類",
                         "農、林、漁、牧業",
                         "礦業及土石採取業",
@@ -506,7 +515,7 @@
                     //產品類別
                     checkAll: false,
                     isIndeterminate: true,
-                    cities: cityOptions,                    
+                    cities: cityOptions,
                     //來源
                     sourceAll: false,
                     isSource: false,
@@ -516,12 +525,12 @@
                     budget1: "0",
                     budget2: "",
                     //搜索區資料
-                    oldList:[],
+                    oldList: [],
                     source: [],//產業
                     inDay: [],
                     inUserList: [],//負責人
                     inStateList: [],//狀態
-                    inContact:"",//聯絡人
+                    inContact: "",//聯絡人
                     checkedCities: [],//產品類別
                     checkedSources: [],//機會來源
                     clinch: null,//成交率
@@ -569,8 +578,10 @@
                             .then(response => (
                                 this.list = response.data.list,
                                 console.log(response.data.list),
+                                this.endCast = response.data.endCast,
                                 this.todayTotal = response.data.todayTotal,
-                                this.show = true
+                                this.show = true,
+                                this.endCast.length > 0 ? this.endCastVisible = true : this.endCastVisible = false
                             ))
                             .catch(function (error) {
                                 console.log(error);
@@ -589,6 +600,10 @@
                     }
                 },
                 methods: {
+                    clickEndCast: function (row, column, event) {
+                        window.open('${pageContext.request.contextPath}/Market/Market/' + row.marketid);
+
+                    },
                     handleCurrentChange(val) {//點擊分頁                        
                         axios
                             .get('${pageContext.request.contextPath}/Market/MarketList?pag=' + val)
@@ -665,103 +680,103 @@
                             type: 'POST',
                             async: false,//同步請求
                             cache: false,//不快取頁面
-                            success:(response => (
-                                this.list = response,                                
-                                this.total=this.list.length
+                            success: (response => (
+                                this.list = response,
+                                this.total = this.list.length
                             )),
                             error: function (returndata) {
                                 console.log(returndata);
                             }
                         });
-                        if(this.inUserList != ""){//負責人
+                        if (this.inUserList != "") {//負責人
                             this.oldList = this.list;
                             this.list = []
-                            for(var u of this.inUserList )
-                                for(var bean of this.oldList){
-                                    if(u == bean.user){
-                                        this.list.push(bean);                                        
+                            for (var u of this.inUserList)
+                                for (var bean of this.oldList) {
+                                    if (u == bean.user) {
+                                        this.list.push(bean);
                                     }
-                                }                            
+                                }
                         }
-                        if(this.name != ""){//機會民稱 客戶
+                        if (this.name != "") {//機會民稱 客戶
                             this.oldList = this.list;
                             this.list = [];
-                            for(var bean of this.oldList){
-                                if(bean.name.indexOf(this.name) >= 0 || bean.client.indexOf(this.name) >= 0 ){
+                            for (var bean of this.oldList) {
+                                if (bean.name.indexOf(this.name) >= 0 || bean.client.indexOf(this.name) >= 0) {
                                     this.list.push(bean);
                                 }
                             }
                         }
-                        if(this.inStateList != ""){//狀態
+                        if (this.inStateList != "") {//狀態
                             this.oldList = this.list;
                             this.list = [];
-                            for(var u of this.inStateList )
-                                for(var bean of this.oldList){
-                                    if(u == bean.stage){
-                                        this.list.push(bean);                                        
+                            for (var u of this.inStateList)
+                                for (var bean of this.oldList) {
+                                    if (u == bean.stage) {
+                                        this.list.push(bean);
                                     }
-                                }   
+                                }
                         }
-                        if(this.inContact != ""){//聯絡人
+                        if (this.inContact != "") {//聯絡人
                             this.oldList = this.list;
                             this.list = [];
-                            for(var bean of this.oldList){
-                                if(bean.contactname.indexOf(this.inContact) >= 0 ){
+                            for (var bean of this.oldList) {
+                                if (bean.contactname.indexOf(this.inContact) >= 0) {
                                     this.list.push(bean);
                                 }
                             }
                         }
-                        if(this.ContantPhone != ""){//聯絡人電話
+                        if (this.ContantPhone != "") {//聯絡人電話
                             this.oldList = this.list;
                             this.list = [];
-                            for(var bean of this.oldList){
-                                if(bean.contactphone.indexOf(this.ContantPhone) >= 0 ){
+                            for (var bean of this.oldList) {
+                                if (bean.contactphone.indexOf(this.ContantPhone) >= 0) {
                                     this.list.push(bean);
                                 }
                             }
                         }
-                        if(this.source != ""){//產業
+                        if (this.source != "") {//產業
                             this.oldList = this.list;
                             this.list = [];
-                            for(var u of this.source )
-                                for(var bean of this.oldList){
-                                    if(u == bean.type){
-                                        this.list.push(bean);                                        
+                            for (var u of this.source)
+                                for (var bean of this.oldList) {
+                                    if (u == bean.type) {
+                                        this.list.push(bean);
                                     }
-                                }   
+                                }
                         }
-                        if(this.checkedCities != ""){//產品類別
+                        if (this.checkedCities != "") {//產品類別
                             this.oldList = this.list;
                             this.list = [];
-                            for(var u of this.checkedCities )
-                                for(var bean of this.oldList){
-                                    if(u == bean.producttype){
-                                        this.list.push(bean);                                        
+                            for (var u of this.checkedCities)
+                                for (var bean of this.oldList) {
+                                    if (u == bean.producttype) {
+                                        this.list.push(bean);
                                     }
-                                }   
+                                }
                         }
-                        if(this.checkedSources != ""){//機會來源
+                        if (this.checkedSources != "") {//機會來源
                             this.oldList = this.list;
                             this.list = [];
-                            for(var u of this.checkedSources )
-                                for(var bean of this.oldList){
-                                    if(u == bean.source){
-                                        this.list.push(bean);                                        
+                            for (var u of this.checkedSources)
+                                for (var bean of this.oldList) {
+                                    if (u == bean.source) {
+                                        this.list.push(bean);
                                     }
-                                }   
+                                }
                         }
-                        if(this.clinch != ""){//成交機率
+                        if (this.clinch != "") {//成交機率
                             this.oldList = this.list;
                             this.list = [];
-                            for(var bean of this.oldList){
-                                if(bean.clinch== this.clinch){
+                            for (var bean of this.oldList) {
+                                if (bean.clinch == this.clinch) {
                                     this.list.push(bean);
                                 }
                             }
                         }
-                        this.total=20;
+                        this.total = 20;
                         // this.inDay =[];
-                        console.log(this.list.length,"this.list.length");
+                        console.log(this.list.length, "this.list.length");
                     },
                     selectBudget: function () {//select預算                        
                         axios
@@ -798,7 +813,7 @@
                     sortState: function (direct) {
                         var d = $('.' + direct + '0').text().trim();
                         var oldList = this.list;
-                        const imp = ["尚未處理", "需求確認", "聯繫中", "處理中", "已報價", "提交主管", "失敗結案", "成功結案"];//先輪替這列表
+                        const imp = ["尚未處理", "內部詢價中", "報價處理中", "已報價", "提交主管", "失敗結案", "成功結案"];//先輪替這列表
                         var nimp = []
                         this.list = [];//清空
                         var b = false;
@@ -806,7 +821,7 @@
                         var i = imp.indexOf(d);//找到輸入第幾個
                         console.log(i, "i");
                         //重整列表
-                        for (let index = i + 1; index < 8; index++) {
+                        for (let index = i + 1; index < 7; index++) {
                             nimp.push(imp[index])
                         }
                         for (let index = 0; index <= i; index++) {
@@ -826,7 +841,7 @@
                         $all.prop("checked", $("#activity").prop("checked"));
                     },
                     // 勾選單項   
-                    clickmak: function () {  
+                    clickmak: function () {
                         var $all = $("input[name=mak]");
                         var $zx = $("input[name=mak]:checked");
                         $("#activity").prop("checked", $zx.length == $all.length);
