@@ -43,11 +43,12 @@ public class MarketBean {
     private String line;
     private String customerid;//追蹤資訊
     private String contactmethod;//聯絡方式
-    private  Integer clicks;//點擊數
+    private Integer clicks;//點擊數
     private String fax;//傳真
     private Integer clientid;//客戶id
     private String quote;//報價內容
-
+    private String jobtitle;//職稱
+    private String serialnumber;//編號
 
     public String getContactmethod() {
         return contactmethod;
@@ -58,7 +59,7 @@ public class MarketBean {
     }
 
     // 追蹤資訊
-    @OneToMany(targetEntity =  TrackBean.class, mappedBy = "customerid", cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = TrackBean.class, mappedBy = "customerid", cascade = CascadeType.ALL)
     private List<TrackBean> trackbean;
 
 //	//舊
@@ -79,6 +80,22 @@ public class MarketBean {
 
     public void setQuote(String quote) {
         this.quote = quote;
+    }
+
+    public String getJobtitle() {
+        return jobtitle;
+    }
+
+    public void setJobtitle(String jobtitle) {
+        this.jobtitle = jobtitle;
+    }
+
+    public String getSerialnumber() {
+        return serialnumber;
+    }
+
+    public void setSerialnumber(String serialnumber) {
+        this.serialnumber = serialnumber;
     }
 
     public Integer getClientid() {

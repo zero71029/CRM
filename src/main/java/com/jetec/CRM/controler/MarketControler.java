@@ -50,7 +50,7 @@ public class MarketControler {
         System.out.println("銷售機會初始化");
         Map<String, Object> result = new HashMap<>();
         MarketBean marketBean = ms.getById(id);
-
+        result.put("existsCustomer", PCS.existsById(marketBean.getCustomerid()));
         result.put("bean", marketBean);
         result.put("changeMessageList", DS.getChangeMessage(id));
         return result;
@@ -329,17 +329,19 @@ public class MarketControler {
         clientBean.setState(1);
         clientBean.setExtension(Bean.getExtension());
         clientBean.setSerialnumber(Bean.getSerialnumber());
-        ClientBean saveBean = cs.SaveAdmin(clientBean);
 
+
+
+        ClientBean saveBean = cs.SaveAdmin(clientBean);
         return "新增客戶";
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//判斷客戶存在
+//判斷聯絡人存在
     @RequestMapping("/existsContact")
     @ResponseBody
     public String existsContact(PotentialCustomerBean Bean, Model model) {
-        System.out.println("*****判斷客戶存在****");
+        System.out.println("*****判斷聯絡人存在****");
         if (cs.existsContactByName(Bean.getName(), Bean.getCompany())) {
             System.out.println("*****聯絡人已存在****");
             return "聯絡人已存在";
@@ -442,7 +444,12 @@ public class MarketControler {
         bean.setContactextension(pBean.getExtension());
         bean.setStage("尚未處理");
         bean.setClientid(clientBean.getClientid());
+        bean.setContactmethod(pBean.getCompanynum());
+        bean.setSerialnumber(pBean.getSerialnumber());
+        bean.setJobtitle(pBean.getJobtitle());
         bean.setClinch(3);
+        bean.setFax((pBean.getFax()));
+
         Map<String, Object> result = new HashMap<>();
         result.put("bean", bean);
         result.put("changeMessageList", DS.getChangeMessage(id));

@@ -176,57 +176,63 @@
                                                     <el-button type="text" icon="el-icon-search" @click="openClient"
                                                         style="float:right"></el-button>
                                                 </div>
-                                                <div class="col-md-4 FormPadding" style="background-color: #EEE;">
+                                                <div class="col-md-6 FormPadding" style="background-color: #EEE;">
                                                     <a href="#" @click.stop.prevent="goClient">{{bean.client}}</a>
                                                     <input type="hidden" class="form-control cellzFrom client"
                                                         v-model.trim="bean.client" name="client" maxlength="100"
                                                         readonly>
                                                 </div>
 
-
+                                                <div class="col-md-4 FormPadding"> 
+                                                    <input type="text" class="form-control" placeholder="編號"
+                                                        name="serialnumber" v-model.trim="bean.serialnumber">
+                                                </div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-md-2 cellz">聯絡人 <span style="color: red;">*</span>
                                                 </div>
-                                                <div class="col-md-4 FormPadding" @click="openDialog">
+                                                <div class="col-md-6 FormPadding" @click="openDialog">
                                                     <input type="text" class=" form-control cellzFrom col-md-4"
                                                         v-model.trim="bean.contactname" name="contactname"
                                                         maxlength="20" readonly>
-
-
-                                                    <!-- onclick="contact()"> -->
                                                 </div>
+                                                <div class="col-md-4 FormPadding"> 
+                                                    <input type="text" class="form-control" placeholder="職稱"
+                                                        name="jobtitle" v-model.trim="bean.jobtitle" maxlength="20">
+                                                </div>
+
+
+
+
+
                                             </div>
-
                                             <div class="row">
-
-
-                                                <div class="col-md-2 cellz">公司電話</div>
-                                                <div class="col-md-4 FormPadding">
-
-                                                    <input type="text" class="form-control ppp" name="phone"
-                                                        v-model="bean.phone" maxlength="20">
-
-                                                    <input type="text" class="form-control" name="extension"
-                                                        v-model="bean.extension" maxlength="10" placeholder="分機">
-
-                                                    <!-- <input type="text" class="col-md- form-control cellzFrom" name="phone"
-                                                    v-model.trim="bean.phone" maxlength="20"> -->
-                                                </div>
                                                 <div class="col-md-2 cellz">聯絡人電話</div>
                                                 <div class="col-md-4 FormPadding">
-
                                                     <input type="text" class="form-control ppp" name="contactphone"
                                                         v-model="bean.contactphone" maxlength="20">
 
                                                     <input type="text" class="form-control" name="contactextension"
                                                         v-model="bean.contactextension" maxlength="10" placeholder="分機">
-
-                                                    <!-- <input type="text" class="col-md- form-control cellzFrom"
-                                                    v-model.trim="bean.contactphone" name="contactphone" maxlength="19"> -->
                                                 </div>
 
+                                                <div class="col-md-2 cellz">公司電話</div>
+                                                <div class="col-md-4 FormPadding">
+                                                    <input type="text" class="form-control ppp" name="phone"
+                                                        v-model="bean.phone" maxlength="20">
+
+                                                    <input type="text" class="form-control" name="extension"
+                                                        v-model="bean.extension" maxlength="10" placeholder="分機">
+                                                </div>
 
                                             </div>
                                             <div class="row">
+                                                <div class="col-md-2 cellz">聯絡人手機</div>
+                                                <div class="col-md-4 FormPadding">
+                                                    <input type="text" class=" form-control cellzFrom"
+                                                        v-model.trim="bean.contactmoblie" maxlength="20"
+                                                        name="contactmoblie">
+                                                </div>
                                                 <div class="col-md-2 cellz">產業</div>
                                                 <div class="col-md-4 FormPadding">
                                                     <select name="type" class=" form-select cellzFrom"
@@ -236,17 +242,17 @@
                                                         </option>
                                                     </select>
                                                 </div>
-                                                <div class="col-md-2 cellz">聯絡人手機</div>
-                                                <div class="col-md-4 FormPadding">
-                                                    <input type="text" class=" form-control cellzFrom"
-                                                        v-model.trim="bean.contactmoblie" maxlength="20"
-                                                        name="contactmoblie">
-                                                </div>
+
 
 
                                             </div>
                                             <div class="row">
-
+                                                <div class="col-md-2 cellz">聯絡人Email </div>
+                                                <div class="col-md-4 FormPadding">
+                                                    <input type="text" class="col-md- form-control cellzFrom"
+                                                        v-model.trim="bean.contactemail" name="contactemail"
+                                                        maxlength="50">
+                                                </div>
                                                 <div class="col-md-2 cellz">來源</div>
                                                 <div class="col-md-4 FormPadding">
                                                     <select class="form-select cellzFrom" name="source"
@@ -274,18 +280,13 @@
                                                         </option>
                                                     </select>
                                                 </div>
-
-                                                <div class="col-md-2 cellz">聯絡人Email </div>
-                                                <div class="col-md-4 FormPadding">
-                                                    <input type="text" class="col-md- form-control cellzFrom"
-                                                        v-model.trim="bean.contactemail" name="contactemail"
-                                                        maxlength="50">
-                                                </div>
-
-
                                             </div>
                                             <div class="row">
-
+                                                <div class="col-md-2 cellz">Line</div>
+                                                <div class="col-md-4 FormPadding">
+                                                    <input type="text" class="form-control cellzFrom" name="line"
+                                                        v-model.trim="bean.line" maxlength="200">
+                                                </div>
                                                 <div class="col-md-2 cellz">聯絡方式</div>
                                                 <div class="col-md-4 FormPadding">
                                                     <input type="text" class="form-control cellzFrom"
@@ -299,15 +300,8 @@
                                                         <option value="網頁留言"></option>
                                                     </datalist>
                                                 </div>
-
-                                                <div class="col-md-2 cellz">Line</div>
-                                                <div class="col-md-4 FormPadding">
-                                                    <input type="text" class="form-control cellzFrom" name="line"
-                                                        v-model.trim="bean.line" maxlength="200">
-                                                </div>
                                             </div>
                                             <div class="row">
-
                                                 <div class="col-md-2 cellz">傳真</div>
                                                 <div class="col-md-4 FormPadding">
                                                     <input type="text" class="form-control cellzFrom" name="fax"
@@ -378,16 +372,25 @@
                                                         <option value="高">高</option>
                                                         <option value="中">中</option>
                                                         <option value="低">低</option>
-                                                        <option value="無">無</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-1"> </div>
                                                 <div class="col-md-6 FormPadding">報價內容
-                                                    <el-input type="textarea" v-model="bean.quote" rows="5"
-                                                        id="quote" maxlength="990" show-word-limit name="quote"
+                                                    <el-input type="textarea" v-model="bean.quote" rows="5" id="quote"
+                                                        maxlength="990" show-word-limit name="quote"
                                                         @input="changeTextarea('quote')">
+                                                </div>
+                                            </div>
+
+                                            <div class="row" v-show="existsCustomer">
+                                                <div class="col-md-1"> </div>
+                                                <div class="col-md-6 FormPadding">
+                                                    <el-link type="primary"
+                                                        :href="'${pageContext.request.contextPath}/Market/potentialcustomer/'+bean.customerid">
+                                                        返回潛在顧客</el-link>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -586,7 +589,7 @@
                                     <div class="row">
                                         <div class="col-md-3"></div>
                                         <div class="col-md-6 FormPadding">
-                                            <button type="button" style="width: 100%;" class="btn btn-danger"
+                                            <button type="button" style="width: 100%;" class="btn btn-danger" id="saveMarket"
                                                 @click="submitForm">完畢儲存</button>
                                         </div>
                                     </div>
@@ -873,7 +876,7 @@
 
                         for (var j of json) {
 
-                            $(".CCC").append('<div class="row TTT" onclick="clickContact(`' + j.name + '`,`' + j.phone + '`,`' + j.moblie + '`)" >' +
+                            $(".CCC").append('<div class="row TTT" onclick="clickContact(`' + j.name + '`,`' + j.phone + '`,`' + j.moblie + '`,`' + j.jobtitle + '`)" >' +
                                 '<div class="col-md-1"></div>' +
                                 '<div class="col-md-3">' + j.name + '</div>' +
                                 '<div class="col-md-3">' + j.phone + '</div>' +
@@ -889,11 +892,11 @@
 
 
 
-            function clickContact(name, phone, moblie) {
+            function clickContact(name, phone, moblie,jobtitle) {
                 vm.bean.contactphone = phone;
                 vm.bean.contactmoblie = moblie;
                 vm.bean.contactname = name;
-
+                vm.bean.jobtitle= jobtitle;
                 vm.outerVisible = false;
             }
 
@@ -958,6 +961,7 @@
                 el: '.app',
                 data() {
                     return {
+                        existsCustomer: false,//是否是淺在顧客轉過來
                         inclient: "",//搜索客戶輸入
                         changeTableVisible: false,
                         dialogVisible: false,//公司彈窗
@@ -967,6 +971,7 @@
                             phone: "",
                             stage: "",
                             customerid: "",
+                            important: "低",
                             endtime: myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate(),
                         },
                         oldBean: {},
@@ -1002,7 +1007,6 @@
                 created() {
                     this.show = true;
                     this.loading = false;
-                    if (this.important == "") this.important = '低';
                     if ('${bean.marketid}' != '') {
                         var url = '${pageContext.request.contextPath}/Market/init/${bean.marketid}';
 
@@ -1021,6 +1025,7 @@
                                 this.bean = response.bean,
                                 console.log(this.bean, "bean"),
                                 console.log(this.bean.phone),
+                                this.existsCustomer = response.existsCustomer,
                                 this.changeMessageList = response.changeMessageList,
                                 this.bean.phone = formatPhone(this.bean.phone),
                                 this.bean.contactphone = formatPhone(this.bean.contactphone),
@@ -1267,6 +1272,7 @@
                     },
                     clickClient: function (s) {
                         console.log(s, "client");
+                        this.bean.serialnumber=s.serialnumber;
                         this.bean.client = s.name;
                         this.bean.phone = s.phone;
                         this.bean.extension = s.extension;

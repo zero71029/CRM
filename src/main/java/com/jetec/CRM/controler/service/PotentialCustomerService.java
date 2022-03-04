@@ -241,4 +241,9 @@ public class PotentialCustomerService {
 		return PCR.gettodayTotal(ddd+" 00:00",ddd+" 23:59");
 
 	}
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//判斷潛在客戶存在
+	public boolean existsById(String customerid) {
+		return  PCR.existsById(customerid);
+	}
 }

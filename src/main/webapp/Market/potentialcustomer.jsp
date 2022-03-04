@@ -171,9 +171,9 @@
                                                         </c:forEach>
                                                     </c:if>
                                                 </datalist>
-                                                <span class="input-group-text">-</span>
-                                                <input type="text" class="form-control" placeholder="編號" v-model.trim="customer.serialnumber"
-                                                    name="serialnumber" value="">
+                                                
+                                                <input type="text" class="form-control" placeholder="編號"
+                                                    v-model.trim="customer.serialnumber" name="serialnumber" value="">
                                             </div>
                                         </div>
                                     </div>
@@ -184,56 +184,20 @@
                                             <input type="text" class=" form-control cellFrom" name="name"
                                                 v-model.trim="customer.name" maxlength="20" required>
                                         </div>
-                                        <div class="col-md-2 cellz">部門</div>
-                                        <div class="col-md-3 cellz FormPadding"><input type="text"
-                                                class=" form-control cellFrom" name="department"
-                                                v-model.trim="customer.department" maxlength="20">
-                                        </div>
-
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-1"></div>
                                         <div class="col-md-2 cellz">職稱</div>
                                         <div class="col-md-3 cellz FormPadding">
                                             <input type="text" class=" form-control cellFrom" name="jobtitle"
                                                 v-model.trim="customer.jobtitle" maxlength="20">
                                         </div>
-                                        <div class="col-md-2 cellz">主管</div>
-                                        <div class="col-md-3 cellz FormPadding">
-                                            <input type="text" class=" form-control cellFrom" name="director"
-                                                v-model.trim="customer.director" maxlength="20">
-                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1"></div>
-                                        <div class="col-md-2 cellz">Email</div>
+                                        <div class="col-md-2 cellz">電話<span style="color: red;">*</span></div>
                                         <div class="col-md-3 cellz FormPadding">
-                                            <input type="email" class=" form-control cellFrom" name="email"
-                                                v-model.trim="customer.email" maxlength="50">
-                                        </div>
-                                        <div class="col-md-2 cellz">產業</div>
-                                        <div class="col-md-3 cellz FormPadding">
-                                            <select name="industry" class=" form-select cellFrom"
-                                                v-model="customer.industry">
-                                                <option v-for="(item, index) in industryList" :key="index">{{item}}
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-1"></div>
-                                        <div class="col-md-2 cellz">電話</div>
-                                        <div class="col-md-3 cellz FormPadding">
-
                                             <input type="text" class="form-control ppp" name="phone"
                                                 v-model.trim=" customer.phone" maxlength="20">
-
                                             <input type="text" class="form-control" name="extension" placeholder="分機"
                                                 maxlength="10" v-model.trim="customer.extension">
-
-
-                                            <!-- <input type="text" class=" form-control cellFrom" name="phone"
-                                    v-model.trim="customer.phone" maxlength="20"> -->
                                         </div>
                                         <div class="col-md-2 cellz">聯絡方式</div>
                                         <div class="col-md-3 cellz FormPadding">
@@ -251,10 +215,63 @@
                                             <input type="text" class="form-control" name="" placeholder=""
                                                 maxlength="10">
 
-
-
-
                                         </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-2 cellz">手機<span style="color: red;">*</span></div>
+                                        <div class="col-md-3 cellz FormPadding">
+                                            <input type="text" class=" form-control cellFrom" name="moblie"
+                                                v-model.trim="customer.moblie" maxlength="20">
+                                        </div>                                        
+
+                                        <div class="col-md-2 cellz">部門</div>
+                                        <div class="col-md-3 cellz FormPadding"><input type="text"
+                                                class=" form-control cellFrom" name="department"
+                                                v-model.trim="customer.department" maxlength="20">
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-2 cellz">Email<span style="color: red;">*</span></div>
+                                        <div class="col-md-3 cellz FormPadding">
+                                            <input type="email" class=" form-control cellFrom" name="email"
+                                                v-model.trim="customer.email" maxlength="50">
+                                        </div>
+                                        <div class="col-md-2 cellz">主管</div>
+                                        <div class="col-md-3 cellz FormPadding">
+                                            <input type="text" class=" form-control cellFrom" name="director"
+                                                v-model.trim="customer.director" maxlength="20">
+                                        </div>
+
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-2 cellz">Line</div>
+                                        <div class="col-md-3 cellz FormPadding">
+                                            <input type="text" class=" form-control cellFrom" name="line"
+                                                v-model.trim="customer.line" maxlength="190">
+                                        </div>
+
+
+
+
+                                        <div class="col-md-2 cellz">產業</div>
+                                        <div class="col-md-3 cellz FormPadding">
+                                            <select name="industry" class=" form-select cellFrom"
+                                                v-model="customer.industry">
+                                                <option v-for="(item, index) in industryList" :key="index">{{item}}
+                                                </option>
+                                            </select>
+                                        </div>
+
+
+
+
+
+
 
                                     </div>
                                     <div class="row">
@@ -293,21 +310,6 @@
                                                     其他
                                                 </option>
                                             </select>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-1"></div>
-                                        <div class="col-md-2 cellz">手機</div>
-                                        <div class="col-md-3 cellz FormPadding">
-                                            <input type="text" class=" form-control cellFrom" name="moblie"
-                                                v-model.trim="customer.moblie" maxlength="20">
-                                        </div>
-
-
-                                        <div class="col-md-2 cellz">Line</div>
-                                        <div class="col-md-3 cellz FormPadding">
-                                            <input type="text" class=" form-control cellFrom" name="line"
-                                                v-model.trim="customer.line" maxlength="190">
                                         </div>
                                     </div>
                                     <div class="row">
@@ -449,7 +451,7 @@
                                     <div class="col-md-3"></div>
                                     <div class="col-md-5 FormPadding">
                                         <button type="button" style="width: 100%;color: white; " class="btn btn-warning"
-                                            @click="submitForm">儲存</button>
+                                            @click="submitForm" id="saveButton">儲存</button>
                                     </div>
                                 </div>
                             </div>

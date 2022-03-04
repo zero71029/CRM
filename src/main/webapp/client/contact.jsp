@@ -92,14 +92,17 @@
                                     <div class="col-md-4 log">聯絡人資訊</div>
                                     <div class="col-md-2"></div>
                                     <div class="col-md-3 log">其它資訊</div>
-
                                 </div>
                                 <div class="row">
                                     <div class="col-md-1"></div>
                                     <div class="col-md-1 cell">聯絡人名稱*</div>
-                                    <div class="col-md-3 cell FormPadding">
+                                    <div class="col-md-2 cell FormPadding">
                                         <input type="text" class=" form-control cellFrom" name="name"
                                             value="${bean.name}" maxlength="20" required>
+                                    </div>
+                                    <div class="col-md-1 cell FormPadding">
+                                        <input type="text" class="form-control cellFrom" name="jobtitle"
+                                            value="${bean.jobtitle}" maxlength="20" placeholder="職稱">
                                     </div>
                                     <div class="col-md-2"></div>
                                     <div class="col-md-1 cell">負責人*</div>
@@ -127,7 +130,6 @@
                                     </div>
                                 </div>
                                 <div class="row">
-
                                     <div class="col-md-1"></div>
                                     <div class="col-md-1 cell">公司名稱</div>
                                     <div class="col-md-3 cell FormPadding "
@@ -137,8 +139,6 @@
                                         <input type="hidden" name='clientid' value="${bean.client.clientid}">
                                         <input type="hidden" name='company' value="${bean.client.name}">
                                     </div>
-
-
                                     <div class="col-md-2"></div>
                                     <div class="col-md-1 cell">聯絡人編號</div>
                                     <div class="col-md-2 cell">${bean.contactid}
@@ -146,7 +146,6 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-1"></div>
-
                                     <div class="col-md-1 cell">電話</div>
                                     <div class="col-md-3 cell FormPadding">
                                         <div class="input-group ppp">
@@ -156,15 +155,7 @@
                                             <input type="text" class="form-control" name="extension" value="${bean.extension}"
                                                  maxlength="10" placeholder="分機">
                                         </div>
-                                    </div>
-
-
-
-
-
-
-
-   
+                                    </div>   
                                     <div class="col-md-2"></div>
                                     <div class="col-md-1 cell">上次聯絡時間</div>
                                     <div class="col-md-2 cell FormPadding">
@@ -188,7 +179,6 @@
                                             value="${bean.email}" maxlength="100">
                                     </div>
                                 </div>
-
                                 <div class="row">
                                     <div class="col-md-1"></div>
                                     <div class="col-md-1 cell">手機</div>
@@ -209,15 +199,12 @@
                                     <br><br>
                                     <div class="col-md-1">&nbsp;</div>
                                 </div>
-
-
                                 <div class="row">
                                     <div class="col-md-1"></div>
                                     <div class="col-md-1"></div>
                                     <div class="col-md-3">
                                         <div class="row" id="twzipcode"></div>
                                     </div>
-
                                 </div>
                                 <div class="row">
                                     <div class="col-md-1"></div>
@@ -227,26 +214,12 @@
                                             value="${bean.address}" maxlength="20">
                                     </div>
                                 </div>
-
-
-
-
-
-
                                 <div class="row">
                                     <div class="col-md-1"></div>
                                     <div class="col-md-1 cell">部門</div>
                                     <div class="col-md-3 cell FormPadding">
                                         <input type="text" class=" form-control cellFrom" name="department"
                                             value="${bean.department}" maxlength="20">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-1 cell">職務</div>
-                                    <div class="col-md-3 cell FormPadding">
-                                        <input type="text" class="form-control cellFrom" name="jobtitle"
-                                            value="${bean.jobtitle}" maxlength="20">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -266,11 +239,6 @@
                                             style="width: 100%; ">${bean.remark}</textarea>
                                     </div>
                                 </div>
-
-
-
-
-
                                 <!--  -->
                                 <div class="row">
                                     <div class="col-md-1"></div>
@@ -279,13 +247,8 @@
                                         <button type="submit" style="width: 100%;" class="btn btn-primary">送出</button>
                                     </div>
                                 </div>
-
-
-
                             </div>
                         </form>
-
-
                         <!-- ///////////////////////////////////////////////////////////////////////////// -->
 
                     </div>
