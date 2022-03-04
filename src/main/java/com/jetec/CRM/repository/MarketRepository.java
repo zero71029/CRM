@@ -76,4 +76,7 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
     List<MarketBean> getSubmitBos();
 
     boolean existsByCustomerid(String customerid);
+
+    @Query(value = "SELECT  *  from market WHERE user = ?1  AND stage != '失敗結案' AND stage != '成功結案' ", nativeQuery = true)
+    List<MarketBean> findUser(String name);
 }

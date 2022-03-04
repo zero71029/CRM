@@ -183,7 +183,7 @@
                                                         readonly>
                                                 </div>
 
-                                                <div class="col-md-4 FormPadding"> 
+                                                <div class="col-md-4 FormPadding">
                                                     <input type="text" class="form-control" placeholder="編號"
                                                         name="serialnumber" v-model.trim="bean.serialnumber">
                                                 </div>
@@ -196,7 +196,7 @@
                                                         v-model.trim="bean.contactname" name="contactname"
                                                         maxlength="20" readonly>
                                                 </div>
-                                                <div class="col-md-4 FormPadding"> 
+                                                <div class="col-md-4 FormPadding">
                                                     <input type="text" class="form-control" placeholder="職稱"
                                                         name="jobtitle" v-model.trim="bean.jobtitle" maxlength="20">
                                                 </div>
@@ -405,7 +405,7 @@
                                     <div class="row">
                                         <div class="col-md-1 cellz">產品類別<span style="color: red;">*</span></div>
                                         <div class="col-md-2 FormPadding">
-                                            <select name="producttype" id="Product_Type" v-model.trim="bean.producttype"
+                                            <select name="producttype" id="Product_Type" v-model="bean.producttype"
                                                 class=" form-select cellzFrom">
                                                 <option ${bean.producttype=="尚未分類" ?"selected":null} value="尚未分類"
                                                     selected="selected">請選擇...</option>
@@ -564,10 +564,19 @@
 
                                     <div class="row">
 
-                                        <div class="col-md-1 cellz">開始時間</div>
+                                        <div class="col-md-1 cellz">案件類型</div>
                                         <div class="col-md-2 FormPadding">
-                                            <input type="text" class="  form-control cellzFrom CreateTime"
-                                                v-model.trim="bean.createtime" name="createtime" readonly>
+
+
+                                            <select name="createtime" id="createtime" v-model="bean.createtime"
+                                                @change="changeCreateTime" class=" form-select cellzFrom">
+                                                <option value="轉賣/自用">轉賣/自用</option>
+                                                <option value="設計/預算規劃">設計/預算規劃</option>
+                                                <option value="工程標案">工程標案</option>
+                                            </select>
+
+
+
                                         </div>
                                         <div class="col-md-1 cellz">結束時間</div>
                                         <div class="col-md-2 FormPadding">
@@ -589,8 +598,8 @@
                                     <div class="row">
                                         <div class="col-md-3"></div>
                                         <div class="col-md-6 FormPadding">
-                                            <button type="button" style="width: 100%;" class="btn btn-danger" id="saveMarket"
-                                                @click="submitForm">完畢儲存</button>
+                                            <button type="button" style="width: 100%;" class="btn btn-danger"
+                                                id="saveMarket" @click="submitForm">完畢儲存</button>
                                         </div>
                                     </div>
                                 </form>
@@ -833,6 +842,28 @@
             </div>
             </div>
         </body>
+
+        <c:if test="${user.position != '職員' }">
+            <script>
+                // 日期UI
+                $(function () {
+                    $(".EndTime").datepicker({
+                        changeMonth: true,
+                        changeYear: true,
+                        'setDate': new Date(),
+                        dateFormat: "yy-mm-dd"
+                    });
+
+                });
+            </script>
+        </c:if>
+
+
+
+
+
+
+
         <script>
             var myDate = new Date();
             myDate.setDate(myDate.getDate() + 7);
@@ -841,20 +872,8 @@
                 $("#draggable").draggable();
             });
             $(".market").show();
-            // 日期UI
-            $(function () {
-                $(".EndTime").datepicker({
-                    changeMonth: true,
-                    changeYear: true,
-                    'setDate': new Date(),
-                    dateFormat: "yy-mm-dd"
-                });
-                $(".CreateTime").datepicker({
-                    changeMonth: true,
-                    changeYear: true,
-                    dateFormat: "yy-mm-dd"
-                });
-            });
+
+
             function delRemark(id) {
                 if (confirm("確定刪除?")) {
                     window.location.href = "${pageContext.request.contextPath}/Market/delRemark/" + id + "/${bean.marketid}";
@@ -892,11 +911,11 @@
 
 
 
-            function clickContact(name, phone, moblie,jobtitle) {
+            function clickContact(name, phone, moblie, jobtitle) {
                 vm.bean.contactphone = phone;
                 vm.bean.contactmoblie = moblie;
                 vm.bean.contactname = name;
-                vm.bean.jobtitle= jobtitle;
+                vm.bean.jobtitle = jobtitle;
                 vm.outerVisible = false;
             }
 
@@ -967,12 +986,14 @@
                         dialogVisible: false,//公司彈窗
                         clientList: [],//客戶列表
                         bean: {
+                            createtime: "轉賣/自用",//案件類型
                             clinch: 3,
                             phone: "",
                             stage: "",
                             customerid: "",
                             important: "低",
                             endtime: myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate(),
+                            aaa:new Date(),
                         },
                         oldBean: {},
                         changeMessageList: [],//修改資訊
@@ -1054,10 +1075,7 @@
                         this.bean.user = '無';
                         this.oldBean.user = '無';
                     }
-                    if (this.bean.endtime == undefined || this.bean.endtime == "") {
-                        this.bean.endtime = myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate();
-                        this.oldBean.endtime = myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate();
-                    }
+
                 },
                 methods: {
                     submitForm() {//送出表單                       
@@ -1272,7 +1290,7 @@
                     },
                     clickClient: function (s) {
                         console.log(s, "client");
-                        this.bean.serialnumber=s.serialnumber;
+                        this.bean.serialnumber = s.serialnumber;
                         this.bean.client = s.name;
                         this.bean.phone = s.phone;
                         this.bean.extension = s.extension;
@@ -1304,9 +1322,20 @@
                         if (textarea.style.height < (textarea.scrollHeight + "px"))
                             textarea.style.height = (textarea.scrollHeight + 10) + 'px';
                     },
+                    //切換案件類型
+                    changeCreateTime: function () {
+                        var day = new Date(this.bean.aaa);
+                        if (this.bean.createtime == "轉賣/自用") day.setDate(day.getDate() + 7);
+                        if (this.bean.createtime == "設計/預算規劃") day.setDate(day.getDate() + 14);
+                        if (this.bean.createtime == "工程標案") day.setDate(day.getDate() + 30);
+                        this.bean.endtime = formatDay(day);
+                        console.log(this.bean.marketid, "client");
+                    }
                 },
             })
-
+            function formatDay(day) {
+                return day.getFullYear() + "-" + (day.getMonth() + 1) + "-" + day.getDate();
+            }
 
         </script>
 

@@ -292,4 +292,9 @@ public class MarketService {
         return  mr.existsByCustomerid(customerid);
 
     }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 搜索銷售機會by負責人
+    public List<MarketBean> selectMarketByUser(String name) {
+        return mr.findUser(name);
+    }
 }

@@ -170,12 +170,12 @@ public class MarketControler {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 搜索銷售機會
-    @RequestMapping("/selectMarket")
-    public String selectMarket(Model model, @RequestParam("name") String name) {
-        System.out.println("搜索銷售機會");
-        model.addAttribute("list", ms.selectMarket(name));
-        return "/Market/MarketList";
-    }
+//    @RequestMapping("/selectMarket")
+//    public String selectMarket(Model model, @RequestParam("name") String name) {
+//        System.out.println("搜索銷售機會AAA");
+//        model.addAttribute("list", ms.selectMarketByUser(name));
+//        return "/Market/MarketList";
+//    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //刪除備註
@@ -461,8 +461,8 @@ public class MarketControler {
     @ResponseBody
     @RequestMapping("/selectMarket/{name}")
     public List<MarketBean> selectName(@PathVariable("name") String name) {
-        System.out.println("搜索銷售機會");
-        return ms.selectMarket(name);
+        System.out.println("搜索銷售機會AAA");
+        return ms.selectMarketByUser(name);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

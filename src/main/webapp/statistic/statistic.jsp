@@ -57,6 +57,7 @@
                 el: ".app",
                 data() {
                     return {
+                        AAA:[],
                         list: [],
                         inDay: [],
                         pickerOptions: {
@@ -97,6 +98,24 @@
                         },
                     }
                 }, created() {
+                    $.ajax({
+                            url: '${pageContext.request.contextPath}/statistic/AAA?from=2020-02-01&to=2020-03-05',
+                            type: 'POST',
+                            async: false,
+                            cache: false,
+                            success: (response => (
+                                this.AAA = response,
+                                console.log(this.AAA)
+                            )),
+                            error: function (returndata) {
+                                console.log(returndata);
+                            }
+                        })
+
+                        var keys = Object.keys(this.AAA);
+                        console.log(keys,"keys");
+
+
 
                 },
                 methods: {
