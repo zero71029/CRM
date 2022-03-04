@@ -28,8 +28,10 @@ public class StatisticController {
 //搜索公司數量
     @RequestMapping("/selectCompany")
     @ResponseBody
-    public List<String> selectCompany(@RequestParam("from") String startDay, @RequestParam("to") String endDay) {
+    public Map<String, Object> selectCompany(@RequestParam("from") String startDay, @RequestParam("to") String endDay) {
         System.out.println("搜索公司數量");
+        Map<String, Object> result = new HashMap<>();
+
         if (startDay == null || startDay == "") {
             startDay = zTools.getTime(new Date());
             startDay = startDay.substring(0, 10);
@@ -45,20 +47,17 @@ public class StatisticController {
         System.out.println(startDay);
         System.out.println(endDay);
         ss.selectCompany(startDay, endDay);
+
+        Map<String, Object>   img = getListByDate(startDay.substring(0, 10),endDay.substring(0, 10));
+        result.put("img",img);
+        result.put("companyNum",ss.selectCompany(startDay, endDay));
+
         ///////////////////////////////////////
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar cal = Calendar.getInstance();
-        try {
-            cal.setTime(dateFormat.parse(startDay));
-        } catch (ParseException e) {
-
-        }
-        cal.add(Calendar.DATE, 1);
-        dateFormat.format(cal.getTime());
 
 
-        return ss.selectCompany(startDay, endDay);
+
+        return result;
 
     }
     @RequestMapping("/AAA")
@@ -68,14 +67,16 @@ public class StatisticController {
         System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         System.out.println(startDay);
         System.out.println(endDay);
+
         System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-        while (endDay.compareTo(startDay) > 0) {
+        while (addDay(endDay).compareTo(startDay) > 0) {
 
             String s = startDay + " 00:00";
-            String e = endDay + " 23:00";
+            String e = startDay + " 23:00";
 
             List<String> ll = ss.selectCompany(s, e);
-            System.out.println(ll);
+            System.out.println("s :"+s +"  e: "+e +"  AAA:"+ll);
+
             result.put(startDay, ss.selectCompany(s, e));
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Calendar cal = Calendar.getInstance();
@@ -87,7 +88,24 @@ public class StatisticController {
             cal.add(Calendar.DATE, 1);
             startDay = dateFormat.format(cal.getTime());
         }
+        System.out.println(result);
         return  result;
 
     }
+
+    public String addDay(String day){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        try {
+            cal.setTime(dateFormat.parse(day));
+        } catch (ParseException e1) {
+
+        }
+        cal.add(Calendar.DATE, 1);
+        return dateFormat.format(cal.getTime());
+
+    }
+
+
+
 }
