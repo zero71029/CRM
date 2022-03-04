@@ -161,7 +161,6 @@ public class MarketService {
                 qdb.setQuotationid(qBean.getQuotationid());
             }
         }
-
         QuotationBean save = qr.save(qBean);
         qr.delNull();
         return save;
@@ -220,7 +219,6 @@ public class MarketService {
         List<MarketBean> result = mr.findByContactphone(phone);
         Boolean isBoolean = true;
         for (MarketBean bean : mr.findByContactmoblie(phone)) {
-            System.out.println(bean);
             for (MarketBean phonebeBean : result) {
                 if (bean.getMarketid() == phonebeBean.getMarketid()) {
                     isBoolean = false;
@@ -277,10 +275,21 @@ public class MarketService {
         return mr.gettodayTotal(ddd+" 00:00",ddd+" 23:59");
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//過期任務
+//讀取過期任務
     public List<MarketBean> getEndCast(String name) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
         return mr.getEndCast(name,sdf.format(new Date()));
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//讀取提交主管
+    public List<MarketBean> getSubmitBos() {
+        return mr.getSubmitBos();
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //檢查有無銷售機會
+    public boolean existMarket(String customerid) {
+        return  mr.existsByCustomerid(customerid);
+
     }
 }

@@ -91,9 +91,10 @@ public class PotentialController {
 	public List<PotentialCustomerBean> selectDate(@RequestParam("startDay") String startDay, @RequestParam("endDay") String endDay) {
 		System.out.println("搜索潛在客戶 日期");
 		if (startDay == null ||startDay == "") {
-			startDay = zTools.getTime(new Date());
-			startDay = startDay.substring(0,10);
-			startDay = startDay + " 00:00";
+//			startDay = zTools.getTime(new Date());
+//			startDay = startDay.substring(0,10);
+//			startDay = startDay + " 00:00";
+			startDay = "2022-02-01 00:00";
 		}else {
 			startDay = startDay + " 00:00";
 		}

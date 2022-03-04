@@ -38,8 +38,7 @@
 
                     <div class="col-md-11 app" v-cloak>
                         <!-- 滑塊 -->
-                        <div class="offcanvas offcanvas-end" tabindex="0" id="offcanvasRight"
-                            style="width: 450px;">
+                        <div class="offcanvas offcanvas-end" tabindex="0" id="offcanvasRight" style="width: 450px;">
                             <div class="offcanvas-header">
                                 <h5 id="offcanvasRightLabel"><i class="bi-search"></i>&nbsp; 搜索</h5>
                                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
@@ -265,7 +264,7 @@
                                                 </div>
                                             </div>
                                             <button class="btn btn-outline-secondary" v-on:click="selectList"
-                                                id="selectIndustry" >搜索</button>
+                                                id="selectIndustry">搜索</button>
                                         </div>
                                     </div>
                                     <!--  上次聯絡時間-->
@@ -308,7 +307,7 @@
 
 
 
-
+                                <input type="checkbox" class="btn-check" id="btncheck3" v-model="btncheck3">
                                 <label class="btn btn-outline-primary" for="btncheck3" @click="aadmin(admin)"><i
                                         class="bi bi-person-square"></i> {{admin}}</label>
 
@@ -333,10 +332,12 @@
                                     <td></td>
                                     <td style="width: 90px;" @click="sortState('state')"><a href="#">狀態</a></td>
                                     <td style="width: 90px;">負責人</td>
-                                    <td style="width: 130px;">建立時間</td>
+
                                     <td>客戶名稱</td>
-                                    <td>聯絡人</td>
+
                                     <td>詢問內容</td>
+                                    <td style="width: 130px;">建立時間</td>
+                                    <td>聯絡人</td>                                    
                                     <td>產業</td>
                                     <!-- 詢問產品種類		客戶來源	備註 -->
                                     <td @click="sortItem('important')"><a href="#">重要性</a></td>
@@ -346,17 +347,15 @@
                                     <td>{{index+1}} <span class="badge rounded-pill bg-danger"
                                             v-show="s.bm.length > 0">{{s.bm.length ==
                                             0?"":s.bm.length}} </td>
-                                    <td v-on:click="customer(s.customerid)" style="cursor: pointer;" :class="'state'+index">
+                                    <td v-on:click="customer(s.customerid)" style="cursor: pointer;"
+                                        :class="'state'+index">
                                         {{s.status}}</td>
                                     <td v-on:click="customer(s.customerid)" style="cursor: pointer;">
                                         {{s.user}}</td>
-                                    <!-- 建立時間 -->
-                                    <td v-on:click="customer(s.customerid)" style="cursor: pointer;">
-                                        {{s.aaa}}</td>
-                                    <td >
+
+                                    <td>
                                         {{s.company}}</td>
-                                    <td v-on:click="customer(s.customerid)" style="cursor: pointer;">
-                                        {{s.name}}</td>
+
                                     <td v-if="s.remark.length <100 " style="width: 500px;cursor: pointer;"
                                         v-on:click="customer(s.customerid)">{{s.remark}}</td>
                                     <td v-on:click="customer(s.customerid)" v-if="s.remark.length >=100 ">
@@ -366,9 +365,15 @@
                                                 style="width: 500px; color: #000;" type="text">{{s.remark}}</el-button>
                                         </el-popover>
                                     </td>
+                                    <!-- 建立時間 -->
+                                    <td v-on:click="customer(s.customerid)" style="cursor: pointer;">
+                                        {{s.aaa}}</td>
+                                    <td v-on:click="customer(s.customerid)" style="cursor: pointer;">
+                                        {{s.name}}</td>
                                     <td v-on:click="customer(s.customerid)">
                                         {{s.industry}}</td>
-                                    <td v-on:click="customer(s.customerid)" style="cursor: pointer;" :class="'important'+index">
+                                    <td v-on:click="customer(s.customerid)" style="cursor: pointer;"
+                                        :class="'important'+index">
                                         {{s.important}}</td>
                                 </tr>
                             </table>
@@ -426,7 +431,7 @@
             const vm = new Vue({
                 el: '.app',
                 data: {
-
+                    btncheck3:false,//個人頁面按鈕
                     todayTotal: "",
                     content: "",//
                     currentPage1: 1,//當前分頁
@@ -503,18 +508,23 @@
                     industry: [],//產業
                 },
                 created: function () {
+                    var url = new URL(location.href);
+                    const name = url.searchParams.get("user");
                     if (this.admin != "") {
                         //要求列表
-                        axios
-                            .get('${pageContext.request.contextPath}/Potential/CustomerList?pag=' + this.currentPage1)
-                            .then(response => (
-                                this.list = response.data.list,
-                                this.todayTotal = response.data.todayTotal,
-                                console.log(response.data)
-                            ))
-                            .catch(function (error) { 
-                                console.log(error);
-                            });
+                        $.ajax({
+                            url: '${pageContext.request.contextPath}/Potential/CustomerList?pag=' + this.currentPage1,
+                            type: 'POST',
+                            async: false,
+                            cache: false,
+                            success: response => {
+                                this.list = response.list,
+                                this.todayTotal = response.todayTotal   
+                            },
+                            error: function (returndata) {
+                                console.log(returndata);
+                            }
+                        });
                         //要求所有筆數
                         axios
                             .get('${pageContext.request.contextPath}/Potential/MaxPag')
@@ -527,13 +537,24 @@
                     } else {
                         alert("沒有權限");
                         location.href = "${pageContext.request.contextPath}/"
+                    }                    
+                    if (name != null ) {
+                        this.btncheck3 =true;
+                        axios
+                            .get('${pageContext.request.contextPath}/Potential/admin/' + name)
+                            .then(response => (
+                                this.list = response.data
+                            ))
+                            .catch(function (error) { // 请求失败处理
+                                console.log(error);
+                            });
                     }
                 },
                 methods: {
                     //搜索
                     selectList: function () {
                         console.log(this.inDay[0]);
-
+                        this.btncheck3 =false;
                         if (this.inDay == "") {//沒輸入日期                  
                             this.inDay[0] = "";
                             this.inDay[1] = "";
@@ -615,28 +636,7 @@
                                     }
                                 }
                         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                         this.total = 20;
-
                         console.log(this.list.length, "this.list.length");
                     },
                     handleCurrentChange(val) {//點擊分頁
@@ -655,14 +655,13 @@
 
                     },
                     aadmin: function (name) {//搜索負責人
-                        axios
-                            .get('${pageContext.request.contextPath}/Potential/admin/' + name)
-                            .then(response => (
-                                this.list = response.data
-                            ))
-                            .catch(function (error) { // 请求失败处理
-                                console.log(error);
-                            });
+                        var url = new URL(location.href);
+                        const n = url.searchParams.get("user");
+                        if(n == null ){
+                            location.href = "${pageContext.request.contextPath}/Market/potentialcustomerList.jsp?user=" + name;
+                        }else{
+                            location.href = "${pageContext.request.contextPath}/Market/potentialcustomerList.jsp";
+                        }
                     },
                     //重要性 排序
                     sortItem: function (direct) {

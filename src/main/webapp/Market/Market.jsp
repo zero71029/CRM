@@ -13,8 +13,6 @@
 
             <style>
                 /* 動作區塊 */
-
-
                 .box .bosMessagediv {
                     position: absolute;
                     width: 505px;
@@ -42,7 +40,6 @@
                     width: 460px;
                     height: 30px;
                     background-color: #ddd;
-
                     border-radius: 15px 0 0 15px;
                 }
 
@@ -53,7 +50,6 @@
 
                 .dockbar div:hover {
                     background-color: #aaa;
-
                 }
 
                 .box .act {
@@ -116,66 +112,7 @@
                 width: 100%;
             }
 
-            /* 彈窗 */
 
-            .hazy {
-                position: fixed;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.5);
-                z-index: 40;
-                visibility: visible;
-            }
-
-            .cat {
-                border: blue 1px solid;
-                background-color: white;
-                width: 830px;
-                height: 450px;
-                z-index: 50;
-                position: absolute;
-                left: 0%;
-                right: 0%;
-                margin: auto;
-                top: 150px;
-                border-radius: 15px;
-                visibility: visible;
-            }
-
-            .cat form {
-                top: 10px;
-                position: relative;
-                left: 20px;
-            }
-
-            .cat input {
-                width: 95%;
-            }
-
-            .cat select {
-                width: 95%;
-            }
-
-            /* 購物車返回 */
-
-            .catReturn {
-                top: -10px;
-                right: -10px;
-                position: absolute;
-                background-color: red;
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                z-index: 20;
-            }
-
-            div.FormPadding {
-                padding: 0%;
-            }
-
-            .TTT:hover {
-                background-color: #0d6efd;
-            }
 
             [v-cloak] {
                 display: none;
@@ -188,35 +125,27 @@
                 <div class="row">
                     <!-- <%-- 插入側邊欄--%> -->
                     <jsp:include page="/Sidebar.jsp"></jsp:include>
-
                     <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
-
-
+                    <div class="col-md-1"></div>
                     <div class="col-md-10 app" v-cloak>
-
                         <transition-group name="slide-fade" appear>
                             <div v-loading="loading" v-if="show" key="1">
                                 <!-- <%-- 中間主體--%> -->
-                                <br>
                                 <div class="row">
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-10">
+                                    <div class="col-md-12">
                                         <h3>銷售機會</h3>
                                     </div>
                                 </div>
                                 <br>
                                 <div class="row">
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-9">
+                                    <div class="col-md-12">
                                         <!-- 上一頁 -->
                                         <!-- <a href="#"  onclick="location.href='${pageContext.request.contextPath}/billboard?pag=1&sort=createtime';" -->
-
                                         <a href="#" @click="back" style="text-decoration: none;">
                                             <img src="${pageContext.request.contextPath}/img/Pre.png" alt="上一頁">
                                         </a>
                                     </div>
                                 </div>
-
                                 <br>
                                 <form action="${pageContext.request.contextPath}/Market/SaveMarket" method="post"
                                     class="basefrom g-3 ">
@@ -226,246 +155,251 @@
                                     <input type="hidden" name="clicks" value="${bean.clicks}">
                                     <input type="hidden" name="marketid" value="${bean.marketid}">
                                     <div class="row">
-
-                                        <div class="row" style="text-align: center;">
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-6 bg-danger text-white"
-                                                style="font-size: 1.5rem;border-radius: 5px 5px 0 0 ;">
-                                                基本資料</div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-1 cellz">機會名稱 <span style="color: red;">*</span></div>
-                                            <div class="col-md-5 FormPadding">
-                                                <input type="text" class="form-control cellzFrom" name="name"
-                                                    v-model.trim="bean.name" style="width: 100%;" maxlength="20"
-                                                    required>
+                                        <div class="col-md-6">
+                                            <div class="row" style="text-align: center;">
+                                                <div class="col-md-12 bg-danger text-white"
+                                                    style="font-size: 1.5rem;border-radius: 5px 5px 0 0 ;">
+                                                    基本資料</div>
                                             </div>
-                                        </div>
-
-
-
-                                        <div class="row">
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-1 cellz">公司名<span style="color: red;">*</span>
-                                                <el-button type="text" icon="el-icon-search" @click="openClient"
-                                                    style="float:right"></el-button>
+                                            <div class="row">
+                                                <div class="col-md-2 cellz">機會名稱 <span style="color: red;">*</span>
+                                                </div>
+                                                <div class="col-md-10 FormPadding">
+                                                    <input type="text" class="form-control cellzFrom" name="name"
+                                                        v-model.trim="bean.name" style="width: 100%;" maxlength="20"
+                                                        required>
+                                                </div>
                                             </div>
-                                            <div class="col-md-2 FormPadding" style="background-color: #EEE;">
+                                            <div class="row">
 
-                                                <a href="#" @click.stop.prevent="goClient">{{bean.client}}</a>
+                                                <div class="col-md-2 cellz">公司名<span style="color: red;">*</span>
+                                                    <el-button type="text" icon="el-icon-search" @click="openClient"
+                                                        style="float:right"></el-button>
+                                                </div>
+                                                <div class="col-md-4 FormPadding" style="background-color: #EEE;">
+                                                    <a href="#" @click.stop.prevent="goClient">{{bean.client}}</a>
+                                                    <input type="hidden" class="form-control cellzFrom client"
+                                                        v-model.trim="bean.client" name="client" maxlength="100"
+                                                        readonly>
+                                                </div>
 
 
-                                                <input type="hidden" class="col-md-4 form-control cellzFrom client"
-                                                    v-model.trim="bean.client" name="client" maxlength="100" readonly>
+                                                <div class="col-md-2 cellz">聯絡人 <span style="color: red;">*</span>
+                                                </div>
+                                                <div class="col-md-4 FormPadding" @click="openDialog">
+                                                    <input type="text" class=" form-control cellzFrom col-md-4"
+                                                        v-model.trim="bean.contactname" name="contactname"
+                                                        maxlength="20" readonly>
 
+
+                                                    <!-- onclick="contact()"> -->
+                                                </div>
                                             </div>
 
-
-                                            <div class="col-md-1 cellz">聯絡人 <span style="color: red;">*</span></div>
-                                            <div class="col-md-2 FormPadding" @click="openDialog">
-                                                <input type="text" class=" form-control cellzFrom col-md-4"
-                                                    v-model.trim="bean.contactname" name="contactname" maxlength="20"
-                                                    readonly>
+                                            <div class="row">
 
 
-                                                <!-- onclick="contact()"> -->
-                                            </div>
-                                        </div>
+                                                <div class="col-md-2 cellz">公司電話</div>
+                                                <div class="col-md-4 FormPadding">
 
-                                        <div class="row">
-                                            <div class="col-md-1"></div>
+                                                    <input type="text" class="form-control ppp" name="phone"
+                                                        v-model="bean.phone" maxlength="20">
 
-                                            <div class="col-md-1 cellz">公司電話</div>
-                                            <div class="col-md-2 FormPadding">
+                                                    <input type="text" class="form-control" name="extension"
+                                                        v-model="bean.extension" maxlength="10" placeholder="分機">
 
-                                                <input type="text" class="form-control ppp" name="phone"
-                                                    v-model="bean.phone" maxlength="20">
-
-                                                <input type="text" class="form-control" name="extension"
-                                                    v-model="bean.extension" maxlength="10" placeholder="分機">
-
-                                                <!-- <input type="text" class="col-md- form-control cellzFrom" name="phone"
+                                                    <!-- <input type="text" class="col-md- form-control cellzFrom" name="phone"
                                                     v-model.trim="bean.phone" maxlength="20"> -->
-                                            </div>
-                                            <div class="col-md-1 cellz">聯絡人電話</div>
-                                            <div class="col-md-2 FormPadding">
+                                                </div>
+                                                <div class="col-md-2 cellz">聯絡人電話</div>
+                                                <div class="col-md-4 FormPadding">
 
-                                                <input type="text" class="form-control ppp" name="contactphone"
-                                                    v-model="bean.contactphone" maxlength="20">
+                                                    <input type="text" class="form-control ppp" name="contactphone"
+                                                        v-model="bean.contactphone" maxlength="20">
 
-                                                <input type="text" class="form-control" name="contactextension"
-                                                    v-model="bean.contactextension" maxlength="10" placeholder="分機">
+                                                    <input type="text" class="form-control" name="contactextension"
+                                                        v-model="bean.contactextension" maxlength="10" placeholder="分機">
 
-                                                <!-- <input type="text" class="col-md- form-control cellzFrom"
+                                                    <!-- <input type="text" class="col-md- form-control cellzFrom"
                                                     v-model.trim="bean.contactphone" name="contactphone" maxlength="19"> -->
-                                            </div>
-
-                                            <div class="col-md-1 "> </div>
-                                            <div class="col-md-1 cellz">負責人</div>
-                                            <div class="col-md-2 FormPadding">
-                                                <c:if test="${user.position != '職員' }">
-                                                    <select name="user" class="form-select cellzFrom"
-                                                        v-model.trim="bean.user" aria-label="Default select example">
-                                                        <option value="無">無</option>
-                                                        <c:if test="${not empty admin}">
-                                                            <c:forEach varStatus="loop" begin="0"
-                                                                end="${admin.size()-1}" items="${admin}" var="s">
-                                                                <c:if test="${s.department == '業務' }">
-                                                                    <option value="${s.name}">
-                                                                        ${s.name}</option>
-                                                                </c:if>
-                                                            </c:forEach>
-                                                            <option value="系統管理"> 系統管理</option>
-                                                        </c:if>
-                                                    </select>
-                                                </c:if>
-                                                <c:if test="${user.position == '職員' }">
-                                                    <input type="hidden" name="user" v-model.trim="bean.user">
-                                                    {{bean.user}}
-                                                </c:if>
-
-
-
-
-
+                                                </div>
 
 
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-1 cellz">產業</div>
-                                            <div class="col-md-2 FormPadding">
-                                                <select name="type" class=" form-select cellzFrom"
-                                                    v-model.trim="bean.type">
-                                                    <option v-for="(item, index) in typeList" :key="index">{{item}}
-                                                    </option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-1 cellz">聯絡人手機</div>
-                                            <div class="col-md-2 FormPadding">
-                                                <input type="text" class=" form-control cellzFrom"
-                                                    v-model.trim="bean.contactmoblie" maxlength="20"
-                                                    name="contactmoblie">
-                                            </div>
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-1 cellz">階段</div>
-                                            <div class="col-md-2 FormPadding">
-                                                <select class=" form-select cellzFrom" name="stage"
-                                                    v-model="bean.stage">
-                                                    <option value="尚未處理" selected>
-                                                        尚未處理</option>
-                                                    <option value="內部詢價中">
-                                                        內部詢價中</option>
-                                                    <option value="報價處理中">
-                                                        報價處理中 </option>
-                                                    <option value="已報價">
-                                                        已報價</option>
-                                                    <option value="提交主管">不合格:提交主管</option>
-                                                    <c:if test="${user.position != '職員' }">
-                                                        <option value="失敗結案">失敗結案
+                                            <div class="row">
+                                                <div class="col-md-2 cellz">產業</div>
+                                                <div class="col-md-4 FormPadding">
+                                                    <select name="type" class=" form-select cellzFrom"
+                                                        v-model.trim="bean.type">
+                                                        <option v-for="(item, index) in typeList" :key="index">
+                                                            {{item}}
                                                         </option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-2 cellz">聯絡人手機</div>
+                                                <div class="col-md-4 FormPadding">
+                                                    <input type="text" class=" form-control cellzFrom"
+                                                        v-model.trim="bean.contactmoblie" maxlength="20"
+                                                        name="contactmoblie">
+                                                </div>
+
+
+                                            </div>
+                                            <div class="row">
+
+                                                <div class="col-md-2 cellz">來源</div>
+                                                <div class="col-md-4 FormPadding">
+                                                    <select class="form-select cellzFrom" name="source"
+                                                        v-model.trim="bean.source">
+                                                        <option value="廣告">
+                                                            廣告
+                                                        </option>
+                                                        <option value="員工推薦">
+                                                            員工推薦</option>
+                                                        <option value="外部推薦">
+                                                            外部推薦</option>
+                                                        <option value="合作夥伴">
+                                                            合作夥伴</option>
+                                                        <option value="參展">
+                                                            參展
+                                                        </option>
+                                                        <option value="網絡搜索">
+                                                            網絡搜索
+                                                        </option>
+                                                        <option value="口碑">
+                                                            口碑
+                                                        </option>
+                                                        <option value="其他">
+                                                            其他
+                                                        </option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-2 cellz">聯絡人Email </div>
+                                                <div class="col-md-4 FormPadding">
+                                                    <input type="text" class="col-md- form-control cellzFrom"
+                                                        v-model.trim="bean.contactemail" name="contactemail"
+                                                        maxlength="50">
+                                                </div>
+
+
+                                            </div>
+                                            <div class="row">
+
+                                                <div class="col-md-2 cellz">聯絡方式</div>
+                                                <div class="col-md-4 FormPadding">
+                                                    <input type="text" class="form-control cellzFrom"
+                                                        name="contactmethod" v-model.trim="bean.contactmethod"
+                                                        maxlength="20" list="contactmethod">
+                                                    <datalist id="contactmethod">
+                                                        <option value="Line">
+                                                        <option value="電話">
+                                                        <option value="手機">
+                                                        <option value="email"></option>
+                                                        <option value="網頁留言"></option>
+                                                    </datalist>
+                                                </div>
+
+                                                <div class="col-md-2 cellz">Line</div>
+                                                <div class="col-md-4 FormPadding">
+                                                    <input type="text" class="form-control cellzFrom" name="line"
+                                                        v-model.trim="bean.line" maxlength="200">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+
+                                                <div class="col-md-2 cellz">傳真</div>
+                                                <div class="col-md-4 FormPadding">
+                                                    <input type="text" class="form-control cellzFrom" name="fax"
+                                                        v-model.trim="bean.fax" maxlength="20">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="row">&nbsp;</div>
+                                            <div class="row">&nbsp;</div>
+                                            <div class="row">
+                                                <div class="col-md-1 "> </div>
+                                                <div class="col-md-2 cellz">負責人</div>
+                                                <div class="col-md-4 FormPadding">
+                                                    <c:if test="${user.position != '職員' }">
+                                                        <select name="user" class="form-select cellzFrom"
+                                                            v-model.trim="bean.user"
+                                                            aria-label="Default select example">
+                                                            <option value="無">無</option>
+                                                            <c:if test="${not empty admin}">
+                                                                <c:forEach varStatus="loop" begin="0"
+                                                                    end="${admin.size()-1}" items="${admin}" var="s">
+                                                                    <c:if test="${s.department == '業務' }">
+                                                                        <option value="${s.name}">
+                                                                            ${s.name}</option>
+                                                                    </c:if>
+                                                                </c:forEach>
+                                                                <option value="系統管理"> 系統管理</option>
+                                                            </c:if>
+                                                        </select>
                                                     </c:if>
-                                                    <option value="成功結案">
-                                                        成功結案</option>
-                                                </select>
+                                                    <c:if test="${user.position == '職員' }">
+                                                        <input type="hidden" name="user" v-model.trim="bean.user">
+                                                        {{bean.user}}
+                                                    </c:if>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-1 "> </div>
+                                                <div class="col-md-2 cellz">階段</div>
+                                                <div class="col-md-4 FormPadding">
+                                                    <select class=" form-select cellzFrom" name="stage"
+                                                        v-model="bean.stage">
+                                                        <option value="尚未處理" selected>
+                                                            尚未處理</option>
+                                                        <option value="內部詢價中">
+                                                            內部詢價中</option>
+                                                        <option value="報價處理中">
+                                                            報價處理中 </option>
+                                                        <option value="已報價">
+                                                            已報價</option>
+                                                        <option value="提交主管">不合格:提交主管</option>
+                                                        <c:if test="${user.position != '職員' }">
+                                                            <option value="失敗結案">失敗結案
+                                                            </option>
+                                                        </c:if>
+                                                        <option value="成功結案">
+                                                            成功結案</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-1 "> </div>
+                                                <div class="col-md-2 cellz">重要性</div>
+                                                <div class="col-md-4 FormPadding">
+                                                    <select class="form-select cellzFrom" name="important"
+                                                        v-model.trim="bean.important">
+                                                        <option value="高">高</option>
+                                                        <option value="中">中</option>
+                                                        <option value="低">低</option>
+                                                        <option value="無">無</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-1"> </div>
+                                                <div class="col-md-6 FormPadding">報價內容
+                                                    <el-input type="textarea" v-model="bean.quote" rows="5"
+                                                        id="quote" maxlength="990" show-word-limit name="quote"
+                                                        @input="changeTextarea('quote')">
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-1 cellz">來源</div>
-                                            <div class="col-md-2 FormPadding">
-                                                <select class="form-select cellzFrom" name="source"
-                                                    v-model.trim="bean.source">
-                                                    <option value="廣告">
-                                                        廣告
-                                                    </option>
-                                                    <option value="員工推薦">
-                                                        員工推薦</option>
-                                                    <option value="外部推薦">
-                                                        外部推薦</option>
-                                                    <option value="合作夥伴">
-                                                        合作夥伴</option>
-                                                    <option value="參展">
-                                                        參展
-                                                    </option>
-                                                    <option value="網絡搜索">
-                                                        網絡搜索
-                                                    </option>
-                                                    <option value="口碑">
-                                                        口碑
-                                                    </option>
-                                                    <option value="其他">
-                                                        其他
-                                                    </option>
-                                                </select>
-                                            </div>
-
-                                            <div class="col-md-1 cellz">聯絡人Email </div>
-                                            <div class="col-md-2 FormPadding">
-                                                <input type="text" class="col-md- form-control cellzFrom"
-                                                    v-model.trim="bean.contactemail" name="contactemail" maxlength="50">
-                                            </div>
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-1 cellz">重要性</div>
-                                            <div class="col-md-2 FormPadding">
-                                                <select class="form-select cellzFrom" name="important"
-                                                    v-model.trim="bean.important">
-                                                    <option value="高">高</option>
-                                                    <option value="中">中</option>
-                                                    <option value="低">低</option>
-                                                    <option value="無">無</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-1 cellz">聯絡方式</div>
-                                            <div class="col-md-2 FormPadding">
-                                                <input type="text" class="form-control cellzFrom" name="contactmethod"
-                                                    v-model.trim="bean.contactmethod" maxlength="20"
-                                                    list="contactmethod">
-                                                <datalist id="contactmethod">
-                                                    <option value="Line">
-                                                    <option value="電話">
-                                                    <option value="手機">
-                                                    <option value="email"></option>
-                                                    <option value="網頁留言"></option>
-                                                </datalist>
-                                            </div>
-
-                                            <div class="col-md-1 cellz">Line</div>
-                                            <div class="col-md-2 FormPadding">
-                                                <input type="text" class="form-control cellzFrom" name="line"
-                                                    v-model.trim="bean.line" maxlength="200">
-                                            </div>
-                                        </div>
-                                        <div class="row">
-
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-1 cellz">傳真</div>
-                                            <div class="col-md-2 FormPadding">
-                                                <input type="text" class="form-control cellzFrom" name="fax"
-                                                    v-model.trim="bean.fax" maxlength="20">
-
-                                            </div>
-
-
-                                        </div>
-
                                     </div>
                                     <!-- ////////////////////////////////////////////////////////////////////////////////// -->
                                     <div class="row">&nbsp;</div>
                                     <div class="row" style="text-align: center;">
-                                        <div class="col-md-1"></div>
                                         <div class="col-md-6 bg-danger text-white"
                                             style="font-size: 1.5rem;border-radius: 5px 5px 0 0 ;">
                                             需求</div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-1"></div>
                                         <div class="col-md-1 cellz">產品類別<span style="color: red;">*</span></div>
                                         <div class="col-md-2 FormPadding">
                                             <select name="producttype" id="Product_Type" v-model.trim="bean.producttype"
@@ -490,7 +424,8 @@
                                                 <option ${bean.producttype=="流量-其他" ?"selected":null} value="流量-其他">
                                                     流量-其他
                                                 </option>
-                                                <option ${bean.producttype=="記錄器" ?"selected":null} value="記錄器">記錄器
+                                                <option ${bean.producttype=="記錄器" ?"selected":null} value="記錄器">
+                                                    記錄器
                                                 </option>
                                                 <option ${bean.producttype=="資料收集器-JETEC" ?"selected":null}
                                                     value="資料收集器-JETEC">
@@ -510,7 +445,8 @@
                                                 <option ${bean.producttype=="溫濕-其他" ?"selected":null} value="溫濕-其他">
                                                     溫濕-其他
                                                 </option>
-                                                <option ${bean.producttype=="紅外線" ?"selected":null} value="紅外線">紅外線
+                                                <option ${bean.producttype=="紅外線" ?"selected":null} value="紅外線">
+                                                    紅外線
                                                 </option>
                                                 <option ${bean.producttype=="壓力-JETEC" ?"selected":null}
                                                     value="壓力-JETEC">
@@ -606,7 +542,7 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-md-1"></div>
+
                                         <div class="col-md-1 cellz">預算</div>
                                         <div class="col-md-2 FormPadding">
                                             <input type="number" class=" form-control cellzFrom" name="cost"
@@ -624,7 +560,7 @@
 
 
                                     <div class="row">
-                                        <div class="col-md-1"></div>
+
                                         <div class="col-md-1 cellz">開始時間</div>
                                         <div class="col-md-2 FormPadding">
                                             <input type="text" class="  form-control cellzFrom CreateTime"
@@ -639,7 +575,6 @@
 
                                     <!-- /////////////////////////////////////////////////////////////////////////// -->
                                     <div class="row">
-                                        <div class="col-md-1"></div>
                                         <div class="col-md-1 cellz">描述<span style="color: red;">*</span></div>
                                         <div class="col-md-5 FormPadding">
                                             <el-input type="textarea" v-model="bean.message" rows="5" id="message"
@@ -656,6 +591,7 @@
                                         </div>
                                     </div>
                                 </form>
+
                             </div>
                         </transition-group>
                         <!-- ///////////////////////////////////////////////////////////////////////////// -->
@@ -1027,6 +963,7 @@
                         dialogVisible: false,//公司彈窗
                         clientList: [],//客戶列表
                         bean: {
+                            clinch: 3,
                             phone: "",
                             stage: "",
                             customerid: "",
@@ -1358,7 +1295,8 @@
                     //改變textarea高度
                     changeTextarea: function (id) {
                         var textarea = document.getElementById(id);
-                        textarea.style.height = (textarea.scrollHeight + 10) + 'px';
+                        if (textarea.style.height < (textarea.scrollHeight + "px"))
+                            textarea.style.height = (textarea.scrollHeight + 10) + 'px';
                     },
                 },
             })

@@ -70,9 +70,10 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
             "SELECT client as name FROM `market` WHERE `aaa` BETWEEN ?1 AND ?2", nativeQuery = true)
     List<String> selectCompany(String startDay, String endDay);
 
-
-
-
-    @Query(value = "SELECT  *  from market WHERE user = ?1 AND ?2 >= endtime AND stage != '失敗結案' AND stage != '成功結案'", nativeQuery = true)
+    @Query(value = "SELECT  *  from market WHERE user = ?1 AND ?2 >= endtime AND stage != '失敗結案' AND stage != '成功結案' AND stage != '提交主管'", nativeQuery = true)
     List<MarketBean> getEndCast(String name,String day);
+    @Query(value = "SELECT  *  from market WHERE  stage = '提交主管'", nativeQuery = true)
+    List<MarketBean> getSubmitBos();
+
+    boolean existsByCustomerid(String customerid);
 }

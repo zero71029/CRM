@@ -293,10 +293,11 @@
                     },
                     printTable: function () {
                         location.href = "${pageContext.request.contextPath}/task/print/${bean.evaluateid}";
-                    },
+                    },//改變textarea高度
                     changeTextarea:function(id){                      
                         var textarea = document.getElementById(id);
-                        textarea.style.height = (textarea.scrollHeight+10) + 'px';
+                        if(textarea.style.height < (textarea.scrollHeight+"px"))
+                        textarea.style.height = (textarea.scrollHeight+10)  + 'px';
                     },
 
                 },

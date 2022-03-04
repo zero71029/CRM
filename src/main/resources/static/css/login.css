@@ -24,7 +24,7 @@ body {
 
 .navfix { 
     position: sticky;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 .navfix li {

@@ -17,7 +17,7 @@
         <!-- <script src="${pageContext.request.contextPath}/js/vue.js"></script> -->
 
         <!-- 引入样式 vue-->
-        <script src="${pageContext.request.contextPath}/js/vue.js"></script>
+        <script src="${pageContext.request.contextPath}/js/vue.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/axios.min.js"></script>
         <!-- 引入element-ui样式 -->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/js/element-ui.css">
@@ -128,7 +128,7 @@
 
             window.setTimeout(function () {
                 location.reload();
-            }, 600000);
+            }, 3600000);//1小時
             $(".market").hide();
             $(".client").hide();
             $(".system").hide();

@@ -44,6 +44,7 @@ public class PotentialCustomerBean {
 	private String line;
 	private String extension;//電話分機
 	private String aaa;//創建時間
+	private String 	serialnumber;//編號
 	
 	@JsonIgnore
 	@OrderBy("tracktime DESC")
@@ -63,13 +64,14 @@ public class PotentialCustomerBean {
 	@OneToMany(targetEntity = BosMessageBean.class ,mappedBy = "bosid", cascade = CascadeType.ALL)
 	private List<BosMessageBean> bm;
 
-	
-	
-	
-	
-	
-	
-	
+
+	public String getSerialnumber() {
+		return serialnumber;
+	}
+
+	public void setSerialnumber(String serialnumber) {
+		this.serialnumber = serialnumber;
+	}
 
 	public List<BosMessageBean> getBm() {
 		return bm;

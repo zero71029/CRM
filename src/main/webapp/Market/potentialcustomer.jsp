@@ -138,18 +138,6 @@
                             <div class="col-md-1 btn men">
                                 <a href="${pageContext.request.contextPath}/Market/potentialcustomerList.jsp">＜</a>
                             </div>
-                            <c:if test="${not empty bean}">
-                                <!-- <div class="col-md-1 btn men">
-                    <a href="javascript:goClient()">轉成客戶</a>
-                    </div>
-                    <div class="col-md-1 btn men">
-                    <a href="javascript:goContact()">建立聯絡⼈</a>
-                    </div>
-                    <div class="col-md-1 btn men">
-                    <a href="javascript:goWork()">新增工作項目</a>
-                    </div> -->
-                            </c:if>
-
                         </div>
                         <br>
                         <form action="${pageContext.request.contextPath}/Market/SavePotentialCustomer" method="post"
@@ -171,19 +159,23 @@
                                         <div class="col-md-1"></div>
                                         <div class="col-md-2 cellz">公司<span style="color: red;">*</span></div>
                                         <div class="col-md-8 cellz FormPadding">
-                                            <input type="text" class="col-md-9 form-control cellFrom client"
-                                                @blur="changeCompany" v-model.trim="companyName" name="company"
-                                                list="company" maxlength="100" required>
-                                            <datalist id="company">
-                                                <c:if test="${not empty client}">
-                                                    <c:forEach varStatus="loop" begin="0" end="${client.size()-1}"
-                                                        items="${client}" var="s">
-                                                        <option value="${s.name}">
-                                                    </c:forEach>
-                                                </c:if>
-                                            </datalist>
+                                            <div class="input-group ">
+                                                <input type="text" class="col-md-9 form-control cellFrom client"
+                                                    @blur="changeCompany" v-model.trim="companyName" name="company"
+                                                    list="company" maxlength="100" required>
+                                                <datalist id="company">
+                                                    <c:if test="${not empty client}">
+                                                        <c:forEach varStatus="loop" begin="0" end="${client.size()-1}"
+                                                            items="${client}" var="s">
+                                                            <option value="${s.name}">
+                                                        </c:forEach>
+                                                    </c:if>
+                                                </datalist>
+                                                <span class="input-group-text">-</span>
+                                                <input type="text" class="form-control" placeholder="編號" v-model.trim="customer.serialnumber"
+                                                    name="serialnumber" value="">
+                                            </div>
                                         </div>
-
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1"></div>
@@ -457,8 +449,7 @@
                                     <div class="col-md-3"></div>
                                     <div class="col-md-5 FormPadding">
                                         <button type="button" style="width: 100%;color: white; " class="btn btn-warning"
-                                            @click="submitForm">儲存
-                                        </button>
+                                            @click="submitForm">儲存</button>
                                     </div>
                                 </div>
                             </div>
@@ -638,7 +629,7 @@
 
                                             <a class="col-md-3" href="#" onclick="goClient()">轉成客戶</a>
                                             <a class="col-md-3" href="#" onclick="goContact()">建立聯絡⼈</a>
-                                            <a class="col-md-3" href="#" onclick="goMarket()">新增銷售機會</a>
+                                            <a class="col-md-3" href="#" onclick="NotExistMarket()">新增銷售機會</a>
                                             <a class="col-md-3" href="#" onclick="goWork()">新增工作項目</a>
                                         </div>
                                         <div class="dockbar row shadow  ">
@@ -732,16 +723,17 @@
                     url: '${pageContext.request.contextPath}/Market/existsClient',
                     type: 'POST',
                     data: formData,
-                    async: false,//同步請求
-                    cache: false,//不快取頁面
-                    contentType: false,//當form以multipart/form-data方式上傳檔案時，需要設定為false
-                    processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
+                    async: false,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
                     success: function (json) {
+                        console.log(json);
                         if (json == "客戶已存在") {
                             vm.$message({
                                 message: json,
                                 type: 'warning'
-                            });                            
+                            });
                             return;
                         }
                         if (json == "不存在") {
@@ -749,10 +741,10 @@
                                 url: '${pageContext.request.contextPath}/Market/changeClient.action',
                                 type: 'POST',
                                 data: formData,
-                                async: false,//同步請求
-                                cache: false,//不快取頁面
-                                contentType: false,//當form以multipart/form-data方式上傳檔案時，需要設定為false
-                                processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
+                                async: false,
+                                cache: false,
+                                contentType: false,
+                                processData: false,
                                 success: function (url) {
                                     vm.$message({
                                         message: url,
@@ -783,16 +775,16 @@
                     url: '${pageContext.request.contextPath}/Market/existsContact',
                     type: 'POST',
                     data: formData,
-                    async: false,//同步請求
-                    cache: false,//不快取頁面
-                    contentType: false,//當form以multipart/form-data方式上傳檔案時，需要設定為false
-                    processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
+                    async: false,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
                     success: function (json) {
                         if (json == "聯絡人已存在") {
                             vm.$message({
                                 message: json,
                                 type: 'warning'
-                            });    
+                            });
                             return;
                         }
                         if (json == "公司不存在") {
@@ -807,10 +799,10 @@
                                 url: '${pageContext.request.contextPath}/Market/changeContact.action',
                                 type: 'POST',
                                 data: formData,
-                                async: false,//同步請求
-                                cache: false,//不快取頁面
-                                contentType: false,//當form以multipart/form-data方式上傳檔案時，需要設定為false
-                                processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
+                                async: false,
+                                cache: false,
+                                contentType: false,
+                                processData: false,
                                 success: function (url) {
                                     vm.$message({
                                         message: url,
@@ -843,46 +835,106 @@
 
             //新增銷售機會
             function goMarket() {
-                var formData = new FormData($(".AAA")[0]);
-                console.log(formData.values());
+                vm.customer.status = "合格";
+                goClient();
+                window.setTimeout(function () {
+                    goContact();
+                }, 500);
+                window.setTimeout(function () {
+                    //存潛在客戶
+                    var formData = new FormData($(".AAA")[0]);
+                    $.ajax({
+                        url: '${pageContext.request.contextPath}/Market/SavePotentialCustomer',
+                        type: 'POST',
+                        data: formData,
+                        async: false,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        success: function (url) {
+                            vm.$message({
+                                message: "儲存成功",
+                                type: 'success'
+                            });
+                        },
+                        error: function (returndata) {
+                            console.log(returndata);
+                        }
+                    });
+
+                    //轉銷售機會
+                    $.ajax({
+                        url: '${pageContext.request.contextPath}/Market/existsClient',
+                        type: 'POST',
+                        data: formData,
+                        async: false,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        success: function (json) {
+                            if (json == "客戶已存在") {
+                                $(".AAA").attr("action", "${pageContext.request.contextPath}/Market/changeMarket");
+                                $(".AAA")[0].submit();
+                                console.log("end");
+                                return;
+                            }
+                            if (json == "不存在") {
+                                vm.$message({
+                                    message: "需先新增客戶",
+                                    type: 'warning'
+                                });
+                                return;
+                            }
+                            if (json == "聯絡人不存在") {
+                                vm.$message({
+                                    message: "需先新增聯絡人",
+                                    type: 'warning'
+                                });
+                                return;
+                            }
+                            alert("錯誤");
+                        },
+                        error: function (returndata) {
+                            console.log(returndata);
+                        }
+                    });
+                }, 900);
+
+
+
+            }
+            //檢查有無銷售機會
+            function NotExistMarket() {
                 $.ajax({
-                    url: '${pageContext.request.contextPath}/Market/existsClient',
-                    type: 'POST',
-                    data: formData,
-                    async: false,//同步請求
-                    cache: false,//不快取頁面
-                    contentType: false,//當form以multipart/form-data方式上傳檔案時，需要設定為false
-                    processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
-                    success: function (json) {
-                        if (json == "客戶已存在") {
-                            $(".AAA").attr("action", "${pageContext.request.contextPath}/Market/changeMarket");
-                            $(".AAA")[0].submit();
-                            return;
-                        }
-                        if (json == "不存在") {
-                            vm.$message({
-                                message: "需先新增客戶",
+                    url: '${pageContext.request.contextPath}/Market/existMarket/${bean.customerid}',
+                    async: false,
+                    cache: false,
+                    success: url => {
+                        console.log(url, "url")
+                        if (url) {//有資料尋問   沒資料去儲存
+                            vm.$confirm('已有轉銷售機會, 是否在一次?', '提示', {
+                                confirmButtonText: '確定',
+                                cancelButtonText: '取消',
                                 type: 'warning'
-                            }); 
-                            return;
+                            }).then(() => {
+                                goMarket()
+
+                            }).catch(() => {
+                                return false;
+                            });
+                        } else {
+                            goMarket()
                         }
-                        if (json == "聯絡人不存在") {
-                            vm.$message({
-                                message: "需先新增聯絡人",
-                                type: 'warning'
-                            }); 
-                            return;
-                        }
-                        alert("錯誤");
+
                     },
                     error: function (returndata) {
                         console.log(returndata);
-
                     }
 
                 });
 
             }
+
 
             // 添加協助者
             function addHelper() {
@@ -1000,7 +1052,6 @@
                     }
                 },
                 methods: {
-
                     submitForm() {//送出表單
                         this.customer.company = this.companyName;
                         //表單驗證
@@ -1025,8 +1076,27 @@
                             isok = false;
                         }
                         if (isok) {//通過驗證
+                            var formData = new FormData($(".AAA")[0]);
                             if ("${bean.customerid}" == "") {//如果是新資料 就 提交表單
-                                $('.basefrom').submit();
+                                $.ajax({
+                                    url: '${pageContext.request.contextPath}/Market/SavePotentialCustomer',
+                                    type: 'POST',
+                                    data: formData,
+                                    async: false,
+                                    cache: false,
+                                    contentType: false,
+                                    processData: false,
+                                    success: function (url) {
+                                        vm.$message({
+                                            message: "儲存成功",
+                                            type: 'success'
+                                        });
+                                        location.href = "${pageContext.request.contextPath}/Market/potentialcustomer/" + url;
+                                    },
+                                    error: function (returndata) {
+                                        console.log(returndata);
+                                    }
+                                });
                             } else {//如果不是新資料 就 紀錄修改
                                 var keys = Object.keys(this.customer);
                                 var data = {};
@@ -1042,8 +1112,24 @@
                                     .post('${pageContext.request.contextPath}/changeMessage/${bean.customerid}', data)
                                     .then(
                                         response => (
-                                            $('.basefrom').submit()
-
+                                            $.ajax({
+                                                url: '${pageContext.request.contextPath}/Market/SavePotentialCustomer',
+                                                type: 'POST',
+                                                data: formData,
+                                                async: false,
+                                                cache: false,
+                                                contentType: false,
+                                                processData: false,
+                                                success: function (url) {
+                                                    vm.$message({
+                                                        message: "儲存成功",
+                                                        type: 'success'
+                                                    });
+                                                },
+                                                error: function (returndata) {
+                                                    console.log(returndata);
+                                                }
+                                            })
                                         ))
                             }
                         } else {
@@ -1218,8 +1304,8 @@
                     //改變textarea高度
                     changeTextarea: function (id) {
                         var textarea = document.getElementById(id);
-                        var h = textarea.scrollHeight + 10;
-                        textarea.style.height = h + 'px';
+                        if (textarea.style.height < (textarea.scrollHeight + "px"))
+                            textarea.style.height = (textarea.scrollHeight + 10) + 'px';
                     },
                 },
             })

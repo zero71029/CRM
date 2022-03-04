@@ -50,7 +50,7 @@
                                         onclick="sta()">刪除</label>
                                 </c:if>
 
-
+                                <input type="checkbox" class="btn-check" id="btncheck3" v-model="btncheck3">
                                 <label class="btn btn-outline-primary" for="btncheck3"
                                     @click="aadmin(admin)">{{admin}}</label>
 
@@ -66,8 +66,8 @@
                                     <td><input type="checkbox" id="activity" @change="changeActivity"></td>
                                     <td></td>
                                     <td @click="sortState('state')"><a href="#">階段</a></td>
-                                    <td>名稱</td>
                                     <td>客戶</td>
+                                    <td>名稱</td>
                                     <td>負責人</td>
                                     <td>機率</td>
                                     <td @click="sortItem('important')"><a href="#">重要性</a></td>
@@ -83,10 +83,11 @@
                                     <!-- 階段 -->
                                     <td v-on:click="market(s.marketid)" :class="'state'+index" style="cursor: pointer;">
                                         {{s.stage}}</td>
-                                    <td v-on:click="market(s.marketid)" style="cursor: pointer;">
-                                        {{s.name}}</td>
                                     <td>
                                         {{s.client}}</td>
+                                    <td v-on:click="market(s.marketid)" style="cursor: pointer;">
+                                        {{s.name}}</td>
+
                                     <td v-on:click="market(s.marketid)" style="cursor: pointer;">
                                         {{s.user}}</td>
                                     <td v-on:click="market(s.marketid)" style="cursor: pointer;">
@@ -106,8 +107,6 @@
                                 </tr>
 
                             </table>
-
-
                             <!-- 分頁 -->
                             <div class="block text-center" key="2" v-if="show">
                                 <el-pagination @current-change="handleCurrentChange" :current-page.sync="currentPage1"
@@ -115,16 +114,31 @@
                                 </el-pagination>
                             </div>
                             <div key="3">今天筆數 : {{todayTotal}}</div>
+                            <div key="4">
+                                <el-button type="text" @click="SubmitBosVisible=true">提交主管 {{SubmitBos.length}}
+                                </el-button>
+                            </div>
                         </transition-group>
-
                         <!-- 到期任務 -->
-                        <el-dialog title="到期任務 (延長結束時間 或 結案)" :visible.sync="endCastVisible" :default-sort = "{prop: 'stage', order: 'descending'}">
+                        <el-dialog title="到期任務 (延長結束時間 或 結案)" :visible.sync="endCastVisible"
+                            :default-sort="{prop: 'stage', order: 'descending'}">
                             <el-table :data="endCast" @row-click="clickEndCast">
                                 <el-table-column property="client" label="公司"></el-table-column>
                                 <el-table-column property="message" label="描述"></el-table-column>
                                 <el-table-column property="stage" label="階段" sortable></el-table-column>
                             </el-table>
                         </el-dialog>
+                        <!-- 提交主管 -->
+                        <c:if test="${user.position == '主管' || user.position == '系統'}">
+                            <el-dialog title="提交主管" :visible.sync="SubmitBosVisible"
+                                :default-sort="{prop: 'aaa', order: 'descending'}">
+                                <el-table :data="SubmitBos" @row-click="clickEndCast">
+                                    <el-table-column property="client" label="公司"></el-table-column>
+                                    <el-table-column property="message" label="描述"></el-table-column>
+                                    <el-table-column property="aaa" label="創建日期" sortable></el-table-column>
+                                </el-table>
+                            </el-dialog>
+                        </c:if>
                         <!-- 滑塊 -->
                         <div class="offcanvas offcanvas-end " tabindex="0" id="offcanvasRight"
                             aria-labelledby="offcanvasRightLabel" style="width: 450px;">
@@ -390,29 +404,28 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!--  預算-->
-                                    <!-- <div class="accordion-item">
+                                    <!--  商品-->
+                                    <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingThree">
                                             <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#i11" 
-                                                >
-                                                預算
+                                                data-bs-toggle="collapse" data-bs-target="#i11">
+                                                商品
                                             </button>
                                         </h2>
                                         <div id="i11" class="accordion-collapse collapse"
                                             aria-labelledby="flush-headingThree">
                                             <div class="accordion-body">
-                                                <div class="input-group mb-3">
-                                                    <input type="text" class="form-control" v-model="budget1">
-                                                    <span class="input-group-text">~</span>
-                                                    <input type="text" class="form-control" v-model="budget2">
-                                                    <el-button type="primary" @click="selectBudget"
-                                                        style="width: 100%;">送出
-                                                    </el-button>
+                                                <div class="accordion-body">
+                                                    <div class="input-group mb-3">
+                                                        <input type="text" class="form-control" placeholder=""
+                                                            v-model="product">
+                                                        <button class="btn btn-outline-secondary"
+                                                            @click="selectList">搜索</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div> -->
+                                    </div>
                                 </div>
 
                             </div>
@@ -480,6 +493,7 @@
             const vm = new Vue({
                 el: '.app',
                 data: {
+                    btncheck3: false,//個人頁面按鈕
                     todayTotal: "",//
                     currentPage1: 1,//當前分頁
                     total: 1,//所有筆數
@@ -489,6 +503,8 @@
                     admin: '${user.name}',
                     endCast: [],//到期資料
                     endCastVisible: false,//到期資料彈窗
+                    SubmitBos: [],//提交主管
+                    SubmitBosVisible: false,//提交主管彈窗
                     ind: ["尚未分類",
                         "農、林、漁、牧業",
                         "礦業及土石採取業",
@@ -526,6 +542,7 @@
                     budget2: "",
                     //搜索區資料
                     oldList: [],
+                    product: "",
                     source: [],//產業
                     inDay: [],
                     inUserList: [],//負責人
@@ -572,20 +589,26 @@
                     },
                 },
                 created: function () {
+                    var url = new URL(location.href);
+                    const name = url.searchParams.get("user");
                     if (this.admin != "") {
-                        axios
-                            .get('${pageContext.request.contextPath}/Market/MarketList?pag=1')//銷售機會列表
-                            .then(response => (
-                                this.list = response.data.list,
-                                console.log(response.data.list),
-                                this.endCast = response.data.endCast,
-                                this.todayTotal = response.data.todayTotal,
+                        $.ajax({
+                            url: '${pageContext.request.contextPath}/Market/MarketList?pag=1',
+                            type: 'POST',
+                            async: false,
+                            cache: false,
+                            success: response => {
+                                this.list = response.list,
+                                this.endCast = response.endCast,
+                                this.todayTotal = response.todayTotal,
+                                this.SubmitBos = response.SubmitBos,
                                 this.show = true,
                                 this.endCast.length > 0 ? this.endCastVisible = true : this.endCastVisible = false
-                            ))
-                            .catch(function (error) {
-                                console.log(error);
-                            });
+                            },
+                            error: function (returndata) {
+                                console.log(returndata);
+                            }
+                        });
                         axios
                             .get('${pageContext.request.contextPath}/Market/total')//所有筆數
                             .then(response => (
@@ -597,6 +620,20 @@
                     } else {
                         alert("沒有權限");
                         location.href = "${pageContext.request.contextPath}/"
+                    }
+                    console.log(name);
+                    if (name != null) {
+                        this.btncheck3 = true;
+                        axios
+                            .get('${pageContext.request.contextPath}/Market/selectMarket/' + name)
+                            .then(response => (
+                                this.list = response.data,
+                                console.log(this.list, 'ddddddddd'),
+                                this.total = 20
+                            ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
                     }
                 },
                 methods: {
@@ -659,18 +696,17 @@
                             });
                     },
                     aadmin: function (name) {//搜索負責人
-                        console.log(name)
-                        axios
-                            .get('${pageContext.request.contextPath}/Market/selectMarket/' + name)
-                            .then(response => (
-                                this.list = response.data,
-                                console.log(response.data)
-                            ))
-                            .catch(function (error) {
-                                console.log(error);
-                            });
+                        var url = new URL(location.href);
+                        const n = url.searchParams.get("user");
+                        if (n == null) {
+                            location.href = "${pageContext.request.contextPath}/Market/MarketList.jsp?user=" + name;
+                        } else {
+                            location.href = "${pageContext.request.contextPath}/Market/MarketList.jsp";
+                        }
+
                     },
                     selectList: function () {//搜索
+                        this.btncheck3 = false;
                         if (this.inDay == "") {//沒輸入日期                  
                             this.inDay[0] = "";
                             this.inDay[1] = "";
@@ -774,6 +810,20 @@
                                 }
                             }
                         }
+                        if (this.product != "") {//成交機率
+                            this.oldList = this.list;
+                            this.list = [];
+                            for (var bean of this.oldList) {
+                                if (bean.product.indexOf(this.product) >= 0 || bean.message.indexOf(this.product) >= 0 || bean.name.indexOf(this.product) >= 0) {
+                                    this.list.push(bean);
+                                }
+                            }
+                        }
+
+
+
+
+
                         this.total = 20;
                         // this.inDay =[];
                         console.log(this.list.length, "this.list.length");
