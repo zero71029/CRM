@@ -66,6 +66,12 @@ public class SystemService {
 		Sort sort = Sort.by(Direction.ASC, so);
 		return ar.findAll(sort);
 	}
+	/////////////////////////////////////////////////////////////////////////////////////
+	// 讀取員工列表by職位
+	public List<AdminBean> getAdminByDepartment(String position) {
+
+		return ar.getByDepartment(position);
+	}
 
 /////////////////////////////////////////////////////////////////////////////////////
 	// 讀取員工細節

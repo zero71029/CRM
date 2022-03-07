@@ -79,4 +79,9 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
 
     @Query(value = "SELECT  *  from market WHERE user = ?1  AND stage != '失敗結案' AND stage != '成功結案' ", nativeQuery = true)
     List<MarketBean> findUser(String name);
+
+    @Query(value = "select count(name) from(        SELECT company as name FROM `potentialcustomer` WHERE `aaa` BETWEEN ?1 AND ?2 AND user =?3 \n" +
+            "UNION\n" +
+            "SELECT client as name FROM `market` WHERE `aaa` BETWEEN ?1 AND ?2 AND  user =?3) AS c", nativeQuery = true)
+    Integer getAminCastNum(String startDay, String endDay, String name);
 }
