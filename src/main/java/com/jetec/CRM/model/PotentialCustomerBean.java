@@ -44,8 +44,8 @@ public class PotentialCustomerBean {
 	private String line;
 	private String extension;//電話分機
 	private String aaa;//創建時間
-	private String 	serialnumber;//編號
-	
+	private String serialnumber;//編號
+	private String callhelp;//求助
 	@JsonIgnore
 	@OrderBy("tracktime DESC")
 	@OneToMany(mappedBy = "customerid", cascade = CascadeType.ALL)
@@ -60,10 +60,17 @@ public class PotentialCustomerBean {
 	@OneToMany(targetEntity = WorkBean.class ,mappedBy = "customerid", cascade = CascadeType.ALL)
 	private List<WorkBean> work;
 	
-	//工作項目
+	//留言
 	@OneToMany(targetEntity = BosMessageBean.class ,mappedBy = "bosid", cascade = CascadeType.ALL)
 	private List<BosMessageBean> bm;
 
+	public String getCallhelp() {
+		return callhelp;
+	}
+
+	public void setCallhelp(String callhelp) {
+		this.callhelp = callhelp;
+	}
 
 	public String getSerialnumber() {
 		return serialnumber;

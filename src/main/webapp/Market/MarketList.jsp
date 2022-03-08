@@ -79,7 +79,7 @@
                                 </tr>
                                 <tr class="item" v-for="(s, index) in list" :key="index">
                                     <td><input type="checkbox" :value="s.marketid" name="mak" @change="clickmak"></td>
-                                    <td>{{index+1}}</td>
+                                    <td>{{index+1}}   <i class="el-icon-help" style="color: red;"  v-if="s.callhelp == 1"></i>  </td>
                                     <!-- 階段 -->
                                     <td v-on:click="market(s.marketid)" :class="'state'+index" style="cursor: pointer;">
                                         {{s.stage}}</td>
@@ -117,9 +117,11 @@
                             <div key="4">
                                 <el-button type="text" @click="SubmitBosVisible=true">提交主管 {{SubmitBos.length}}
                                 </el-button>
+                                <el-button type="text" @click="CallBosVisible=true">延長請求 {{CallBos.length}}
+                                </el-button>
                             </div>
                         </transition-group>
-                        <!-- 到期任務 -->
+                        <!-- 到期任務 彈窗-->
                         <el-dialog title="到期任務 (延長結束時間 或 結案)" :visible.sync="endCastVisible"
                             :default-sort="{prop: 'stage', order: 'descending'}">
                             <el-table :data="endCast" @row-click="clickEndCast">
@@ -128,7 +130,7 @@
                                 <el-table-column property="stage" label="階段" sortable></el-table-column>
                             </el-table>
                         </el-dialog>
-                        <!-- 提交主管 -->
+                        <!-- 提交主管 彈窗-->
                         <c:if test="${user.position == '主管' || user.position == '系統'}">
                             <el-dialog title="提交主管" :visible.sync="SubmitBosVisible"
                                 :default-sort="{prop: 'aaa', order: 'descending'}">
@@ -139,6 +141,27 @@
                                 </el-table>
                             </el-dialog>
                         </c:if>
+                        <br><br><br><br><br>
+                        <!-- 延長請求 彈窗-->
+                        <c:if test="${user.position == '主管' || user.position == '系統'}">
+                            <el-dialog title="延長請求" :visible.sync="CallBosVisible"
+                                :default-sort="{prop: 'aaa', order: 'descending'}">
+                                <el-table :data="CallBos" @row-click="clickEndCast">
+                                    <el-table-column property="client" label="公司"></el-table-column>
+                                    <el-table-column property="message" label="描述"></el-table-column>
+                                    <el-table-column property="aaa" label="創建日期" sortable></el-table-column>
+                                </el-table>
+                            </el-dialog>
+                        </c:if>
+
+
+
+
+
+
+
+
+
                         <!-- 滑塊 -->
                         <div class="offcanvas offcanvas-end " tabindex="0" id="offcanvasRight"
                             aria-labelledby="offcanvasRightLabel" style="width: 450px;">
@@ -505,6 +528,8 @@
                     endCastVisible: false,//到期資料彈窗
                     SubmitBos: [],//提交主管
                     SubmitBosVisible: false,//提交主管彈窗
+                    CallBos:[],//延長通知
+                    CallBosVisible:false,//延長通知彈窗
                     ind: ["尚未分類",
                         "農、林、漁、牧業",
                         "礦業及土石採取業",
@@ -602,6 +627,7 @@
                                 this.endCast = response.endCast,
                                 this.todayTotal = response.todayTotal,
                                 this.SubmitBos = response.SubmitBos,
+                                this.CallBos = response.CallBos,
                                 this.show = true,
                                 this.endCast.length > 0 ? this.endCastVisible = true : this.endCastVisible = false
                             },
@@ -819,11 +845,6 @@
                                 }
                             }
                         }
-
-
-
-
-
                         this.total = 20;
                         // this.inDay =[];
                         console.log(this.list.length, "this.list.length");

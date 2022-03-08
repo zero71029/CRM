@@ -95,6 +95,7 @@ public class MarketControler {
         result.put("endCast", ms.getEndCast(user.getName()));
         result.put("list", list);
         result.put("todayTotal", ms.gettodayTotal());
+        result.put("CallBos", ms.CallBos());
         return result;
     }
 
@@ -449,9 +450,11 @@ public class MarketControler {
         bean.setClinch(3);
         bean.setFax((pBean.getFax()));
         bean.setCreatetime("轉賣/自用");
-
+        //設定結束日期
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        bean.setEndtime(sdf.format(new Date()));
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) +7);
+        bean.setEndtime(sdf.format(calendar.getTime()));
 
 
         Map<String, Object> result = new HashMap<>();
@@ -626,18 +629,35 @@ public class MarketControler {
     //通知主管延長
     @RequestMapping("/callBos/{marketid}")
     @ResponseBody
-    public boolean callBos(@PathVariable("marketid") String marketid) {
+    public String callBos(@PathVariable("marketid") String marketid) {
         System.out.println("通知主管延長");
-        MarketBean mbean =ms.getById(marketid);
-        if(mbean.getCallbos() == null|| !mbean.getCallbos().equals("1")){
+        MarketBean mbean = ms.getById(marketid);
+        if (mbean.getCallbos() == null || !mbean.getCallbos().equals("1")) {
             mbean.setCallbos("1");
             ms.save(mbean);
-            return true;
-        }else {
-        return false;
+            return "通知主管";
+        } else {
+            mbean.setCallbos("0");
+            ms.save(mbean);
+            return "取消通知";
         }
-
-
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //求助
+    @RequestMapping("/CallHelp/{marketid}")
+    @ResponseBody
+    public String CallHelp(@PathVariable("marketid") String marketid) {
+        System.out.println("求助");
+        MarketBean mbean = ms.getById(marketid);
+        if (mbean.getCallhelp() == null || !mbean.getCallhelp().equals("1")) {
+            mbean.setCallhelp("1");
+            ms.save(mbean);
+            return "求助";
+        } else {
+            mbean.setCallhelp("0");
+            ms.save(mbean);
+            return "取消";
+        }
     }
 
 }

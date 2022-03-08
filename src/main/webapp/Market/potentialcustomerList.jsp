@@ -346,7 +346,8 @@
                                     <td><input type="checkbox" :value="s.customerid" name="mak" @change="clickmak" :id="s.customerid"></td>
                                     <td>{{index+1}} <span class="badge rounded-pill bg-danger"
                                             v-show="s.bm.length > 0">{{s.bm.length ==
-                                            0?"":s.bm.length}} </td>
+                                            0?"":s.bm.length}}</span> 
+                                            <i class="el-icon-help" style="color: red;" v-if="s.callhelp == 1"></i></td>
                                     <td v-on:click="customer(s.customerid)" style="cursor: pointer;"
                                         :class="'state'+index">
                                         {{s.status}}</td>

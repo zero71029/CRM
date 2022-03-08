@@ -297,4 +297,9 @@ public class MarketService {
     public List<MarketBean> selectMarketByUser(String name) {
         return mr.findUser(name);
     }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 搜索銷售機會by延長申請
+    public  List<MarketBean> CallBos() {
+        return mr.findByCallbos("1");
+    }
 }

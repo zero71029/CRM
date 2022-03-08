@@ -87,4 +87,5 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
     @Query(value = "SELECT  *  from market WHERE aaa BETWEEN ?1 AND ?2 ORDER BY aaa DESC", nativeQuery = true)
     List<MarketBean> findAaa(String startTime, String endTime);
 
+    List<MarketBean> findByCallbos(String s);
 }

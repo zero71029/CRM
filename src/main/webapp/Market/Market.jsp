@@ -578,7 +578,7 @@
                                                 style="float:right"></el-button>
                                         </div>
                                         <div class="col-md-2 FormPadding">
-                                            <input type="text" class=" form-control cellzFrom EndTime" name="endtime"
+                                            <input type="text" :class="CallBosCss" name="endtime"
                                                 v-model.trim="bean.endtime" readonly>
                                         </div>
                                     </div>
@@ -821,6 +821,7 @@
                                     </div>
                                     <div class="col-md-2" @click="changeTableVisible = true">紀錄</div>
                                     <div class="col-md-2">留言</div>
+                                    <div :class="CallHelpCSS" @click="CallHelp">求助</div>
                                 </div>
                             </div>
                         </c:if>
@@ -978,6 +979,8 @@
                 el: '.app',
                 data() {
                     return {
+                        CallBosCss: "form-control cellzFrom EndTime ",
+                        CallHelpCSS:"col-md-2",
                         existsCustomer: false,//是否是淺在顧客轉過來
                         inclient: "",//搜索客戶輸入
                         changeTableVisible: false,
@@ -1072,6 +1075,10 @@
                     if (this.bean.user == undefined || this.bean.user == "") {
                         this.bean.user = '無';
                         this.oldBean.user = '無';
+                    }
+                    console.log(this.bean.callhelp,"this.bean.callhelp");
+                    if(this.bean.callhelp == "1"){
+                        this.CallHelpCSS = "col-md-2 bg-danger";
                     }
 
                 },
@@ -1334,21 +1341,44 @@
                             type: 'POST',
                             async: false,
                             cache: false,
-                            success: (response => (
-                               console.log(response)
-
-                            )),
+                            success: function (response) {
+                                if (response == "通知主管")
+                                    vm.$message.success(response + ",請求延長")
+                                if (response == "取消通知")
+                                    vm.$message.warning(response)
+                            },
                             error: function (returndata) {
                                 console.log(returndata);
                             }
                         });
                     },
+                    //求助
+                    CallHelp: function () {
+                        $.ajax({
+                            url: '${pageContext.request.contextPath}/Market/CallHelp/' + this.bean.marketid,
+                            type: 'POST',
+                            async: false,
+                            cache: false,
+                            success: function (response) {
+                                console.log(response);
+                                if(response == "求助"){
+                                    vm.CallHelpCSS = "col-md-2 bg-danger";
+                                    vm.$message.success(response + "成功")
+                                }else{
+                                    vm.CallHelpCSS = "col-md-2";
+                                    vm.$message.warning(response)
+                                }
+                            },
+                            error: function (returndata) {
+                                console.log(returndata);
+                            }
+                        });
+                    }
                 },
             })
             function formatDay(day) {
                 return day.getFullYear() + "-" + (day.getMonth() + 1) + "-" + day.getDate();
             }
-
         </script>
 
         <style>
@@ -1367,6 +1397,9 @@
 
             .aaaa {
                 border: 0px white solid;
+            }
+            .bg-danger{
+                color: white;
             }
         </style>
 

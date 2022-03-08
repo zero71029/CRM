@@ -50,6 +50,7 @@ public class MarketBean {
     private String jobtitle;//職稱
     private String serialnumber;//編號
     private String  callbos;//通知主管
+    private String callhelp;//求助
 
     public String getContactmethod() {
         return contactmethod;
@@ -74,6 +75,14 @@ public class MarketBean {
 //	@OneToMany(targetEntity = WorkBean.class, mappedBy = "marketid", cascade = CascadeType.ALL)
 //	private List<WorkBean> work;
 
+
+    public String getCallhelp() {
+        return callhelp;
+    }
+
+    public void setCallhelp(String callhelp) {
+        this.callhelp = callhelp;
+    }
 
     public String getCallbos() {
         return callbos;

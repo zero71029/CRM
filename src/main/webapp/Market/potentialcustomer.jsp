@@ -171,7 +171,7 @@
                                                         </c:forEach>
                                                     </c:if>
                                                 </datalist>
-                                                
+
                                                 <input type="text" class="form-control" placeholder="編號"
                                                     v-model.trim="customer.serialnumber" name="serialnumber" value="">
                                             </div>
@@ -223,7 +223,7 @@
                                         <div class="col-md-3 cellz FormPadding">
                                             <input type="text" class=" form-control cellFrom" name="moblie"
                                                 v-model.trim="customer.moblie" maxlength="20">
-                                        </div>                                        
+                                        </div>
 
                                         <div class="col-md-2 cellz">部門</div>
                                         <div class="col-md-3 cellz FormPadding"><input type="text"
@@ -346,7 +346,9 @@
                                     <div class="row">
                                         <div class="col-md-3 cellz">潛在客戶負責人</div>
                                         <div class="col-md-7 cellz FormPadding">
-                                            <c:set var="salary"  value="${user.position != '職員' || user.name == '江緯哲'|| user.name == '謝姍妤'|| user.name == '林冠樺'|| user.name == '莊文菊'|| user.name == '陳彥霖'}"></c:set>
+                                            <c:set var="salary"
+                                                value="${user.position != '職員' || user.name == '江緯哲'|| user.name == '謝姍妤'|| user.name == '林冠樺'|| user.name == '莊文菊'|| user.name == '陳彥霖'}">
+                                            </c:set>
 
                                             <c:if test="${salary}">
                                                 <select name="user" class="form-select cellFrom" v-model="customer.user"
@@ -623,6 +625,7 @@
                                             <div class="col-md-2" v-on:click="showbosMassage">留言 <span
                                                     class="badge rounded-pill bg-danger">{{bosMassageList.length ==
                                                     0?"":bosMassageList.length}}</span></div>
+                                            <div :class="CallHelpCSS" @click="CallHelp">求助</div>
                                         </div>
 
                             </div>
@@ -952,6 +955,7 @@
                 el: '.app',
                 data() {
                     return {
+                        CallHelpCSS: "col-md-2",//求助CSS                        
                         isEligible: false,
                         changeTableVisible: false,
                         changeMessageList: [],//修改資訊
@@ -994,29 +998,35 @@
                 },
                 created() {
                     if (this.important == "") this.important = '低';
-                    //潛在客戶初始化                    
-                    axios
-                        .get('${pageContext.request.contextPath}/Potential/init/${bean.customerid}')
-                        .then(response => (
-                            this.TrackList = response.data.track,
-                            this.bosMassageList = response.data.bosmessage,
-                            this.oldCustomer = response.data.customer,
+                    //潛在客戶初始化
+                    $.ajax({
+                        url: '${pageContext.request.contextPath}/Potential/init/${bean.customerid}',
+                        type: 'POST',
+                        async: false,//同步請求
+                        cache: false,//不快取頁面
+                        success: (response => (
+                            this.TrackList = response.track,
+                            this.bosMassageList = response.bosmessage,
+                            this.oldCustomer = response.customer,
                             this.customer = Object.assign({}, this.oldCustomer),
-                            this.changeMessageList = response.data.changeMessage
-
-                        ))
-                        .catch(function (error) {
+                            this.changeMessageList = response.changeMessage
+                        )),
+                        error: function (returndata) {
                             console.log("沒有取得資訊");
-                        });
+                        }
+                    });
                     $('.bosMessagediv').hide();
                     if (this.customer.industry == undefined || this.customer.industry == "") {
                         this.customer.industry = '尚未分類';
-                        this.oldCustomer.industry = '未處理';
+                        this.oldCustomer.industry = '尚未分類';
                     }
 
                     if (this.customer.status == undefined || this.customer.status == "") {
                         this.customer.status = '未處理';
                         this.oldCustomer.status = '未處理';
+                    }
+                    if (this.customer.callhelp == "1") {
+                        this.CallHelpCSS = "col-md-2 bg-danger";
                     }
                 },
                 watch: {
@@ -1116,7 +1126,6 @@
                             alert("紅框要輸入")
                         }
                     },
-
                     showbosMassage() {//點擊留言
 
                         $('.bosMessagediv').toggle();
@@ -1226,7 +1235,8 @@
                             });
                         });
                     },
-                    removeTrack(bean) {//刪除追蹤資訊
+                    //刪除追蹤資訊
+                    removeTrack(bean) {
                         this.$confirm('此操作將永久删除, 是否繼續?', '提示', {
                             confirmButtonText: '確定',
                             cancelButtonText: '取消',
@@ -1253,7 +1263,8 @@
                                 message: '已取消删除'
                             });
                         });
-                    }, removeTrackremark(remark) {//
+                    },
+                    removeTrackremark(remark) {
                         this.$confirm('此操作將永久删除 "' + remark.content + '" 是否繼續?', '提示', {
                             confirmButtonText: '確定',
                             cancelButtonText: '取消',
@@ -1287,6 +1298,29 @@
                         if (textarea.style.height < (textarea.scrollHeight + "px"))
                             textarea.style.height = (textarea.scrollHeight + 10) + 'px';
                     },
+                    //求助
+                    CallHelp: function () {
+                        console.log("error");
+                        $.ajax({
+                            url: '${pageContext.request.contextPath}/Potential/CallHelp/' + this.customer.customerid,
+                            type: 'POST',
+                            async: false,
+                            cache: false,
+                            success: function (response) {
+                                console.log(response);
+                                if (response == "求助") {
+                                    vm.CallHelpCSS = "col-md-2 bg-danger";
+                                    vm.$message.success(response + "成功")
+                                } else {
+                                    vm.CallHelpCSS = "col-md-2";
+                                    vm.$message.warning(response)
+                                }
+                            },
+                            error: function (returndata) {
+                                console.log(returndata);
+                            }
+                        });
+                    }
                 },
             })
             // textarea.style.height = textarea.scrollHeight + 'px';
@@ -1303,6 +1337,10 @@
 
             .form-control:focus {
                 color: #276ace;
+            }
+
+            .bg-danger {
+                color: white;
             }
         </style>
 
