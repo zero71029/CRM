@@ -566,19 +566,17 @@
 
                                         <div class="col-md-1 cellz">案件類型</div>
                                         <div class="col-md-2 FormPadding">
-
-
                                             <select name="createtime" id="createtime" v-model="bean.createtime"
                                                 @change="changeCreateTime" class=" form-select cellzFrom">
                                                 <option value="轉賣/自用">轉賣/自用</option>
                                                 <option value="設計/預算規劃">設計/預算規劃</option>
                                                 <option value="工程標案">工程標案</option>
                                             </select>
-
-
-
                                         </div>
-                                        <div class="col-md-1 cellz">結束時間</div>
+                                        <div class="col-md-1 cellz">結束時間
+                                            <el-button type="text" icon="el-icon-phone-outline" @click="callBos"
+                                                style="float:right"></el-button>
+                                        </div>
                                         <div class="col-md-2 FormPadding">
                                             <input type="text" class=" form-control cellzFrom EndTime" name="endtime"
                                                 v-model.trim="bean.endtime" readonly>
@@ -993,7 +991,7 @@
                             customerid: "",
                             important: "低",
                             endtime: myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate(),
-                            aaa:new Date(),
+                            aaa: new Date(),
                         },
                         oldBean: {},
                         changeMessageList: [],//修改資訊
@@ -1134,8 +1132,6 @@
                             }
                         }
                     },
-
-
                     open(s) {//修改追蹤資訊
                         this.$alert('<form action="${pageContext.request.contextPath}/Market/changeTrackByMarket/${bean.marketid}" method = "post" >\
                                                     <div class="row">\
@@ -1330,7 +1326,23 @@
                         if (this.bean.createtime == "工程標案") day.setDate(day.getDate() + 30);
                         this.bean.endtime = formatDay(day);
                         console.log(this.bean.marketid, "client");
-                    }
+                    },
+                    //通知主管
+                    callBos: function () {
+                        $.ajax({
+                            url: '${pageContext.request.contextPath}/Market/callBos/' + this.bean.marketid,
+                            type: 'POST',
+                            async: false,
+                            cache: false,
+                            success: (response => (
+                               console.log(response)
+
+                            )),
+                            error: function (returndata) {
+                                console.log(returndata);
+                            }
+                        });
+                    },
                 },
             })
             function formatDay(day) {
@@ -1357,10 +1369,5 @@
                 border: 0px white solid;
             }
         </style>
-
-
-
-
-
 
         </html>

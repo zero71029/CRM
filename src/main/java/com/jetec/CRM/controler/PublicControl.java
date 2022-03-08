@@ -1,14 +1,10 @@
 package com.jetec.CRM.controler;
 
-import java.io.File;
-import java.nio.file.Files;
-import java.util.*;
-
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
+import com.jetec.CRM.Tool.ZeroTools;
+import com.jetec.CRM.controler.service.SystemService;
+import com.jetec.CRM.controler.service.WorkSerivce;
 import com.jetec.CRM.model.*;
+import com.jetec.CRM.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,17 +18,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.jetec.CRM.Tool.ZeroTools;
-import com.jetec.CRM.controler.service.SystemService;
-import com.jetec.CRM.controler.service.WorkSerivce;
-import com.jetec.CRM.repository.AdminRepository;
-import com.jetec.CRM.repository.AuthorizeRepository;
-import com.jetec.CRM.repository.BillboardFileRepository;
-import com.jetec.CRM.repository.BillboardReplyRepository;
-import com.jetec.CRM.repository.BillboardRepository;
-import com.jetec.CRM.repository.ReplyAdviceRepository;
-import com.jetec.CRM.repository.ReplyFileRepository;
-import com.jetec.CRM.repository.ReplyTimeRepository;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.nio.file.Files;
+import java.util.*;
 
 @Controller
 public class PublicControl {
@@ -89,16 +80,8 @@ public class PublicControl {
                             @RequestParam("sort") String sortString, Authentication authentication) {
         System.out.println("*****主頁面*****");
 
-//		// 驗證 補session user
-//		if (authentication != null) {
-//			System.out.println("authentication: " + authentication.getName());
-//			ss.auth(authentication, session);
-//		} else {
-//			System.out.println("沒有authentication");
-//		}
-
-        List<BillboardBean> advice = new ArrayList<BillboardBean>();
-        List<BillboardBean> unread = new ArrayList<BillboardBean>();
+//        List<BillboardBean> advice = new ArrayList<BillboardBean>();
+//        List<BillboardBean> unread = new ArrayList<BillboardBean>();
 
         // 分頁
         if (pag < 1)
@@ -117,16 +100,16 @@ public class PublicControl {
         if (user != null) {
             // 抓被@的資料
             AdminBean adminBean = ar.getById(user.getAdminid());
-            List<BillboardAdviceBean> a = adminBean.getAdvice();
-            for (BillboardAdviceBean bean : a) {
-                if (bean.getReply().equals("1"))
-                    advice.add(br.getById(bean.getBillboardid()));
-            }
-            // 抓被未讀的資料
-            List<AdminMailBean> mail = adminBean.getMail();
-            for (AdminMailBean bean : mail) {
-                unread.add(br.getById(bean.getBillboardid()));
-            }
+//            List<BillboardAdviceBean> a = adminBean.getAdvice();
+//            for (BillboardAdviceBean bean : a) {
+//                if (bean.getReply().equals("1"))
+//                    advice.add(br.getById(bean.getBillboardid()));
+//            }
+//            // 抓被未讀的資料
+//            List<AdminMailBean> mail = adminBean.getMail();
+//            for (AdminMailBean bean : mail) {
+//                unread.add(br.getById(bean.getBillboardid()));
+//            }
 
             //////////////////////////////////////////////////////////////////////////////
             if (sortString.equals("createtime"))
@@ -139,8 +122,8 @@ public class PublicControl {
 
             }
             session.setAttribute("user", adminBean);
-            model.addAttribute("advice", advice);// 抓被@的資料
-            model.addAttribute("unread", unread);// 抓被未讀的資料
+//            model.addAttribute("advice", advice);// 抓被@的資料
+//            model.addAttribute("unread", unread);// 抓被未讀的資料
         } else {
             AdminBean xxx = null;
             if (sortString.equals("createtime"))
@@ -150,6 +133,38 @@ public class PublicControl {
             }
         }
         return "/CRM";
+    }
+
+    //初始化(讀取未讀)
+    @RequestMapping(path = {"init"})
+    @ResponseBody
+    public Map<String , Object> CRMInit(HttpSession session) {
+        System.out.println("*****初始化*****");
+        Map<String , Object> result = new HashMap<>();
+        List<BillboardBean> advice = new ArrayList<BillboardBean>();
+        List<BillboardBean> unread = new ArrayList<BillboardBean>();
+
+        // 抓取登入者
+        AdminBean user = (AdminBean) session.getAttribute("user");
+        // 如果有登入者 更新資料
+        if (user != null) {
+            // 抓被@的資料
+            AdminBean adminBean = ar.getById(user.getAdminid());
+            List<BillboardAdviceBean> a = adminBean.getAdvice();
+            for (BillboardAdviceBean bean : a) {
+                if (bean.getReply().equals("1"))
+                    advice.add(br.getById(bean.getBillboardid()));
+            }
+            // 抓被未讀的資料
+            List<AdminMailBean> mail = adminBean.getMail();
+            for (AdminMailBean bean : mail) {
+                unread.add(br.getById(bean.getBillboardid()));
+            }
+        }
+        result.put("advice" ,advice);
+        result.put("unread",unread);
+        return result;
+
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -653,12 +668,12 @@ public class PublicControl {
 //紀錄修改
     @RequestMapping("/changeMessage/{id}")
     @ResponseBody
-    public boolean changeMessage(@RequestBody Map<String, Object> map, @PathVariable("id") String id,HttpSession session) {
+    public boolean changeMessage(@RequestBody Map<String, Object> map, @PathVariable("id") String id, HttpSession session) {
         System.out.println(map);
         Set<String> set = map.keySet();
         Iterator<String> it = set.iterator();
         ChangeMessageBean cmbean = new ChangeMessageBean();
-        if(map == null || map.isEmpty())return false;
+        if (map == null || map.isEmpty()) return false;
         AdminBean aBean = (AdminBean) session.getAttribute("user");
         while (it.hasNext()) {
             cmbean.setChangemessageid(zTools.getUUID());
@@ -672,16 +687,16 @@ public class PublicControl {
             System.out.printf("key:%s,value:%s\n", key, map.get(key));
             List<Object> list = (List<Object>) map.get(key);
 
-           if(list.get(1) == null  ){//如果 來源為空 不儲存
-           }else{
-               if(list.get(0) == null  ){//目的地為空
-                   cmbean.setAfter("");
-               }else{
-                   cmbean.setAfter(list.get(0).toString());
-               }
-               cmbean.setSource(list.get(1).toString());
-               ss.saveChangeMesssage(cmbean);
-           }
+            if (list.get(1) == null) {//如果 來源為空 不儲存
+            } else {
+                if (list.get(0) == null) {//目的地為空
+                    cmbean.setAfter("");
+                } else {
+                    cmbean.setAfter(list.get(0).toString());
+                }
+                cmbean.setSource(list.get(1).toString());
+                ss.saveChangeMesssage(cmbean);
+            }
         }
         return true;
     }

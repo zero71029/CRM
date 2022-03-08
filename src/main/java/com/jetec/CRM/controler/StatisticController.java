@@ -45,15 +45,11 @@ public class StatisticController {
         } else {
             endDay = endDay + " 24:00";
         }
-        System.out.println(startDay);
-        System.out.println(endDay);
-        ss.selectCompany(startDay, endDay);
-
         Map<String, Object> CompanyNumList = getListByDate(startDay.substring(0, 10), endDay.substring(0, 10));
         result.put("CompanyNumList", CompanyNumList);//每天公司數量
         result.put("companyNum", ss.selectCompany(startDay, endDay));//公司名稱列表
         result.put("AdminCastNum", AdminCastNum(startDay, endDay));//取得個業務案件數量
-        System.out.println(result);
+
         return result;
 
     }
@@ -69,30 +65,19 @@ public class StatisticController {
         for (AdminBean abean : adminList) {
             result.put(abean.getName() ,ss.getAminCastNum(startDay,endDay,abean.getName()));
         }
-        System.out.println(result);
         return result;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     public Map<String, Object> getListByDate(@RequestParam("from") String startDay, @RequestParam("to") String endDay) {
         Map<String, Object> result = new HashMap<>();
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        System.out.println(startDay);
-        System.out.println(endDay);
-        System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
         while (addDay(endDay).compareTo(startDay) > 0) {
             String s = startDay + " 00:00";
             String e = startDay + " 23:00";
             List<String> ll = ss.selectCompany(s, e);
-            System.out.println("s :" + s + "  e: " + e + "  AAA:" + ll);
-
             result.put(startDay, ss.selectCompany(s, e));
             startDay = addDay(startDay);
-
-
         }
-        System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
-        System.out.println(result);
         return result;
 
     }

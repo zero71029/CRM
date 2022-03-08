@@ -17,7 +17,7 @@
         <!-- <script src="${pageContext.request.contextPath}/js/vue.js"></script> -->
 
         <!-- 引入样式 vue-->
-        <script src="${pageContext.request.contextPath}/js/vue.js"></script>
+        <script src="${pageContext.request.contextPath}/js/vue.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/axios.min.js"></script>
         <!-- 引入element-ui样式 -->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/js/element-ui.css">
@@ -68,7 +68,8 @@
                     服務管理
                 </button>
                 <button class="list-group-item " onclick="javascript:location.href='${pageContext.request.contextPath}/statistic/statistic.jsp'">
-                    數據管理
+                   <!-- <i class="el-icon-pie-chart"></i>  -->
+                   數據管理
                 </button>
                 <c:if test='${user.position == "主管" || user.position == "系統" ||user.position == "總經理"}'>
                     <button class="list-group-item " onclick="system()">

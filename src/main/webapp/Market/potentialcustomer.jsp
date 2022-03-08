@@ -337,9 +337,6 @@
                                                 @input="changeTextarea('remark')">
 
 
-                                                <!-- <textarea class="form-control " id="validationTextarea" name="remark"
-                                                    v-model.trim="customer.remark" rows="5"
-                                                    maxlength="200">${bean.remark}</textarea> -->
                                         </div>
                                     </div>
 
@@ -349,50 +346,31 @@
                                     <div class="row">
                                         <div class="col-md-3 cellz">潛在客戶負責人</div>
                                         <div class="col-md-7 cellz FormPadding">
-                                            <c:if test="${user.position != '職員' }">
+                                            <c:set var="salary"  value="${user.position != '職員' || user.name == '江緯哲'|| user.name == '謝姍妤'|| user.name == '林冠樺'|| user.name == '莊文菊'|| user.name == '陳彥霖'}"></c:set>
+
+                                            <c:if test="${salary}">
                                                 <select name="user" class="form-select cellFrom" v-model="customer.user"
                                                     aria-label="Default select example">
                                                     <option value="無">無</option>
                                                     <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}"
                                                         items="${admin}" var="s">
-
-
                                                         <c:if test="${s.department == '業務' }">
                                                             <option value="${s.name}">
                                                                 ${s.name}</option>
                                                         </c:if>
-
                                                     </c:forEach>
                                                     <option value="系統管理"> 系統管理</option>
                                                 </select>
                                             </c:if>
-                                            <c:if test="${user.position == '職員' }">
+                                            <c:if test="${!salary}">
                                                 <input type="hidden" name="user" v-model.trim="customer.user">
                                                 {{customer.user}}
                                             </c:if>
-
                                         </div>
                                     </div>
 
                                     <div class="row ">
                                         <div class="col-md-3 cellz"></div>
-                                        <!--  
-                            <div class="col-lg-7">
-                                <a href="javascript:$('.help').toggle()">+添加協助者</a>
-                                <div class="input-group help">
-
-                                    <select class="form-select" name="helper">
-                                        <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}"
-                                                   items="${admin}" var="s">
-                                            <option value="${s.name}">${s.name}</option>
-                                        </c:forEach>
-                                    </select>
-                                    <button class="btn btn-outline-secondary" type="button"
-                                            onclick="addHelper()">添加
-                                    </button>
-                                </div>
-                            </div>
--->
                                     </div>
                                     <div class="row ">
                                         <div class="col-md-3 cellz"></div>

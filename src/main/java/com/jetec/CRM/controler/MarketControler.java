@@ -331,7 +331,6 @@ public class MarketControler {
         clientBean.setSerialnumber(Bean.getSerialnumber());
 
 
-
         ClientBean saveBean = cs.SaveAdmin(clientBean);
         return "新增客戶";
     }
@@ -449,6 +448,11 @@ public class MarketControler {
         bean.setJobtitle(pBean.getJobtitle());
         bean.setClinch(3);
         bean.setFax((pBean.getFax()));
+        bean.setCreatetime("轉賣/自用");
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        bean.setEndtime(sdf.format(new Date()));
+
 
         Map<String, Object> result = new HashMap<>();
         result.put("bean", bean);
@@ -613,9 +617,27 @@ public class MarketControler {
     //檢查有無銷售機會
     @RequestMapping("/existMarket/{customerid}")
     @ResponseBody
-    public boolean existMarket( @PathVariable("customerid") String customerid) {
+    public boolean existMarket(@PathVariable("customerid") String customerid) {
         System.out.println("檢查有無銷售機會");
         return ms.existMarket(customerid);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //通知主管延長
+    @RequestMapping("/callBos/{marketid}")
+    @ResponseBody
+    public boolean callBos(@PathVariable("marketid") String marketid) {
+        System.out.println("通知主管延長");
+        MarketBean mbean =ms.getById(marketid);
+        if(mbean.getCallbos() == null|| !mbean.getCallbos().equals("1")){
+            mbean.setCallbos("1");
+            ms.save(mbean);
+            return true;
+        }else {
+        return false;
+        }
+
+
     }
 
 }

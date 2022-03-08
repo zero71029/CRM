@@ -196,7 +196,7 @@
 
                         for (const i of keys) {
                             if(this.AdminCastNum[i] >0)
-                            obj.push({ value: this.AdminCastNum[i], name: i });
+                            obj.push({ value: this.AdminCastNum[i], name: i +"["+this.AdminCastNum[i]+"]"});
                         }
 
                         console.log(obj, "obj");

@@ -17,6 +17,11 @@
 
 
         <style>
+            tr td span a {
+                color: #777;
+                font-size: 0.9rem;
+                text-decoration: none;
+            }
 
             .body {
                 background-color: white;
@@ -30,7 +35,7 @@
                     <!-- <%-- 插入側邊欄--%> -->
                     <jsp:include page="/Sidebar.jsp"></jsp:include>
                     <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
-                    <div class="col-lg-11 ">
+                    <div class="col-lg-11 app">
 
                         <div class="row ">
                             <div class="col-lg-11">
@@ -177,7 +182,8 @@
                                             </ul>
                                             <!-- 小鈴鐺 -->
                                             <c:if test="${not empty user}">
-                                                <div style="position: relative; cursor: pointer;" onclick="sh()">
+                                                <div style="position: relative; cursor: pointer;"
+                                                    @click="unreadVisible = true">
                                                     <img src="${pageContext.request.contextPath}/img/bell.png" alt="未讀">
                                                 </div>
                                                 <div style=" color: red;  font-weight:bold; cursor: pointer;">
@@ -192,11 +198,12 @@
                                                                 b += a;
                                                             </script>
                                                         </c:forEach>
-                                                        <span onclick="sh()" class="aaa"></span>
+                                                        <span @click="unreadVisible = true" class="aaa"></span>
                                                     </c:if>
                                                     <!-- 未讀 -->
                                                     <c:if test="${not empty user.mail}">
-                                                        <span onclick="showUnread()">未讀:${user.mail.size()}</span>
+                                                        <span
+                                                            @click="unreadVisible = true">未讀:${user.mail.size()}</span>
                                                     </c:if>
                                                 </div>
 
@@ -244,13 +251,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <style>
-                                            tr td span a {
-                                                color: #777;
-                                                font-size: 0.9rem;
-                                                text-decoration: none;
-                                            }
-                                        </style>
+
                                         <c:if test="${not empty list}">
                                             <c:forEach varStatus="loop" begin="0" end="${list.size()-1}" items="${list}"
                                                 var="s">
@@ -349,9 +350,7 @@
                                                         ${s.createtime}
                                                     </td>
                                                     <!-- 最後回覆時間 -->
-
                                                     <td style="text-align: center;">
-
                                                         ${s.reply[0].name}
                                                         <br>${s.reply[0].createtime}
                                                         ${reply}
@@ -368,7 +367,7 @@
 
                             </div>
 
-                            <div class="col-lg-3 app">
+                            <div class="col-lg-3 ">
                                 <!-- 分頁 -->
                                 <c:if test="${not empty param.pag}">
                                     <nav aria-label="Page navigation example">
@@ -411,7 +410,60 @@
                                 <!-- 彈窗 -->
 
 
-                                <c:if test="${not empty unread}">
+                                <el-dialog title="未讀" :visible.sync="unreadVisible">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">日期</th>
+                                                <th colspan="2" scope="col">主題</th>
+                                                <th scope="col">Handle</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(s, index) in unread" :key="index">
+                                                <th scope="row" @click="gobillboard(s.billboardid)"
+                                                    style="cursor: pointer;">{{s.createtime}}</th>
+                                                <td colspan="2" @click="gobillboard(s.billboardid)"
+                                                    style="cursor: pointer;">
+                                                    <el-popover placement="top-start" width="200" trigger="hover">
+                                                        <div v-html="s.content"></div>
+                                                        <span slot="reference">{{s.theme}}</span>
+                                                    </el-popover>
+                                                </td>
+                                                <td>
+                                                    <el-link type="primary" @click="read(s.billboardid)"><i
+                                                            class="bi bi-hand-thumbs-up"></i> </el-link>
+                                                </td>
+                                            </tr>
+                                            <tr v-for="(s, index) in advice" :key="index">
+                                                <th scope="row" @click="gobillboard(s.billboardid)"
+                                                    style="cursor: pointer;">{{s.createtime}}</th>
+                                                <td colspan="2" @click="gobillboard(s.billboardid)"
+                                                    style="cursor: pointer;">
+
+
+                                                    <el-popover placement="top-start" trigger="hover">
+                                                        <div v-html="s.content"></div>
+                                                        <span slot="reference">{{s.theme}}</span>
+                                                    </el-popover>
+
+                                                </td>
+                                                <td>
+                                                    <el-link type="primary" @click="read(s.billboardid)"><i
+                                                            class="bi bi-hand-thumbs-up"></i> </el-link>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </el-dialog>
+
+
+
+
+
+
+
+                                <!-- <c:if test="${not empty unread}">
                                     <c:forEach varStatus="loop" begin="0" end="${unread.size()}" items="${unread}"
                                         var="unread">
                                         <div class="unread a${unread.billboardid}" title="未讀">
@@ -434,7 +486,7 @@
                                             <p>${advice.content}</p>
                                         </div>
                                     </c:forEach>
-                                </c:if>
+                                </c:if> -->
 
 
 
@@ -444,54 +496,39 @@
                     </div>
                 </div>
             </div>
-
-
-
-
-
-
             <script>
-                window.setTimeout(function () {
-                    location.href = '${pageContext.request.contextPath}/';
-                }, 600000);
-                // 彈窗
-                $(".dialog").dialog({                   
-                    autoOpen: false,
-                    position: {
-                        at: "right top"
-                    }
-                });
-                function sh() {
-                    $('.dialog').dialog("open");
-                }
-                $(".unread").dialog({                  
-                    autoOpen: false,
-                    position: {
-                        at: "right top"
-                    }
-                });
-                function showUnread() {
-                    $('.unread').dialog("open");
-                }
-                function read(billboardid) {
-                    $(".unread").dialog("close");
-                    $('.dialog').dialog("close");
-                    vm.read(billboardid);
-                }
-
                 const vm = new Vue({
                     el: '.app',
                     data() {
                         return {
-                            dialogVisible: true,
+                            unread: [],
+                            advice: [],
+                            unreadVisible: false
                         }
+                    },
+                    mounted() {
+                        console.log("請求未讀資料");
+                        $.ajax({
+                            url: '${pageContext.request.contextPath}/init',
+                            type: 'get',
+                            success: json => {
+                                this.unread = json.unread,
+                                    this.advice = json.advice
+                            },
+                            error: function (returndata) {
+                                console.log(returndata.responseJSON.message);
+
+                            }
+                        });
                     },
                     methods: {
                         read(billboardid) {
                             console.log("ddddd");
                             $.ajax({
-                                url: '${pageContext.request.contextPath}/read/' + billboardid + '/${user.adminid}',//接受請求的Servlet地址
+                                url: '${pageContext.request.contextPath}/read/' + billboardid + '/${user.adminid}',
                                 type: 'get',
+                                async: false,
+                                cache: false,
                                 success: json => {
                                     if (json == "找不到資料") {
                                         this.$message({
@@ -510,6 +547,37 @@
 
                                 }
                             });
+                            var old = this.unread;
+                            this.unread = [];
+                            for (const s of old) {
+                                if (s.billboardid != billboardid) {
+                                    this.unread.push(s);
+                                }
+                            }
+                            old = this.advice;
+                            this.advice = [];
+                            for (const s of old) {
+                                if (s.billboardid != billboardid) {
+                                    this.advice.push(s);
+                                }
+                            }
+                        },
+                        gobillboard: function (billboardid) {
+                            window.open("${pageContext.request.contextPath}/billboardReply/" + billboardid);
+                            var old = this.unread;
+                            this.unread = [];
+                            for (const s of old) {
+                                if (s.billboardid != billboardid) {
+                                    this.unread.push(s);
+                                }
+                            }
+                            old = this.advice;
+                            this.advice = [];
+                            for (const s of old) {
+                                if (s.billboardid != billboardid) {
+                                    this.advice.push(s);
+                                }
+                            }
                         }
                     }
                 })
