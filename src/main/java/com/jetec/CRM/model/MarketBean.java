@@ -26,6 +26,8 @@ public class MarketBean implements Serializable {
     private String contactextension;//聯絡人電話分機
     private String contactmoblie;// 聯絡人手機
     private String contactemail;// 聯絡人email
+    private String contactmethod;//聯絡方式
+    private String contacttitle;//聯絡人稱謂
     private String type;// 產業
     private String source;// 機會來源
     private Integer clinch;// 成交機率
@@ -41,7 +43,6 @@ public class MarketBean implements Serializable {
     private String important;//重要性
     private String line;
     private String customerid;//追蹤資訊
-    private String contactmethod;//聯絡方式
     private Integer clicks;//點擊數
     private String fax;//傳真
     private Integer clientid;//客戶id
@@ -51,6 +52,7 @@ public class MarketBean implements Serializable {
     private String  callbos;//通知主管
     private String callhelp;//求助
     private String fileforeignid;//附件id
+
 
     public String getContactmethod() {
         return contactmethod;
@@ -88,6 +90,13 @@ public class MarketBean implements Serializable {
                 '}';
     }
 
+    public String getContacttitle() {
+        return contacttitle;
+    }
+
+    public void setContacttitle(String contacttitle) {
+        this.contacttitle = contacttitle;
+    }
 
     public String getFileforeignid() {
         return fileforeignid;

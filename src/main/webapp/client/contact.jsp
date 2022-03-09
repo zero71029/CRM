@@ -15,8 +15,8 @@
             <title>CRM客戶管理系統</title>
         </head>
         <style>
-            
-            .contactbar { /* 按鈕顏色 */
+            .contactbar {
+                /* 按鈕顏色 */
                 background-color: #afe3d5;
             }
 
@@ -96,7 +96,19 @@
                                 <div class="row">
                                     <div class="col-md-1"></div>
                                     <div class="col-md-1 cell">聯絡人名稱*</div>
-                                    <div class="col-md-2 cell FormPadding">
+                                    <div class="col-md-1 FormPadding">
+                                        <select name="contacttitle" class="form-select cellzFrom">
+                                            <option ${bean.contacttitle=="" ?"selected":""} value="">稱謂</option>
+                                            <option ${bean.contacttitle=="Mr" ?"selected":""} value="Mr">Mr</option>
+                                            <option ${bean.contacttitle=="Ms" ?"selected":""} value="Ms">Ms</option>
+                                            <option ${bean.contacttitle=="DR" ?"selected":""} value="DR">DR</option>
+                                            <option ${bean.contacttitle=="Assoc. Prof" ?"selected":""}
+                                                value="Assoc. Prof">Assoc. Prof</option>
+                                            <option ${bean.contacttitle=="Prof." ?"selected":""} value="Prof.">Prof.
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-1 cell FormPadding">
                                         <input type="text" class=" form-control cellFrom" name="name"
                                             value="${bean.name}" maxlength="20" required>
                                     </div>
@@ -108,14 +120,15 @@
                                     <div class="col-md-1 cell">負責人*</div>
                                     <div class="col-md-2 cell FormPadding">
                                         <c:if test="${user.position != '職員' }">
-                                            <select name="user" class="form-select cellzFrom" 
+                                            <select name="user" class="form-select cellzFrom"
                                                 aria-label="Default select example">
                                                 <option value="無">無</option>
                                                 <c:if test="${not empty admin}">
                                                     <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}"
                                                         items="${admin}" var="s">
                                                         <c:if test="${s.department == '業務' }">
-                                                            <option value="${s.name}" ${bean.user == s.name? "selected":""} >
+                                                            <option value="${s.name}" ${bean.user==s.name? "selected"
+                                                                :""}>
                                                                 ${s.name}</option>
                                                         </c:if>
                                                     </c:forEach>
@@ -149,13 +162,13 @@
                                     <div class="col-md-1 cell">電話</div>
                                     <div class="col-md-3 cell FormPadding">
                                         <div class="input-group ppp">
-                                            <input type="text" class="form-control ppp" name="phone" value="${bean.phone}"
-                                                 maxlength="20">
+                                            <input type="text" class="form-control ppp" name="phone"
+                                                value="${bean.phone}" maxlength="20">
                                             <span class="input-group-text">-</span>
-                                            <input type="text" class="form-control" name="extension" value="${bean.extension}"
-                                                 maxlength="10" placeholder="分機">
+                                            <input type="text" class="form-control" name="extension"
+                                                value="${bean.extension}" maxlength="10" placeholder="分機">
                                         </div>
-                                    </div>   
+                                    </div>
                                     <div class="col-md-2"></div>
                                     <div class="col-md-1 cell">上次聯絡時間</div>
                                     <div class="col-md-2 cell FormPadding">

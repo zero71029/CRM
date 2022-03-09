@@ -191,8 +191,22 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-2 cellz">聯絡人 <span style="color: red;">*</span>
+
                                                 </div>
-                                                <div class="col-md-6 FormPadding" @click="openDialog">
+
+                                                <div class="col-md-2 FormPadding">
+                                                    <select name="contacttitle" class="form-select cellzFrom" v-model="bean.contacttitle">
+                                                        <option value="" >稱謂</option>
+                                                        <option value="Mr">Mr</option>
+                                                        <option value="Ms">Ms</option>
+                                                        <option value="DR">DR</option>
+                                                        <option value="Assoc. Prof">Assoc. Prof</option>
+                                                        <option value="Prof.">Prof.</option>
+                                                    </select>
+                                                </div>
+
+
+                                                <div class="col-md-4 FormPadding" @click="openDialog">
                                                     <input type="text" class=" form-control cellzFrom col-md-4"
                                                         v-model.trim="bean.contactname" name="contactname"
                                                         maxlength="20" readonly>
@@ -254,8 +268,8 @@
                                                         v-model.trim="bean.contactemail" name="contactemail"
                                                         maxlength="50">
                                                 </div>
-                                                <div class="col-md-2 cellz">來源</div>
-                                                <div class="col-md-4 FormPadding">
+                                                <div class="col-md-2 cellz">來源 <span style="color: red;">*</span></div>
+                                                <div class="col-md-4 FormPadding" >
                                                     <select class="form-select cellzFrom" name="source"
                                                         v-model.trim="bean.source">
                                                         <option value="廣告">
@@ -366,7 +380,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-1 "> </div>
-                                                <div class="col-md-2 cellz">重要性</div>
+                                                <div class="col-md-2 cellz">重要性 <span style="color: red;">*</span></div>
                                                 <div class="col-md-4 FormPadding">
                                                     <select class="form-select cellzFrom" name="important"
                                                         v-model.trim="bean.important">
@@ -402,8 +416,8 @@
                                                     <el-upload class="upload-demo"
                                                         :action="'${pageContext.request.contextPath}/upFileByMarket?authorizeId='+bean.fileforeignid"
                                                         :on-preview="handlePreview" :on-remove="handleRemove"
-                                                        :before-remove="beforeRemove" multiple :on-success="onsuccess" :on-error="onerror"
-                                                        :file-list="fileList">
+                                                        :before-remove="beforeRemove" multiple :on-success="onsuccess"
+                                                        :on-error="onerror" :file-list="fileList">
                                                         <el-button size="small" type="primary">上傳附件</el-button>
                                                     </el-upload>
                                                 </div>
@@ -566,7 +580,7 @@
                                             <input type="number" class=" form-control cellzFrom" name="cost"
                                                 v-model.trim="bean.cost" maxlength="30">
                                         </div>
-                                        <div class="col-md-1 cellz">成交機率<span style="color: red;">*</span></div>
+                                        <div class="col-md-1 cellz">成交機率</div>
 
                                         <div class="col-md-2 FormPadding clinch">
                                             <el-rate v-model.trim="bean.clinch"
@@ -646,7 +660,7 @@
                         <form action="" method="post" id="SaveTrack" class="row g-3 needs-validation" novalidate>
                             <input type="hidden" name="remark" value="${user.name}">
                             <input type="hidden" name="customerid" value="${bean.customerid}">
-                            
+
                             <div class="row">
                                 <div class="col-md-1"></div>
                                 <div class="col-md-4 FormPadding">
@@ -897,7 +911,7 @@
             function contact() {
 
                 $.ajax({
-                    url: '${pageContext.request.contextPath}/Market/selectContactByClientName/' + $("input[name='client']").val(), 
+                    url: '${pageContext.request.contextPath}/Market/selectContactByClientName/' + $("input[name='client']").val(),
                     type: 'POST',
 
                     success: function (json) {
@@ -999,8 +1013,8 @@
                         changeTableVisible: false,
                         dialogVisible: false,//公司彈窗
                         clientList: [],//客戶列表
-                        bean: {   
-                            fileforeignid:Math.random()*1000,
+                        bean: {
+                            fileforeignid: Math.random() * 1000,
                             createtime: "轉賣/自用",//案件類型
                             clinch: 3,
                             phone: "",
@@ -1009,6 +1023,8 @@
                             important: "低",
                             endtime: myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate(),
                             aaa: new Date(),
+                            contacttitle:"",
+                            source:"其他",
                         },
                         oldBean: {},
                         changeMessageList: [],//修改資訊
@@ -1095,8 +1111,8 @@
                         this.CallHelpCSS = "col-md-2 bg-danger";
                     }
                     this.fileList = this.bean.marketfilelist;
-                                            
-                    console.log("this.fileList ",this.fileList );
+
+                    console.log("this.fileList ", this.fileList);
 
 
 
@@ -1126,10 +1142,7 @@
                             $("input[name='product']").css("border", "red 1px solid");
                             isok = false;
                         }
-                        if (this.bean.clinch == null || this.bean.clinch == 0) {
-                            $(".clinch").css("border", "red 1px solid");
-                            isok = false;
-                        }
+
                         if (this.bean.message == null || this.bean.message == "") {
                             $("#message").css("border", "red 1px solid");
                             isok = false;
@@ -1400,7 +1413,6 @@
                             type: 'POST',
                             success: function (response) {
 
-
                             },
                             error: function (returndata) {
                                 console.log(returndata);
@@ -1413,26 +1425,26 @@
                     },
                     beforeRemove(file, fileList) {
                         return this.$confirm(`確定刪除 ${file.name}?`);
-                    }, 
-                    onsuccess(response,file, fileList) {
-                        console.log(response,"response");
-                        console.log(file,"file");
-                        console.log(fileList,"fileList");
-                        if(response == null ||response == ""){                           
-                            this.$message.error("上傳錯誤,請聯絡管理員");
-                            file.status="fail";
-                            fileList.splice(fileList.length-1, 1);
-                        }else{
-                            fileList[fileList.length-1].url =response.url;
-                            fileList[fileList.length-1].name =response.name;
-                        }                        
-                        console.log(fileList,"new");
-                     
                     },
-                    onerror(response,file, fileList){
-                        console.log(response,"response");
-                        console.log(file,"file");
-                        console.log(fileList,"fileList");
+                    onsuccess(response, file, fileList) {
+                        console.log(response, "response");
+                        console.log(file, "file");
+                        console.log(fileList, "fileList");
+                        if (response == null || response == "") {
+                            this.$message.error("上傳錯誤,請聯絡管理員");
+                            file.status = "fail";
+                            fileList.splice(fileList.length - 1, 1);
+                        } else {
+                            fileList[fileList.length - 1].url = response.url;
+                            fileList[fileList.length - 1].name = response.name;
+                        }
+                        console.log(fileList, "new");
+
+                    },
+                    onerror(response, file, fileList) {
+                        console.log(response, "response");
+                        console.log(file, "file");
+                        console.log(fileList, "fileList");
                     }
                 },
             })
@@ -1466,7 +1478,8 @@
             .el-upload-list__item-name [class^=el-icon] {
                 height: auto;
             }
-            .el-icon-close-tip{
+
+            .el-icon-close-tip {
                 display: none;
             }
         </style>

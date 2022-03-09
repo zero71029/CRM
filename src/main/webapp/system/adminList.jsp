@@ -42,7 +42,7 @@
                                             onclick="sta()">刪除</label>
 
                                         <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off">
-                                        <label class="btn btn-outline-primary" for="btncheck3" onclick="">XXX</label>
+                                        <label class="btn btn-outline-primary" for="btncheck3" onclick="javascript:location.href='${pageContext.request.contextPath}/system/adminList/XXX'">XXX</label>
                                     </div>
                                 </div> <!-- <%-- 抬頭搜索--%> -->
                                 <div class="col-lg-5">

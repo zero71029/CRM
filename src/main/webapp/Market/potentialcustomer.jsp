@@ -181,13 +181,29 @@
                                     <div class="row">
                                         <div class="col-md-1"></div>
                                         <div class="col-md-2 cellz">聯絡人<span style="color: red;">*</span></div>
+
+                                        <div class="col-md-2 FormPadding">
+                                            <select name="contacttitle" class="form-select cellzFrom" v-model="customer.contacttitle">
+                                                <option value="" >稱謂</option>
+                                                <option value="Mr">Mr</option>
+                                                <option value="Ms">Ms</option>
+                                                <option value="DR">DR</option>
+                                                <option value="Assoc. Prof">Assoc. Prof</option>
+                                                <option value="Prof.">Prof.</option>
+                                            </select>
+                                        </div>
+
+
+
+
+
                                         <div class="col-md-3 cellz FormPadding">
                                             <input type="text" class=" form-control cellFrom" name="name"
                                                 v-model.trim="customer.name" maxlength="20" required>
                                         </div>
-                                        <div class="col-md-2 cellz">職稱</div>
+                                        
                                         <div class="col-md-3 cellz FormPadding">
-                                            <input type="text" class=" form-control cellFrom" name="jobtitle"
+                                            <input type="text" class=" form-control cellFrom" name="jobtitle" placeholder="職稱"
                                                 v-model.trim="customer.jobtitle" maxlength="20">
                                         </div>
                                     </div>
@@ -282,9 +298,9 @@
                                             <input type="text" class=" form-control cellFrom" name="fax"
                                                 v-model.trim="customer.fax" maxlength="20">
                                         </div>
-                                        <div class="col-md-2 cellz">來源 </div>
-                                        <div class="col-md-3 cellz FormPadding">
-                                            <select class="form-select cellFrom" name="source"
+                                        <div class="col-md-2 cellz">來源 <span style="color: red;">*</span></div>
+                                        <div class="col-md-3 cellz FormPadding ">
+                                            <select class="form-select cellFrom " id="source"
                                                 v-model.trim="customer.source">
                                                 <option value="廣告" class="selItemOff">
                                                     廣告
@@ -415,7 +431,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-3 cellz">重要性</div>
+                                        <div class="col-md-3 cellz">重要性 <span style="color: red;">*</span> </div>
                                         <div class="col-md-7 cellz FormPadding">
                                             <select class="form-select cellFrom" name="important"
                                                 v-model.trim="important">
@@ -975,6 +991,8 @@
                         oldCustomer: {},//暫存表
                         customer: {
                             fileforeignid: Math.random() * 1000,
+                            contacttitle:"",
+                            source:"其他",
                         },//bean
                         bosMassage: "",//主管留言欄位
                         bosMassageList: [],//組長留言資料
@@ -1079,6 +1097,11 @@
                         }
                         if (this.customer.remark == null || this.customer.remark == "") {
                             $("#remark").css("border", "red 1px solid");
+                            isok = false;
+                        }
+
+                        if (this.customer.source == null || this.customer.source == "") {
+                            $("#source").css("border", "red 1px solid");
                             isok = false;
                         }
                         if (isok) {//通過驗證

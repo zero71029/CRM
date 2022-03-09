@@ -40,7 +40,7 @@ public class ContactBean {
     private String user;//負責人
     private String contacttime;//上次聯絡時間
     private String line;//
-
+    private String contacttitle;//聯絡人稱謂
 
     @ManyToOne(targetEntity = ClientBean.class)
     @JoinColumn(name = "clientid", referencedColumnName = "clientid", insertable = false, updatable = false)
@@ -51,6 +51,13 @@ public class ContactBean {
     @OneToMany(targetEntity = WorkBean.class, mappedBy = "contactid", cascade = CascadeType.ALL)
     private List<WorkBean> work;
 
+    public String getContacttitle() {
+        return contacttitle;
+    }
+
+    public void setContacttitle(String contacttitle) {
+        this.contacttitle = contacttitle;
+    }
 
     public String getExtension() {
         return extension;
@@ -282,6 +289,7 @@ public class ContactBean {
                 ", user='" + user + '\'' +
                 ", contacttime='" + contacttime + '\'' +
                 ", line='" + line + '\'' +
+                ", contacttitle='" + contacttitle + '\'' +
                 ", client=" + client +
                 ", work=" + work +
                 '}';

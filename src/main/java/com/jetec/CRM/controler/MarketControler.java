@@ -349,7 +349,7 @@ public class MarketControler {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//銷售機會 轉 聯絡人
+//潛在各戶 轉 聯絡人
     @RequestMapping("/changeContact.action")
     @ResponseBody
     public String changeContact(ContactBean contactBean) {
@@ -452,6 +452,8 @@ public class MarketControler {
         bean.setEndtime(sdf.format(calendar.getTime()));
         bean.setFileforeignid(pBean.getFileforeignid());
         bean.setMarketfilelist(pBean.getMarketfilelist());
+        bean.setContacttitle(pBean.getContacttitle());
+
 
 
 

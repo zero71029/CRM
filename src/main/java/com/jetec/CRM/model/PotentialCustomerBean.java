@@ -43,7 +43,7 @@ public class PotentialCustomerBean implements Serializable {
     private String serialnumber;//編號
     private String callhelp;//求助
     private String fileforeignid;//附件id
-
+    private String contacttitle;//聯絡人稱謂
 
     @Override
     public String toString() {
@@ -76,6 +76,13 @@ public class PotentialCustomerBean implements Serializable {
     @OneToMany(targetEntity = BosMessageBean.class, mappedBy = "bosid", cascade = CascadeType.ALL)
     private List<BosMessageBean> bm;
 
+    public String getContacttitle() {
+        return contacttitle;
+    }
+
+    public void setContacttitle(String contacttitle) {
+        this.contacttitle = contacttitle;
+    }
 
     public String getFileforeignid() {
         return fileforeignid;

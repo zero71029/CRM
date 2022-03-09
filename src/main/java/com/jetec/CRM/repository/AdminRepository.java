@@ -1,7 +1,9 @@
 package com.jetec.CRM.repository;
 
 import com.jetec.CRM.model.AdminBean;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -21,5 +23,8 @@ public interface AdminRepository extends JpaRepository<AdminBean, Integer>{
 
 	AdminBean findByEmail(String username);
 
+	@Query(value = "SELECT  *  from admin WHERE state != '離職' order By adminid ASC ", nativeQuery = true)
+	List<AdminBean> getAll();
 
+	List<AdminBean> findByState(String state);
 }
