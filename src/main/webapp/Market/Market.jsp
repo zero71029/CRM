@@ -1395,6 +1395,17 @@
                     },//附件
                     handleRemove(file, fileList) {
                         console.log(file, fileList);
+                        $.ajax({
+                            url: '${pageContext.request.contextPath}/delFileByMarket/' + file.fileid,
+                            type: 'POST',
+                            success: function (response) {
+
+
+                            },
+                            error: function (returndata) {
+                                console.log(returndata);
+                            }
+                        });
                     },
                     handlePreview(file) {//點擊檔案
                         console.log("file", file);

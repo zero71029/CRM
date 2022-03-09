@@ -440,10 +440,6 @@
 
                                         </div>
                                     </div>
-
-
-
-
                                 </div>
                                 <p>&nbsp;</p>
                                 <div class="row">
@@ -505,8 +501,6 @@
                                 </div>
                             </form>
                             <!-- -->
-
-
                             <div class="row replyImg" v-for="(s, index) in TrackList" :key="index">
                                 <div class="col-md-1"></div>
                                 <div class="col-md-11">
@@ -968,19 +962,19 @@
                     },
                 });
             }
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             const vm = new Vue({
                 el: '.app',
                 data() {
                     return {
-                        fileList:[],
+                        fileList: [],
                         CallHelpCSS: "col-md-2",//求助CSS                        
                         isEligible: false,
                         changeTableVisible: false,
                         changeMessageList: [],//修改資訊
                         oldCustomer: {},//暫存表
                         customer: {
-                            fileforeignid:Math.random()*1000,
+                            fileforeignid: Math.random() * 1000,
                         },//bean
                         bosMassage: "",//主管留言欄位
                         bosMassageList: [],//組長留言資料
@@ -1031,7 +1025,7 @@
                             this.oldCustomer = response.customer,
                             this.customer = Object.assign({}, this.oldCustomer),
                             this.changeMessageList = response.changeMessage
-                            
+
                         )),
                         error: function (returndata) {
                             console.log("沒有取得資訊");
@@ -1118,7 +1112,6 @@
                                     } else {
                                         data[iterator] = [this.customer[iterator], this.oldCustomer[iterator]];
                                     }
-
                                 }
                                 axios
                                     .post('${pageContext.request.contextPath}/changeMessage/${bean.customerid}', data)
@@ -1344,15 +1337,27 @@
                         });
                     },
                     //附件
-                    handleRemove(file, fileList) {
+                    handleRemove(file, fileList) {//刪除附件
                         console.log(file, fileList);
+                        $.ajax({
+                            url: '${pageContext.request.contextPath}/delFileByMarket/' + file.fileid,
+                            type: 'POST',
+                            success: function (response) {
+
+
+                            },
+                            error: function (returndata) {
+                                console.log(returndata);
+                            }
+                        });
+
                     },
-                    handlePreview(file) {//點擊檔案
+                    handlePreview(file) {//點擊附件
                         console.log("file", file);
                         window.open("${pageContext.request.contextPath}/file/" + file.url);
                     },
                     beforeRemove(file, fileList) {
-                        return this.$confirm(`確定刪除 ${file.name}?`);
+                        return this.$confirm('確定刪除'+file.name);
                     },
                     onsuccess(response, file, fileList) {
                         console.log(response, "response");
@@ -1390,10 +1395,12 @@
             .bg-danger {
                 color: white;
             }
+
             .el-upload-list__item-name [class^=el-icon] {
                 height: auto;
             }
-            .el-icon-close-tip{
+
+            .el-icon-close-tip {
                 display: none;
             }
         </style>

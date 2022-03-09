@@ -181,12 +181,12 @@ public class UpfileController {
 //return "redirect:/file/" + billBoardFileBean.getName();
 //}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//上傳留言型錄
+//上傳附件
     @RequestMapping("/upFileByMarket")
     @ResponseBody
     public MarketFileBean upFileByMarket(MultipartHttpServletRequest multipartRequest,
                                          @RequestParam("authorizeId") String authorizeId) {
-        System.out.println("*****上傳型錄*****" + authorizeId);
+        System.out.println("*****上傳附件*****" + authorizeId);
         Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
         System.out.println("fileMap " + fileMap);//圖片儲存
         try {
@@ -214,37 +214,14 @@ public class UpfileController {
         }
         return null;
     }
-
-//    @RequestMapping("/upFileByPotential")
-//    @ResponseBody
-//    public MarketFileBean upFileByPotential(MultipartHttpServletRequest multipartRequest,
-//                                         @RequestParam("authorizeId") String authorizeId) {
-//        System.out.println("*****上傳型錄*****" + authorizeId);
-//        Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
-//        System.out.println("fileMap " + fileMap);//圖片儲存
-//        try {
-////2. 儲存圖片到資料夾
-//            if (fileMap.get("file") != null) {//讀取檔眳
-//                System.out.println(fileMap.get("file").getOriginalFilename());//讀取副檔名
-//                String lastname = fileMap.get("file").getOriginalFilename()
-//                        .substring(fileMap.get("file").getOriginalFilename().indexOf("."));
-//                System.out.println(lastname);
-//                String path2 = "C:/CRMfile/" + fileMap.get("file").getOriginalFilename();
-//                String path3 = "C:\\Users\\Rong\\Desktop\\tomcat-9.0.41\\webapps\\CRM\\WEB-INF\\classes\\static\\file\\"
-//                        + fileMap.get("file").getOriginalFilename();
-////檔案輸出
-//                System.out.println("檔案輸出到" + path2);
-//                fileMap.get("file").transferTo(new File(path2));
-//                System.out.println("輸出成功");
-////3. 儲存檔案名稱到資料庫
-//                MarketFileBean fileBean = new MarketFileBean(zTools.getUUID(), authorizeId, fileMap.get("file").getOriginalFilename(), authorizeId, fileMap.get("file").getOriginalFilename());
-//                MarketFileBean save = US.save(fileBean);
-//                return save;
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//        return null;
-//    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//刪除附件
+    @RequestMapping("/delFileByMarket/{fileid}")
+    @ResponseBody
+    public MarketFileBean delFileByMarket(@PathVariable("fileid") String fileid) {
+        System.out.println("*****刪除附件*****" );
+        MarketFileBean bean = US.getByid(fileid);
+        US.delByName(bean.getName());
+        return null;
+    }
 }

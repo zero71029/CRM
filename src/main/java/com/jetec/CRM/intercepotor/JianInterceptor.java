@@ -10,9 +10,7 @@ public class JianInterceptor implements WebMvcConfigurer {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/file/**").addResourceLocations(
-				"file:C:\\Users\\Rong\\Desktop\\apache-tomcat-9.0.53\\webapps\\CRM\\WEB-INF\\classes\\static\\file\\");
-		registry.addResourceHandler("/file/**").addResourceLocations(
-				"file:c:/CRMfile/");
-//		registry.addResourceHandler("/file/**").addResourceLocations( "file:c:/CRMfile/");
+				"file:c:/CRMfile/","file:e:/CRMfile/");
+//		registry.addResourceHandler("/file/**").addResourceLocations( "file:e:/CRMfile/");
 	}
 }

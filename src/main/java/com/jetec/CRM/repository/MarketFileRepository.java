@@ -11,4 +11,8 @@ public interface MarketFileRepository extends JpaRepository<MarketFileBean,Strin
     List<MarketFileBean> findByFileforeignid(String fileforeignid);
 
     boolean existsByFileforeignid(String fileforeignid);
+
+    List<MarketFileBean> findByName(String name);
+
+    void deleteAllByName(String name);
 }
