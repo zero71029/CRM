@@ -693,9 +693,6 @@
                     }
                 });
             }
-
-
-
         </script>
         <!-- 分類結束///////////// -->
         <script>
@@ -769,9 +766,7 @@
                     },
                     error: function (returndata) {
                         console.log(returndata);
-
                     }
-
                 });
             }
             $(function () {

@@ -39,10 +39,29 @@ public class PotentialCustomerService {
 	TrackRemarkRepository trr;	
 	@Autowired
 	ZeroTools zTools;
+	@Autowired
+	UpfileService US;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //儲存潛在客戶列表
 	public PotentialCustomerBean SavePotentialCustomer(PotentialCustomerBean pcb) {
+		String uuid = zTools.getUUID();
+		if (pcb.getCustomerid() == null || pcb.getCustomerid().isEmpty()) {
+			pcb.setCustomerid(uuid);
+			if(US.existsByFileforeignid(pcb.getFileforeignid())){
+				List<MarketFileBean> list =US.getByfileForeignid(pcb.getFileforeignid());
+				for(MarketFileBean fileBean:list){
+					fileBean.setFileforeignid(uuid);
+					fileBean.setAuthorize(uuid);
+					US.save(fileBean);
+				}
+			}
+			pcb.setFileforeignid(uuid);
+		}
+		if (pcb.getAaa() == null || pcb.getAaa().isEmpty())
+			pcb.setAaa(zTools.getTime(new Date()));
+		if (pcb.getFileforeignid() == null || pcb.getFileforeignid() == "")
+			pcb.setCustomerid(zTools.getUUID());
 		return PCR.save(pcb);
 	}
 

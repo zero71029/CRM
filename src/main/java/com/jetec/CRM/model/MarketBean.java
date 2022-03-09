@@ -1,17 +1,16 @@
 package com.jetec.CRM.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "market")
-public class MarketBean {
+public class MarketBean implements Serializable {
 
     @Id
     private String marketid;//
@@ -51,6 +50,7 @@ public class MarketBean {
     private String serialnumber;//編號
     private String  callbos;//通知主管
     private String callhelp;//求助
+    private String fileforeignid;//附件id
 
     public String getContactmethod() {
         return contactmethod;
@@ -64,6 +64,11 @@ public class MarketBean {
     @OneToMany(targetEntity = TrackBean.class, mappedBy = "customerid", cascade = CascadeType.ALL)
     private List<TrackBean> trackbean;
 
+    //附件
+    @OneToMany(targetEntity = MarketFileBean.class,  cascade = CascadeType.ALL)
+    @JoinColumn(name = "fileforeignid", referencedColumnName = "fileforeignid", insertable = false, updatable = false)
+    private List<MarketFileBean> marketfilelist;
+
 //	//舊
 //	@JsonIgnore
 //	@OrderBy("createtime DESC")
@@ -75,6 +80,30 @@ public class MarketBean {
 //	@OneToMany(targetEntity = WorkBean.class, mappedBy = "marketid", cascade = CascadeType.ALL)
 //	private List<WorkBean> work;
 
+
+    @Override
+    public String toString() {
+        return "MarketBean{" +
+                "marketfilelist=" + marketfilelist +
+                '}';
+    }
+
+
+    public String getFileforeignid() {
+        return fileforeignid;
+    }
+
+    public void setFileforeignid(String fileforeignid) {
+        this.fileforeignid = fileforeignid;
+    }
+
+    public List<MarketFileBean> getMarketfilelist() {
+        return marketfilelist;
+    }
+
+    public void setMarketfilelist(List<MarketFileBean> marketfilelist) {
+        this.marketfilelist = marketfilelist;
+    }
 
     public String getCallhelp() {
         return callhelp;
@@ -374,14 +403,4 @@ public class MarketBean {
     }
 
 
-    @Override
-    public String toString() {
-        return "MarketBean{" +
-                "marketid='" + marketid + '\'' +
-                ", name='" + name + '\'' +
-                ", user='" + user + '\'' +
-                ", endtime='" + endtime + '\'' +
-                ", phone='" + phone + '\'' +
-                '}';
-    }
 }

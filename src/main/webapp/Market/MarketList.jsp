@@ -67,7 +67,7 @@
                                     <td></td>
                                     <td @click="sortState('state')"><a href="#">階段</a></td>
                                     <td>客戶</td>
-                                    <td>名稱</td>
+                                    <td>描述</td>
                                     <td>負責人</td>
                                     <td>機率</td>
                                     <td @click="sortItem('important')"><a href="#">重要性</a></td>
@@ -79,14 +79,33 @@
                                 </tr>
                                 <tr class="item" v-for="(s, index) in list" :key="index">
                                     <td><input type="checkbox" :value="s.marketid" name="mak" @change="clickmak"></td>
-                                    <td>{{index+1}}   <i class="el-icon-help" style="color: red;"  v-if="s.callhelp == 1"></i>  </td>
+                                    <td>{{index+1}} <i class="el-icon-help" style="color: red;"
+                                            v-if="s.callhelp == 1"></i> </td>
                                     <!-- 階段 -->
                                     <td v-on:click="market(s.marketid)" :class="'state'+index" style="cursor: pointer;">
                                         {{s.stage}}</td>
                                     <td>
                                         {{s.client}}</td>
-                                    <td v-on:click="market(s.marketid)" style="cursor: pointer;">
-                                        {{s.name}}</td>
+                                    <!-- <td v-on:click="market(s.marketid)" style="cursor: pointer;">
+                                        {{s.message}}</td> -->
+
+
+
+
+
+                                    <td v-if="s.message.length <100 " style="width: 500px;cursor: pointer;"
+                                        v-on:click="market(s.marketid)">{{s.message}}</td>
+                                    <td v-on:click="market(s.marketid)" v-if="s.message.length >=100 ">
+                                        <el-popover placement="top-start" width="300" trigger="hover"
+                                            :content="s.message">
+                                            <el-button slot="reference" class="text-truncate text-start"
+                                                style="width: 500px; color: #000;" type="text">{{s.message}}</el-button>
+                                        </el-popover>
+                                    </td>
+
+
+
+
 
                                     <td v-on:click="market(s.marketid)" style="cursor: pointer;">
                                         {{s.user}}</td>
@@ -528,8 +547,8 @@
                     endCastVisible: false,//到期資料彈窗
                     SubmitBos: [],//提交主管
                     SubmitBosVisible: false,//提交主管彈窗
-                    CallBos:[],//延長通知
-                    CallBosVisible:false,//延長通知彈窗
+                    CallBos: [],//延長通知
+                    CallBosVisible: false,//延長通知彈窗
                     ind: ["尚未分類",
                         "農、林、漁、牧業",
                         "礦業及土石採取業",
@@ -624,12 +643,12 @@
                             cache: false,
                             success: response => {
                                 this.list = response.list,
-                                this.endCast = response.endCast,
-                                this.todayTotal = response.todayTotal,
-                                this.SubmitBos = response.SubmitBos,
-                                this.CallBos = response.CallBos,
-                                this.show = true,
-                                this.endCast.length > 0 ? this.endCastVisible = true : this.endCastVisible = false
+                                    this.endCast = response.endCast,
+                                    this.todayTotal = response.todayTotal,
+                                    this.SubmitBos = response.SubmitBos,
+                                    this.CallBos = response.CallBos,
+                                    this.show = true,
+                                    this.endCast.length > 0 ? this.endCastVisible = true : this.endCastVisible = false
                             },
                             error: function (returndata) {
                                 console.log(returndata);

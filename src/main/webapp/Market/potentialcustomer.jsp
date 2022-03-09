@@ -144,7 +144,8 @@
                             class="basefrom g-3 needs-validation AAA" novalidate>
                             <input type="hidden" name="customerid" value="${bean.customerid}">
                             <input type="hidden" name="aaa" value="${bean.aaa}">
-                            <input type="hidden" name="fromactivity" value="${bean.fromactivity}" maxlength="50">
+                            <input type="hidden" name="fromactivity" value="${bean.fromactivity}">
+                            <input type="hidden" name="fileforeignid" v-model="customer.fileforeignid">
                             <div class="row">
                                 <!-- 基本資料 -->
                                 <div class="col-md-7">
@@ -425,6 +426,24 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <el-upload class="upload-demo"
+                                                :action="'${pageContext.request.contextPath}/upFileByMarket?authorizeId='+customer.fileforeignid"
+                                                :on-preview="handlePreview" :on-remove="handleRemove"
+                                                :before-remove="beforeRemove" multiple :on-success="onsuccess"
+                                                :file-list="customer.marketfilelist">
+                                                <el-button size="small" type="primary">上傳附件</el-button>
+                                            </el-upload>
+
+
+                                        </div>
+                                    </div>
+
+
+
+
                                 </div>
                                 <p>&nbsp;</p>
                                 <div class="row">
@@ -466,8 +485,7 @@
                             <!-- -->
                             <form action="${pageContext.request.contextPath}/Market/SaveTrack" method="post"
                                 class="row g-3 needs-validation" novalidate>
-                                <input type="hidden" class=" form-control cellFrom" name="remark" maxlength="190"
-                                    value="${user.name}">
+                                <input type="hidden" name="remark" value="${user.name}">
                                 <input type="hidden" name="customerid" value="${bean.customerid}">
                                 <div class="row">
                                     <div class="col-md-1"></div>
@@ -950,17 +968,20 @@
                     },
                 });
             }
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             const vm = new Vue({
                 el: '.app',
                 data() {
                     return {
+                        fileList:[],
                         CallHelpCSS: "col-md-2",//求助CSS                        
                         isEligible: false,
                         changeTableVisible: false,
                         changeMessageList: [],//修改資訊
                         oldCustomer: {},//暫存表
-                        customer: {},//bean
+                        customer: {
+                            fileforeignid:Math.random()*1000,
+                        },//bean
                         bosMassage: "",//主管留言欄位
                         bosMassageList: [],//組長留言資料
                         companyName: "${bean.company}",
@@ -1010,6 +1031,7 @@
                             this.oldCustomer = response.customer,
                             this.customer = Object.assign({}, this.oldCustomer),
                             this.changeMessageList = response.changeMessage
+                            
                         )),
                         error: function (returndata) {
                             console.log("沒有取得資訊");
@@ -1320,7 +1342,33 @@
                                 console.log(returndata);
                             }
                         });
-                    }
+                    },
+                    //附件
+                    handleRemove(file, fileList) {
+                        console.log(file, fileList);
+                    },
+                    handlePreview(file) {//點擊檔案
+                        console.log("file", file);
+                        window.open("${pageContext.request.contextPath}/file/" + file.url);
+                    },
+                    beforeRemove(file, fileList) {
+                        return this.$confirm(`確定刪除 ${file.name}?`);
+                    },
+                    onsuccess(response, file, fileList) {
+                        console.log(response, "response");
+                        console.log(file, "file");
+                        console.log(fileList, "fileList");
+                        if (response == null || response == "") {
+                            this.$message.error("上傳錯誤,請聯絡管理員");
+                            file.status = "fail";
+                            fileList.splice(fileList.length - 1, 1);
+                        } else {
+                            fileList[fileList.length - 1].url = response.url;
+                            fileList[fileList.length - 1].name = response.name;
+                        }
+                        console.log(fileList, "new");
+
+                    },
                 },
             })
             // textarea.style.height = textarea.scrollHeight + 'px';
@@ -1341,6 +1389,12 @@
 
             .bg-danger {
                 color: white;
+            }
+            .el-upload-list__item-name [class^=el-icon] {
+                height: auto;
+            }
+            .el-icon-close-tip{
+                display: none;
             }
         </style>
 

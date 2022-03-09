@@ -32,14 +32,27 @@ public class MarketService {
     AgreementRepository ar;
     @Autowired
     ZeroTools zTools;
+    @Autowired
+    UpfileService US;
 
     public MarketBean save(MarketBean marketBean) {
-
+        String uuid = zTools.getUUID();
+        if (marketBean.getMarketid() == null || marketBean.getMarketid().isEmpty()){//如果是新案件
+            marketBean.setMarketid(uuid);
+            if(US.existsByFileforeignid(marketBean.getFileforeignid())){
+                List<MarketFileBean> list =US.getByfileForeignid(marketBean.getFileforeignid());
+                for(MarketFileBean fileBean:list){
+                    fileBean.setFileforeignid(uuid);
+                    fileBean.setAuthorize(uuid);
+                    US.save(fileBean);
+                }
+            }
+            marketBean.setFileforeignid(uuid);
+        }
         //插入日期
         if (marketBean.getAaa() == "") {
             marketBean.setAaa(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()));
         }
-
         return mr.save(marketBean);
     }
 
@@ -133,7 +146,7 @@ public class MarketService {
             if (boo)
                 result.add(p);
         }
-        for (MarketBean bean : result){
+        for (MarketBean bean : result) {
             bean.setTrackbean(tr.findByCustomerid(bean.getCustomerid()));
         }
         return result;
@@ -199,7 +212,7 @@ public class MarketService {
     // 搜索銷售機會by日期
     public List<MarketBean> selectDate(String startTime, String endTime) {
         List<MarketBean> result = mr.findAaa(startTime, endTime);
-        for (MarketBean bean :result){
+        for (MarketBean bean : result) {
             bean.setTrackbean(tr.findByCustomerid(bean.getCustomerid()));
         }
         return mr.findAaa(startTime, endTime);
@@ -270,36 +283,41 @@ public class MarketService {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //今天總計
     public Integer gettodayTotal() {
-        SimpleDateFormat sdf =new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String ddd = sdf.format(new Date());
-        return mr.gettodayTotal(ddd+" 00:00",ddd+" 23:59");
+        return mr.gettodayTotal(ddd + " 00:00", ddd + " 23:59");
     }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取過期任務
     public List<MarketBean> getEndCast(String name) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-        return mr.getEndCast(name,sdf.format(new Date()));
+        return mr.getEndCast(name, sdf.format(new Date()));
     }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取提交主管
     public List<MarketBean> getSubmitBos() {
         return mr.getSubmitBos();
     }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //檢查有無銷售機會
     public boolean existMarket(String customerid) {
-        return  mr.existsByCustomerid(customerid);
+        return mr.existsByCustomerid(customerid);
 
     }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 搜索銷售機會by負責人
     public List<MarketBean> selectMarketByUser(String name) {
         return mr.findUser(name);
     }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 搜索銷售機會by延長申請
-    public  List<MarketBean> CallBos() {
+    public List<MarketBean> CallBos() {
         return mr.findByCallbos("1");
     }
 }

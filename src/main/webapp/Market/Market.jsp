@@ -154,6 +154,7 @@
                                     <input type="hidden" name="aaa" value="${bean.aaa}">
                                     <input type="hidden" name="clicks" value="${bean.clicks}">
                                     <input type="hidden" name="marketid" value="${bean.marketid}">
+                                    <input type="hidden" name="fileforeignid" v-model="bean.fileforeignid">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="row" style="text-align: center;">
@@ -393,6 +394,20 @@
 
                                                 </div>
                                             </div>
+
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-1"> </div>
+                                                <div class="col-md-6 FormPadding">
+                                                    <el-upload class="upload-demo"
+                                                        :action="'${pageContext.request.contextPath}/upFileByMarket?authorizeId='+bean.fileforeignid"
+                                                        :on-preview="handlePreview" :on-remove="handleRemove"
+                                                        :before-remove="beforeRemove" multiple :on-success="onsuccess" :on-error="onerror"
+                                                        :file-list="fileList">
+                                                        <el-button size="small" type="primary">上傳附件</el-button>
+                                                    </el-upload>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <!-- ////////////////////////////////////////////////////////////////////////////////// -->
@@ -629,9 +644,9 @@
                         </div>
                         <!--  -->
                         <form action="" method="post" id="SaveTrack" class="row g-3 needs-validation" novalidate>
-                            <input type="hidden" class=" form-control cellzFrom" name="remark" maxlength="950"
-                                value="${user.name}">
+                            <input type="hidden" name="remark" value="${user.name}">
                             <input type="hidden" name="customerid" value="${bean.customerid}">
+                            
                             <div class="row">
                                 <div class="col-md-1"></div>
                                 <div class="col-md-4 FormPadding">
@@ -882,13 +897,9 @@
             function contact() {
 
                 $.ajax({
-                    url: '${pageContext.request.contextPath}/Market/selectContactByClientName/' + $("input[name='client']").val(), //接受請求的Servlet地址
+                    url: '${pageContext.request.contextPath}/Market/selectContactByClientName/' + $("input[name='client']").val(), 
                     type: 'POST',
-                    // data: formData,
-                    // async: false,//同步請求
-                    // cache: false,//不快取頁面
-                    // contentType: false,//當form以multipart/form-data方式上傳檔案時，需要設定為false
-                    // processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
+
                     success: function (json) {
                         $(".CCC").empty();
 
@@ -974,19 +985,22 @@
 
         </script>
         <script>
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             var clinch = parseInt('${bean.clinch}' || null);
             const vm = new Vue({
                 el: '.app',
                 data() {
                     return {
+                        fileList: [],
                         CallBosCss: "form-control cellzFrom EndTime ",
-                        CallHelpCSS:"col-md-2",
+                        CallHelpCSS: "col-md-2",
                         existsCustomer: false,//是否是淺在顧客轉過來
                         inclient: "",//搜索客戶輸入
                         changeTableVisible: false,
                         dialogVisible: false,//公司彈窗
                         clientList: [],//客戶列表
-                        bean: {
+                        bean: {   
+                            fileforeignid:Math.random()*1000,
                             createtime: "轉賣/自用",//案件類型
                             clinch: 3,
                             phone: "",
@@ -1076,10 +1090,15 @@
                         this.bean.user = '無';
                         this.oldBean.user = '無';
                     }
-                    console.log(this.bean.callhelp,"this.bean.callhelp");
-                    if(this.bean.callhelp == "1"){
+                    console.log(this.bean.callhelp, "this.bean.callhelp");
+                    if (this.bean.callhelp == "1") {
                         this.CallHelpCSS = "col-md-2 bg-danger";
                     }
+                    this.fileList = this.bean.marketfilelist;
+                                            
+                    console.log("this.fileList ",this.fileList );
+
+
 
                 },
                 methods: {
@@ -1361,10 +1380,10 @@
                             cache: false,
                             success: function (response) {
                                 console.log(response);
-                                if(response == "求助"){
+                                if (response == "求助") {
                                     vm.CallHelpCSS = "col-md-2 bg-danger";
                                     vm.$message.success(response + "成功")
-                                }else{
+                                } else {
                                     vm.CallHelpCSS = "col-md-2";
                                     vm.$message.warning(response)
                                 }
@@ -1373,6 +1392,36 @@
                                 console.log(returndata);
                             }
                         });
+                    },//附件
+                    handleRemove(file, fileList) {
+                        console.log(file, fileList);
+                    },
+                    handlePreview(file) {//點擊檔案
+                        console.log("file", file);
+                        window.open("${pageContext.request.contextPath}/file/" + file.url);
+                    },
+                    beforeRemove(file, fileList) {
+                        return this.$confirm(`確定刪除 ${file.name}?`);
+                    }, 
+                    onsuccess(response,file, fileList) {
+                        console.log(response,"response");
+                        console.log(file,"file");
+                        console.log(fileList,"fileList");
+                        if(response == null ||response == ""){                           
+                            this.$message.error("上傳錯誤,請聯絡管理員");
+                            file.status="fail";
+                            fileList.splice(fileList.length-1, 1);
+                        }else{
+                            fileList[fileList.length-1].url =response.url;
+                            fileList[fileList.length-1].name =response.name;
+                        }                        
+                        console.log(fileList,"new");
+                     
+                    },
+                    onerror(response,file, fileList){
+                        console.log(response,"response");
+                        console.log(file,"file");
+                        console.log(fileList,"fileList");
                     }
                 },
             })
@@ -1398,8 +1447,16 @@
             .aaaa {
                 border: 0px white solid;
             }
-            .bg-danger{
+
+            .bg-danger {
                 color: white;
+            }
+
+            .el-upload-list__item-name [class^=el-icon] {
+                height: auto;
+            }
+            .el-icon-close-tip{
+                display: none;
             }
         </style>
 

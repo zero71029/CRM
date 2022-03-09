@@ -62,10 +62,7 @@ public class MarketControler {
     @ResponseBody
     public String SavePotentialCustomer(PotentialCustomerBean pcb) {
         System.out.println("*****儲存潛在客戶*****");
-        if (pcb.getCustomerid() == null || pcb.getCustomerid().isEmpty())
-            pcb.setCustomerid(zTools.getUUID());
-        if (pcb.getAaa() == null || pcb.getAaa().isEmpty())
-            pcb.setAaa(zTools.getTime(new Date()));
+
         PotentialCustomerBean bean = PCS.SavePotentialCustomer(pcb);
         return bean.getCustomerid();
     }
@@ -135,8 +132,6 @@ public class MarketControler {
     @RequestMapping("/SaveMarket")
     public String SaveMarket(MarketBean marketBean) {
         System.out.println("*****存銷售機會****");
-        if (marketBean.getMarketid() == null || marketBean.getMarketid().isEmpty())
-            marketBean.setMarketid(zTools.getUUID());
         MarketBean save = ms.save(marketBean);
         return "redirect:/Market/Market/" + save.getMarketid();
     }
@@ -455,6 +450,9 @@ public class MarketControler {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) +7);
         bean.setEndtime(sdf.format(calendar.getTime()));
+        bean.setFileforeignid(pBean.getFileforeignid());
+        bean.setMarketfilelist(pBean.getMarketfilelist());
+
 
 
         Map<String, Object> result = new HashMap<>();

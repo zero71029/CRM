@@ -40,6 +40,7 @@ public class PotentialController {
     public Map<String, Object> init(@PathVariable("customerid") String customerid) {
         Map<String, Object> result = new HashMap<>();
         result.put("customer", PCS.getById(customerid));
+        System.out.println(PCS.getById(customerid));
         result.put("track", PCS.getTrackByCustomerid(customerid));
         result.put("bosmessage", DS.getBosMessageList(customerid));
         result.put("changeMessage", DS.getChangeMessage(customerid));

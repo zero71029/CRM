@@ -337,17 +337,19 @@
 
                                     <td>詢問內容</td>
                                     <td style="width: 130px;">建立時間</td>
-                                    <td>聯絡人</td>                                    
+                                    <td>聯絡人</td>
                                     <td>產業</td>
                                     <!-- 詢問產品種類		客戶來源	備註 -->
                                     <td @click="sortItem('important')"><a href="#">重要性</a></td>
                                 </tr>
-                                <tr class="item" v-for="(s, index) in list" :key="s.customerid" >
-                                    <td><input type="checkbox" :value="s.customerid" name="mak" @change="clickmak" :id="s.customerid"></td>
+                                <tr class="item" v-for="(s, index) in list" :key="s.customerid">
+                                    <td><input type="checkbox" :value="s.customerid" name="mak" @change="clickmak"
+                                            :id="s.customerid"></td>
                                     <td>{{index+1}} <span class="badge rounded-pill bg-danger"
                                             v-show="s.bm.length > 0">{{s.bm.length ==
-                                            0?"":s.bm.length}}</span> 
-                                            <i class="el-icon-help" style="color: red;" v-if="s.callhelp == 1"></i></td>
+                                            0?"":s.bm.length}}</span>
+                                        <i class="el-icon-help" style="color: red;" v-if="s.callhelp == 1"></i>
+                                    </td>
                                     <td v-on:click="customer(s.customerid)" style="cursor: pointer;"
                                         :class="'state'+index">
                                         {{s.status}}</td>
@@ -356,7 +358,7 @@
 
                                     <td>
                                         {{s.company}}</td>
-
+                                    <!-- 詢問內容 -->
                                     <td v-if="s.remark.length <100 " style="width: 500px;cursor: pointer;"
                                         v-on:click="customer(s.customerid)">{{s.remark}}</td>
                                     <td v-on:click="customer(s.customerid)" v-if="s.remark.length >=100 ">
@@ -432,7 +434,7 @@
             const vm = new Vue({
                 el: '.app',
                 data: {
-                    btncheck3:false,//個人頁面按鈕
+                    btncheck3: false,//個人頁面按鈕
                     todayTotal: "",
                     content: "",//
                     currentPage1: 1,//當前分頁
@@ -520,7 +522,7 @@
                             cache: false,
                             success: response => {
                                 this.list = response.list,
-                                this.todayTotal = response.todayTotal   
+                                    this.todayTotal = response.todayTotal
                             },
                             error: function (returndata) {
                                 console.log(returndata);
@@ -538,9 +540,9 @@
                     } else {
                         alert("沒有權限");
                         location.href = "${pageContext.request.contextPath}/"
-                    }                    
-                    if (name != null ) {
-                        this.btncheck3 =true;
+                    }
+                    if (name != null) {
+                        this.btncheck3 = true;
                         axios
                             .get('${pageContext.request.contextPath}/Potential/admin/' + name)
                             .then(response => (
@@ -555,7 +557,7 @@
                     //搜索
                     selectList: function () {
                         console.log(this.inDay[0]);
-                        this.btncheck3 =false;
+                        this.btncheck3 = false;
                         if (this.inDay == "") {//沒輸入日期                  
                             this.inDay[0] = "";
                             this.inDay[1] = "";
@@ -658,9 +660,9 @@
                     aadmin: function (name) {//搜索負責人
                         var url = new URL(location.href);
                         const n = url.searchParams.get("user");
-                        if(n == null ){
+                        if (n == null) {
                             location.href = "${pageContext.request.contextPath}/Market/potentialcustomerList.jsp?user=" + name;
-                        }else{
+                        } else {
                             location.href = "${pageContext.request.contextPath}/Market/potentialcustomerList.jsp";
                         }
                     },
