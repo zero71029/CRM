@@ -37,8 +37,13 @@ public class MarketService {
 
     public MarketBean save(MarketBean marketBean) {
         String uuid = zTools.getUUID();
+        if(marketBean.getFileforeignid() == null ||marketBean.getFileforeignid().isEmpty() || marketBean.getFileforeignid().equals("")) {
+            marketBean.setFileforeignid(uuid);
+        }
         if (marketBean.getMarketid() == null || marketBean.getMarketid().isEmpty()){//如果是新案件
             marketBean.setMarketid(uuid);
+            //更換Fileforeignid
+            marketBean.setFileforeignid(uuid);
             if(US.existsByFileforeignid(marketBean.getFileforeignid())){
                 List<MarketFileBean> list =US.getByfileForeignid(marketBean.getFileforeignid());
                 for(MarketFileBean fileBean:list){
@@ -47,7 +52,6 @@ public class MarketService {
                     US.save(fileBean);
                 }
             }
-            marketBean.setFileforeignid(uuid);
         }
         //插入日期
         if (marketBean.getAaa() == "") {
@@ -59,7 +63,6 @@ public class MarketService {
     /////////////////////////////////////////////////////////////////////////////////////
     // 銷售機會列表
     public List<MarketBean> getList(Integer pag) {
-
         Pageable p = PageRequest.of(pag, 20, Direction.DESC, "aaa");
         Page<MarketBean> page = mr.findStage(p);
         List<MarketBean> result = page.getContent();

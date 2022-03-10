@@ -300,7 +300,7 @@
                                         </div>
                                         <div class="col-md-2 cellz">來源 <span style="color: red;">*</span></div>
                                         <div class="col-md-3 cellz FormPadding ">
-                                            <select class="form-select cellFrom " id="source"
+                                            <select class="form-select cellFrom " id="source" name="source"
                                                 v-model.trim="customer.source">
                                                 <option value="廣告" class="selItemOff">
                                                     廣告
@@ -644,7 +644,7 @@
                                         </div>
                                         <div class="dockbar row shadow  ">
                                             <div class="col-md-2 offset-md-1" style="border-left: black 1px solid;"
-                                                onclick="javascript:$('.act').toggle();$('.bosMessagediv').hide();">
+                                                onclick="javascript:$('.act').toggle();$('.bosMessagediv').hide();" >
                                                 行動
                                             </div>
                                             <div class="col-md-2" @click="changeTableVisible = true">
@@ -1042,7 +1042,8 @@
                             this.bosMassageList = response.bosmessage,
                             this.oldCustomer = response.customer,
                             this.customer = Object.assign({}, this.oldCustomer),
-                            this.changeMessageList = response.changeMessage
+                            this.changeMessageList = response.changeMessage,
+                            console.log(this.customer, "bean")
 
                         )),
                         error: function (returndata) {

@@ -54,7 +54,7 @@ public class AddPotentialCustomer {
         driver.findElementByName("remark").sendKeys("玟嫣");
         driver.findElementById("saveButton").click();
         String customerid = driver.findElementByName("customerid").getAttribute("value");
-        System.out.println("customerid " +customerid);
+        System.out.println("customerid " + customerid);
         driver.switchTo().window(p1);
         //獲取navigation
         WebDriver.Navigation navigation = driver.navigate();
@@ -70,7 +70,7 @@ public class AddPotentialCustomer {
         driver.findElementByName("director").sendKeys("玟嫣");
         driver.findElementByName("director").sendKeys("玟嫣");
         driver.findElementByName("industry").sendKeys("玟嫣");
-        driver.findElementByName("source").sendKeys("玟嫣");
+        driver.findElementByName("extension").sendKeys("extension");
         driver.findElementByName("address").sendKeys("玟嫣");
         driver.findElementByName("serialnumber").sendKeys("3326");
         new Select(driver.findElementByName("city")).selectByValue("桃園市");
@@ -79,17 +79,27 @@ public class AddPotentialCustomer {
         new Select(driver.findElementByName("important")).selectByValue("高");
         new Select(driver.findElementByName("industry")).selectByIndex(3);
         new Select(driver.findElementByName("source")).selectByIndex(3);
+        new Select(driver.findElementByName("contacttitle")).selectByIndex(1);
 
         driver.findElementById("saveButton").click();
+        driver.findElementByXPath("//*[@id=\"draggable\"]/div[3]/div[1]").click();
+        driver.findElementByXPath("//*[@id=\"draggable\"]/div[2]/a[1]").click();
         Thread.sleep(500);
+        driver.findElementByXPath("//*[@id=\"draggable\"]/div[2]/a[2]").click();
+        Thread.sleep(500);
+        driver.findElementByXPath("//*[@id=\"draggable\"]/div[3]/div[4]").click();
+        Thread.sleep(5000);
         //獲取navigation 刷新頁面
         WebDriver.Navigation n2 = driver.navigate();
 //        n2.refresh();
         driver.switchTo().window(p1);
         navigation.refresh();
-
+        Thread.sleep(500);
+        //點擊新增項目
+        driver.findElementByXPath("/html/body/div[1]/div/div[2]/span/table/tbody/tr[2]/td[6]").click();
+        //勾選
         driver.findElementById(customerid).click();
-
+        //刪除
         driver.findElementByXPath("/html/body/div[1]/div/div[2]/div[2]/div/label[2]").click();
         Alert a = driver.switchTo().alert();
         a.accept();

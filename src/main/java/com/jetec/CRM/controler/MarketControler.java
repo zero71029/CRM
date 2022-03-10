@@ -1,29 +1,24 @@
 package com.jetec.CRM.controler;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
+import com.jetec.CRM.Tool.ZeroTools;
+import com.jetec.CRM.controler.service.ClientService;
 import com.jetec.CRM.controler.service.DirectorService;
+import com.jetec.CRM.controler.service.MarketService;
+import com.jetec.CRM.controler.service.PotentialCustomerService;
 import com.jetec.CRM.model.*;
+import com.jetec.CRM.repository.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jetec.CRM.Tool.ZeroTools;
-import com.jetec.CRM.controler.service.ClientService;
-import com.jetec.CRM.controler.service.MarketService;
-import com.jetec.CRM.controler.service.PotentialCustomerService;
-import com.jetec.CRM.repository.AdminRepository;
-
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 @RequestMapping("/Market")

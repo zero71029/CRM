@@ -35,6 +35,15 @@
                         <div class="row">&nbsp;</div>
                         <div class="row">
                             <div class="col-lg-4">
+                                <el-button type="text" @click="SubmitBosVisible=true">提交主管 {{SubmitBos.length}}
+                                </el-button>
+                                <el-button type="text" @click="CallBosVisible=true">延長請求 {{CallBos.length}}
+                                </el-button>
+                            </div>
+                        </div>
+                        <div class="row">&nbsp;</div>
+                        <div class="row">
+                            <div class="col-lg-4">
                                 <el-date-picker v-model="inDay" type="daterange" align="right" unlink-panels
                                     range-separator="到" start-placeholder="開始日期" end-placeholder="結束日期"
                                     :picker-options="pickerOptions" value-format="yyyy-MM-dd">
@@ -55,8 +64,39 @@
 
                                 <canvas id="main" width="400" height="400"></canvas>
                             </div>
-
                         </div>
+                        <!-- 提交主管 彈窗-->
+                        <c:if test="${user.position == '主管' || user.position == '系統'}">
+                            <el-dialog title="提交主管" :visible.sync="SubmitBosVisible"
+                                :default-sort="{prop: 'aaa', order: 'descending'}">
+                                <el-table :data="SubmitBos" @row-click="clickEndCast">
+                                    <el-table-column property="client" label="公司"></el-table-column>
+                                    <el-table-column property="message" label="描述"></el-table-column>
+                                    <el-table-column property="aaa" label="創建日期" sortable></el-table-column>
+                                </el-table>
+                            </el-dialog>
+                        </c:if>
+                        <br><br><br><br><br>
+                        <!-- 延長請求 彈窗-->
+                        <c:if test="${user.position == '主管' || user.position == '系統'}">
+                            <el-dialog title="延長請求" :visible.sync="CallBosVisible"
+                                :default-sort="{prop: 'aaa', order: 'descending'}">
+                                <el-table :data="CallBos" @row-click="clickEndCast">
+                                    <el-table-column property="client" label="公司"></el-table-column>
+                                    <el-table-column property="message" label="描述"></el-table-column>
+                                    <el-table-column property="aaa" label="創建日期" sortable></el-table-column>
+                                </el-table>
+                            </el-dialog>
+                        </c:if>
+
+
+
+
+
+
+
+
+
                     </div>
                 </div>
             </div>
@@ -67,7 +107,10 @@
                 el: ".app",
                 data() {
                     return {
-                        AAA: [],
+                        SubmitBos: [],//提交主管
+                        SubmitBosVisible: false,//提交主管彈窗
+                        CallBos: [],//延長通知
+                        CallBosVisible: false,//延長通知彈窗
                         CompanyNumList: [],//每天公司數量
                         AdminCastNum: [],//業務案件數量
                         list: [],
@@ -111,13 +154,14 @@
                     }
                 }, created() {
                     $.ajax({
-                        url: '${pageContext.request.contextPath}/statistic/AAA?from=2022-02-20&to=2022-03-07',
+                        url: '${pageContext.request.contextPath}/statistic/init',
                         type: 'POST',
                         async: false,
                         cache: false,
                         success: (response => (
-                            this.AAA = response,
-                            console.log(response, "取得個業務案件數量")
+                            this.SubmitBos = response.SubmitBos,
+                            this.CallBos = response.CallBos,
+                            console.log(response, "init")
 
                         )),
                         error: function (returndata) {
@@ -126,6 +170,11 @@
                     })
                 },
                 methods: {
+                    //點彈窗裡的項目
+                    clickEndCast: function (row, column, event) {
+                        window.open('${pageContext.request.contextPath}/Market/Market/' + row.marketid);
+
+                    },
                     //搜索公司數量
                     selectCompany: function () {
                         if (this.inDay == "") {//沒輸入日期                  
@@ -164,7 +213,7 @@
                         var option;
                         option = {
                             title: {
-                                text: '每天案件數量',                                
+                                text: '每天案件數量',
                                 left: 'center'
                             },
                             xAxis: {
@@ -195,8 +244,8 @@
 
 
                         for (const i of keys) {
-                            if(this.AdminCastNum[i] >0)
-                            obj.push({ value: this.AdminCastNum[i], name: i +"["+this.AdminCastNum[i]+"]"});
+                            if (this.AdminCastNum[i] > 0)
+                                obj.push({ value: this.AdminCastNum[i], name: i + "[" + this.AdminCastNum[i] + "]" });
                         }
 
                         console.log(obj, "obj");

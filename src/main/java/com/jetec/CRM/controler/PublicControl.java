@@ -669,6 +669,7 @@ public class PublicControl {
     @RequestMapping("/changeMessage/{id}")
     @ResponseBody
     public boolean changeMessage(@RequestBody Map<String, Object> map, @PathVariable("id") String id, HttpSession session) {
+        System.out.println("******紀錄修改******");
         System.out.println(map);
         Set<String> set = map.keySet();
         Iterator<String> it = set.iterator();

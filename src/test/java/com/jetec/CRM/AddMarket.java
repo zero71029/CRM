@@ -36,11 +36,29 @@ public class AddMarket {
         driver.findElement(By.xpath("/html/body/div[1]/div/div[1]/ul/button[1]")).click();
         driver.findElementByClassName("marketbar").click();
         driver.findElementByXPath("/html/body/div[1]/div/div[2]/div[1]/div/label[1]").click();
-       //彈窗
+        //彈窗
         Set wh = driver.getWindowHandles();
         Iterator<Object> it = wh.iterator();
-        it.next();
-        driver.switchTo().window((String) it.next());
+        String p1 = (String) it.next();
+        String p2 = (String) it.next();
+        driver.switchTo().window(p2);
+        driver.findElementByName("serialnumber").sendKeys("serialnumber");
+        driver.findElementByName("name").sendKeys("name");
+        driver.findElementByName("jobtitle").sendKeys("jobtitle");
+        driver.findElementByName("contactphone").sendKeys("contactphone");
+        driver.findElementByName("phone").sendKeys("phone");
+        driver.findElementByName("contactextension").sendKeys("contactextension");
+        driver.findElementByName("extension").sendKeys("extension");
+        driver.findElementByName("contactmoblie").sendKeys("contactmoblie");
+        driver.findElementByName("contactemail").sendKeys("contactemail");
+        driver.findElementByName("line").sendKeys("Line");
+        driver.findElementByName("fax").sendKeys("fax");
+        driver.findElementByName("quote").sendKeys("quote");
+        driver.findElementByName("product").sendKeys("product");
+        driver.findElementByName("cost").sendKeys("3333");
+        driver.findElementByName("message").sendKeys("messagemessagemessage");
+
+
 
 
 

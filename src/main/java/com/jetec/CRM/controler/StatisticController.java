@@ -1,9 +1,11 @@
 package com.jetec.CRM.controler;
 
 import com.jetec.CRM.Tool.ZeroTools;
+import com.jetec.CRM.controler.service.MarketService;
 import com.jetec.CRM.controler.service.StatisticService;
 import com.jetec.CRM.controler.service.SystemService;
 import com.jetec.CRM.model.AdminBean;
+import com.jetec.CRM.model.MarketBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +26,33 @@ public class StatisticController {
     StatisticService ss;
     @Autowired
     SystemService systemService;
+    @Autowired
+    MarketService ms;
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//數據管理初始化
+    @RequestMapping("/init")
+    @ResponseBody
+    public Map<String, Object> init() {
+        System.out.println("數據管理初始化");
+        Map<String, Object> result = new HashMap<>();
+        result.put("SubmitBos", ms.getSubmitBos());
+        result.put("CallBos", ms.CallBos());
+
+
+
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String startDay = sdf.format(new Date());
+        String endDay = sdf.format(new Date());
+
+
+        Map<String, Object> CompanyNumList = getListByDate(startDay.substring(0, 10), endDay.substring(0, 10));
+        result.put("CompanyNumList", CompanyNumList);//每天公司數量
+        result.put("companyNum", ss.selectCompany(startDay, endDay));//公司名稱列表
+        result.put("AdminCastNum", AdminCastNum(startDay, endDay));//取得個業務案件數量
+        return result;
+    }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索公司數量
     @RequestMapping("/selectCompany")
@@ -56,8 +84,6 @@ public class StatisticController {
 
     /////////////////////////////////////////////////////////////////////////////////////////
 //取得個業務案件數量
-    @RequestMapping("/AAA")
-    @ResponseBody
     private Map<String, Object> AdminCastNum(@RequestParam("from") String startDay, @RequestParam("to") String endDay) {
         System.out.println("取得個業務案件數量");
         Map<String, Object> result = new HashMap<>();

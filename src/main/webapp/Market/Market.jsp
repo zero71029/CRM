@@ -155,6 +155,8 @@
                                     <input type="hidden" name="clicks" value="${bean.clicks}">
                                     <input type="hidden" name="marketid" value="${bean.marketid}">
                                     <input type="hidden" name="fileforeignid" v-model="bean.fileforeignid">
+                                    <input type="hidden" name="callbos" v-model="bean.callbos">
+                                    callbos
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="row" style="text-align: center;">
@@ -195,8 +197,9 @@
                                                 </div>
 
                                                 <div class="col-md-2 FormPadding">
-                                                    <select name="contacttitle" class="form-select cellzFrom" v-model="bean.contacttitle">
-                                                        <option value="" >稱謂</option>
+                                                    <select name="contacttitle" class="form-select cellzFrom"
+                                                        v-model="bean.contacttitle">
+                                                        <option value="">稱謂</option>
                                                         <option value="Mr">Mr</option>
                                                         <option value="Ms">Ms</option>
                                                         <option value="DR">DR</option>
@@ -269,7 +272,7 @@
                                                         maxlength="50">
                                                 </div>
                                                 <div class="col-md-2 cellz">來源 <span style="color: red;">*</span></div>
-                                                <div class="col-md-4 FormPadding" >
+                                                <div class="col-md-4 FormPadding">
                                                     <select class="form-select cellzFrom" name="source"
                                                         v-model.trim="bean.source">
                                                         <option value="廣告">
@@ -1023,8 +1026,8 @@
                             important: "低",
                             endtime: myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate(),
                             aaa: new Date(),
-                            contacttitle:"",
-                            source:"其他",
+                            contacttitle: "",
+                            source: "其他",
                         },
                         oldBean: {},
                         changeMessageList: [],//修改資訊
@@ -1083,6 +1086,7 @@
                                 this.bean.contactphone = formatPhone(this.bean.contactphone),
                                 this.bean.contactmoblie = formatPhone(this.bean.contactmoblie),
                                 this.oldBean = Object.assign({}, this.bean)
+
                             )),
                             error: function (returndata) {
                                 console.log(returndata);
@@ -1374,15 +1378,22 @@
                             async: false,
                             cache: false,
                             success: function (response) {
-                                if (response == "通知主管")
-                                    vm.$message.success(response + ",請求延長")
-                                if (response == "取消通知")
-                                    vm.$message.warning(response)
+                                if (response == "通知主管") {
+                                    vm.$message.success(response + ",請求延長");
+                                    vm.bean.callbos = "1";
+                                }
+                                if (response == "取消通知") {
+                                    vm.$message.warning(response);
+                                    vm.bean.callbos = "0"
+                                };
                             },
                             error: function (returndata) {
                                 console.log(returndata);
                             }
-                        });
+                        });                     
+                    },
+                    callBosSuccess: function () {
+
                     },
                     //求助
                     CallHelp: function () {

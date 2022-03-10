@@ -46,6 +46,9 @@ public class PotentialCustomerService {
 //儲存潛在客戶列表
 	public PotentialCustomerBean SavePotentialCustomer(PotentialCustomerBean pcb) {
 		String uuid = zTools.getUUID();
+		if(pcb.getFileforeignid() == null ||pcb.getFileforeignid().isEmpty() || pcb.getFileforeignid().equals("")) {
+			pcb.setFileforeignid(uuid);
+		}
 		if (pcb.getCustomerid() == null || pcb.getCustomerid().isEmpty()) {
 			pcb.setCustomerid(uuid);
 			if(US.existsByFileforeignid(pcb.getFileforeignid())){
