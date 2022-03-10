@@ -65,7 +65,13 @@
                                 <tr>
                                     <td><input type="checkbox" id="activity" @change="changeActivity"></td>
                                     <td></td>
-                                    <td @click="sortState('state')"><a href="#">階段</a></td>
+                                    <td>
+                                        <el-select v-model="inSortState" multiple placeholder="階段" @change="sortState" size="mini">
+                                            <el-option v-for="item in options" :key="item.value" :label="item.label"
+                                                :value="item.value">
+                                            </el-option>
+                                        </el-select>
+                                    </td>
                                     <td>客戶</td>
                                     <td>描述</td>
                                     <td>負責人</td>
@@ -88,11 +94,6 @@
                                         {{s.client}}</td>
                                     <!-- <td v-on:click="market(s.marketid)" style="cursor: pointer;">
                                         {{s.message}}</td> -->
-
-
-
-
-
                                     <td v-if="s.message.length <100 " style="width: 500px;cursor: pointer;"
                                         v-on:click="market(s.marketid)">{{s.message}}</td>
                                     <td v-on:click="market(s.marketid)" v-if="s.message.length >=100 ">
@@ -296,8 +297,6 @@
                                                     <el-checkbox label="尚未處理"></el-checkbox>
                                                     <el-checkbox label="內部詢價中"></el-checkbox>
                                                     <el-checkbox label="報價處理中"></el-checkbox>
-                                                    <el-checkbox label="需求確認"></el-checkbox>
-                                                    <el-checkbox label="聯繫中"></el-checkbox>
                                                     <el-checkbox label="已報價"></el-checkbox>
                                                     <el-checkbox label="提交主管"></el-checkbox>
                                                     <el-checkbox label="成功結案"></el-checkbox>
@@ -535,6 +534,30 @@
             const vm = new Vue({
                 el: '.app',
                 data: {
+                    options: [{
+                        value: '尚未處理',
+                        label: '尚未處理'
+                    }, {
+                        value: '內部詢價中',
+                        label: '內部詢價中'
+                    }, {
+                        value: '報價處理中',
+                        label: '報價處理中'
+                    }, {
+                        value: '已報價',
+                        label: '已報價'
+                    }, {
+                        value: '提交主管',
+                        label: '提交主管'
+                    }, {
+                        value: '成功結案',
+                        label: '成功結案'
+                    }, {
+                        value: '失敗結案',
+                        label: '失敗結案'
+                    }],
+
+                    inSortState: "",//排序用
                     btncheck3: false,//個人頁面按鈕
                     todayTotal: "",//
                     currentPage1: 1,//當前分頁
@@ -581,7 +604,6 @@
                     isSource: false,
                     sources: sourceOptions,
                     checkedSources: [],
-
                     budget1: "0",
                     budget2: "",
                     //搜索區資料
@@ -648,7 +670,8 @@
                                     this.SubmitBos = response.SubmitBos,
                                     this.CallBos = response.CallBos,
                                     this.show = true,
-                                    this.endCast.length > 0 ? this.endCastVisible = true : this.endCastVisible = false
+                                    this.endCast.length > 0 ? this.endCastVisible = true : this.endCastVisible = false,
+                                    this.oldList = this.list
                             },
                             error: function (returndata) {
                                 console.log(returndata);
@@ -673,6 +696,7 @@
                             .get('${pageContext.request.contextPath}/Market/selectMarket/' + name)
                             .then(response => (
                                 this.list = response.data,
+                                this.oldList = this.list,
                                 console.log(this.list, 'ddddddddd'),
                                 this.total = 20
                             ))
@@ -751,6 +775,7 @@
 
                     },
                     selectList: function () {//搜索
+                        this.inSortState = [];
                         this.btncheck3 = false;
                         if (this.inDay == "") {//沒輸入日期                  
                             this.inDay[0] = "";
@@ -763,7 +788,8 @@
                             cache: false,//不快取頁面
                             success: (response => (
                                 this.list = response,
-                                this.total = this.list.length
+                                this.total = this.list.length,
+                                this.oldList = this.list
                             )),
                             error: function (returndata) {
                                 console.log(returndata);
@@ -865,8 +891,8 @@
                             }
                         }
                         this.total = 20;
-                        // this.inDay =[];
                         console.log(this.list.length, "this.list.length");
+                        this.oldList = this.list
                     },
                     selectBudget: function () {//select預算                        
                         axios
@@ -900,31 +926,24 @@
                             }
                         }
                     },//階段 排序  
-                    sortState: function (direct) {
-                        var d = $('.' + direct + '0').text().trim();
-                        var oldList = this.list;
-                        const imp = ["尚未處理", "內部詢價中", "報價處理中", "已報價", "提交主管", "失敗結案", "成功結案"];//先輪替這列表
-                        var nimp = []
-                        this.list = [];//清空
-                        var b = false;
-                        console.log(d, "d");
-                        var i = imp.indexOf(d);//找到輸入第幾個
-                        console.log(i, "i");
-                        //重整列表
-                        for (let index = i + 1; index < 7; index++) {
-                            nimp.push(imp[index])
-                        }
-                        for (let index = 0; index <= i; index++) {
-                            nimp.push(imp[index])
-                        }
-
-                        console.log(nimp);
-                        //根據列表抓數據
-                        for (const iterator of nimp) {
-                            for (var o of oldList) {
-                                if (o.stage == iterator) this.list.push(o)
+                    sortState: function () {
+                        this.total = 20;
+                        if (this.inSortState.length == 0) {
+                            this.list = this.oldList
+                        } else {
+                            console.log(this.inSortState);
+                            var list =this.oldList;
+                            this.list = [];
+                            for (const State of this.inSortState) {
+                                for (let i = 0; i < list.length; i++) {
+                                    console.log(list[i].stage);
+                                    if (list[i].stage == State)
+                                    
+                                        this.list.push(list[i]);
+                                }
                             }
                         }
+
                     },
                     changeActivity: function () {
                         var $all = $("input[name=mak]");
