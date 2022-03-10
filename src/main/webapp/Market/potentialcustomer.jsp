@@ -146,6 +146,7 @@
                             <input type="hidden" name="aaa" value="${bean.aaa}">
                             <input type="hidden" name="fromactivity" value="${bean.fromactivity}">
                             <input type="hidden" name="fileforeignid" v-model="customer.fileforeignid">
+                            <input type="hidden" name="founder" v-model="customer.founder">
                             <div class="row">
                                 <!-- 基本資料 -->
                                 <div class="col-md-7">
@@ -442,6 +443,14 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="row" >
+                                        
+                                        <div class="col-md-3 cellz" v-if="customer.founder != null">創建人</div>
+                                        <div class="col-md-4 FormPadding">
+                                                {{customer.founder}}
+                                        </div>
+                                    </div>
+
                                     <br>
                                     <div class="row">
                                         <div class="col-md-10">

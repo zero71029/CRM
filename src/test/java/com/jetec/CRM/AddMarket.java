@@ -4,8 +4,10 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Select;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.File;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -42,6 +44,12 @@ public class AddMarket {
         String p1 = (String) it.next();
         String p2 = (String) it.next();
         driver.switchTo().window(p2);
+        Thread.sleep(500);
+        driver.findElementByXPath("/html/body/div[1]/div/div[3]/span/div/form/div[1]/div[1]/div[3]/div[1]/button").click();
+        driver.findElementByXPath("/html/body/div[1]/div/div[3]/div[6]/div/div[2]/table/tbody/tr[3]/td").click();
+        driver.findElementByName("contactname").click();
+        driver.findElementByName("catin").sendKeys("XXXXX");
+        driver.findElementByXPath("/html/body/div[1]/div/div[3]/div[5]/div/div[2]/span[2]/div[2]/button").click();
         driver.findElementByName("serialnumber").sendKeys("serialnumber");
         driver.findElementByName("name").sendKeys("name");
         driver.findElementByName("jobtitle").sendKeys("jobtitle");
@@ -57,12 +65,20 @@ public class AddMarket {
         driver.findElementByName("product").sendKeys("product");
         driver.findElementByName("cost").sendKeys("3333");
         driver.findElementByName("message").sendKeys("messagemessagemessage");
+        new Select(driver.findElementByName("type")).selectByIndex(1);
+        new Select(driver.findElementByName("source")).selectByIndex(2);
+        new Select(driver.findElementByName("stage")).selectByIndex(2);
+        new Select(driver.findElementByName("important")).selectByIndex(1);
+        new Select(driver.findElementByName("producttype")).selectByIndex(5);
+        new Select(driver.findElementByName("producttype")).selectByIndex(5);
 
+        File file = new File("C:\\CRMfile\\page404.png");
 
+        driver.findElementByName("file").sendKeys(file.getPath());
 
+        System.out.println(file.getPath());
 
-
-        driver.findElementById("saveMarket").click();
+//        driver.findElementById("saveMarket").click();
 
 
     }

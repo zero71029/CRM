@@ -43,14 +43,14 @@ public class MarketService {
         if (marketBean.getMarketid() == null || marketBean.getMarketid().isEmpty()){//如果是新案件
             marketBean.setMarketid(uuid);
             //更換Fileforeignid
-            marketBean.setFileforeignid(uuid);
-            if(US.existsByFileforeignid(marketBean.getFileforeignid())){
+            if(US.existsByFileforeignid(marketBean.getFileforeignid())   && marketBean.getFileforeignid().length() != 32 ){
                 List<MarketFileBean> list =US.getByfileForeignid(marketBean.getFileforeignid());
                 for(MarketFileBean fileBean:list){
                     fileBean.setFileforeignid(uuid);
                     fileBean.setAuthorize(uuid);
                     US.save(fileBean);
                 }
+                marketBean.setFileforeignid(uuid);
             }
         }
         //插入日期

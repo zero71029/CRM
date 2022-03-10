@@ -44,7 +44,7 @@ public class PotentialCustomerBean implements Serializable {
     private String callhelp;//求助
     private String fileforeignid;//附件id
     private String contacttitle;//聯絡人稱謂
-
+    private String founder;//創始人
     @Override
     public String toString() {
         return "PotentialCustomerBean{" +
@@ -75,6 +75,14 @@ public class PotentialCustomerBean implements Serializable {
     //留言
     @OneToMany(targetEntity = BosMessageBean.class, mappedBy = "bosid", cascade = CascadeType.ALL)
     private List<BosMessageBean> bm;
+
+    public String getFounder() {
+        return founder;
+    }
+
+    public void setFounder(String founder) {
+        this.founder = founder;
+    }
 
     public String getContacttitle() {
         return contacttitle;

@@ -55,9 +55,12 @@ public class MarketControler {
     //儲存潛在客戶
     @RequestMapping("/SavePotentialCustomer")
     @ResponseBody
-    public String SavePotentialCustomer(PotentialCustomerBean pcb) {
+    public String SavePotentialCustomer(PotentialCustomerBean pcb,HttpSession session) {
         System.out.println("*****儲存潛在客戶*****");
-
+        AdminBean admin = (AdminBean) session.getAttribute("user");
+        if(admin != null && (pcb.getCustomerid() == null ||pcb.getCustomerid().isEmpty())){
+            pcb.setFounder(admin.getName());
+        }
         PotentialCustomerBean bean = PCS.SavePotentialCustomer(pcb);
         return bean.getCustomerid();
     }
@@ -125,8 +128,13 @@ public class MarketControler {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 存銷售機會
     @RequestMapping("/SaveMarket")
-    public String SaveMarket(MarketBean marketBean) {
+    public String SaveMarket(MarketBean marketBean,HttpSession session) {
         System.out.println("*****存銷售機會****");
+        AdminBean admin = (AdminBean) session.getAttribute("user");
+        if(admin != null && (marketBean.getMarketid() == null || marketBean.getMarketid().isEmpty())){
+            marketBean.setFounder(admin.getName());
+        }
+
         MarketBean save = ms.save(marketBean);
         return "redirect:/Market/Market/" + save.getMarketid();
     }

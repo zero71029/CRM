@@ -52,7 +52,16 @@ public class MarketBean implements Serializable {
     private String  callbos;//通知主管
     private String callhelp;//求助
     private String fileforeignid;//附件id
+    private String founder;//創始人
 
+    @Override
+    public String toString() {
+        return "MarketBean{" +
+                "marketid='" + marketid + '\'' +
+                ", name='" + name + '\'' +
+                ", marketfilelist=" + marketfilelist +
+                '}';
+    }
 
     public String getContactmethod() {
         return contactmethod;
@@ -83,15 +92,16 @@ public class MarketBean implements Serializable {
 //	private List<WorkBean> work;
 
 
-    @Override
-    public String toString() {
-        return "MarketBean{" +
-                "marketfilelist=" + marketfilelist +
-                '}';
-    }
-
     public String getContacttitle() {
         return contacttitle;
+    }
+
+    public String getFounder() {
+        return founder;
+    }
+
+    public void setFounder(String founder) {
+        this.founder = founder;
     }
 
     public void setContacttitle(String contacttitle) {

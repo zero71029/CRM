@@ -156,7 +156,7 @@
                                     <input type="hidden" name="marketid" value="${bean.marketid}">
                                     <input type="hidden" name="fileforeignid" v-model="bean.fileforeignid">
                                     <input type="hidden" name="callbos" v-model="bean.callbos">
-                                    callbos
+                                    <input type="hidden" name="founder" v-model="bean.founder">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="row" style="text-align: center;">
@@ -393,6 +393,13 @@
                                                     </select>
                                                 </div>
                                             </div>
+                                            <div class="row" v-if="bean.founder != null">
+                                                <div class="col-md-1 "> </div>
+                                                <div class="col-md-2 cellz">創建人</div>
+                                                <div class="col-md-4 FormPadding">
+                                                    {{bean.founder}}
+                                                </div>
+                                            </div>
                                             <div class="row">
                                                 <div class="col-md-1"> </div>
                                                 <div class="col-md-6 FormPadding">報價內容
@@ -610,8 +617,16 @@
                                                 style="float:right"></el-button>
                                         </div>
                                         <div class="col-md-2 FormPadding">
-                                            <input type="text" :class="CallBosCss" name="endtime"
-                                                v-model.trim="bean.endtime" readonly>
+                                            <c:if test="${user.position != '職員' }">
+                                                <el-date-picker v-model="bean.endtime" align="right" type="date"
+                                                    name="endtime" placeholder="選擇日期" :picker-options="pickerOptions"
+                                                    value-format="yyyy-MM-dd">
+                                                </el-date-picker>
+                                            </c:if>
+                                            <c:if test="${user.position == '職員' }">
+                                                <input type="text" :class="CallBosCss" name="endtime"
+                                                    v-model.trim="bean.endtime" readonly>
+                                            </c:if>
                                         </div>
                                     </div>
 
@@ -874,20 +889,7 @@
             </div>
         </body>
 
-        <c:if test="${user.position != '職員' }">
-            <script>
-                // 日期UI
-                $(function () {
-                    $(".EndTime").datepicker({
-                        changeMonth: true,
-                        changeYear: true,
-                        'setDate': new Date(),
-                        dateFormat: "yy-mm-dd"
-                    });
 
-                });
-            </script>
-        </c:if>
 
 
 
@@ -1056,6 +1058,42 @@
                             "藝術、娛樂及休閒服務業",
                             "其他服務業"],//產業列表
                         TrackList: {},
+                        pickerOptions: {
+                            shortcuts: [
+                                {
+                                    text: '今天',
+                                    onClick(picker) {
+                                        const end = new Date();
+                                        const start = new Date();
+                                        start.setTime(start.getTime());
+                                        picker.$emit('pick', [start, end]);
+                                    }
+                                }, {
+                                    text: '最近一周',
+                                    onClick(picker) {
+                                        const end = new Date();
+                                        const start = new Date();
+                                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                                        picker.$emit('pick', [start, end]);
+                                    }
+                                }, {
+                                    text: '最近一個月',
+                                    onClick(picker) {
+                                        const end = new Date();
+                                        const start = new Date();
+                                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                                        picker.$emit('pick', [start, end]);
+                                    }
+                                }, {
+                                    text: '最近三個月',
+                                    onClick(picker) {
+                                        const end = new Date();
+                                        const start = new Date();
+                                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                                        picker.$emit('pick', [start, end]);
+                                    }
+                                }]
+                        },
                     }
                 },
 
@@ -1116,8 +1154,8 @@
                     }
                     this.fileList = this.bean.marketfilelist;
 
-                    console.log("this.fileList ", this.fileList);
-
+                    console.log(" this.bean.endtime", this.bean.endtime);
+                    console.log(" this.oldBean.endtime", this.oldBean.endtime);
 
 
                 },
@@ -1158,6 +1196,8 @@
                             } else {//如果不是新資料 就 紀錄修改
                                 var keys = Object.keys(this.bean);
                                 var data = {};
+                                console.log(" this.bean.endtime", this.bean.endtime);
+                                console.log(" this.oldBean.endtime", this.oldBean.endtime);
                                 for (const iterator of keys) {
                                     if (this.bean[iterator] == this.oldBean[iterator]) {
 
@@ -1390,7 +1430,7 @@
                             error: function (returndata) {
                                 console.log(returndata);
                             }
-                        });                     
+                        });
                     },
                     callBosSuccess: function () {
 
@@ -1492,6 +1532,9 @@
 
             .el-icon-close-tip {
                 display: none;
+            }
+            .el-date-editor.el-input{
+                width: 100%;
             }
         </style>
 
