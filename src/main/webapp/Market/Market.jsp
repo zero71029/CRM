@@ -329,7 +329,20 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="row">&nbsp;</div>
-                                            <div class="row">&nbsp;</div>
+                                            <div class="row">
+                                                <div class="col-md-1 "> </div>
+                                                <div class="col-md-11 ">
+                                                      <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                                                        <ol class="breadcrumb">
+                                                          <li class="breadcrumb-item"><a href="#">尚未處理</a></li>
+                                                          <li class="breadcrumb-item active" >內部詢價中</li>
+                                                          <li class="breadcrumb-item active" >報價處理中</li>
+                                                          <li class="breadcrumb-item " >已報價</li>
+                                                          <li class="breadcrumb-item " >提交主管</li>
+                                                        </ol>
+                                                      </nav>                                            
+                                                </div>
+
                                             <div class="row">
                                                 <div class="col-md-1 "> </div>
                                                 <div class="col-md-2 cellz">負責人</div>

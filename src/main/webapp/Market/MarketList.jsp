@@ -89,7 +89,7 @@
                                             v-if="s.callhelp == 1"></i> </td>
                                     <!-- 階段 -->
                                     <td v-on:click="market(s.marketid)" :class="'state'+index" style="cursor: pointer;">
-                                        {{s.stage}}</td>
+                                        {{s.stage}}  <i class="el-icon-paperclip" style="color: blue;" v-if="isEmpty(s.marketfilelist)"></i></td>
                                     <td>
                                         {{s.client}}</td>
                                     <!-- <td v-on:click="market(s.marketid)" style="cursor: pointer;">
@@ -103,11 +103,6 @@
                                                 style="width: 500px; color: #000;" type="text">{{s.message}}</el-button>
                                         </el-popover>
                                     </td>
-
-
-
-
-
                                     <td v-on:click="market(s.marketid)" style="cursor: pointer;">
                                         {{s.user}}</td>
                                     <td v-on:click="market(s.marketid)" style="cursor: pointer;">
@@ -954,7 +949,15 @@
                         var $all = $("input[name=mak]");
                         var $zx = $("input[name=mak]:checked");
                         $("#activity").prop("checked", $zx.length == $all.length);
-                    }
+                    },
+                    isEmpty(marketfilelist){
+
+                        if(marketfilelist == null){
+                            return false
+                        }else
+                        {return marketfilelist.length >0}
+                        
+                    },
                 },
             })
         </script>

@@ -6,28 +6,37 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-   
+
+
+
+
+    <!-- <meta http-equiv="refresh" content="5; url=https://www.fooish.com"> -->
+
+    <meta name="google-signin-client_id"
+        content="849367464998-0c4najofsqmh3rteejq2dc3va9iqdps2.apps.googleusercontent.com">
+        <script async src="https://www.google.com/recaptcha/api.js"></script>
+
 </head>
 
 <body>
-
-    <style>        
-        .AAA{
-            padding: 10px
-            margin-bottom: ;
+   
+    <style>
+        .AAA {
+            padding: 10px margin-bottom;
             display: inline-block;
             background-color: #ccc;
             color: #074F8F;
             text-decoration: none;
-            height:  2rem;
+            height: 2rem;
             font-size: 1.5rem;
             width: 150px;
             border-radius: 30px;
             margin: 10px;
         }
-        .AAA:hover{
-            background-color:#074F8F;
-            color:white;
+
+        .AAA:hover {
+            background-color: #074F8F;
+            color: white;
         }
     </style>
     <center>
@@ -38,6 +47,38 @@
             軟體下載
         </a>
     </center>
+    <script>
+        // How this code snippet works:
+        // This logic overwrites the default behavior of `grecaptcha.ready()` to
+        // ensure that it can be safely called at any time. When `grecaptcha.ready()`
+        // is called before reCAPTCHA is loaded, the callback function that is passed
+        // by `grecaptcha.ready()` is enqueued for execution after reCAPTCHA is
+        // loaded.
+        if(typeof grecaptcha === 'undefined') {
+          grecaptcha = {};
+        }
+        grecaptcha.ready = function(cb){
+          if(typeof grecaptcha === 'undefined') {
+            // window.__grecaptcha_cfg is a global variable that stores reCAPTCHA's
+            // configuration. By default, any functions listed in its 'fns' property
+            // are automatically executed when reCAPTCHA loads.
+            const c = '___grecaptcha_cfg';
+            window[c] = window[c] || {};
+            (window[c]['fns'] = window[c]['fns']||[]).push(cb);
+          } else {
+            cb();
+          }
+        }
+      
+        // Usage
+        grecaptcha.ready(function(){
+          grecaptcha.render("container", {
+            sitekey: "ABC-123"
+          });
+        });
+      </script>
+    <!-- <div class="g-recaptcha" data-sitekey="6LdUNRobAAAAAJJakDhDglshLFmwJP1P2c12MBdP" data-callback='verifyCallback'
+        data-action='ubmit'>Submit</div> -->
 </body>
 
 </html>

@@ -184,8 +184,9 @@
                                         <div class="col-md-2 cellz">聯絡人<span style="color: red;">*</span></div>
 
                                         <div class="col-md-2 FormPadding">
-                                            <select name="contacttitle" class="form-select cellzFrom" v-model="customer.contacttitle">
-                                                <option value="" >稱謂</option>
+                                            <select name="contacttitle" class="form-select cellzFrom"
+                                                v-model="customer.contacttitle">
+                                                <option value="">稱謂</option>
                                                 <option value="Mr">Mr</option>
                                                 <option value="Ms">Ms</option>
                                                 <option value="DR">DR</option>
@@ -202,10 +203,10 @@
                                             <input type="text" class=" form-control cellFrom" name="name"
                                                 v-model.trim="customer.name" maxlength="20" required>
                                         </div>
-                                        
+
                                         <div class="col-md-3 cellz FormPadding">
-                                            <input type="text" class=" form-control cellFrom" name="jobtitle" placeholder="職稱"
-                                                v-model.trim="customer.jobtitle" maxlength="20">
+                                            <input type="text" class=" form-control cellFrom" name="jobtitle"
+                                                placeholder="職稱" v-model.trim="customer.jobtitle" maxlength="20">
                                         </div>
                                     </div>
                                     <div class="row">
@@ -416,7 +417,7 @@
                                     <div class="row">
                                         <div class="col-md-3 cellz">狀態</div>
                                         <div class="col-md-7 cellz FormPadding">
-                                            <select name="status" class="form-select cellFrom"
+                                            <select name="status" class="form-select cellFrom" @change="changeStatus"
                                                 v-model.trim="customer.status" aria-label="Default select example">
                                                 <option value="未處理">未處理
                                                 </option>
@@ -443,11 +444,11 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="row" >
-                                        
+                                    <div class="row">
+
                                         <div class="col-md-3 cellz" v-if="customer.founder != null">創建人</div>
                                         <div class="col-md-4 FormPadding">
-                                                {{customer.founder}}
+                                            {{customer.founder}}
                                         </div>
                                     </div>
 
@@ -461,8 +462,6 @@
                                                 :file-list="customer.marketfilelist">
                                                 <el-button size="small" type="primary">上傳附件</el-button>
                                             </el-upload>
-
-
                                         </div>
                                     </div>
                                 </div>
@@ -653,7 +652,7 @@
                                         </div>
                                         <div class="dockbar row shadow  ">
                                             <div class="col-md-2 offset-md-1" style="border-left: black 1px solid;"
-                                                onclick="javascript:$('.act').toggle();$('.bosMessagediv').hide();" >
+                                                onclick="javascript:$('.act').toggle();$('.bosMessagediv').hide();">
                                                 行動
                                             </div>
                                             <div class="col-md-2" @click="changeTableVisible = true">
@@ -667,7 +666,7 @@
 
                             </div>
                         </c:if>
-                        <!-- 修改紀錄Table -->
+                        <!-- 修改紀錄Table 彈窗-->
                         <el-dialog title="修改紀錄" :visible.sync="changeTableVisible">
                             <el-table :data="changeMessageList" height="450">
                                 <el-table-column property="name" label="姓名"></el-table-column>
@@ -678,8 +677,20 @@
                                 </el-table-column>
                             </el-table>
                         </el-dialog>
+                        <!-- 合格  彈窗-->
+                        <el-dialog title="提示" :visible.sync="changeStatusVisible" width="30%">
+
+                            <div class="row">
+                                <div class="col-lg-12"><button style="width: 100%;"
+                                        onclick="NotExistMarket()">轉銷售機會</button></div>
+                                <div class="col-lg-12"><button style="width: 100%;"
+                                        @click="changeStatusVisible=false;submitForm()">不轉銷售</button></div>
+                                <div class="col-lg-12"><button style="width: 100%;"
+                                        @click="changeStatusVisible=false;customer.status='已聯繫';submitForm()">取消</button></div>
+                            </div>
+
+                        </el-dialog>
                     </div>
-                    <!-- 動作區塊 -->
 
 
                 </div>
@@ -757,6 +768,15 @@
                             return;
                         }
                         if (json == "不存在") {
+
+
+
+
+
+
+
+
+
                             $.ajax({
                                 url: '${pageContext.request.contextPath}/Market/changeClient.action',
                                 type: 'POST',
@@ -925,6 +945,8 @@
             }
             //檢查有無銷售機會
             function NotExistMarket() {
+
+                var formData = new FormData($(".AAA")[0]);
                 $.ajax({
                     url: '${pageContext.request.contextPath}/Market/existMarket/${bean.customerid}',
                     async: false,
@@ -992,16 +1014,17 @@
                 el: '.app',
                 data() {
                     return {
+                        changeStatusVisible: false,//合格彈窗
                         fileList: [],
                         CallHelpCSS: "col-md-2",//求助CSS                        
                         isEligible: false,
-                        changeTableVisible: false,
+                        changeTableVisible: false,//修改紀錄彈窗
                         changeMessageList: [],//修改資訊
                         oldCustomer: {},//暫存表
                         customer: {
                             fileforeignid: Math.random() * 1000,
-                            contacttitle:"",
-                            source:"其他",
+                            contacttitle: "",
+                            source: "其他",
                         },//bean
                         bosMassage: "",//主管留言欄位
                         bosMassageList: [],//組長留言資料
@@ -1390,7 +1413,7 @@
                         window.open("${pageContext.request.contextPath}/file/" + file.url);
                     },
                     beforeRemove(file, fileList) {
-                        return this.$confirm('確定刪除'+file.name);
+                        return this.$confirm('確定刪除' + file.name);
                     },
                     onsuccess(response, file, fileList) {
                         console.log(response, "response");
@@ -1406,6 +1429,13 @@
                         }
                         console.log(fileList, "new");
 
+                    },//改變狀態
+                    changeStatus() {
+                        console.log(this.customer.status, "改變狀態");
+                        if (this.customer.status == "合格") {
+
+                            this.changeStatusVisible = true;
+                        }
                     },
                 },
             })

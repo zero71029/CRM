@@ -49,7 +49,7 @@ public class MarketBean implements Serializable {
     private String quote;//報價內容
     private String jobtitle;//職稱
     private String serialnumber;//編號
-    private String  callbos;//通知主管
+    private String callbos;//通知主管
     private String callhelp;//求助
     private String fileforeignid;//附件id
     private String founder;//創始人
@@ -76,7 +76,7 @@ public class MarketBean implements Serializable {
     private List<TrackBean> trackbean;
 
     //附件
-    @OneToMany(targetEntity = MarketFileBean.class,  cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = MarketFileBean.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "fileforeignid", referencedColumnName = "fileforeignid", insertable = false, updatable = false)
     private List<MarketFileBean> marketfilelist;
 
@@ -282,6 +282,9 @@ public class MarketBean implements Serializable {
     }
 
     public void setContactphone(String contactphone) {
+        contactphone = contactphone.replace("-", "");
+        contactphone = contactphone.replace("(", "");
+        contactphone = contactphone.replace(")", "");
         this.contactphone = contactphone;
     }
 
@@ -378,6 +381,9 @@ public class MarketBean implements Serializable {
     }
 
     public void setPhone(String phone) {
+        phone = phone.replace("-", "");
+        phone = phone.replace("(", "");
+        phone = phone.replace(")", "");
         this.phone = phone;
     }
 
