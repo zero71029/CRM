@@ -169,12 +169,28 @@ public class MarketControler {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 搜索銷售機會
-//    @RequestMapping("/selectMarket")
-//    public String selectMarket(Model model, @RequestParam("name") String name) {
-//        System.out.println("搜索銷售機會AAA");
-//        model.addAttribute("list", ms.selectMarketByUser(name));
-//        return "/Market/MarketList";
-//    }
+    @ResponseBody
+    @RequestMapping("/selectMarket")
+    public List<MarketBean> selectMarket(@RequestParam("from") String startDay,@RequestParam("to") String endDay,@RequestParam("key") String key,@RequestParam("val") List<String> val) {
+        System.out.println("搜索銷售機會ALL");
+        if (startDay == null || startDay == "") {
+//            startDay = zTools.getTime(new Date());
+//            startDay = startDay.substring(0, 10);
+//            startDay = startDay + " 00:00";
+            startDay = "2022-02-01 00:00";
+        } else {
+            startDay = startDay + " 00:00";
+        }
+        if (endDay == "") {
+            endDay = zTools.getTime(new Date());
+        } else {
+            endDay = endDay + " 24:00";
+        }
+        System.out.println(startDay);
+        System.out.println(endDay);
+
+        return ms.selectMarketByAll(startDay,endDay,key,val);
+    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //刪除備註

@@ -17,16 +17,12 @@
         <!-- <script src="${pageContext.request.contextPath}/js/vue.js"></script> -->
 
         <!-- 引入样式 vue-->
-        <script src="${pageContext.request.contextPath}/js/vue.js"></script>
+        <script src="${pageContext.request.contextPath}/js/vue.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/axios.min.js"></script>
         <!-- 引入element-ui样式 -->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/js/element-ui.css">
         <!-- 引入element-ui组件库 -->
         <script src="${pageContext.request.contextPath}/js/element-ui.js"></script>
-
-        <style>
-
-        </style>
 
         <!-- <%-- 抬頭--%> -->
         <header class="mainColor headtop">
@@ -56,7 +52,7 @@
                     onclick="javascript:location.href='${pageContext.request.contextPath}/Market/workList.jsp'">工作項目</button>
                 <!-- <button class="market"
                     onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/QuotationList'">報價單</button> -->
-                <button class="list-group-item" onclick="client()" >
+                <button class="list-group-item" onclick="client()">
                     客戶管理
                 </button>
                 <button class="client clientbar"
@@ -67,9 +63,10 @@
                 <button class="list-group-item" onclick="javascript:location.href=''">
                     服務管理
                 </button>
-                <button class="list-group-item " onclick="javascript:location.href='${pageContext.request.contextPath}/statistic/statistic.jsp'">
-                   <!-- <i class="el-icon-pie-chart"></i>  -->
-                   數據管理
+                <button class="list-group-item "
+                    onclick="javascript:location.href='${pageContext.request.contextPath}/statistic/statistic.jsp'">
+                    <!-- <i class="el-icon-pie-chart"></i>  -->
+                    數據管理
                 </button>
                 <c:if test='${user.position == "主管" || user.position == "系統" ||user.position == "總經理"}'>
                     <button class="list-group-item " onclick="system()">
@@ -92,10 +89,9 @@
             <!-- session 認證-->
             <c:if test='${empty user}'>
                 <script>
-
                     console.log("未登入");
                     $.ajax({
-                        url: '${pageContext.request.contextPath}/UserAuthorize', 
+                        url: '${pageContext.request.contextPath}/UserAuthorize',
                         type: 'POST',
                         success: function (json) {
                             if (json) {
@@ -122,14 +118,38 @@
                 </table>
             </div>
         </div>
-        <c:set var="ddd" value="未讀(${user.mail.size()})"></c:set>
-        <c:set var="CRM" value='${empty user?"未登入":"CRM"}'></c:set>
+
         <script>
-            $('title').html('${user.mail.size() > 0 ? ddd:CRM}');
+
+
+            $.ajax({
+                url: '${pageContext.request.contextPath}/getNews',
+                type: 'get',
+                success: function (response) {
+                    console.log(response);
+                    if (response > 0) {
+                        $('title').html('未讀 : ' + response);
+                    } else {
+                        $('title').html('CRM');
+                    }
+                }
+            });
 
             window.setTimeout(function () {
-                location.reload();
-            }, 3600000);//1小時
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/getNews',
+                    type: 'get',
+                    success: function (response) {
+                        console.log(response);
+                        if (response > 0) {
+                            $('title').html('未讀 : ' + response);
+                        } else {
+                            $('title').html('CRM');
+                        }
+                    }
+                });
+
+            }, 60000);//10分鐘
             $(".market").hide();
             $(".client").hide();
             $(".system").hide();
@@ -158,7 +178,7 @@
             } else { }
             //取得工作項目
             $.ajax({
-                url: '${pageContext.request.contextPath}/workitem/${user.name}', 
+                url: '${pageContext.request.contextPath}/workitem/${user.name}',
                 type: 'POST',
                 success: function (json) {
                     $('.workitem').html("${user.name}<span class='badge bg-primary'>" + (json.length) + "</span>");
@@ -174,7 +194,7 @@
                     }
                     //取得銷售機會
                     $.ajax({
-                        url: '${pageContext.request.contextPath}/marketitem/${user.name}', 
+                        url: '${pageContext.request.contextPath}/marketitem/${user.name}',
                         type: 'POST',
                         success: function (market) {
                             $('.workitem').html("${user.name}<span class='badge bg-primary'>" + (json.length + market.length) + "</span>");
@@ -183,7 +203,7 @@
                             }
                             //取得潛在顧客
                             $.ajax({
-                                url: '${pageContext.request.contextPath}/PotentialItem/${user.name}', 
+                                url: '${pageContext.request.contextPath}/PotentialItem/${user.name}',
                                 type: 'POST',
                                 success: function (customer) {
                                     $('.workitem').html("${user.name}<span class='badge bg-primary' >" + (json.length + market.length + customer.length) + "</span>");

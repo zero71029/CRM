@@ -1,8 +1,6 @@
 package com.jetec.CRM.repository;
 
-import java.util.Date;
-import java.util.List;
-
+import com.jetec.CRM.model.MarketBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -10,7 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.jetec.CRM.model.MarketBean;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 public interface MarketRepository extends JpaRepository<MarketBean, String> {
 
@@ -88,4 +88,25 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
     List<MarketBean> findAaa(String startTime, String endTime);
 
     List<MarketBean> findByCallbos(String s);
+///////////////////selectMarketByAll
+    List<MarketBean> findByUserAndAaaBetween(String user, String startDay, String endDay,Sort sort);
+
+    List<MarketBean> findByNameLikeIgnoreCaseAndAaaBetween(String s, String startDay, String endDay,Sort sort);
+
+    List<MarketBean> findByContactphoneLikeIgnoreCaseAndAaaBetween(String s, String startDay, String endDay,Sort sort);
+
+    List<MarketBean> findByStageAndAaaBetween(String Stage, String startDay, String endDay,Sort sort);
+
+    List<MarketBean> findByContactnameLikeIgnoreCaseAndAaaBetween(String s, String startDay, String endDay,Sort sort);
+
+    List<MarketBean> findByTypeAndAaaBetween(String type, String startDay, String endDay, Sort sort);
+
+    List<MarketBean> findBySourceAndAaaBetween(String source, String startDay, String endDay, Sort sort);
+
+    List<MarketBean> findByClinchAndAaaBetween(Integer s, String startDay, String endDay, Sort sort);
+
+    List<MarketBean> findByProducttypeAndAaaBetween(String producttype, String startDay, String endDay, Sort sort);
+
+    List<MarketBean>findByProductLikeIgnoreCaseOrNameLikeIgnoreCaseOrMessageLikeIgnoreCaseAndAaaBetween(String s, String s1, String s2, String startDay, String endDay, Sort sort);
+    ///////////////////selectMarketByAll
 }

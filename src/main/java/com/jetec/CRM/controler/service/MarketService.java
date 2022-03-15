@@ -37,15 +37,15 @@ public class MarketService {
 
     public MarketBean save(MarketBean marketBean) {
         String uuid = zTools.getUUID();
-        if(marketBean.getFileforeignid() == null ||marketBean.getFileforeignid().isEmpty() || marketBean.getFileforeignid().equals("")) {
+        if (marketBean.getFileforeignid() == null || marketBean.getFileforeignid().isEmpty() || marketBean.getFileforeignid().equals("")) {
             marketBean.setFileforeignid(uuid);
         }
-        if (marketBean.getMarketid() == null || marketBean.getMarketid().isEmpty()){//如果是新案件
+        if (marketBean.getMarketid() == null || marketBean.getMarketid().isEmpty()) {//如果是新案件
             marketBean.setMarketid(uuid);
             //更換Fileforeignid
-            if(US.existsByFileforeignid(marketBean.getFileforeignid())   && marketBean.getFileforeignid().length() != 32 ){
-                List<MarketFileBean> list =US.getByfileForeignid(marketBean.getFileforeignid());
-                for(MarketFileBean fileBean:list){
+            if (US.existsByFileforeignid(marketBean.getFileforeignid()) && marketBean.getFileforeignid().length() != 32) {
+                List<MarketFileBean> list = US.getByfileForeignid(marketBean.getFileforeignid());
+                for (MarketFileBean fileBean : list) {
                     fileBean.setFileforeignid(uuid);
                     fileBean.setAuthorize(uuid);
                     US.save(fileBean);
@@ -322,5 +322,53 @@ public class MarketService {
 // 搜索銷售機會by延長申請
     public List<MarketBean> CallBos() {
         return mr.findByCallbos("1");
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 搜索銷售機會
+    public List<MarketBean> selectMarketByAll(String startDay, String endDay, String key, List<String> val) {
+        Sort sort = Sort.by(Direction.DESC, "aaa");
+        System.out.println(key);
+        System.out.println(val);
+        List<MarketBean> result = new ArrayList<>();
+        switch (key) {
+            case "UserList":
+                for (String user : val)
+                    result.addAll(mr.findByUserAndAaaBetween(user, startDay, endDay, sort));
+                break;
+            case "name":
+                result.addAll(mr.findByNameLikeIgnoreCaseAndAaaBetween("%" + val.get(0) + "%", startDay, endDay, sort));
+                break;
+            case "ContantPhone":
+                result.addAll(mr.findByContactphoneLikeIgnoreCaseAndAaaBetween("%" + val.get(0) + "%", startDay, endDay, sort));
+                break;
+            case "inStateList":
+                for (String state : val)
+                    result.addAll(mr.findByStageAndAaaBetween(state, startDay, endDay, sort));
+                break;
+            case "inContact":
+                result.addAll(mr.findByContactnameLikeIgnoreCaseAndAaaBetween("%" + val.get(0) + "%", startDay, endDay, sort));
+                break;
+            case "source":
+                for (String type : val)
+                    result.addAll(mr.findByTypeAndAaaBetween(type, startDay, endDay, sort));
+                break;
+            case "checkedSources"://機會來源
+                for (String source : val)
+                    result.addAll(mr.findBySourceAndAaaBetween(source, startDay, endDay, sort));
+                break;
+            case "clinch"://成交機率
+                result.addAll(mr.findByClinchAndAaaBetween(Integer.parseInt(val.get(0)), startDay, endDay, sort));
+                break;
+            case "checkedCities"://產品類別
+                for (String producttype : val)
+                    result.addAll(mr.findByProducttypeAndAaaBetween(producttype, startDay, endDay, sort));
+                break;
+            case "product":
+                result.addAll(mr.findByProductLikeIgnoreCaseOrNameLikeIgnoreCaseOrMessageLikeIgnoreCaseAndAaaBetween("%" + val.get(0) + "%","%" + val.get(0) + "%","%" + val.get(0) + "%", startDay, endDay, sort));
+                break;
+        }
+
+        return result;
     }
 }

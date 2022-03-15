@@ -263,4 +263,26 @@ public class PotentialController {
         }
     }
 
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//搜索潛在客戶ByAll
+    @RequestMapping("/selectPotential")
+    public List<PotentialCustomerBean> selectPotential(@RequestParam("startDay") String startDay, @RequestParam("endDay") String endDay, @RequestParam("key") String key, @RequestParam("val") List<String> val) {
+        System.out.println("搜索潛在客戶ByAll");
+        if (startDay == null || startDay == "") {
+            startDay = "2022-02-01 00:00";
+        } else {
+            startDay = startDay + " 00:00";
+        }
+        if (endDay == "") {
+            endDay = zTools.getTime(new Date());
+        } else {
+            endDay = endDay + " 24:00";
+        }
+        System.out.println(startDay);
+        System.out.println(endDay);
+        return PCS.selectPotential(startDay, endDay, key, val);
+    }
+
+
 }

@@ -563,8 +563,21 @@
                             this.inDay[1] = "";
                         }
 
+                        var url ='${pageContext.request.contextPath}/Potential/selectDate?startDay=' + this.inDay[0] + "&endDay=" + this.inDay[1];
+                        if (this.inUserList != "") {//負責人
+                            url = '${pageContext.request.contextPath}/Potential/selectPotential?startDay=' + this.inDay[0] + "&endDay=" + this.inDay[1] + "&key=UserList&val=" + this.inUserList;
+                        } else if (this.content != "") {//詢問內容
+                            url = '${pageContext.request.contextPath}/Potential/selectPotential?startDay=' + this.inDay[0] + "&endDay=" + this.inDay[1] + "&key=content&val=" + this.content;
+                        } else if (this.name != "") {//聯絡人,公司名稱
+                            url = '${pageContext.request.contextPath}/Potential/selectPotential?startDay=' + this.inDay[0] + "&endDay=" + this.inDay[1] + "&key=name&val=" + this.name;
+                        } else if (this.inStateList != "") {//狀態
+                            url = '${pageContext.request.contextPath}/Potential/selectPotential?startDay=' + this.inDay[0] + "&endDay=" + this.inDay[1] + "&key=inStateList&val=" + this.inStateList;
+                        } else if (this.industry != "") {//產業
+                            url = '${pageContext.request.contextPath}/Potential/selectPotential?startDay=' + this.inDay[0] + "&endDay=" + this.inDay[1] + "&key=industry&val=" + this.industry;
+                        }
+
                         $.ajax({
-                            url: '${pageContext.request.contextPath}/Potential/selectDate?startDay=' + this.inDay[0] + "&endDay=" + this.inDay[1],
+                            url: url,
                             type: 'POST',
                             async: false,
                             cache: false,
@@ -596,7 +609,7 @@
                                 }
                             }
                         }
-                        if (this.name != "") {//聯絡人
+                        if (this.name != "") {//聯絡人,公司名稱
                             this.oldList = this.list;
                             this.list = [];
                             for (var bean of this.oldList) {
@@ -617,17 +630,6 @@
                                     }
                                 }
                         }
-                        // if(this.source != ""){//機會來源
-                        //     this.oldList = this.list;
-                        //     this.list = [];
-                        //     for(var u of this.source )
-                        //         for(var bean of this.oldList){
-                        //             if(u == bean.source){
-                        //                 this.list.push(bean);                                        
-                        //             }
-                        //         }   
-                        // }
-
                         console.log(this.industry);
                         if (this.industry != "") {//產業
                             this.oldList = this.list;

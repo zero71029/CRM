@@ -1,5 +1,6 @@
 package com.jetec.CRM.repository;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public interface PotentialCustomerRepository extends JpaRepository<PotentialCust
 
     List<PotentialCustomerBean> findByUserAndStatus(String adminname, String Status);
 
-    @Query(value = "SELECT  *  from potentialcustomer where  (aaa BETWEEN ?1 AND ?2 )", nativeQuery = true)
+    @Query(value = "SELECT  *  from potentialcustomer where  (aaa BETWEEN ?1 AND ?2 ) ORDER By aaa DESC ", nativeQuery = true)
     public List<PotentialCustomerBean> findCreatetime(@Param("startTime") String startTime, @Param("endTime") String endTime);
 
     List<PotentialCustomerBean> findBySource(String source);
@@ -47,4 +48,14 @@ public interface PotentialCustomerRepository extends JpaRepository<PotentialCust
 
     @Query(value = "SELECT  COUNT(*)  from potentialcustomer where aaa BETWEEN ?1 AND ?2  ", nativeQuery = true)
     Integer gettodayTotal(@Param("startTime") String startTime, @Param("endTime") String endTime);
+
+    List<PotentialCustomerBean> findByUserAndAaaBetween(String user, String startDay, String endDay, Sort sort);
+
+    List<PotentialCustomerBean> findByNameLikeIgnoreCaseOrCompanyLikeIgnoreCaseAndAaaBetween(String s, String s1, String startDay, String endDay, Sort sort);
+
+    List<PotentialCustomerBean> findByRemarkLikeIgnoreCaseAndAaaBetween(String s, String startDay, String endDay, Sort sort);
+
+    List<PotentialCustomerBean> findByStatusAndAaaBetween(String state, String startDay, String endDay, Sort sort);
+
+    List<PotentialCustomerBean> findByIndustryAndAaaBetween(String industry, String startDay, String endDay, Sort sort);
 }

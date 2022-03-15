@@ -56,7 +56,7 @@
 
 
                                 <label class="btn btn-outline-primary" for="btncheck4" data-bs-toggle="offcanvas"
-                                    data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">搜索</label>
+                                    data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" id="search">搜索</label>
                             </div>
                         </div>
                         <!-- <%-- 中間主體--%> -->
@@ -66,7 +66,8 @@
                                     <td><input type="checkbox" id="activity" @change="changeActivity"></td>
                                     <td></td>
                                     <td>
-                                        <el-select v-model="inSortState" multiple placeholder="階段" @change="sortState" size="mini">
+                                        <el-select v-model="inSortState" multiple placeholder="階段" @change="sortState"
+                                            size="mini">
                                             <el-option v-for="item in options" :key="item.value" :label="item.label"
                                                 :value="item.value">
                                             </el-option>
@@ -89,7 +90,8 @@
                                             v-if="s.callhelp == 1"></i> </td>
                                     <!-- 階段 -->
                                     <td v-on:click="market(s.marketid)" :class="'state'+index" style="cursor: pointer;">
-                                        {{s.stage}}  <i class="el-icon-paperclip" style="color: blue;" v-if="isEmpty(s.marketfilelist)"></i></td>
+                                        {{s.stage}} <i class="el-icon-paperclip" style="color: blue;"
+                                            v-if="isEmpty(s.marketfilelist)"></i></td>
                                     <td>
                                         {{s.client}}</td>
                                     <!-- <td v-on:click="market(s.marketid)" style="cursor: pointer;">
@@ -192,7 +194,7 @@
                                             range-separator="到" start-placeholder="開始日期" end-placeholder="結束日期"
                                             :picker-options="pickerOptions" value-format="yyyy-MM-dd">
                                         </el-date-picker>
-                                        <input type="submit" value="送出" @click="selectList">
+                                        <input type="submit" value="送出" @click="selectList" id="sendDay">
                                     </div>
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingOne">
@@ -463,13 +465,11 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </body>
         <script>
             $(".market").show();
@@ -551,7 +551,6 @@
                         value: '失敗結案',
                         label: '失敗結案'
                     }],
-
                     inSortState: "",//排序用
                     btncheck3: false,//個人頁面按鈕
                     todayTotal: "",//
@@ -776,8 +775,38 @@
                             this.inDay[0] = "";
                             this.inDay[1] = "";
                         }
+
+
+                        var url = '${pageContext.request.contextPath}/Market/selectDate?from=' + this.inDay[0] + "&to=" + this.inDay[1];
+                        if (this.inUserList != "") {//負責人
+                            url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=UserList&val=" + this.inUserList;
+                        } else if (this.name != "") {//機會民稱 客戶
+                            url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=name&val=" + this.name;
+                        } else if (this.inStateList != "") {//狀態
+                            url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=inStateList&val=" + this.inStateList;
+
+                        } else if (this.inContact != "") {//聯絡人
+                            url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=inContact&val=" + this.inContact;
+                        } else if (this.ContantPhone != "") {//聯絡人電話
+                            url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=ContantPhone&val=" + this.ContantPhone;
+                        } else if (this.source != "") {//產業
+                            url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=source&val=" + this.source;
+                        } else if (this.checkedSources != "") {//機會來源
+                            url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=checkedSources&val=" + this.checkedSources;
+                        } else if (this.clinch != "") {//成交機率
+                            url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=clinch&val=" + this.clinch;
+                        } else if (this.product != "") {//商品
+                            url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=product&val=" + this.product;
+                        }else if (this.checkedCities != "") {//產品類別
+                            url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=checkedCitiest&val=" + this.product;
+                        }
+
+
+
+
+
                         $.ajax({
-                            url: '${pageContext.request.contextPath}/Market/selectDate?from=' + this.inDay[0] + "&to=" + this.inDay[1],
+                            url: url,
                             type: 'POST',
                             async: false,//同步請求
                             cache: false,//不快取頁面
@@ -876,7 +905,7 @@
                                 }
                             }
                         }
-                        if (this.product != "") {//成交機率
+                        if (this.product != "") {//商品
                             this.oldList = this.list;
                             this.list = [];
                             for (var bean of this.oldList) {
@@ -927,13 +956,13 @@
                             this.list = this.oldList
                         } else {
                             console.log(this.inSortState);
-                            var list =this.oldList;
+                            var list = this.oldList;
                             this.list = [];
                             for (const State of this.inSortState) {
                                 for (let i = 0; i < list.length; i++) {
                                     console.log(list[i].stage);
                                     if (list[i].stage == State)
-                                    
+
                                         this.list.push(list[i]);
                                 }
                             }
@@ -950,13 +979,12 @@
                         var $zx = $("input[name=mak]:checked");
                         $("#activity").prop("checked", $zx.length == $all.length);
                     },
-                    isEmpty(marketfilelist){
+                    isEmpty(marketfilelist) {
 
-                        if(marketfilelist == null){
+                        if (marketfilelist == null) {
                             return false
-                        }else
-                        {return marketfilelist.length >0}
-                        
+                        } else { return marketfilelist.length > 0 }
+
                     },
                 },
             })

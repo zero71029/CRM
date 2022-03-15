@@ -703,13 +703,13 @@ public class PublicControl {
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//取得使用者
-//	@RequestMapping("/admin/{adminid}")
-//	@ResponseBody
-//	public AdminBean geAdmin(@PathVariable("adminid") Integer adminid) {
-//		System.out.println("取得使用者");
-//		AdminBean result =ar.getById(adminid);
-//		System.out.println(result);
-//		return result;
-//	}
+//取得未讀(資料更新)
+	@RequestMapping("/getNews")
+	@ResponseBody
+	public String getNews(HttpSession session) {
+		System.out.println("取得未讀(資料更新)");
+		AdminBean adminBean = (AdminBean) session.getAttribute("user");
+
+		return   String.valueOf(adminBean.getMail().size())    ;
+	}
 }
