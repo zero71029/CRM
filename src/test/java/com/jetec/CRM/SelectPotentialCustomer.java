@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 
 @SpringBootTest
-public class potentialcustomerList {
+public class SelectPotentialCustomer {
 
     @Test
     void contextLoads() throws InterruptedException {

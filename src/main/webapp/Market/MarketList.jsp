@@ -6,7 +6,7 @@
             <meta charset="UTF-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+            <title>CRM</title>
             <link rel="preconnect" href="https://fonts.gstatic.com">
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
 
@@ -207,7 +207,7 @@
                                     <!-- 負責人 -->
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingOne">
-                                            <button class="accordion-button collapsed" type="button"
+                                            <button class="accordion-button collapsed" type="button" id="principal"
                                                 data-bs-toggle="collapse" data-bs-target="#flush-collapseOne">
                                                 負責人
                                             </button>
@@ -230,7 +230,7 @@
                                     <!-- 機會名稱-->
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingThree">
-                                            <button class="accordion-button collapsed" type="button"
+                                            <button class="accordion-button collapsed" type="button" id="search3"
                                                 data-bs-toggle="collapse" data-bs-target="#flush-collapseThree">
                                                 機會名稱
                                             </button>
@@ -240,8 +240,8 @@
                                             <div class="accordion-body">
                                                 <div class="input-group mb-3">
                                                     <input type="text" class="form-control" placeholder=""
-                                                        v-model="name">
-                                                    <button class="btn btn-outline-secondary"
+                                                        v-model="name" name="name">
+                                                    <button class="btn btn-outline-secondary" id="clickname"
                                                         @click="selectList">搜索</button>
                                                 </div>
 
@@ -251,7 +251,7 @@
                                     <!--  客戶-->
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingThree">
-                                            <button class="accordion-button collapsed" type="button"
+                                            <button class="accordion-button collapsed" type="button" id="search4"
                                                 data-bs-toggle="collapse" data-bs-target="#i4">
                                                 客戶
                                             </button>
@@ -280,7 +280,7 @@
                                     <!-- 狀態-->
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingThree">
-                                            <button class="accordion-button collapsed" type="button"
+                                            <button class="accordion-button collapsed" type="button" id="search5"
                                                 data-bs-toggle="collapse" data-bs-target="#i5">
                                                 狀態
                                             </button>
@@ -305,7 +305,7 @@
                                     <!--  聯絡人-->
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingThree">
-                                            <button class="accordion-button collapsed" type="button"
+                                            <button class="accordion-button collapsed" type="button" id="search6"
                                                 data-bs-toggle="collapse" data-bs-target="#i6">
                                                 聯絡人
                                             </button>
@@ -314,7 +314,7 @@
                                             aria-labelledby="flush-headingThree">
                                             <div class="accordion-body">
                                                 <div class="input-group mb-3">
-                                                    <input type="text" class="form-control" placeholder=""
+                                                    <input type="text" class="form-control" placeholder="" id="Contact"
                                                         v-model="inContact">
                                                     <button class="btn btn-outline-secondary"
                                                         @click="selectList">搜索</button>
@@ -979,8 +979,8 @@
                         var $zx = $("input[name=mak]:checked");
                         $("#activity").prop("checked", $zx.length == $all.length);
                     },
+                    //判斷有沒有附件
                     isEmpty(marketfilelist) {
-
                         if (marketfilelist == null) {
                             return false
                         } else { return marketfilelist.length > 0 }

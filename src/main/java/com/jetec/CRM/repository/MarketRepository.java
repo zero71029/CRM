@@ -108,5 +108,7 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
     List<MarketBean> findByProducttypeAndAaaBetween(String producttype, String startDay, String endDay, Sort sort);
 
     List<MarketBean>findByProductLikeIgnoreCaseOrNameLikeIgnoreCaseOrMessageLikeIgnoreCaseAndAaaBetween(String s, String s1, String s2, String startDay, String endDay, Sort sort);
+
+    List<MarketBean> findByNameLikeIgnoreCaseOrClientLikeIgnoreCaseAndAaaBetween(String s, String s1, String startDay, String endDay, Sort sort);
     ///////////////////selectMarketByAll
 }

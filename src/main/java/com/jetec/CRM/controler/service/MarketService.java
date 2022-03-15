@@ -337,7 +337,7 @@ public class MarketService {
                     result.addAll(mr.findByUserAndAaaBetween(user, startDay, endDay, sort));
                 break;
             case "name":
-                result.addAll(mr.findByNameLikeIgnoreCaseAndAaaBetween("%" + val.get(0) + "%", startDay, endDay, sort));
+                result.addAll(mr.findByNameLikeIgnoreCaseOrClientLikeIgnoreCaseAndAaaBetween("%" + val.get(0) + "%","%" + val.get(0) + "%", startDay, endDay, sort));
                 break;
             case "ContantPhone":
                 result.addAll(mr.findByContactphoneLikeIgnoreCaseAndAaaBetween("%" + val.get(0) + "%", startDay, endDay, sort));

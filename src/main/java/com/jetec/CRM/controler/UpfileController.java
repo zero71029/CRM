@@ -192,19 +192,30 @@ public class UpfileController {
         try {
 //2. 儲存圖片到資料夾
             if (fileMap.get("file") != null) {//讀取檔眳
-                System.out.println(fileMap.get("file").getOriginalFilename());//讀取副檔名
+                //讀取檔名
+                System.out.println(fileMap.get("file").getOriginalFilename());
+                String filename = fileMap.get("file").getOriginalFilename();
+                System.out.println(filename.indexOf("[") + "ddddddddddddddddd");
+                //替換特殊符號
+                if (filename.indexOf("[") > 0) {
+                    filename = filename.replace("[", "-");
+                }
+                if (filename.indexOf("]") > 0) {
+                    filename = filename.replace("]", "-");
+                }
+                //讀取副檔名
                 String lastname = fileMap.get("file").getOriginalFilename()
                         .substring(fileMap.get("file").getOriginalFilename().indexOf("."));
                 System.out.println(lastname);
-                String path2 = "C:/CRMfile/" + fileMap.get("file").getOriginalFilename();
+                String path2 = "C:/CRMfile/" + filename;
                 String path3 = "C:\\Users\\Rong\\Desktop\\tomcat-9.0.41\\webapps\\CRM\\WEB-INF\\classes\\static\\file\\"
-                        + fileMap.get("file").getOriginalFilename();
+                        + filename;
 //檔案輸出
                 System.out.println("檔案輸出到" + path2);
                 fileMap.get("file").transferTo(new File(path2));
                 System.out.println("輸出成功");
 //3. 儲存檔案名稱到資料庫
-                MarketFileBean fileBean = new MarketFileBean(zTools.getUUID(), authorizeId, fileMap.get("file").getOriginalFilename(), authorizeId, fileMap.get("file").getOriginalFilename());
+                MarketFileBean fileBean = new MarketFileBean(zTools.getUUID(), authorizeId, filename, authorizeId, filename);
                 MarketFileBean save = US.save(fileBean);
                 return save;
             }
@@ -214,12 +225,13 @@ public class UpfileController {
         }
         return null;
     }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //刪除附件
     @RequestMapping("/delFileByMarket/{fileid}")
     @ResponseBody
     public MarketFileBean delFileByMarket(@PathVariable("fileid") String fileid) {
-        System.out.println("*****刪除附件*****" );
+        System.out.println("*****刪除附件*****");
         MarketFileBean bean = US.getByid(fileid);
         US.delByName(bean.getName());
         return null;

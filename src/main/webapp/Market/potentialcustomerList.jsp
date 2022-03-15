@@ -357,7 +357,8 @@
                                         {{s.user}}</td>
 
                                     <td>
-                                        {{s.company}}</td>
+                                        {{s.company}}<i class="el-icon-paperclip" style="color: blue;"
+                                            v-if="isEmpty(s.marketfilelist)"></i></td>
                                     <!-- 詢問內容 -->
                                     <td v-if="s.remark.length <100 " style="width: 500px;cursor: pointer;"
                                         v-on:click="customer(s.customerid)">{{s.remark}}</td>
@@ -563,7 +564,7 @@
                             this.inDay[1] = "";
                         }
 
-                        var url ='${pageContext.request.contextPath}/Potential/selectDate?startDay=' + this.inDay[0] + "&endDay=" + this.inDay[1];
+                        var url = '${pageContext.request.contextPath}/Potential/selectDate?startDay=' + this.inDay[0] + "&endDay=" + this.inDay[1];
                         if (this.inUserList != "") {//負責人
                             url = '${pageContext.request.contextPath}/Potential/selectPotential?startDay=' + this.inDay[0] + "&endDay=" + this.inDay[1] + "&key=UserList&val=" + this.inUserList;
                         } else if (this.content != "") {//詢問內容
@@ -725,6 +726,13 @@
                                 if (o.status == iterator) this.list.push(o)
                             }
                         }
+
+                    },
+                    //判斷有沒有附件
+                    isEmpty(marketfilelist) {
+                        if (marketfilelist == null) {
+                            return false
+                        } else { return marketfilelist.length > 0 }
 
                     },
                 },
