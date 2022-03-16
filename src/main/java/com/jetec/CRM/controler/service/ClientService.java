@@ -92,8 +92,14 @@ public class ClientService {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取聯絡人列表
-	public Object getContactList() {
-		return contactRepository.findAll();
+	public Map<String, Object> getContactList(Integer pag) {
+		Pageable p = PageRequest.of(pag, 20);
+		Map<String, Object> result = new HashMap();
+		Page<ContactBean> page = contactRepository.findAll(p);
+		List<ContactBean> aaa = page.getContent();
+		result.put("list", aaa);
+		result.put("total", page.getTotalElements());
+		return result;
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -18,6 +18,7 @@
                 .contactbar {
                     background-color: #afe3d5;
                 }
+
                 .item:hover {
                     background-color: #afe3d5;
                 }
@@ -30,7 +31,7 @@
                     <!-- <%-- 插入側邊欄--%> -->
                     <jsp:include page="/Sidebar.jsp"></jsp:include>
                     <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
-                    <div class="col-md-11">
+                    <div class="col-md-11 app">
                         <!-- <%-- 抬頭按鈕--%> -->
                         <div class="row">
                             <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
@@ -38,7 +39,7 @@
                                     onclick="javascript:location.href='${pageContext.request.contextPath}/client/contact.jsp'">
                                 <label class="btn btn-outline-primary state1" for="btncheck1">新增</label>
 
-                                <c:if test="${user.position == '主管' || user.position == '系統'}">                                    
+                                <c:if test="${user.position == '主管' || user.position == '系統'}">
                                     <label class="btn btn-outline-primary state2" for="btncheck2"
                                         onclick="sta()">刪除</label>
                                 </c:if>
@@ -58,11 +59,9 @@
                             </form>
                         </div>
                         <!-- <%-- 中間主體--%> -->
-
-
                         <table class="Table table-striped orderTable">
                             <tr>
-                                <td><input type="checkbox" id="activity"></td>
+                                <td><input type="checkbox" id="activity" @change="changeActivity"></td>
                                 <td>編號</td>
                                 <td>聯絡人名稱</td>
                                 <td>公司</td>
@@ -72,39 +71,33 @@
                                 <td>部門</td>
                                 <td>負責人</td>
                             </tr>
-                            <c:if test="${not empty list}">
-                                <c:forEach varStatus="loop" begin="0" end="${list.size()-1}" items="${list}" var="s">
-                                    <tr class="item">
-                                        <td><input type="checkbox" value="${s.contactid}" name="mak"></td>
-                                        <td
-                                            onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/contact/${s.contactid}'">
-                                            ${s.contactid}</td>
-                                        <td
-                                            onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/contact/${s.contactid}'">
-                                            ${s.name}</td>
-                                        <td
-                                            onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/contact/${s.contactid}'">
-                                            ${s.company}</td>
-                                        <td
-                                            onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/contact/${s.contactid}'">
-                                            ${s.jobtitle}</td>
-                                        <td
-                                            onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/contact/${s.contactid}'">
-                                            ${s.phone}</td>
-                                        <td
-                                            onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/contact/${s.contactid}'">
-                                            ${s.moblie}</td>
-                                        <td
-                                            onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/contact/${s.contactid}'">
-                                            ${s.department}</td>
-                                        <td
-                                            onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/contact/${s.contactid}'">
-                                            ${s.user}</td>
+                            <tr class="item" v-for="(s, index) in list" :key="index">
+                                <td><input type="checkbox" :value="s.contactid" name="mak" @change="clickmak"></td>
+                                <td @click="contact(s.contactid)">
+                                    {{s.contactid}}</td>
+                                <td @click="contact(s.contactid)">
+                                    {{s.name}}</td>
+                                <td @click="contact(s.contactid)">
+                                    {{s.company}}</td>
+                                <td @click="contact(s.contactid)">
+                                    {{s.jobtitle}}</td>
+                                <td @click="contact(s.contactid)">
+                                    {{s.phone}}</td>
+                                <td @click="contact(s.contactid)">
+                                    {{s.moblie}}</td>
+                                <td @click="contact(s.contactid)">
+                                    {{s.department}}</td>
+                                <td @click="contact(s.contactid)">
+                                    {{s.user}}</td>
+                            </tr>
 
-                                    </tr>
-                                </c:forEach>
-                            </c:if>
                         </table>
+                        <!-- 分頁 -->
+                        <div class="block text-center" key="2">
+                            <el-pagination @current-change="handleCurrentChange" :current-page.sync="currentPage"
+                                :page-size="20" layout="  prev, pager, next" :total="total">
+                            </el-pagination>
+                        </div>
 
                     </div>
                 </div>
@@ -112,19 +105,9 @@
         </body>
         <script>
             $(".client").show();
-            // 勾選單項
-            var $all = $("input[name=mak]");
-            $("input[type=checkbox][name=mak]").change(function () {
-                var $zx = $("input[name=mak]:checked");
-                $("#activity").prop("checked", $zx.length == $all.length);
-            });
-            // 勾選全部
-            $("#activity").change(function () {
-                $all.prop("checked", this.checked);
-            });
+
             //  刪除按鈕
             function sta() {
-
                 var $zx = $("input[name=mak]:checked");
                 if ($zx.length == 0) {
                     alert("須勾選要刪除項目");
@@ -137,18 +120,12 @@
                         }
                         console.log(parm);
                         $.ajax({
-                            url: '${pageContext.request.contextPath}/CRM/delcontact',//接受請求的Servlet地址
+                            url: '${pageContext.request.contextPath}/CRM/delcontact',
                             type: 'POST',
                             data: parm,
-                            // dataType:"json",
-                            // async: false,//同步請求
-                            // cache: false,//不快取頁面
-                            // contentType: false,//當form以multipart/form-data方式上傳檔案時，需要設定為false
-                            // processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
-
                             success: function (json) {
                                 alert(json);
-                                window.location.href = "${pageContext.request.contextPath}/CRM/ContactList";
+                                window.location.href = "${pageContext.request.contextPath}/client/contactList.jsp";
                             },
                             error: function (returndata) {
                                 console.log(returndata);
@@ -156,8 +133,69 @@
                         });
                     }
                 }
-
             }
+        </script>
+        <script>
+            const vm = new Vue({
+                el: ".app",
+                data() {
+                    return {
+                        list: [],
+                        total: "",//全部多少筆
+                        currentPage: "",//當前頁面
+                    }
+                },
+                created() {
+                    $.ajax({
+                        url: '${pageContext.request.contextPath}/contact/ContactListInit?pag=1',
+                        type: 'post',
+                        async: false,
+                        cache: false,
+                        success: response => {
+                            this.list = response.list,
+                                this.total = response.total
+                        },
+                        error: function (returndata) {
+                            console.log(returndata);
+                        }
+                    });
+                    console.log(this.list);
+                },
+
+                methods: {
+                    //進入細節
+                    contact(contactid) {
+                        location.href = '${pageContext.request.contextPath}/CRM/contact/' + contactid;
+                    },
+                    //分頁切換
+                    handleCurrentChange() {
+                        $.ajax({
+                            url: '${pageContext.request.contextPath}/contact/ContactListInit?pag=' + this.currentPage,
+                            type: 'post',
+                            async: false,
+                            cache: false,
+                            success: response => {
+                                this.list = response.list,
+                                    this.total = response.total
+                            },
+                            error: function (returndata) {
+                                console.log(returndata);
+                            }
+                        });
+                    },
+                    //勾選全部
+                    changeActivity: function () {
+                        var $all = $("input[name=mak]");
+                        $all.prop("checked", $("#activity").prop("checked"));
+                    },
+                    // 勾選單項   
+                    clickmak: function () {
+                        var $all = $("input[name=mak]");
+                        var $zx = $("input[name=mak]:checked");
+                        $("#activity").prop("checked", $zx.length == $all.length);
+                    },
+                },
+            })
 
         </script>
 

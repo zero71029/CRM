@@ -58,7 +58,7 @@
                 <button class="client clientbar"
                     onclick="javascript:location.href='${pageContext.request.contextPath}/client/clientList.jsp'">客戶</button>
                 <button class="client contactbar"
-                    onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/ContactList'">聯絡人</button>
+                    onclick="javascript:location.href='${pageContext.request.contextPath}/client/contactList.jsp'">聯絡人</button>
                 <!-- <button class="client">流失客戶</button> -->
                 <button class="list-group-item" onclick="javascript:location.href=''">
                     服務管理

@@ -129,17 +129,10 @@ public class CustomerControler {
         System.out.println("*****儲存聯絡人*****");
         System.out.println(contactBean);
         cs.SaveContact(contactBean);
-        return "redirect:/CRM/ContactList";
+        return "redirect:/client/contactList.jsp";
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//讀取聯絡人列表
-    @RequestMapping("/ContactList")
-    public String ContactList(Model model) {
-        System.out.println("*****讀取聯絡人列表*****");
-        model.addAttribute("list", cs.getContactList());
-        return "/client/contactList";
-    }
+
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取聯絡人細節
