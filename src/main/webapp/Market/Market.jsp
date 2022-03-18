@@ -142,8 +142,9 @@
                                         <!-- 上一頁 -->
                                         <!-- <a href="#"  onclick="location.href='${pageContext.request.contextPath}/billboard?pag=1&sort=createtime';" -->
                                         <a href="#" @click="back" style="text-decoration: none;">
-                                            <img src="${pageContext.request.contextPath}/img/Pre.png" alt="上一頁">
+                                            <img src="${pageContext.request.contextPath}/img/Pre.png" alt="上一頁" style="width: 60px;height: 54px;">
                                         </a>
+                                        <el-button class="el-icon-printer" @click="printTable"></el-button></i>
                                     </div>
                                 </div>
                                 <br>
@@ -162,8 +163,8 @@
                                             <div class="row" style="text-align: center;">
                                                 <div class="col-md-12 bg-danger text-white"
                                                     style="font-size: 1.5rem;border-radius: 5px 5px 0 0 ;">
-                                                    基本資料 {{bean.aaa}}<br>
-                                             
+                                                    基本資料<br>
+
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -331,7 +332,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="row">&nbsp;</div>
-                                            <div class="row">
+                                            <!-- <div class="row">
                                                 <div class="col-md-1 "> </div>
                                                 <div class="col-md-11 ">
                                                       <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
@@ -344,7 +345,14 @@
                                                         </ol>
                                                       </nav>                                            
                                                 </div>
-
+                                            </div> -->
+                                            <div class="row" style="line-height: 2.5rem;">
+                                                <div class="col-md-1 "> </div>
+                                                <div class="col-md-2 cellz">創建時間</div>
+                                                <div class="col-md-4 FormPadding">
+                                                    {{bean.aaa}}
+                                                </div>
+                                            </div>
                                             <div class="row">
                                                 <div class="col-md-1 "> </div>
                                                 <div class="col-md-2 cellz">負責人</div>
@@ -418,6 +426,8 @@
                                             <div class="row">
                                                 <div class="col-md-1"> </div>
                                                 <div class="col-md-6 FormPadding">報價內容
+                                                    <div v-html="quoteHeight"  id="quoteHeight" style="visibility: hidden ; position: absolute;z-index: -1;width: 312px;"></div>
+
                                                     <el-input type="textarea" v-model="bean.quote" rows="5" id="quote"
                                                         maxlength="990" show-word-limit name="quote"
                                                         @input="changeTextarea('quote')">
@@ -649,6 +659,7 @@
                                     <div class="row">
                                         <div class="col-md-1 cellz">描述<span style="color: red;">*</span></div>
                                         <div class="col-md-5 FormPadding">
+                                            <div v-html="messageheight" id="messageheight" style="position: absolute;width: 541px;z-index: -1;"></div>
                                             <el-input type="textarea" v-model="bean.message" rows="5" id="message"
                                                 maxlength="950" show-word-limit name="message"
                                                 @input="changeTextarea('message')">
@@ -725,16 +736,19 @@
                                 <!-- {{s}} -->
                                 <div class="row" style="min-height: 70px;">
                                     <div class="row">
-                                        <div class="col-md-4" style="position: relative; word-wrap:break-word;">
-                                            </el-input>
-                                            <el-input type="textarea" v-model="s.trackdescribe" class="aaaa"
-                                                :id="'Tracktrackdescribe'+index"
-                                                @input="changeTextarea('Tracktrackdescribe'+index)">
-                                        </div>
-                                        <div class="col-md-4" style="position: relative; word-wrap:break-word;">
-                                            <el-input type="textarea" v-model="s.result" class="aaaa"
-                                                :id="'Trackresult'+index" @input="changeTextarea('Trackresult'+index)">
+                                        <div class="col-md-4" style="position: relative; word-wrap:break-word;"
+                                            v-html="s.trackdescribe">
 
+
+                                            <!-- <el-input type="textarea" v-model="s.trackdescribe" class="aaaa"
+                                                :id="'Tracktrackdescribe'+index"
+                                                @input="changeTextarea('Tracktrackdescribe'+index)"></el-input> -->
+                                        </div>
+                                        <div class="col-md-4" style="position: relative; word-wrap:break-word;"
+                                            v-html="s.result">
+                                            <!-- <el-input type="textarea" v-model="s.result" class="aaaa"
+                                                :id="'Trackresult'+index" @input="changeTextarea('Trackresult'+index)">
+                                            </el-input> -->
                                         </div>
                                         <div class="col-md-3" style="color: #569b92;">
                                             {{s.remark}} {{s.tracktime}}</div>
@@ -929,7 +943,6 @@
             }
 
             function contact() {
-
                 $.ajax({
                     url: '${pageContext.request.contextPath}/Market/selectContactByClientName/' + $("input[name='client']").val(),
                     type: 'POST',
@@ -1025,6 +1038,8 @@
                 el: '.app',
                 data() {
                     return {
+                        quoteHeight: "",// 報價內容 高度用
+                        messageheight:"",// 描述 高度用
                         fileList: [],
                         CallBosCss: "form-control cellzFrom EndTime ",
                         CallHelpCSS: "col-md-2",
@@ -1168,11 +1183,28 @@
                         this.CallHelpCSS = "col-md-2 bg-danger";
                     }
                     this.fileList = this.bean.marketfilelist;
+                    //取 報價內容 高度用
+                    this.quoteHeight = this.bean.quote.replace(/\r\n/g, '<br />');
+                    this.messageheight = this.bean.message.replace(/\r\n/g, '<br />');
+                },
+                mounted() {
+                    //取 報價內容 高度用
+                    console.log(" textarea.style.height", $("#quoteHeight").height());
+                    const h = $("#quoteHeight").height();
+                    if(h>100) $("#quote").height((h+20));
+                    if($("#messageheight").height()>100)$("#message").height(($("#messageheight").height()));
 
-                    console.log(" this.bean.endtime", this.bean.endtime);
-                    console.log(" this.oldBean.endtime", this.oldBean.endtime);
-
-
+                },
+                watch: {
+                    TrackList: {
+                        handler(newValue, oldValue) {
+                            console.log("newValue", newValue);
+                            for (var track of newValue) {
+                                track.trackdescribe = track.trackdescribe.replace(/\r\n/g, '<br />');
+                                track.result = track.result.replace(/\r\n/g, '<br />');
+                            }
+                        }
+                    }
                 },
                 methods: {
                     submitForm() {//送出表單                       
@@ -1511,6 +1543,9 @@
                         console.log(response, "response");
                         console.log(file, "file");
                         console.log(fileList, "fileList");
+                    },
+                    printTable(){
+                        window.open('${pageContext.request.contextPath}/Market/MarketPrint.jsp?id='+this.bean.marketid)
                     }
                 },
             })
@@ -1548,7 +1583,8 @@
             .el-icon-close-tip {
                 display: none;
             }
-            .el-date-editor.el-input{
+
+            .el-date-editor.el-input {
                 width: 100%;
             }
         </style>

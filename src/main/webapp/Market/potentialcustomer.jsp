@@ -510,6 +510,7 @@
                                 <div class="row">
                                     <div class="col-md-1"></div>
                                     <div class="col-md-4 FormPadding">
+                                        
                                         <textarea class="form-control" name="trackdescribe" rows="2" maxlength="950"
                                             @input="changeTextarea('trackdescribe')" id="trackdescribe"></textarea>
                                     </div>
@@ -536,16 +537,16 @@
                                     <!-- {{s}} -->
                                     <div class="row" style="min-height: 70px;">
                                         <div class="row">
-                                            <div class="col-md-4" style="position: relative; word-wrap:break-word;">
-                                                </el-input>
-                                                <el-input type="textarea" v-model="s.trackdescribe" class="aaaa"
+                                            <div class="col-md-4" style="position: relative; word-wrap:break-word;" v-html="s.trackdescribe">
+                                                
+                                                <!-- <el-input type="textarea" v-model="s.trackdescribe" class="aaaa"
                                                     :id="'Tracktrackdescribe'+index"
-                                                    @input="changeTextarea('Tracktrackdescribe'+index)">
+                                                    @input="changeTextarea('Tracktrackdescribe'+index)"></el-input> -->
                                             </div>
-                                            <div class="col-md-4" style="position: relative; word-wrap:break-word;">
-                                                <el-input type="textarea" v-model="s.result" class="aaaa"
+                                            <div class="col-md-4" style="position: relative; word-wrap:break-word;" v-html="s.result">
+                                                <!-- <el-input type="textarea" v-model="s.result" class="aaaa"
                                                     :id="'Trackresult'+index"
-                                                    @input="changeTextarea('Trackresult'+index)">
+                                                    @input="changeTextarea('Trackresult'+index)"></el-input> -->
 
                                             </div>
                                             <div class="col-md-3" style="color: #569b92;">
@@ -1105,6 +1106,15 @@
                             }, 100)
                             $("select[name='town']").append('<option value="' + n.billtown + '">' + n.billtown + '</option>');
                             $("select[name='town']").val(n.billtown);
+                        }
+                    },
+                    TrackList: {
+                        handler(newValue, oldValue) {
+                            console.log("newValue", newValue);
+                            for (var track of newValue) {
+                                track.trackdescribe = track.trackdescribe.replace(/\r\n/g, '<br />');
+                                track.result = track.result.replace(/\r\n/g, '<br />');
+                            }
                         }
                     }
                 },

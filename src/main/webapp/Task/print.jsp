@@ -9,12 +9,12 @@
             <script src="${pageContext.request.contextPath}/js/jquery-3.4.1.js"></script>
             <link rel="preconnect" href="https://fonts.gstatic.com">
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
-             <!-- bootstrap的CSS、JS樣式放這裡  -->
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/css/bootstrap.min.css">
+            <!-- bootstrap的CSS、JS樣式放這裡  -->
+            <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/css/bootstrap.min.css">
 
             <link rel="stylesheet" href="${pageContext.request.contextPath}\icons\bootstrap-icons.css">
             <!-- 引入样式 vue-->
-            <script src="${pageContext.request.contextPath}/js/vue.js"></script>           
+            <script src="${pageContext.request.contextPath}/js/vue.min.js"></script>
             <!-- 引入element-ui样式 -->
             <link rel="stylesheet" href="${pageContext.request.contextPath}/js/element-ui.css">
             <!-- 引入element-ui组件库 -->
@@ -34,6 +34,7 @@
             .table tr td .row {
                 margin: 0px;
             }
+
             [v-cloak] {
                 display: none;
             }
@@ -44,6 +45,7 @@
             .contentTextarea {
                 border: 0px;
             }
+
             .el-textarea {
                 padding: 0px;
             }
@@ -65,10 +67,10 @@
                     <div class="col-lg-3"></div>
                     <div class="col-lg-6 ">
                         <el-form ref="form" :model="bean" label-width="80px"
-                            action="${pageContext.request.contextPath}/task/save" method="post">  
+                            action="${pageContext.request.contextPath}/task/save" method="post">
                             <div class="row">
-                                <table class="table table-bordered" >
-                                    <tr  >
+                                <table class="table table-bordered">
+                                    <tr>
                                         <td>部門</td>
                                         <td>
                                             {{bean.department}}
@@ -84,18 +86,18 @@
                                     </tr>
                                     <tr class="text-center">
                                         <td>完成?<br>(自己<i class="bi bi-check"></i>)</td>
-                                        <td colspan="3" >任務</td>
+                                        <td colspan="3">任務</td>
                                         <td>重要度 <br>H,M,L</td>
                                         <td>期限/耗時</td>
                                     </tr>
-                                    <tr v-for="(s, index) in taskList" :key="index"  >                                         
-                                        <td >
+                                    <tr v-for="(s, index) in taskList" :key="index">
+                                        <td>
                                             <el-result icon="success" style="padding: 0px;" v-show="s.finish == 'on'">
                                             </el-result>
-                                            <!-- 完成 -->                                            
+                                            <!-- 完成 -->
 
                                         </td>
-                                        <td colspan="3" style="height: auto;"class="text-break">
+                                        <td colspan="3" style="height: auto;" class="text-break">
                                             <!--任務內容  -->
                                             {{s.content}}
                                         </td>
@@ -113,10 +115,10 @@
 
                                     <tr>
                                         <td colspan="6" class="text-break"> 備註:
-                                            
-                                                {{bean.remark}}
 
-                                            
+                                            {{bean.remark}}
+
+
                                         </td>
                                     </tr>
                                     <tr class="text-break">
@@ -125,7 +127,7 @@
                                             <div class="row">
                                                 <div class="col-lg-2 text-wrap" style="font-size: 30px;">
                                                     {{bean.score}}
-     
+
                                                 </div>
                                                 <div class="col-lg-10 text-wrap">
                                                     {{bean.assessment}}
@@ -135,16 +137,16 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2"  class="text-break"> 主管：<br>
+                                        <td colspan="2" class="text-break"> 主管：<br>
                                             {{bean.director}}
-                                            
-      
+
+
                                         </td>
-                                        <td colspan="2" >HR: <br>
-                                            
+                                        <td colspan="2">HR: <br>
+
                                             {{bean.hr}}
-                                            
-         
+
+
                                         </td>
                                         <td colspan="2">&nbsp;<br>
                                             {{bean.costtime}}
@@ -156,16 +158,16 @@
 
                         </el-form>
                     </div>
-                    
+
                 </div>
                 <!-- 中間主體結束 -->
             </div>
 
         </body>
 
-        
+
         <script>
-             const vm = new Vue({
+            const vm = new Vue({
                 el: ".app",
                 data() {
                     return {
@@ -209,7 +211,7 @@
                         success: (response => (
                             this.bean = response.bean,
                             this.taskList = response.taskList,
-                            this.value2 = this.bean.evaluatedate,                            
+                            this.value2 = this.bean.evaluatedate,
                             console.log(response.taskList, "taskList"),
                             console.log(this.value2)
                         )),
@@ -218,6 +220,7 @@
                         }
                     });
                 },
-             })
+            })
         </script>
+
         </html>
