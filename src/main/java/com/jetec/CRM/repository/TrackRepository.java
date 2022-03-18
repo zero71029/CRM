@@ -17,7 +17,10 @@ public interface TrackRepository extends JpaRepository<TrackBean, String>{
 	List<TrackBean> findByCustomerid(String customerid, Sort sort);
 
 
-	List<TrackBean> findByCustomerid(String customerid);
+
+
 	@Query(value = "SELECT  DISTINCT(customerid) FROM track  WHERE tracktime BETWEEN ?1 AND ?2", nativeQuery = true)
     List<String> setectTrackTime(String start, String end);
+
+	List<TrackBean> findByCustomeridOrderByTracktimeDesc(String customerid);
 }

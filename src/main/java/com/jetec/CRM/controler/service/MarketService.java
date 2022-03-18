@@ -155,7 +155,7 @@ public class MarketService {
                 result.add(p);
         }
         for (MarketBean bean : result) {
-            bean.setTrackbean(tr.findByCustomerid(bean.getCustomerid()));
+            bean.setTrackbean(tr.findByCustomeridOrderByTracktimeDesc(bean.getCustomerid()));
         }
         return result;
     }
@@ -346,12 +346,20 @@ public class MarketService {
                 for (String customerid : customeridList) {
                     MarketBean marketBean = mr.findByCustomerid(customerid);
                     if (marketBean != null) {
-                        marketBean.setTrackbean(tr.findByCustomerid(customerid));
+                        marketBean.setTrackbean(tr.findByCustomeridOrderByTracktimeDesc(customerid));
                         result.add(marketBean);
                     }
 
-                    result = result.stream().sorted(Comparator.comparing(MarketBean::getAaa).reversed()).collect(Collectors.toList());
-
+                }
+//                result = result.stream().sorted(Comparator.comparing(MarketBean::getAaa).reversed()).collect(Collectors.toList());
+                for (int i =0 ;i<result.size();i++){
+                    for (int x =i+1 ;x<result.size();x++){
+                        if(result.get(i).getTrackbean().get(0).getTracktime().compareTo(result.get(x).getTrackbean().get(0).getTracktime()) < 0 ){
+                                MarketBean w = result.get(i);
+                                result.set(i,result.get(x)) ;
+                                result.set(x,w);
+                            }
+                    }
                 }
 
                 break;

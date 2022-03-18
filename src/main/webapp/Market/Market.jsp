@@ -162,7 +162,7 @@
                                             <div class="row" style="text-align: center;">
                                                 <div class="col-md-12 bg-danger text-white"
                                                     style="font-size: 1.5rem;border-radius: 5px 5px 0 0 ;">
-                                                    基本資料 <br>
+                                                    基本資料 {{bean.aaa}}<br>
                                              
                                                 </div>
                                             </div>
