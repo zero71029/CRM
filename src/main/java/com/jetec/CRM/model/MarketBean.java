@@ -54,15 +54,6 @@ public class MarketBean implements Serializable {
     private String fileforeignid;//附件id
     private String founder;//創始人
 
-    @Override
-    public String toString() {
-        return "MarketBean{" +
-                "marketid='" + marketid + '\'' +
-                ", name='" + name + '\'' +
-                ", marketfilelist=" + marketfilelist +
-                '}';
-    }
-
     public String getContactmethod() {
         return contactmethod;
     }
@@ -72,7 +63,10 @@ public class MarketBean implements Serializable {
     }
 
     // 追蹤資訊
+    @OrderBy("tracktime")
     @OneToMany(targetEntity = TrackBean.class, mappedBy = "customerid", cascade = CascadeType.ALL)
+//    @OneToMany(targetEntity = TrackBean.class,  cascade = CascadeType.ALL)
+//    @JoinColumn(name = "customerid", referencedColumnName = "customerid", insertable = false, updatable = false)
     private List<TrackBean> trackbean;
 
     //附件
@@ -427,5 +421,12 @@ public class MarketBean implements Serializable {
         this.trackbean = trackbean;
     }
 
-
+    @Override
+    public String toString() {
+        return "MarketBean{" +
+                "marketid='" + marketid + '\'' +
+                ", name='" + name + '\'' +
+                ", trackbean=" + trackbean +
+                '}';
+    }
 }

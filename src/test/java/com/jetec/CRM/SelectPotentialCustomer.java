@@ -25,8 +25,8 @@ public class SelectPotentialCustomer {
         System.setProperty("webdriver.chrome.driver", "src\\main\\resources\\chromedriver.exe");
         ChromeDriver driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-        driver.get("http://localhost:8080/CRM/");
-//        driver.get("http://192.168.11.100:8080/CRM");
+//        driver.get("http://localhost:8080/CRM/");
+        driver.get("http://192.168.11.100:8081/CRM");
         WebDriver.Options op = driver.manage();
         op.window().maximize();//全屏
 

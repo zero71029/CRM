@@ -56,7 +56,8 @@
 
 
                                 <label class="btn btn-outline-primary" for="btncheck4" data-bs-toggle="offcanvas"
-                                    data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" id="search">搜索</label>
+                                    data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"
+                                    id="search">搜索</label>
                             </div>
                         </div>
                         <!-- <%-- 中間主體--%> -->
@@ -79,7 +80,11 @@
                                     <td>機率</td>
                                     <td @click="sortItem('important')"><a href="#">重要性</a></td>
                                     <td>追蹤次數</td>
-                                    <td>建立時間</td>
+                                    <td>
+                                        <span>建立時間</span>
+                                        <br>
+                                        <span class="text-danger">最後追蹤時間</span>
+                                    </td>
                                     <c:if test="${user.position == '主管' || user.position == '系統'}">
                                         <td>點擊數</td>
                                     </c:if>
@@ -117,7 +122,10 @@
                                         {{s.trackbean.length}}</td>
                                     <!--  建立時間-->
                                     <td v-on:click="market(s.marketid)" style="cursor: pointer;">
-                                        {{s.aaa}}</td>
+                                        <span>{{s.aaa}}</span>
+                                        <br>
+                                        <span class="text-danger">{{s.tracktime}}</span>
+                                    </td>
                                     <c:if test="${user.position == '主管' || user.position == '系統'}">
                                         <td>{{s.clicks}}</td>
                                     </c:if>
@@ -170,15 +178,6 @@
                                 </el-table>
                             </el-dialog>
                         </c:if>
-
-
-
-
-
-
-
-
-
                         <!-- 滑塊 -->
                         <div class="offcanvas offcanvas-end " tabindex="0" id="offcanvasRight"
                             aria-labelledby="offcanvasRightLabel" style="width: 450px;">
@@ -203,6 +202,25 @@
                                                 重置
                                             </button>
                                         </h2>
+                                    </div>
+                                    <!-- 最後追蹤時間 -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="flush-headingOne">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#最後追蹤時間">
+                                                最後追蹤時間
+                                            </button>
+                                        </h2>
+                                        <div id="最後追蹤時間" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <el-date-picker v-model="intracktime" type="daterange" align="right"
+                                                    unlink-panels range-separator="到" start-placeholder="開始日期"
+                                                    end-placeholder="結束日期" :picker-options="pickerOptions"
+                                                    value-format="yyyy-MM-dd">
+                                                </el-date-picker>
+                                                <input type="submit" value="送出" @click="selectList" id="sendDay">
+                                            </div>
+                                        </div>
                                     </div>
                                     <!-- 負責人 -->
                                     <div class="accordion-item">
@@ -529,6 +547,7 @@
             const vm = new Vue({
                 el: '.app',
                 data: {
+
                     options: [{
                         value: '尚未處理',
                         label: '尚未處理'
@@ -601,6 +620,7 @@
                     budget1: "0",
                     budget2: "",
                     //搜索區資料
+                    intracktime: [],
                     oldList: [],
                     product: "",
                     source: [],//產業
@@ -699,20 +719,41 @@
                             });
                     }
                 },
+                watch: {
+                    list: {
+                        immediate: true,
+                        handler(newValue, oldValue) {
+                            //插入最後追蹤時間
+                            console.log(newValue);
+                            for (var bean of newValue) {
+                                console.log(bean);
+                                if (bean.trackbean.length != 0)
+                                    bean.tracktime = bean.trackbean[0].tracktime;
+                            }
+
+                        }
+                    },
+                },
                 methods: {
                     clickEndCast: function (row, column, event) {
                         window.open('${pageContext.request.contextPath}/Market/Market/' + row.marketid);
 
                     },
-                    handleCurrentChange(val) {//點擊分頁                        
-                        axios
-                            .get('${pageContext.request.contextPath}/Market/MarketList?pag=' + val)
-                            .then(response => (
-                                this.list = response.data.list
-                            ))
-                            .catch(function (error) {
-                                console.log(error);
-                            });
+                    handleCurrentChange(val) {//點擊分頁
+                        $.ajax({
+                            url: '${pageContext.request.contextPath}/Market/MarketList?pag=' + val,
+                            type: 'POST',
+                            async: false,
+                            cache: false,
+                            success: response => {
+                                this.list = response.list
+
+                            },
+                            error: function (returndata) {
+                                console.log(returndata);
+                            }
+
+                        });
                     },
                     //////////////////////產品類別
                     handleCheckAllChange(val) {
@@ -775,9 +816,20 @@
                             this.inDay[0] = "";
                             this.inDay[1] = "";
                         }
-
-
                         var url = '${pageContext.request.contextPath}/Market/selectDate?from=' + this.inDay[0] + "&to=" + this.inDay[1];
+
+
+
+
+
+                        if (this.intracktime != "") {//最後追蹤時間
+                            url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=tractime&val=" + this.intracktime;
+
+                        }else
+
+
+
+
                         if (this.inUserList != "") {//負責人
                             url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=UserList&val=" + this.inUserList;
                         } else if (this.name != "") {//機會民稱 客戶
@@ -797,7 +849,7 @@
                             url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=clinch&val=" + this.clinch;
                         } else if (this.product != "") {//商品
                             url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=product&val=" + this.product;
-                        }else if (this.checkedCities != "") {//產品類別
+                        } else if (this.checkedCities != "") {//產品類別
                             url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=checkedCitiest&val=" + this.product;
                         }
 

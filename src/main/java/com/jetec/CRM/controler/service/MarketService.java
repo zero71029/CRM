@@ -14,8 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -65,7 +67,10 @@ public class MarketService {
     public List<MarketBean> getList(Integer pag) {
         Pageable p = PageRequest.of(pag, 20, Direction.DESC, "aaa");
         Page<MarketBean> page = mr.findStage(p);
-        List<MarketBean> result = page.getContent();
+        List<MarketBean> result = new ArrayList<>();
+        if (pag == 0)
+            result.addAll(mr.findByCallhelpAndStageNotAndStageNot("1", "失敗結案", "成功結案"));
+        result.addAll(page.getContent());
         Sort sort = Sort.by(Direction.DESC, "tracktime");
         for (MarketBean bean : result) {
             List<TrackBean> list = tr.findByCustomerid(bean.getCustomerid(), sort);
@@ -214,10 +219,10 @@ public class MarketService {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 搜索銷售機會by日期
     public List<MarketBean> selectDate(String startTime, String endTime) {
-        List<MarketBean> result = mr.findAaa(startTime, endTime);
-        for (MarketBean bean : result) {
-            bean.setTrackbean(tr.findByCustomerid(bean.getCustomerid()));
-        }
+//        List<MarketBean> result = mr.findAaa(startTime, endTime);
+//        for (MarketBean bean : result) {
+//            bean.setTrackbean(tr.findByCustomerid(bean.getCustomerid()));
+//        }
         return mr.findAaa(startTime, endTime);
 
     }
@@ -332,12 +337,30 @@ public class MarketService {
         System.out.println(val);
         List<MarketBean> result = new ArrayList<>();
         switch (key) {
+            case "tractime":
+                System.out.println(val);
+                String start = val.get(0) + " 00:00";
+                String end = val.get(1) + " 23:59";
+                //@Query(value = "SELECT  DISTINCT(customerid) FROM track  WHERE tracktime BETWEEN ?1 AND ?2", nativeQuery = true)
+                List<String> customeridList = tr.setectTrackTime(start, end);
+                for (String customerid : customeridList) {
+                    MarketBean marketBean = mr.findByCustomerid(customerid);
+                    if (marketBean != null) {
+                        marketBean.setTrackbean(tr.findByCustomerid(customerid));
+                        result.add(marketBean);
+                    }
+
+                    result = result.stream().sorted(Comparator.comparing(MarketBean::getAaa).reversed()).collect(Collectors.toList());
+
+                }
+
+                break;
             case "UserList":
                 for (String user : val)
                     result.addAll(mr.findByUserAndAaaBetween(user, startDay, endDay, sort));
                 break;
             case "name":
-                result.addAll(mr.findByNameLikeIgnoreCaseOrClientLikeIgnoreCaseAndAaaBetween("%" + val.get(0) + "%","%" + val.get(0) + "%", startDay, endDay, sort));
+                result.addAll(mr.findByNameLikeIgnoreCaseOrClientLikeIgnoreCaseAndAaaBetween("%" + val.get(0) + "%", "%" + val.get(0) + "%", startDay, endDay, sort));
                 break;
             case "ContantPhone":
                 result.addAll(mr.findByContactphoneLikeIgnoreCaseAndAaaBetween("%" + val.get(0) + "%", startDay, endDay, sort));
@@ -365,7 +388,7 @@ public class MarketService {
                     result.addAll(mr.findByProducttypeAndAaaBetween(producttype, startDay, endDay, sort));
                 break;
             case "product":
-                result.addAll(mr.findByProductLikeIgnoreCaseOrNameLikeIgnoreCaseOrMessageLikeIgnoreCaseAndAaaBetween("%" + val.get(0) + "%","%" + val.get(0) + "%","%" + val.get(0) + "%", startDay, endDay, sort));
+                result.addAll(mr.findByProductLikeIgnoreCaseOrNameLikeIgnoreCaseOrMessageLikeIgnoreCaseAndAaaBetween("%" + val.get(0) + "%", "%" + val.get(0) + "%", "%" + val.get(0) + "%", startDay, endDay, sort));
                 break;
         }
 

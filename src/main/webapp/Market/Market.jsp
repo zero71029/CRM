@@ -162,7 +162,9 @@
                                             <div class="row" style="text-align: center;">
                                                 <div class="col-md-12 bg-danger text-white"
                                                     style="font-size: 1.5rem;border-radius: 5px 5px 0 0 ;">
-                                                    基本資料</div>
+                                                    基本資料 <br>
+                                             
+                                                </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-2 cellz">機會名稱 <span style="color: red;">*</span>
