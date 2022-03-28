@@ -41,6 +41,8 @@ public class AdminBean {
 	@OneToMany(targetEntity = BillboardTopBean.class ,mappedBy = "adminid", cascade = CascadeType.ALL)
 	private List<BillboardTopBean> top;
 	
+	@OneToMany(targetEntity = MarketStateBean.class ,mappedBy = "adminid", cascade = CascadeType.ALL)
+	private List<MarketStateBean> marketstate;
     
     
 	public List<BillboardTopBean> getTop() {

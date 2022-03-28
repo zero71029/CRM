@@ -1,10 +1,7 @@
 package com.jetec.CRM.repository;
 
-import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
-import com.jetec.CRM.model.MarketBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

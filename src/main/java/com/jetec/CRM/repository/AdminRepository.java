@@ -1,11 +1,11 @@
 package com.jetec.CRM.repository;
 
-import com.jetec.CRM.model.AdminBean;
-import org.springframework.data.domain.Sort;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
+import com.jetec.CRM.model.AdminBean;
 
 public interface AdminRepository extends JpaRepository<AdminBean, Integer>{
 
