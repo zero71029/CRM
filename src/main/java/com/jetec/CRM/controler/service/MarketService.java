@@ -1,8 +1,9 @@
 package com.jetec.CRM.controler.service;
 
-import com.jetec.CRM.Tool.ZeroTools;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
 import com.jetec.CRM.model.*;
-import com.jetec.CRM.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,12 +13,13 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.jetec.CRM.Tool.ZeroTools;
+import com.jetec.CRM.repository.AgreementRepository;
+import com.jetec.CRM.repository.MarketRemarkRepository;
+import com.jetec.CRM.repository.MarketRepository;
+import com.jetec.CRM.repository.MarketStateRepository;
+import com.jetec.CRM.repository.QuotationRepository;
+import com.jetec.CRM.repository.TrackRepository;
 
 @Service
 @Transactional
@@ -36,6 +38,8 @@ public class MarketService {
     ZeroTools zTools;
     @Autowired
     UpfileService US;
+    @Autowired
+    MarketStateRepository msr;
 
     public MarketBean save(MarketBean marketBean) {
         String uuid = zTools.getUUID();
@@ -352,13 +356,13 @@ public class MarketService {
 
                 }
 //                result = result.stream().sorted(Comparator.comparing(MarketBean::getAaa).reversed()).collect(Collectors.toList());
-                for (int i =0 ;i<result.size();i++){
-                    for (int x =i+1 ;x<result.size();x++){
-                        if(result.get(i).getTrackbean().get(0).getTracktime().compareTo(result.get(x).getTrackbean().get(0).getTracktime()) < 0 ){
-                                MarketBean w = result.get(i);
-                                result.set(i,result.get(x)) ;
-                                result.set(x,w);
-                            }
+                for (int i = 0; i < result.size(); i++) {
+                    for (int x = i + 1; x < result.size(); x++) {
+                        if (result.get(i).getTrackbean().get(0).getTracktime().compareTo(result.get(x).getTrackbean().get(0).getTracktime()) < 0) {
+                            MarketBean w = result.get(i);
+                            result.set(i, result.get(x));
+                            result.set(x, w);
+                        }
                     }
                 }
 
@@ -401,5 +405,72 @@ public class MarketService {
         }
 
         return result;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //檢查有無使用者狀態
+    public boolean existMarketState(Integer adminid, String filed, String state) {
+        return msr.existsByAdminidAndFieldAndState(adminid, filed, state);
+
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //添加使用者狀態
+    public void saveMarketState(Integer adminid, String field, String state, String type) {
+        msr.save(new MarketStateBean(zTools.getUUID(), adminid, field, state, type));
+
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //添加使用者狀態
+    public List<MarketStateBean> getMarketState(Integer adminid) {
+        // TODO Auto-generated method stub
+        return msr.findByAdminid(adminid);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //刪除使用者狀態
+    public void delState(String marketstateid) {
+        msr.deleteById(marketstateid);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //使用者狀態
+    public Map<String, Object> getStateList(List<MarketStateBean> stateList, Integer pag) {
+        Map<String, Object> resoult = new HashMap<>();
+        List<MarketBean> list = new ArrayList<>();
+        List<MarketBean> Marketlist = new ArrayList<>();
+        List<String> admin = new ArrayList<>();
+        for (MarketStateBean b : stateList) {
+            if (b.getField().equals("admin")) admin.add(b.getState());
+        }
+
+        if (admin.size() > 0) {
+            for (String name : admin) {
+                list.addAll(mr.findByUser(name));
+            }
+        }
+
+
+        System.out.println(list);
+        System.out.println("*******************************************");
+        //pag
+        int total = list.size();
+        for (int i = pag * 20; i < pag * 20 + 20; i++) {
+            if (i + 1 > total) break;
+            Marketlist.add(list.get(i));
+        }
+
+        //輸出
+        resoult.put("list", Marketlist);
+        resoult.put("total", total);
+        System.out.println(resoult);
+        return resoult;
+    }
+
+    public boolean existMarketByFileforeignid(String fileforeignid) {
+        return mr.existsByFileforeignid(fileforeignid);
+
+
     }
 }

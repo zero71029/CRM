@@ -114,5 +114,13 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
     List<MarketBean> findByCallhelpAndStageNotAndStageNot(String s, String 失敗結案, String 成功結案);
 
     MarketBean findByCustomerid(String customerid);
+
+
+
+
     ///////////////////selectMarketByAll
+    List<MarketBean> findByUser(String s);
+
+
+    boolean existsByFileforeignid(String fileforeignid);
 }

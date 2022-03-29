@@ -1,5 +1,8 @@
 package com.jetec.CRM.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +17,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "admin")
-public class AdminBean {
+public class AdminBean  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer adminid;
@@ -40,11 +43,18 @@ public class AdminBean {
 
 	@OneToMany(targetEntity = BillboardTopBean.class ,mappedBy = "adminid", cascade = CascadeType.ALL)
 	private List<BillboardTopBean> top;
-	
+
 	@OneToMany(targetEntity = MarketStateBean.class ,mappedBy = "adminid", cascade = CascadeType.ALL)
 	private List<MarketStateBean> marketstate;
-    
-    
+
+	public List<MarketStateBean> getMarketstate() {
+		return marketstate;
+	}
+
+	public void setMarketstate(List<MarketStateBean> marketstate) {
+		this.marketstate = marketstate;
+	}
+
 	public List<BillboardTopBean> getTop() {
 		return top;
 	}
@@ -143,13 +153,26 @@ public class AdminBean {
 	public void setDirector(String director) {
 		this.director = director;
 	}
+
 	@Override
 	public String toString() {
-		return "AdminBean [adminid=" + adminid + ", name=" + name + ", phone=" + phone + ", email=" + email
-				+ ", address=" + address + ", password=" + password + ", state=" + state + ", position=" + position
-				+ ", create_data=" + create_data + ", department=" + department + ", director=" + director + "]";
-	}
-    
-    
+		return "AdminBean{" +
+				"adminid=" + adminid +
+				", name='" + name + '\'' +
+				", phone='" + phone + '\'' +
+				", email='" + email + '\'' +
+				", address='" + address + '\'' +
+				", password='" + password + '\'' +
+				", state='" + state + '\'' +
+				", position='" + position + '\'' +
+				", create_data=" + create_data +
+				", department='" + department + '\'' +
+				", director='" + director + '\'' +
+				", dutyDay='" + dutyDay + '\'' +
+				", mail=" + mail +
 
+				", top=" + top +
+				", marketstate=" + marketstate +
+				'}';
+	}
 }
