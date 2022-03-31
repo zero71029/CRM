@@ -1,6 +1,7 @@
 package com.jetec.CRM.controler;
 
 import com.jetec.CRM.Tool.ZeroTools;
+import com.jetec.CRM.controler.service.DirectorService;
 import com.jetec.CRM.controler.service.SystemService;
 import com.jetec.CRM.controler.service.WorkSerivce;
 import com.jetec.CRM.model.*;
@@ -27,7 +28,8 @@ import java.util.*;
 
 @Controller
 public class PublicControl {
-
+    @Autowired
+    DirectorService ds;
     @Autowired
     AdminRepository ar;
     @Autowired
@@ -138,9 +140,9 @@ public class PublicControl {
     //初始化(讀取未讀)
     @RequestMapping(path = {"init"})
     @ResponseBody
-    public Map<String , Object> CRMInit(HttpSession session) {
+    public Map<String, Object> CRMInit(HttpSession session) {
         System.out.println("*****初始化*****");
-        Map<String , Object> result = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
         List<BillboardBean> advice = new ArrayList<BillboardBean>();
         List<BillboardBean> unread = new ArrayList<BillboardBean>();
 
@@ -161,8 +163,8 @@ public class PublicControl {
                 unread.add(br.getById(bean.getBillboardid()));
             }
         }
-        result.put("advice" ,advice);
-        result.put("unread",unread);
+        result.put("advice", advice);
+        result.put("unread", unread);
         return result;
 
     }
@@ -702,14 +704,46 @@ public class PublicControl {
         return true;
     }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //取得未讀(資料更新)
-	@RequestMapping("/getNews")
-	@ResponseBody
-	public String getNews(HttpSession session) {
-		System.out.println("取得未讀(資料更新)");
-		AdminBean adminBean = (AdminBean) session.getAttribute("user");
+    @RequestMapping("/getNews")
+    @ResponseBody
+    public String getNews(HttpSession session) {
+        System.out.println("取得未讀(資料更新)");
+        AdminBean adminBean = (AdminBean) session.getAttribute("user");
 
-		return   String.valueOf(adminBean.getMail().size())    ;
-	}
+        return String.valueOf(adminBean.getMail().size());
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //儲存主管留言
+    @ResponseBody
+    @RequestMapping("/SaveMessage")
+    public List<BosMessageBean> SaveMessage(@RequestBody Map<String, String> body) {
+        System.out.println("*****儲存主管留言*****");
+        System.out.println(body);
+        BosMessageBean bmBean = new BosMessageBean(zTools.getUUID(), body.get("bosmessage"), body.get("admin"), body.get("message"));
+        ds.save(bmBean);
+        System.out.println(ds.getBosMessageList(body.get("bosmessage")));
+        return ds.getBosMessageList(body.get("bosmessage"));
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //讀取主管留言
+    @ResponseBody
+    @RequestMapping("/getMessage/{customerid}")
+    public List<BosMessageBean> getMessage(@PathVariable("customerid") String customerid) {
+        System.out.println("*****讀取主管留言*****");
+        System.out.println(ds.getBosMessageList(customerid));
+        return ds.getBosMessageList(customerid);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //刪除主管留言
+    @ResponseBody
+    @RequestMapping("/reomveBosMessage/{bosmessageid}")
+    public List<BosMessageBean> reomveBosMessage(@PathVariable("bosmessageid") String bosmessageid) {
+        System.out.println("*****刪除主管留言*****");
+        return ds.delBosMessageList(bosmessageid);
+    }
 }

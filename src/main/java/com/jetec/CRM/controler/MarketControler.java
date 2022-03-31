@@ -84,7 +84,7 @@ public class MarketControler {
         pag--;
         Map<String, Object> result = new HashMap();
         AdminBean aBean = (AdminBean) session.getAttribute("user");
-        List<MarketStateBean> stateList = ms.getMarketState(aBean.getAdminid());
+        List<MarketStateBean> stateList = ms.getMarketStateList(aBean.getAdminid());
         List<MarketBean> list = new ArrayList<>();
 //        Map<String, Object> map = new HashMap<>();
 
@@ -94,11 +94,10 @@ public class MarketControler {
             result = ms.getStateList(stateList, pag);
 
 
-
         } else {
             list = ms.getList(pag);
             result.put("list", list);
-            result.put("total",ms.getTotal());
+            result.put("total", ms.getTotal());
 
         }
 
@@ -107,10 +106,9 @@ public class MarketControler {
         result.put("endCast", ms.getEndCast(aBean.getName()));
         result.put("todayTotal", ms.gettodayTotal());
         result.put("CallBos", ms.CallBos());
-        result.put("marketstate", ms.getMarketState(aBean.getAdminid()));
+        result.put("marketstate", ms.getMarketStateList(aBean.getAdminid()));
         return result;
     }
-
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -143,10 +141,11 @@ public class MarketControler {
         AdminBean admin = (AdminBean) session.getAttribute("user");
         if (admin != null && (marketBean.getMarketid() == null || marketBean.getMarketid().isEmpty())) {
             marketBean.setFounder(admin.getName());
+
         }
-        MarketBean save =marketBean;
-        if(!ms.existMarketByFileforeignid(marketBean.getFileforeignid()))
-         save = ms.save(marketBean);
+
+
+            MarketBean   save = ms.save(marketBean);
 
 
         return "redirect:/Market/Market/" + save.getMarketid();
@@ -700,12 +699,28 @@ public class MarketControler {
         System.out.println("添加使用者狀態");
         if (type.equals("user")) type = "";
 
+
         AdminBean aBean = (AdminBean) session.getAttribute("user");
+        //如果有相同資料 就不處裡
         if (ms.existMarketState(aBean.getAdminid(), field, state)) {
-            return ms.getMarketState(aBean.getAdminid());
+            return ms.getMarketStateList(aBean.getAdminid());
         }
-        ms.saveMarketState(aBean.getAdminid(), field, state, type);
-        List<MarketStateBean> stateList = ms.getMarketState(aBean.getAdminid());
+
+        //如果沒資料 就處裡
+        //
+        if (field.equals("day")) {
+            if (ms.existMarketStateByState(aBean.getAdminid(), "day")) {
+                MarketStateBean marketStateBean = ms.getMarketField(aBean.getAdminid(), "day");
+                marketStateBean.setState(state);
+                ms.sevaMarketStateBean(marketStateBean);
+            }else {
+                ms.saveMarketState(aBean.getAdminid(), field, state, type);
+            }
+        } else {
+            ms.saveMarketState(aBean.getAdminid(), field, state, type);
+        }
+
+        List<MarketStateBean> stateList = ms.getMarketStateList(aBean.getAdminid());
         System.out.println(stateList);
         return stateList;
 
@@ -719,10 +734,18 @@ public class MarketControler {
         System.out.println("刪除使用者狀態");
         ms.delState(marketstateid);
         AdminBean aBean = (AdminBean) session.getAttribute("user");
-        List<MarketStateBean> stateList = ms.getMarketState(aBean.getAdminid());
+        List<MarketStateBean> stateList = ms.getMarketStateList(aBean.getAdminid());
         return stateList;
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //刪除所有狀態
+    @RequestMapping("/delAllState/{adminid}")
+    @ResponseBody
+    public boolean delAllState(@PathVariable("adminid") Integer adminid) {
+        System.out.println("刪除所有狀態");
+        ms.delAllState(adminid);
 
-
+        return true;
     }
 
 }

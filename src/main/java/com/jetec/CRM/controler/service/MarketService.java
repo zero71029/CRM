@@ -1,9 +1,8 @@
 package com.jetec.CRM.controler.service;
 
-import java.text.SimpleDateFormat;
-import java.util.*;
-
+import com.jetec.CRM.Tool.ZeroTools;
 import com.jetec.CRM.model.*;
+import com.jetec.CRM.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,13 +12,9 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jetec.CRM.Tool.ZeroTools;
-import com.jetec.CRM.repository.AgreementRepository;
-import com.jetec.CRM.repository.MarketRemarkRepository;
-import com.jetec.CRM.repository.MarketRepository;
-import com.jetec.CRM.repository.MarketStateRepository;
-import com.jetec.CRM.repository.QuotationRepository;
-import com.jetec.CRM.repository.TrackRepository;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -43,10 +38,22 @@ public class MarketService {
 
     public MarketBean save(MarketBean marketBean) {
         String uuid = zTools.getUUID();
+
+
+//        if (!mr.existsByFileforeignid(marketBean.getFileforeignid())){
+//        }
+
+
+        //如果沒有Fileforeignid
         if (marketBean.getFileforeignid() == null || marketBean.getFileforeignid().isEmpty() || marketBean.getFileforeignid().equals("")) {
             marketBean.setFileforeignid(uuid);
         }
-        if (marketBean.getMarketid() == null || marketBean.getMarketid().isEmpty()) {//如果是新案件
+        //如果是新案件
+        if (marketBean.getMarketid() == null || marketBean.getMarketid().isEmpty()) {
+            //如果新案件  資料庫內有Fileforeignid
+            if (mr.existsByFileforeignid(marketBean.getFileforeignid())) return null;
+
+
             marketBean.setMarketid(uuid);
             //更換Fileforeignid
             if (US.existsByFileforeignid(marketBean.getFileforeignid()) && marketBean.getFileforeignid().length() != 32) {
@@ -407,24 +414,20 @@ public class MarketService {
         return result;
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //檢查有無使用者狀態
-    public boolean existMarketState(Integer adminid, String filed, String state) {
-        return msr.existsByAdminidAndFieldAndState(adminid, filed, state);
-
-    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //添加使用者狀態
     public void saveMarketState(Integer adminid, String field, String state, String type) {
+
+
         msr.save(new MarketStateBean(zTools.getUUID(), adminid, field, state, type));
 
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //添加使用者狀態
-    public List<MarketStateBean> getMarketState(Integer adminid) {
-        // TODO Auto-generated method stub
+    //getM使用者狀態列表
+    public List<MarketStateBean> getMarketStateList(Integer adminid) {
+
         return msr.findByAdminid(adminid);
     }
 
@@ -435,25 +438,63 @@ public class MarketService {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //使用者狀態
+    //使用者狀態  主程式
     public Map<String, Object> getStateList(List<MarketStateBean> stateList, Integer pag) {
+        Sort sort = Sort.by(Direction.DESC, "aaa");
+        //準備
         Map<String, Object> resoult = new HashMap<>();
         List<MarketBean> list = new ArrayList<>();
         List<MarketBean> Marketlist = new ArrayList<>();
         List<String> admin = new ArrayList<>();
+        List<String> state = new ArrayList<>();
+        String stateday = null;
+        String startday = "2022-02-01 00:00";
+        String endday = null;
         for (MarketStateBean b : stateList) {
             if (b.getField().equals("admin")) admin.add(b.getState());
+            if (b.getField().equals("day")) stateday = b.getState();
+            if (b.getField().equals("state")) state.add(b.getState());
         }
-
+        //日期處理
+        if (stateday == null) {
+            endday = zTools.getTime(new Date());
+        } else {
+            String[] tokens = stateday.split("~");
+            startday = tokens[0] + " 00:00";
+            endday = tokens[1] + " 23:59";
+        }
+        //主搜索
         if (admin.size() > 0) {
             for (String name : admin) {
-                list.addAll(mr.findByUser(name));
+                list.addAll(mr.findByUserAndAaaBetween(name, startday, endday, sort));
+            }
+        } else if (state.size() > 0) {
+            for (String name : state) {
+                list.addAll(mr.findByStageAndAaaBetween(name, startday, endday, sort));
+            }
+        } else {
+            list.addAll(mr.findAaa(startday, endday));
+        }
+
+
+        //再過濾
+        if (state.size() > 0) {
+            List<MarketBean> s = new ArrayList<>(list);
+            list.clear();
+            for (String sta : state) {
+                for (MarketBean marketBean : s) {
+                    if (sta.equals(marketBean.getStage())) list.add(marketBean);
+                }
             }
         }
 
 
-        System.out.println(list);
+        //排序
+        list = list.stream().sorted(Comparator.comparing(MarketBean::getAaa).reversed()).collect(Collectors.toList());
+
+
         System.out.println("*******************************************");
+        System.out.println("抓到 " + list.size() + "筆資料");
         //pag
         int total = list.size();
         for (int i = pag * 20; i < pag * 20 + 20; i++) {
@@ -464,13 +505,37 @@ public class MarketService {
         //輸出
         resoult.put("list", Marketlist);
         resoult.put("total", total);
-        System.out.println(resoult);
         return resoult;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //檢查有無使用者狀態
+    public boolean existMarketState(Integer adminid, String filed, String state) {
+        return msr.existsByAdminidAndFieldAndState(adminid, filed, state);
+
     }
 
     public boolean existMarketByFileforeignid(String fileforeignid) {
         return mr.existsByFileforeignid(fileforeignid);
 
 
+    }
+
+    public boolean existMarketStateByState(Integer adminid, String state) {
+        return msr.existsByAdminidAndField(adminid, state);
+    }
+
+    public MarketStateBean getMarketField(Integer adminid, String field) {
+        return msr.findByAdminidAndField(adminid, field);
+
+
+    }
+
+    public void sevaMarketStateBean(MarketStateBean marketStateBean) {
+        msr.save(marketStateBean);
+    }
+
+    public void delAllState(Integer adminid) {
+        msr.deleteByAdminid(adminid);
     }
 }

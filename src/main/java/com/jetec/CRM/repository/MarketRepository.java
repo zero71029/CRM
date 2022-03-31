@@ -123,4 +123,6 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
 
 
     boolean existsByFileforeignid(String fileforeignid);
+
+
 }

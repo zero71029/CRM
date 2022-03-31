@@ -68,15 +68,21 @@ public class MarketBean implements Serializable {
 
     // 追蹤資訊
     @OrderBy("tracktime")
-    @OneToMany(targetEntity = TrackBean.class, mappedBy = "customerid", cascade = CascadeType.ALL)
-//    @OneToMany(targetEntity = TrackBean.class,  cascade = CascadeType.ALL)
-//    @JoinColumn(name = "customerid", referencedColumnName = "customerid", insertable = false, updatable = false)
+//    @OneToMany(targetEntity = TrackBean.class, mappedBy = "customerid", cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = TrackBean.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "customerid", referencedColumnName = "customerid", insertable = false, updatable = false)
     private List<TrackBean> trackbean;
 
     //附件
     @OneToMany(targetEntity = MarketFileBean.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "fileforeignid", referencedColumnName = "fileforeignid", insertable = false, updatable = false)
     private List<MarketFileBean> marketfilelist;
+
+    //留言
+//    @OneToMany(targetEntity = BosMessageBean.class, mappedBy = "bosid", cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = BosMessageBean.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "bosid", referencedColumnName = "customerid", insertable = false, updatable = false)
+    private List<BosMessageBean> bm;
 
 //	//舊
 //	@JsonIgnore
@@ -89,6 +95,14 @@ public class MarketBean implements Serializable {
 //	@OneToMany(targetEntity = WorkBean.class, mappedBy = "marketid", cascade = CascadeType.ALL)
 //	private List<WorkBean> work;
 
+
+    public List<BosMessageBean> getBm() {
+        return bm;
+    }
+
+    public void setBm(List<BosMessageBean> bm) {
+        this.bm = bm;
+    }
 
     public String getContacttitle() {
         return contacttitle;

@@ -46,7 +46,7 @@
 
 
                     <c:if test="${user.position == '主管' || user.position == '系統'}">
-                        <label class="btn btn-outline-primary state2" for="btncheck2"
+                        <label class="btn btn-outline-primary state2"
                                onclick="sta()">刪除</label>
                     </c:if>
 
@@ -55,9 +55,9 @@
                            @click="aadmin(admin)">{{admin}}</label>
 
 
-                    <label class="btn btn-outline-primary" for="btncheck4" data-bs-toggle="offcanvas"
+                    <label class="btn btn-outline-primary" data-bs-toggle="offcanvas"
                            data-bs-target="#offcanvasRight" id="search">搜索</label>
-                    <label class="btn btn-outline-primary" for="btncheck5" data-bs-toggle="offcanvas"
+                    <label class="btn btn-outline-primary" data-bs-toggle="offcanvas"
                            data-bs-target="#StateSetSlider" id="StateSet">狀態設定</label>
                 </div>
             </div>
@@ -218,7 +218,7 @@
                             <input type="submit" value="送出" @click="selectList" id="sendDay">
                         </div>
                         <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingOne">
+                            <h2 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button"
                                         onclick="javascript:location.href='${pageContext.request.contextPath}/Market/MarketList.jsp'">
                                     重置
@@ -227,7 +227,7 @@
                         </div>
                         <!-- 最後追蹤時間 -->
                         <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingOne">
+                            <h2 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button"
                                         data-bs-toggle="collapse" data-bs-target="#最後追蹤時間">
                                     最後追蹤時間
@@ -269,7 +269,7 @@
                         </div>
                         <!-- 機會名稱-->
                         <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingThree">
+                            <h2 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button" id="search3"
                                         data-bs-toggle="collapse" data-bs-target="#flush-collapseThree">
                                     機會名稱
@@ -291,7 +291,7 @@
                         </div>
                         <!--  客戶-->
                         <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingThree">
+                            <h2 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button" id="search4"
                                         data-bs-toggle="collapse" data-bs-target="#i4">
                                     客戶
@@ -321,7 +321,7 @@
                         </div>
                         <!-- 狀態-->
                         <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingThree">
+                            <h2 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button" id="search5"
                                         data-bs-toggle="collapse" data-bs-target="#i5">
                                     狀態
@@ -346,7 +346,7 @@
                         </div>
                         <!--  聯絡人-->
                         <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingThree">
+                            <h2 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button" id="search6"
                                         data-bs-toggle="collapse" data-bs-target="#i6">
                                     聯絡人
@@ -367,7 +367,7 @@
                         </div>
                         <!--  聯絡人電話-->
                         <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingThree">
+                            <h2 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button"
                                         data-bs-toggle="collapse" data-bs-target="#i7">
                                     聯絡人電話
@@ -388,7 +388,7 @@
                         </div>
                         <!--  產業-->
                         <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingThree">
+                            <h2 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button"
                                         data-bs-toggle="collapse" data-bs-target="#i99">
                                     產業
@@ -412,7 +412,7 @@
                         </div>
                         <!--  產品類別-->
                         <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingThree">
+                            <h2 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button"
                                         data-bs-toggle="collapse" data-bs-target="#i8">
                                     產品類別
@@ -442,7 +442,7 @@
                         </div>
                         <!--  機會來源 -->
                         <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingThree">
+                            <h2 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button"
                                         data-bs-toggle="collapse" data-bs-target="#i9">
                                     機會來源
@@ -473,7 +473,7 @@
                         </div>
                         <!--  成交機率-->
                         <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingThree">
+                            <h2 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button"
                                         data-bs-toggle="collapse" data-bs-target="#i10">
                                     成交機率
@@ -493,7 +493,7 @@
                         </div>
                         <!--  商品-->
                         <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingThree">
+                            <h2 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button"
                                         data-bs-toggle="collapse" data-bs-target="#i11">
                                     商品
@@ -518,31 +518,29 @@
                 </div>
             </div>
             <!-- 狀態滑塊 -->
-            <div class="offcanvas offcanvas-end show" tabindex="0" id="StateSetSlider"
+            <div class="offcanvas offcanvas-end " tabindex="0" id="StateSetSlider"
                  style="width: 450px;">
                 <div class="offcanvas-header">
-                    <h5 id="offcanvasRightLabel">狀態</h5>
+                    <h5>狀態</h5>
                     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
                 </div>
                 <div class="offcanvas-body">
-                    <div class="accordion accordion-flush" id="accordionFlushExample">
+                    <div class="accordion accordion-flush">
                         <div class="accordion-body">
-                            <el-date-picker v-model="inDay" type="daterange" align="right" unlink-panels
+                            <el-date-picker v-model="stateDay" type="daterange" align="right" unlink-panels
                                             range-separator="到" start-placeholder="開始日期" end-placeholder="結束日期"
                                             :picker-options="pickerOptions" value-format="yyyy-MM-dd">
                             </el-date-picker>
-                            <input type="submit" value="送出" @click="selectList" id="sendDay">
+                            <input type="submit" value="送出" @click="AddState('day',stateDay , 'success')">
                         </div>
                         <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingOne">
-                                <button class="accordion-button collapsed" type="button"
-                                        onclick="javascript:location.href='${pageContext.request.contextPath}/Market/MarketList.jsp'">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" @click="delAllState">
                                     重置
                                 </button>
                             </h2>
                         </div>
                         <br>
-
                         <div>
                             <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}" items="${admin}"
                                        var="s">
@@ -551,13 +549,63 @@
                                         <el-button type="primary" size="mini" plain
                                                    @click="AddState('admin','${s.name}','user')"
                                                    icon="el-icon-user-solid">${s.name}</el-button>
+
+
                                     </div>
                                 </c:if>
                             </c:forEach>
                         </div>
                         <div style="clear:both;margin-bottom: 15px;"></div>
                         <hr>
+                        <div>
+                            <div style="float: left;margin: 3px;">
+                                <el-button type="info" size="mini" plain
+                                           @click="AddState('state','尚未處理','info')"
+                                           icon="el-icon-s-goods">尚未處理
+                                </el-button>
+                            </div>
 
+                            <div style="float: left;margin: 3px;">
+                                <el-button type="info" size="mini" plain
+                                           @click="AddState('state','內部詢價中','info')"
+                                           icon="el-icon-s-goods">內部詢價中
+                                </el-button>
+                            </div>
+
+                            <div style="float: left;margin: 3px;">
+                                <el-button type="info" size="mini" plain
+                                           @click="AddState('state','報價處理中','info')"
+                                           icon="el-icon-s-goods">報價處理中
+                                </el-button>
+                            </div>
+                            <div style="float: left;margin: 3px;">
+                                <el-button type="info" size="mini" plain
+                                           @click="AddState('state','已報價','info')"
+                                           icon="el-icon-s-goods">已報價
+                                </el-button>
+                            </div>
+                            <div style="float: left;margin: 3px;">
+                                <el-button type="info" size="mini" plain
+                                           @click="AddState('state','提交主管','info')"
+                                           icon="el-icon-s-goods">提交主管
+                                </el-button>
+                            </div>
+                            <div style="float: left;margin: 3px;">
+                                <el-button type="info" size="mini" plain
+                                           @click="AddState('state','成功結案','info')"
+                                           icon="el-icon-s-goods">成功結案
+                                </el-button>
+                            </div>
+                            <div style="float: left;margin: 3px;">
+                                <el-button type="info" size="mini" plain
+                                           @click="AddState('state','失敗結案','info')"
+                                           icon="el-icon-s-goods">失敗結案
+                                </el-button>
+                            </div>
+
+                        </div>
+                        <div style="clear:both;margin-bottom: 15px;"></div>
+                        <hr>
 
                     </div>
                 </div>
@@ -626,6 +674,7 @@
         el: '.app',
         data: {
             MarketStateList: [],//狀態列表
+            stateDay: "",//狀態日期
             options: [{
                 value: '尚未處理',
                 label: '尚未處理'
@@ -653,6 +702,7 @@
             todayTotal: "",//
             currentPage1: 1,//當前分頁
             total: 1,//所有筆數
+            oldtotal: 0,
             list: [],
             name: "",
             show: false,
@@ -813,20 +863,22 @@
 
             },
             handleCurrentChange(val) {//點擊分頁
+                // this.inSortState =[];
                 $.ajax({
                     url: '${pageContext.request.contextPath}/Market/MarketList?pag=' + val,
                     type: 'POST',
                     async: false,
                     cache: false,
                     success: response => {
-                        this.list = response.list
-
+                        this.list = response.list,
+                            this.oldList = response.list
                     },
                     error: function (returndata) {
                         console.log(returndata);
                     }
 
                 });
+                this.sortState();
             },
             //////////////////////產品類別
             handleCheckAllChange(val) {
@@ -1064,9 +1116,9 @@
                 }
             },//階段 排序
             sortState: function () {
-                this.total = 20;
                 if (this.inSortState.length == 0) {
-                    this.list = this.oldList
+                    this.list = this.oldList;
+
                 } else {
                     var list = this.oldList;
                     this.list = [];
@@ -1100,7 +1152,16 @@
             },
             //添加使用者狀態
             AddState(filed, state, type) {
-                console.log(type);
+
+
+                if (filed == "day") {
+                    if (state == "") {//沒輸入日期
+                        return null;
+                    }
+                    state = this.stateDay[0] + "~" + this.stateDay[1];
+                }
+
+                console.log(filed, state, type);
                 $.ajax({
                     url: '${pageContext.request.contextPath}/Market/AddState/' + filed + '/' + state + '/' + type,
                     type: 'POST',
@@ -1157,7 +1218,6 @@
                     error: function (returndata) {
                         console.log(returndata);
                     }
-
                 })
                 $.ajax({
                     url: '${pageContext.request.contextPath}/Market/MarketList?pag=1',
@@ -1183,6 +1243,20 @@
                 });
 
 
+            }, delAllState() {
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/Market/delAllState/${user.adminid}',
+                    type: 'POST',
+                    async: false,
+                    cache: false,
+                    success: (response => (
+                        location.href = "${pageContext.request.contextPath}/Market/MarketList.jsp"
+
+                    )),
+                    error: function (returndata) {
+                        console.log(returndata);
+                    }
+                })
             }
         },
     })

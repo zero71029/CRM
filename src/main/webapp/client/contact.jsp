@@ -232,7 +232,7 @@
                                     <div class="col-md-1 cell">部門</div>
                                     <div class="col-md-3 cell FormPadding">
                                         <input type="text" class=" form-control cellFrom" name="department"
-                                            value="${bean.department}" maxlength="20">
+                                            value="${bean.department}" maxlength="95">
                                     </div>
                                 </div>
                                 <div class="row">

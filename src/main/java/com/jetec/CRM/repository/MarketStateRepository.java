@@ -12,4 +12,10 @@ public interface MarketStateRepository extends JpaRepository<MarketStateBean, St
 
 	List<MarketStateBean> findByAdminid(Integer adminid);
 
+    boolean existsByAdminidAndField(Integer adminid, String state);
+
+
+	MarketStateBean findByAdminidAndField(Integer adminid, String field);
+
+	void deleteByAdminid(Integer adminid);
 }
