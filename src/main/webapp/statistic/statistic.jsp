@@ -34,6 +34,15 @@
                     <div class="col-lg-11 app" v-cloak>
                         <div class="row">&nbsp;</div>
                         <div class="row">
+                            <div class="col-lg-12">
+                                <canvas id="initpage" width="1600" height="400"></canvas>
+
+
+                            </div>
+
+                        </div>
+                        <div class="row">&nbsp;</div>
+                        <div class="row">
                             <div class="col-lg-4">
                                 <el-button type="text" @click="SubmitBosVisible=true">提交主管 {{SubmitBos.length}}
                                 </el-button>
@@ -59,10 +68,10 @@
                                 </table>
                             </div>
                             <div class="col-lg-6">
-
+                                <canvas id="main" width="400" height="400"></canvas>
                                 <canvas id="myChart" width="400" height="400"></canvas>
 
-                                <canvas id="main" width="400" height="400"></canvas>
+
                             </div>
                         </div>
                         <!-- 提交主管 彈窗-->
@@ -90,19 +99,14 @@
                         </c:if>
 
 
-
-
-
-
-
-
-
                     </div>
                 </div>
             </div>
         </body>
 
         <script>
+
+
             var vm = new Vue({
                 el: ".app",
                 data() {
@@ -161,6 +165,9 @@
                         success: (response => (
                             this.SubmitBos = response.SubmitBos,
                             this.CallBos = response.CallBos,
+                            this.CompanyNumList = response.CompanyNumList,
+
+                            this.AdminCastNum = response.AdminCastNum,
                             console.log(response, "init")
 
                         )),
@@ -168,6 +175,19 @@
                             console.log(returndata);
                         }
                     })
+
+
+                },
+                mounted() {
+
+                    var list = [];
+                    var keys = Object.keys(this.CompanyNumList);
+                    keys.sort();
+                    for (const i of keys) {
+                        var BBB = this.CompanyNumList[i];
+                        list.push(BBB.length);
+                    }
+                    this.Histogram(keys, list);
                 },
                 methods: {
                     //點彈窗裡的項目
@@ -177,7 +197,7 @@
                     },
                     //搜索公司數量
                     selectCompany: function () {
-                        if (this.inDay == "") {//沒輸入日期                  
+                        if (this.inDay == "") {//沒輸入日期
                             this.inDay[0] = "";
                             this.inDay[1] = "";
                         }
@@ -242,7 +262,6 @@
                         var keys = Object.keys(this.AdminCastNum);
 
 
-
                         for (const i of keys) {
                             if (this.AdminCastNum[i] > 0)
                                 obj.push({ value: this.AdminCastNum[i], name: i + "[" + this.AdminCastNum[i] + "]" });
@@ -280,6 +299,46 @@
                         option && myChart.setOption(option);
 
                     },
+                    formatter: function (params) {
+                        var relVal = params[0].name;
+                        for (var i = 0, l = params.length; i < l; i++) {
+                            relVal += '<br/>' + params[i].marker + params[i].seriesName + ' : ' + params[i].value.toLocaleString() + "K";
+                        }
+                        return relVal;
+                    },
+                    Histogram(x, y) {//柱狀圖
+                        var chartDom = document.getElementById('initpage');
+                        var myChart = echarts.init(chartDom);
+                        var option;
+                        option = {
+                            tooltip: {
+                                triggerOn: 'none',
+                                formatter: function (params) {
+                                    return (
+                                        'X: ' +
+                                        params.data[0].toFixed(2) +
+                                        '<br>Y: ' +
+                                        params.data[1].toFixed(2)
+                                    );
+                                }
+                            },
+                            xAxis: {
+                                type: 'category',
+                                data: x
+                            },
+                            yAxis: {
+                                type: 'value'
+                            },
+                            series: [
+                                {
+                                    data: y,
+                                    type: 'bar'
+                                }
+                            ]
+                        };
+                        option && myChart.setOption(option);
+                    },
+
                 },
             })
         </script>

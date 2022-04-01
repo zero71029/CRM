@@ -343,8 +343,10 @@
                                     <td @click="sortItem('important')"><a href="#">重要性</a></td>
                                 </tr>
                                 <tr class="item" v-for="(s, index) in list" :key="s.customerid">
+<%--                                    --%>
                                     <td><input type="checkbox" :value="s.customerid" name="mak" @change="clickmak"
                                             :id="s.customerid"></td>
+<%--    列表編號--%>
                                     <td>{{index+1}} <span class="badge rounded-pill bg-danger"
                                             v-show="s.bm.length > 0">{{s.bm.length ==
                                             0?"":s.bm.length}}</span>

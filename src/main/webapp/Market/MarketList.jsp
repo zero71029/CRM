@@ -107,12 +107,20 @@
                     </tr>
                     <tr class="item" v-for="(s, index) in list" :key="index">
                         <td><input type="checkbox" :value="s.marketid" name="mak" @change="clickmak"></td>
+                        <%--    列表編號--%>
                         <td>{{index+1}} <i class="el-icon-help" style="color: red;"
                                            v-if="s.callhelp == 1"></i></td>
                         <!-- 階段 -->
                         <td v-on:click="market(s.marketid)" :class="'state'+index" style="cursor: pointer;">
                             {{s.stage}} <i class="el-icon-paperclip" style="color: blue;"
-                                           v-if="isEmpty(s.marketfilelist)"></i></td>
+                                           v-if="isEmpty(s.marketfilelist)"></i>
+
+
+                            <span class="badge rounded-pill bg-danger"
+                                  v-show="s.bm.length > 0">{{s.bm.length ==
+                                            0?"":s.bm.length}}</span>
+
+                        </td>
                         <td>
                             {{s.client}}
                         </td>

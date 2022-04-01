@@ -1142,7 +1142,7 @@
 
 </script>
 <script>
-    // $(".bosMessagediv").hide();
+    $(".bosMessagediv").hide();
     $(".act").hide();
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     var clinch = parseInt('${bean.clinch}' || null);

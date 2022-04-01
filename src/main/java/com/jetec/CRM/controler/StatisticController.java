@@ -5,7 +5,6 @@ import com.jetec.CRM.controler.service.MarketService;
 import com.jetec.CRM.controler.service.StatisticService;
 import com.jetec.CRM.controler.service.SystemService;
 import com.jetec.CRM.model.AdminBean;
-import com.jetec.CRM.model.MarketBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,11 +42,19 @@ public class StatisticController {
 
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String startDay = sdf.format(new Date());
         String endDay = sdf.format(new Date());
+        //取90天
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -90);
+        Date todate1 = cal.getTime();
+        String  startDay= sdf.format(todate1);
+        System.out.println("startDay :"+startDay);
+        System.out.println("endDay :"+endDay);
 
 
-        Map<String, Object> CompanyNumList = getListByDate(startDay.substring(0, 10), endDay.substring(0, 10));
+
+        Map<String, Object> CompanyNumList = getListByDate(startDay , endDay );
+        System.out.println(CompanyNumList);
         result.put("CompanyNumList", CompanyNumList);//每天公司數量
         result.put("companyNum", ss.selectCompany(startDay, endDay));//公司名稱列表
         result.put("AdminCastNum", AdminCastNum(startDay, endDay));//取得個業務案件數量
