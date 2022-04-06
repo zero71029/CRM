@@ -708,11 +708,24 @@ public class PublicControl {
 //取得未讀(資料更新)
     @RequestMapping("/getNews")
     @ResponseBody
-    public String getNews(HttpSession session) {
+    public String getNews(Authentication authentication, HttpSession session) {
         System.out.println("取得未讀(資料更新)");
         AdminBean adminBean = (AdminBean) session.getAttribute("user");
 
-        return String.valueOf(adminBean.getMail().size());
+        if (adminBean == null) {
+            UserAuthorize(authentication, session);
+            adminBean = (AdminBean) session.getAttribute("user");
+        }
+        String result;
+        try {
+            result = String.valueOf(adminBean.getMail().size());
+        } catch (Exception e) {
+            System.out.println("沒有登入");
+            result ="沒有登入";
+        }
+
+
+        return result;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

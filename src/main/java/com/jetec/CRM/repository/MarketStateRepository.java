@@ -1,10 +1,9 @@
 package com.jetec.CRM.repository;
 
-import java.util.List;
-
+import com.jetec.CRM.model.MarketStateBean;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.jetec.CRM.model.MarketStateBean;
+import java.util.List;
 
 public interface MarketStateRepository extends JpaRepository<MarketStateBean, String> {
 
@@ -18,4 +17,7 @@ public interface MarketStateRepository extends JpaRepository<MarketStateBean, St
 	MarketStateBean findByAdminidAndField(Integer adminid, String field);
 
 	void deleteByAdminid(Integer adminid);
+
+
+	MarketStateBean findByAdminidAndFieldAndState(Integer adminid, String field, String state);
 }

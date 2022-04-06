@@ -538,4 +538,10 @@ public class MarketService {
     public void delAllState(Integer adminid) {
         msr.deleteByAdminid(adminid);
     }
+    //刪除使用者狀態
+    public void delMarketState(Integer adminid, String field, String state) {
+        MarketStateBean msBean = msr.findByAdminidAndFieldAndState(adminid,field,state);
+        msr.delete(msBean);
+
+    }
 }

@@ -396,8 +396,9 @@ public class MarketControler {
 //		contactBean.setDepartment(Bean.getDepartment());
 //		contactBean.setDirector(Bean.getDirector());
 //		contactBean.setFax(Bean.getFax());
-//		contactBean.setRemark(Bean.getRemark());
+		contactBean.setRemark("");
 //		contactBean.setUser(Bean.getUser());
+
         cs.SaveContact(contactBean);
         return "新增聯絡人";
     }
@@ -703,6 +704,13 @@ public class MarketControler {
         AdminBean aBean = (AdminBean) session.getAttribute("user");
         //如果有相同資料 就不處裡
         if (ms.existMarketState(aBean.getAdminid(), field, state)) {
+         ms.delMarketState(aBean.getAdminid(), field, state);
+
+
+
+
+
+
             return ms.getMarketStateList(aBean.getAdminid());
         }
 

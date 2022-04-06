@@ -124,5 +124,6 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
 
     boolean existsByFileforeignid(String fileforeignid);
 
-
+    @Query(value = "SELECT  COUNT(*)  from market WHERE  producttype = ?1 AND   aaa BETWEEN ?2 AND ?3 ", nativeQuery = true)
+    Integer getProductTypeNum(String name, String startDay, String endDay);
 }

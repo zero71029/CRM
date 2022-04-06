@@ -1,6 +1,5 @@
 package com.jetec.CRM.controler.service;
 
-import com.jetec.CRM.model.MarketBean;
 import com.jetec.CRM.repository.MarketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,5 +23,14 @@ public class StatisticService {
 //取得個業務案件數量
     public Integer getAminCastNum(String startDay, String endDay, String name) {
         return mr.getAminCastNum( startDay,  endDay,  name);
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////
+//商品種類
+    public Integer selectProductType(String name, String s, String e) {
+
+        return mr.getProductTypeNum(name,s,e);
+
+
+
     }
 }
