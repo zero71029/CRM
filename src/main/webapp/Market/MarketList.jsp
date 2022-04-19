@@ -310,7 +310,7 @@
                                 <div class="accordion-body">
                                     <div class="input-group mb-3">
                                         <input type="text" class="form-control" placeholder=""
-                                               v-model="name" list="company">
+                                               v-model="company" list="company">
                                         <button class="btn btn-outline-secondary"
                                                 @click="selectList">搜索
                                         </button>
@@ -390,6 +390,52 @@
                                         <button class="btn btn-outline-secondary"
                                                 @click="selectList">搜索
                                         </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--  商品-->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#i11">
+                                    商品
+                                </button>
+                            </h2>
+                            <div id="i11" class="accordion-collapse collapse"
+                                 aria-labelledby="flush-headingThree">
+                                <div class="accordion-body">
+                                    <div class="accordion-body">
+                                        <div class="input-group mb-3">
+                                            <input type="text" class="form-control" placeholder=""
+                                                   v-model="product">
+                                            <button class="btn btn-outline-secondary"
+                                                    @click="selectList">搜索
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--  報價內容-->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#i12">
+                                    報價內容
+                                </button>
+                            </h2>
+                            <div id="i12" class="accordion-collapse collapse"
+                                 aria-labelledby="flush-headingThree">
+                                <div class="accordion-body">
+                                    <div class="accordion-body">
+                                        <div class="input-group mb-3">
+                                            <input type="text" class="form-control" placeholder=""
+                                                   v-model="quote">
+                                            <button class="btn btn-outline-secondary"
+                                                    @click="selectList">搜索
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -499,29 +545,11 @@
                                 </div>
                             </div>
                         </div>
-                        <!--  商品-->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#i11">
-                                    商品
-                                </button>
-                            </h2>
-                            <div id="i11" class="accordion-collapse collapse"
-                                 aria-labelledby="flush-headingThree">
-                                <div class="accordion-body">
-                                    <div class="accordion-body">
-                                        <div class="input-group mb-3">
-                                            <input type="text" class="form-control" placeholder=""
-                                                   v-model="product">
-                                            <button class="btn btn-outline-secondary"
-                                                    @click="selectList">搜索
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
+
+
+
+
                     </div>
                 </div>
             </div>
@@ -683,7 +711,8 @@
         data: {
             MarketStateList: [],//狀態列表
             stateDay: "",//狀態日期
-            options: [{
+            options: [
+                {
                 value: '尚未處理',
                 label: '尚未處理'
             }, {
@@ -756,6 +785,7 @@
             budget1: "0",
             budget2: "",
             //搜索區資料
+            company:"",
             intracktime: [],
             oldList: [],
             product: "",
@@ -767,6 +797,8 @@
             checkedCities: [],//產品類別
             checkedSources: [],//機會來源
             clinch: null,//成交率
+            quote:"",
+            //搜索區資料結束
             pickerOptions: {
                 shortcuts: [
                     {
@@ -957,9 +989,18 @@
 
                 } else if (this.inUserList != "") {//負責人
                     url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=UserList&val=" + this.inUserList;
-                } else if (this.name != "") {//機會民稱 客戶
+                } else if (this.name != "" ) {//機會民稱 客戶
                     url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=name&val=" + this.name;
-                } else if (this.inStateList != "") {//狀態
+                }
+
+                else if ( this.company != "") {//機會民稱 客戶
+                    url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=name&val=" + this.company;
+                }
+
+
+
+
+                else if (this.inStateList != "") {//狀態
                     url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=inStateList&val=" + this.inStateList;
 
                 } else if (this.inContact != "") {//聯絡人
@@ -976,7 +1017,13 @@
                     url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=product&val=" + this.product;
                 } else if (this.checkedCities != "") {//產品類別
                     url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=checkedCitiest&val=" + this.product;
+                }else if (this.quote != "") {//產品類別
+                    url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=quote&val=" + this.quote;
                 }
+
+
+
+
 
 
                 $.ajax({
@@ -987,7 +1034,8 @@
                     success: (response => (
                         this.list = response,
                             this.total = this.list.length,
-                            this.oldList = this.list
+                            this.oldList = this.list,
+                        console.log(response ,"response")
                     )),
                     error: function (returndata) {
                         console.log(returndata);
@@ -1003,15 +1051,30 @@
                             }
                         }
                 }
-                if (this.name != "") {//機會民稱 客戶
+
+
+
+
+
+                if (this.name != "") {//機會民稱
                     this.oldList = this.list;
                     this.list = [];
                     for (var bean of this.oldList) {
-                        if (bean.name.indexOf(this.name) >= 0 || bean.client.indexOf(this.name) >= 0) {
+                        if (bean.name.indexOf(this.name) >= 0 ) {
                             this.list.push(bean);
                         }
                     }
                 }
+                if (this.company != "") {//客戶
+                    this.oldList = this.list;
+                    this.list = [];
+                    for (var bean of this.oldList) {
+                        if ( bean.client.indexOf(this.company) >= 0) {
+                            this.list.push(bean);
+                        }
+                    }
+                }
+
                 if (this.inStateList != "") {//狀態
                     this.oldList = this.list;
                     this.list = [];
@@ -1083,11 +1146,20 @@
                     this.oldList = this.list;
                     this.list = [];
                     for (var bean of this.oldList) {
-                        if (bean.product.indexOf(this.product) >= 0 || bean.message.indexOf(this.product) >= 0 || bean.name.indexOf(this.product) >= 0) {
+                        if (bean.product.indexOf(this.product) >= 0 || bean.message.indexOf(this.product) >= 0 || bean.name.indexOf(this.product) >= 0 || bean.quote.indexOf(this.product) >= 0) {
                             this.list.push(bean);
                         }
                     }
                 }
+
+
+
+
+
+
+
+
+
                 this.total = 20;
                 this.oldList = this.list
             },

@@ -49,6 +49,7 @@ public class ZeroTools {
     // Sort sort = Sort.by(Direction.DESC,"marketid");
     // return mr.findAll( sort);
 ///////////////////////////////
+    //更新application
 //	HttpServletRequest sce
 //	ServletContext app = sce.getServletContext();
 //	app.setAttribute("billboardgroup", bgr.findAll());
@@ -282,8 +283,8 @@ public class ZeroTools {
     }
 
     //////////////////////////////////////////////////////////////////////////////
-//    日期加1天
-    public String addDay(String day) {
+//    日期加幾天
+    public String addDay(String day,int i) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
         try {
@@ -291,7 +292,7 @@ public class ZeroTools {
         } catch (ParseException e1) {
 
         }
-        cal.add(Calendar.DATE, 1);
+        cal.add(Calendar.DATE, i);
         return dateFormat.format(cal.getTime());
 
     }

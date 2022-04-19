@@ -7,9 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.jetec.CRM.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,10 +36,6 @@ import com.jetec.CRM.model.AuthorizeBean;
 import com.jetec.CRM.model.BillboardBean;
 import com.jetec.CRM.model.BillboardFileBean;
 import com.jetec.CRM.model.LibraryBean;
-import com.jetec.CRM.repository.AdminRepository;
-import com.jetec.CRM.repository.AuthorizeRepository;
-import com.jetec.CRM.repository.BillboardFileRepository;
-import com.jetec.CRM.repository.BillboardRepository;
 
 @Controller
 @RequestMapping("/system")   
@@ -55,6 +54,8 @@ public class SystemControler {
 	BillboardFileRepository bfr;
 	@Autowired
 	ZeroTools zTools;
+	@Autowired
+	LibraryRepository lr;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取員工列表
@@ -467,5 +468,46 @@ public class SystemControler {
 		ServletContext sce = req.getServletContext();
 		sce.setAttribute("admin", ar.findAll());
 		return "redirect:/system/adminList/adminid";
+	}
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//讀取圖書館
+	@RequestMapping("/getlibrary")
+	@ResponseBody
+	public List<LibraryBean> getlibrary(@RequestParam("librarygroup") String librarygroup) {
+		System.out.println("*****讀取圖書館*****");
+
+
+		return ss.getlibrary(librarygroup);
+	}
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//新增圖書館子項
+	@RequestMapping("/addLibrary")
+	@ResponseBody
+	public List<LibraryBean> addLibrary(@RequestParam("librarygroup")String librarygroup, @RequestParam("libraryoption")String libraryoption,HttpServletRequest req) {
+		System.out.println("*****新增圖書館子項*****");
+
+		ss.addLibrary(librarygroup,libraryoption);
+		//更新application
+		ServletContext sce = req.getServletContext();
+		Sort sort = Sort.by(Sort.Direction.DESC, "libraryoption");
+		sce.setAttribute("library", lr.findAll(sort));
+
+
+
+		return ss.getlibrary(librarygroup);
+	}
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 刪除圖書館子項
+	@RequestMapping("/delLibrary/{libaryid}")
+	@ResponseBody
+	public List<LibraryBean> delLibrary(@PathVariable("libaryid")String libaryid,HttpServletRequest req) {
+		System.out.println("*****刪除圖書館子項*****");
+		String librarygroup =  ss.delLibrary(libaryid);
+		//更新application
+		ServletContext sce = req.getServletContext();
+		Sort sort = Sort.by(Sort.Direction.DESC, "libraryoption");
+		sce.setAttribute("library", lr.findAll(sort));
+
+		return ss.getlibrary(librarygroup);
 	}
 }

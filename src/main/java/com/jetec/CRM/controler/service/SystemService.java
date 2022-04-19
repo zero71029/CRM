@@ -3,6 +3,7 @@ package com.jetec.CRM.controler.service;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import com.jetec.CRM.model.*;
 import com.jetec.CRM.repository.*;
+import org.openqa.selenium.WebDriver.Options;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +34,8 @@ public class SystemService {
     // mail顯示未讀用
     @Autowired
     AdminMailRepository amr;
+    @Autowired
+    LibraryRepository lr;
 
     @Autowired
     BillboardRepository br;
@@ -695,5 +699,57 @@ public class SystemService {
 //儲存修改
     public void saveChangeMesssage(ChangeMessageBean cmbean) {
         cmr.save(cmbean);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//讀取圖書館
+    public List<LibraryBean> getlibrary(String librarygroup) {
+        Sort sort = Sort.by(Direction.DESC, "libraryoption");
+        return lr.findByLibrarygroup(librarygroup, sort);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//新增圖書館子項
+    public void addLibrary(String librarygroup, String libraryoption) {
+        String remark = null;
+
+        switch (librarygroup) {
+            case "position":
+                remark = "員工管理 - 職位";
+                break;
+            case "department":
+                remark = "員工管理 - 部門";
+                break;
+            case "producttype":
+                remark = "銷售機會 - 產品類別";
+                break;
+            case "MarketType":
+                remark = "銷售機會 - 產業";
+                break;
+            case "MarketSource":
+                remark = "銷售機會 - 來源";
+                break;
+            case "MarketCreateTime":
+                remark = "銷售機會 - 案件類型";
+                break;
+            default:
+                remark = "錯誤";
+        }
+        if (!lr.existsByLibrarygroupAndLibraryoption(librarygroup, libraryoption)) {
+            LibraryBean bean = new LibraryBean(zTools.getUUID(), librarygroup, libraryoption, remark);
+            lr.save(bean);
+        }
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 刪除圖書館子項
+    public String delLibrary(String libaryid) {
+        Optional<LibraryBean> op = lr.findById(libaryid);
+        String librarygroup = null;
+        if (op.isPresent()) {
+          librarygroup = op.get().getLibrarygroup();
+          lr.delete(op.get());
+        }
+        return librarygroup;
     }
 }

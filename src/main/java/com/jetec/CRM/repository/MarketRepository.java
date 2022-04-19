@@ -1,5 +1,6 @@
 package com.jetec.CRM.repository;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -117,7 +118,7 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
 
 
 
-
+    List<MarketBean> findByQuoteLikeIgnoreCaseAndAaaBetween(String s, String startDay, String endDay, Sort sort);
     ///////////////////selectMarketByAll
     List<MarketBean> findByUser(String s);
 
@@ -126,4 +127,8 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
 
     @Query(value = "SELECT  COUNT(*)  from market WHERE  producttype = ?1 AND   aaa BETWEEN ?2 AND ?3 ", nativeQuery = true)
     Integer getProductTypeNum(String name, String startDay, String endDay);
+    @Query(value = "SELECT  COUNT(*)  from market WHERE user = ?1 AND stage = ?2 AND   aaa BETWEEN ?3 AND ?4 ", nativeQuery = true)
+    Integer getAminStateNum(String admin,String state, String startDay, String endDay);
+
+
 }

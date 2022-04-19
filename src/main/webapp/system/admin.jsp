@@ -123,12 +123,7 @@
                                         </option>
                                         <option ${bean.state=="離職" ?"selected":null} class="selItemOff">離職
                                         </option>
-                                        <option ${bean.state=="試用" ?"selected":null} class="selItemOff">試用
-                                        </option>
-                                        <option ${bean.state=="合約到期" ?"selected":null} class="selItemOff">合約到期
-                                        </option>
-                                        <option ${bean.state=="退休" ?"selected":null} class="selItemOff">退休
-                                        </option>
+
                                     </select>
                                 </div>
                                 <div class="col-md-1 cell cellbackgroud">職位</div>

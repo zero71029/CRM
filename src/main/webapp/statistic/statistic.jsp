@@ -63,12 +63,25 @@
                 <div class="col-lg-4">
                     <div id="myChart" style="width: 400px;height:400px;"></div>
                 </div>
+
+
+                    <div class="col-lg-4">
+                        <c:if test="${user.position == '系統' }">
+                        <div id="BusinessState" style="height:400px;"></div> </c:if>
+                    </div>
+
             </div>
             <div class="row">
                 <div class="col-lg-12">
+                    <el-switch
+                            v-model="ProductSwitch" v-show="producttype != ''"
+                            active-text="精簡"
+                            inactive-text="原始">
+                    </el-switch>
                     <div id="producttype" style="width: 100%;height:800px;"></div>
                 </div>
             </div>
+
             <!-- 提交主管 彈窗-->
             <c:if test="${user.position == '主管' || user.position == '系統'}">
                 <el-dialog title="提交主管" :visible.sync="SubmitBosVisible"
@@ -106,6 +119,8 @@
         el: ".app",
         data() {
             return {
+                ProductSwitch:false,//商品開關
+                BusinessState: [],//業務成功失敗
                 SubmitBos: [],//提交主管
                 SubmitBosVisible: false,//提交主管彈窗
                 CallBos: [],//延長通知
@@ -183,6 +198,140 @@
                 list.push(BBB.length);
             }
             this.Histogram(keys, list, 'initpage', '每日案件數');
+        },watch:{
+            ProductSwitch:{
+                handler(newValue){
+                    console.log(newValue);
+                    if(newValue){
+                        console.log("*****商品種類精簡*****");
+                        var list = [];
+
+                        //轉換格式 list =[{name:ddd,value:111},....]
+                        var keys = Object.keys(this.producttype);
+                        for (k of keys) {
+                            list.push({name: k, value: this.producttype[k]});
+                        }
+
+                        var Vehicles = list;
+                        var list = [];
+                        var pressure = 0;
+                        var 氣象儀器 = 0;
+                        var 氣體 = 0;
+                        var 流量 = 0;
+                        var 液位 = 0;
+                        var 溫濕 = 0;
+                        for (const x of Vehicles) {
+                            if (x.name.includes("壓力")) {
+                                pressure = pressure + x.value;
+                            }
+                            if (x.name.includes("氣象儀器")) {
+                                氣象儀器 = 氣象儀器 + x.value;
+                            }
+                            if (x.name.includes("氣體")) {
+                                氣體 = 氣體 + x.value;
+                            }
+                            if (x.name.includes("流量")) {
+                                流量 = 流量 + x.value;
+                            }
+                            if (x.name.includes("液位")) {
+                                液位 = 液位 + x.value;
+                            }
+                            if (x.name.includes("溫濕")) {
+                                溫濕 = 溫濕 + x.value;
+                            }
+
+                        }
+
+                        if(溫濕 >0)
+                        list.push({name: "溫濕", value: 溫濕});
+                        if(this.producttype['溫控器-TOHO'] + this.producttype['溫控器-其他'] >0)
+                        list.push({name: "溫控器", value: this.producttype['溫控器-TOHO'] + this.producttype['溫控器-其他']});
+                        if(液位 >0)
+                        list.push({name: "液位/料位", value: 液位});
+                        if(流量 >0)
+                        list.push({name: "流量", value: 流量});
+                        if(氣體 >0)
+                        list.push({name: "氣體", value: 氣體});
+                        if(氣象儀器 >0)
+                        list.push({name: "氣象儀器", value: 氣象儀器});
+                        if(pressure >0)
+                        list.push({name: "壓力", value: pressure});
+                        if(this.producttype['其它'] >0)
+                        list.push({name: "其他", value: this.producttype['其它']});
+                        if(this.producttype['大型顯示器'] >0)
+                        list.push({name: "大型顯示器", value: this.producttype['大型顯示器']});
+                        if(this.producttype['差壓'] >0)
+                        list.push({name: "差壓", value: this.producttype['差壓']});
+                        if(this.producttype['感溫線棒'] >0)
+                        list.push({name: "感溫線棒", value: this.producttype['感溫線棒']});
+                        if(this.producttype['水質相關'] >0)
+                        list.push({name: "水質相關", value: this.producttype['水質相關']});
+                        if(this.producttype['溫度貼紙'] >0)
+                        list.push({name: "溫度貼紙", value: this.producttype['溫度貼紙']});
+                        if(this.producttype['無線傳輸'] >0)
+                        list.push({name: "無線傳輸", value: this.producttype['無線傳輸']});
+                        if(this.producttype['空氣品質'] >0)
+                        list.push({name: "空氣品質", value: this.producttype['空氣品質']});
+                        if(this.producttype['紅外線'] >0)
+                        list.push({name: "紅外線", value: this.producttype['紅外線']});
+                        if(this.producttype['編碼器/電位計'] >0)
+                        list.push({name: "編碼器/電位計", value: this.producttype['編碼器/電位計']});
+                        if(this.producttype['能源管理控制'] >0)
+                        list.push({name: "能源管理控制", value: this.producttype['能源管理控制']});
+                        if(this.producttype['記錄器'] >0)
+                        list.push({name: "記錄器", value: this.producttype['記錄器']});
+                        if(this.producttype['資料收集器-JETEC'] + this.producttype['資料收集器-其他'] >0)
+                        list.push({name: "資料收集器", value: this.producttype['資料收集器-JETEC'] + this.producttype['資料收集器-其他']});
+                        //排序
+                        var Vehicles = list;
+                        Vehicles = Vehicles.sort(function (a, b) {
+                            return a.value > b.value ? 1 : -1;
+                        });
+                        console.log(Vehicles, "排序後");
+                        var nameList = [];
+                        var valueList = [];
+                        for (const p of Vehicles) {
+                            nameList.push(p.name);
+                            valueList.push(p.value);
+                        }
+
+                        this.BarChart(nameList, valueList, 'producttype', '商品種類精簡');
+
+                        console.log(list);
+
+                        console.log("*****商品種類精簡結束*****");
+                    }else{
+                        console.log("*****商品種類*****");
+                        console.log(this.producttype, "商品種類");
+                        var list = [];
+
+                        //轉換格式 list =[{name:ddd,value:111},....]
+                        var keys = Object.keys(this.producttype);
+                        for (k of keys) {
+                            list.push({name: k, value: this.producttype[k]});
+                        }
+                        //排序
+                        var Vehicles = list;
+                        Vehicles = Vehicles.sort(function (a, b) {
+                            return a.value > b.value ? 1 : -1;
+                        });
+                        console.log(Vehicles, "排序後");
+                        var nameList = [];
+                        var valueList = [];
+                        for (const p of Vehicles) {
+                            nameList.push(p.name);
+                            valueList.push(p.value);
+                        }
+                        this.BarChart(nameList, valueList, 'producttype', '商品種類');
+                        console.log("***********商品種類結束**********");
+
+                    }
+
+
+
+
+                }
+            }
         },
         methods: {
             //點彈窗裡的項目
@@ -207,6 +356,7 @@
                             this.total = this.list.length,
                             this.AdminCastNum = response.AdminCastNum,
                             this.producttype = response.producttype,
+                            this.BusinessState = response.BusinessState,
                             console.log(response, "response")
                     )),
                     error: function (returndata) {
@@ -215,27 +365,53 @@
                 })
                 this.CompanyNumEcharts();
                 this.AdminCastEcharts();
-
+                console.log("*****商品種類*****");
                 console.log(this.producttype, "商品種類");
                 var list = [];
-                //
-                // var Vehicles = [this.producttype
-                // ];
-                // Vehicles = Vehicles.sort(function (a, b) {
-                //     return a[1] > b[1] ? 1 : -1;
-                // });
-                //
-                // console.log(Vehicles[0],"Vehicles");
 
-
+                //轉換格式 list =[{name:ddd,value:111},....]
                 var keys = Object.keys(this.producttype);
-
-                for (const i of keys) {
-                    var BBB = this.producttype[i];
-                    list.push(BBB);
+                for (k of keys) {
+                    list.push({name: k, value: this.producttype[k]});
                 }
-                this.BarChart(keys, list, 'producttype', '商品種類');
+                //排序
+                var Vehicles = list;
+                Vehicles = Vehicles.sort(function (a, b) {
+                    return a.value > b.value ? 1 : -1;
+                });
+                console.log(Vehicles, "排序後");
+                var nameList = [];
+                var valueList = [];
+                for (const p of Vehicles) {
+                    nameList.push(p.name);
+                    valueList.push(p.value);
+                }
+                this.BarChart(nameList, valueList, 'producttype', '商品種類');
+                console.log("***********商品種類結束**********");
+
+                console.log("*****業務成功失敗*****");
+                console.log(this.BusinessState);
+                keys = Object.keys(this.BusinessState);
+                var source = [];
+                list = [['業務', '成功結案', '失敗結案']];
+                for (const k of keys) {
+                    if (this.BusinessState[k][0] > 0 || this.BusinessState[k][1] > 0) {
+                        source.push(k, this.BusinessState[k][0], this.BusinessState[k][1]);
+                        list.push(source);
+                        source = [];
+                    }
+
+                }
+
+                console.log(list);
+                this.datase(list);
+
+
+                console.log("*****業務成功失敗結束*****");
+
+
             },
+
             //每天公司數量圖
             CompanyNumEcharts: function () {
                 var list = [];
@@ -387,23 +563,43 @@
                         boundaryGap: [0, 0.1]
                     },
                     yAxis: {
-                        inverse: true,
+                        // inverse: true,
                         type: 'category',
                         data: x
                     },
                     series: [
                         {
-                            realtimeSort: true,
-                            name: '2011',
+                            // realtimeSort: true,
+                            name: '數量',
                             type: 'bar',
                             data: y
                         }
                     ]
                 };
+                option && myChart.setOption(option);
+            },
+            //最简单的数据集
+            datase(source) {
+                var app = {};
+                var chartDom = document.getElementById('BusinessState');
+                var myChart = echarts.init(chartDom);
+                var option;
+
+                option = {
+                    legend: {},
+                    tooltip: {},
+                    dataset: {
+                        source: source
+                    },
+                    xAxis: {type: 'category'},
+                    yAxis: {},
+                    // Declare several bar series, each will be mapped
+                    // to a column of dataset.source by default.
+                    series: [{type: 'bar'}, {type: 'bar'}]
+                };
 
                 option && myChart.setOption(option);
             }
-
 
         },
     })

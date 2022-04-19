@@ -51,7 +51,7 @@ public class StatisticController {
 
 
         Map<String, Object> CompanyNumList = getListByDate(startDay, endDay);
-        System.out.println(CompanyNumList);
+
         result.put("CompanyNumList", CompanyNumList);//每天公司數量
         result.put("companyNum", ss.selectCompany(startDay, endDay));//公司名稱列表
         result.put("AdminCastNum", AdminCastNum(startDay, endDay));//取得個業務案件數量
@@ -59,7 +59,7 @@ public class StatisticController {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//搜索公司數量
+//搜索
     @RequestMapping("/selectCompany")
     @ResponseBody
     public Map<String, Object> selectCompany(@RequestParam("from") String startDay, @RequestParam("to") String endDay) {
@@ -83,6 +83,10 @@ public class StatisticController {
         result.put("companyNum", ss.selectCompany(startDay, endDay));//公司名稱列表
         result.put("AdminCastNum", AdminCastNum(startDay, endDay));//取得個業務案件數量
         result.put("producttype", producttype(startDay, endDay));//商品類別
+        result.put("BusinessState", BusinessState(startDay, endDay));//業務成功失敗
+
+
+
         return result;
 
     }
@@ -165,8 +169,25 @@ public class StatisticController {
         }
         cal.add(Calendar.DATE, 1);
         return dateFormat.format(cal.getTime());
-
     }
 
+    //////////////////////////////////////////////////////////////////////////////
+    //  業務成功失敗
+    private Map<String, Object> BusinessState(@RequestParam("from") String startDay, @RequestParam("to") String endDay) {
+        System.out.println("業務成功失敗");
 
+        Map<String, Object> result = new HashMap<>();
+
+
+        List<AdminBean> adminList = systemService.getAdminByDepartment("業務");
+        for (AdminBean abean : adminList) {
+            List  sta = new ArrayList();
+            sta.add(ss.getAminStateNum(abean.getName(),"成功結案", startDay, endDay));
+            sta.add(ss.getAminStateNum(abean.getName(),"失敗結案", startDay, endDay));
+            result.put(abean.getName(), sta);
+        }
+
+
+        return result;
+    }
 }

@@ -409,6 +409,9 @@ public class MarketService {
             case "product":
                 result.addAll(mr.findByProductLikeIgnoreCaseOrNameLikeIgnoreCaseOrMessageLikeIgnoreCaseAndAaaBetween("%" + val.get(0) + "%", "%" + val.get(0) + "%", "%" + val.get(0) + "%", startDay, endDay, sort));
                 break;
+            case "quote":
+                result.addAll(mr.findByQuoteLikeIgnoreCaseAndAaaBetween("%" + val.get(0) + "%", startDay, endDay, sort));
+                break;
         }
 
         return result;

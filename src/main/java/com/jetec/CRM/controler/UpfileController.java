@@ -59,8 +59,8 @@ public class UpfileController {
                     String bin_path = tomcat_path.substring(tomcat_path.lastIndexOf("\\") + 1, tomcat_path.length());
                     System.out.println("Tomcat伺服器所在路徑的最後一個檔案目錄: " + bin_path);
                     System.out.println("bin_path == " + bin_path);
-                    String path2 = "E:/CRMfile/" + fileMap.get("file" + i).getOriginalFilename();
-//					String path2 = "C:/CRMfile/" + fileMap.get("file" + i).getOriginalFilename();
+
+					String path2 = "C:/CRMfile/" + fileMap.get("file" + i).getOriginalFilename();
                     String path3 = "C:\\Users\\Rong\\Desktop\\tomcat-9.0.41\\webapps\\CRM\\WEB-INF\\classes\\static\\file\\"
                             + fileMap.get("file" + i).getOriginalFilename();
 //檔案輸出

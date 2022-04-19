@@ -17,29 +17,44 @@
             <style>
                 .item:hover {
                     background-color: #afe3d5;
+                    cursor: pointer;
                 }
             </style>
         </head>
 
         <body>
+        <div class="container-fluid">
+            <div class="row">
             <!-- <%-- 插入側邊欄--%> -->
             <jsp:include page="/Sidebar.jsp"></jsp:include>
             <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
-            <div class="col-lg-11">
-                <div class="row justify-content-end">
-                    <div class="col-md-2" style="border : 1px solid black">
-                        
-                        <ul>yyyy
-                            <li>xxx <a href="">remove</a></li>
-                            <li>xx</li>
-                            <li>xx</li>
-                            <li>xx</li>
-                            <li>in</li>
-                            <form action="" method="post">
-                                <input type="text" name="" id="" maxlength="18" required>
-                                <button>新增</button>
-                            </form>
-                        </ul>
+            <div class="col-lg-11  ">
+                <div class="row ">
+                    <div class="col-md-12"  >
+                        <table class="Table table-striped orderTable" key="1" v-if="show">
+                            <tr>
+                                <td>名稱</td>
+                            </tr>
+                            <tr onclick="goDetail('producttype')" style="" class="item">
+                                <td>銷售機會 - 產品類別</td>
+                            </tr>
+<%--                            <tr onclick="goDetail('MarketType')" class="item">--%>
+<%--                                <td>銷售機會 - 產業</td>--%>
+<%--                            </tr>--%>
+<%--                            <tr onclick="goDetail('MarketSource')" class="item">--%>
+<%--                                <td>銷售機會 - 來源 </td>--%>
+<%--                            </tr>--%>
+<%--                            <tr onclick="goDetail('MarketCreateTime')" class="item">--%>
+<%--                                <td>銷售機會 - 案件類型</td>--%>
+<%--                            </tr>--%>
+<%--                            <tr onclick="goDetail('position')" class="item">--%>
+<%--                                <td>員工管理 - 職位</td>--%>
+<%--                            </tr>--%>
+<%--                            <tr onclick="goDetail('department')" class="item">--%>
+<%--                                <td>員工管理 - 部門</td>--%>
+<%--                            </tr>--%>
+                        </table>
+
                     </div>
                     
 
@@ -55,6 +70,9 @@
                 $("#activity").prop("checked", $zx.length == $all.length);
             });
 
+            function goDetail(librarygroup){
+                location.href="${pageContext.request.contextPath}/system/library.jsp?librarygroup="+librarygroup;
+            }
 
         </script>
 

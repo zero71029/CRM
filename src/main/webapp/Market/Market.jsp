@@ -542,151 +542,167 @@
                                     <option ${bean.producttype=="尚未分類" ?"selected":null} value="尚未分類"
                                                                                          selected="selected">請選擇...
                                     </option>
-                                    <option ${bean.producttype=="大型顯示器" ?"selected":null} value="大型顯示器">
-                                        大型顯示器
-                                    </option>
-                                    <option ${bean.producttype=="空氣品質" ?"selected":null} value="空氣品質">
-                                        空氣品質
-                                    </option>
-                                    <option ${bean.producttype=="流量-AICHI" ?"selected":null}
-                                            value="流量-AICHI">
-                                        流量-AICHI
-                                    </option>
-                                    <option ${bean.producttype=="流量-RGL" ?"selected":null} value="流量-RGL">
-                                        流量-RGL
-                                    </option>
-                                    <option ${bean.producttype=="流量-Siargo" ?"selected":null}
-                                            value="流量-Siargo">
-                                        流量-Siargo
-                                    </option>
-                                    <option ${bean.producttype=="流量-其他" ?"selected":null} value="流量-其他">
-                                        流量-其他
-                                    </option>
-                                    <option ${bean.producttype=="記錄器" ?"selected":null} value="記錄器">
-                                        記錄器
-                                    </option>
-                                    <option ${bean.producttype=="資料收集器-JETEC" ?"selected":null}
-                                            value="資料收集器-JETEC">
-                                        資料收集器-JETEC
-                                    </option>
-                                    <option ${bean.producttype=="資料收集器-其他" ?"selected":null}
-                                            value="資料收集器-其他">
-                                        資料收集器-其他
-                                    </option>
-                                    <option ${bean.producttype=="溫濕-JETEC" ?"selected":null}
-                                            value="溫濕-JETEC">
-                                        溫濕-JETEC
-                                    </option>
-                                    <option ${bean.producttype=="溫濕-GALLTEC" ?"selected":null}
-                                            value="溫濕-GALLTEC">
-                                        溫濕-GALLTEC
-                                    </option>
-                                    <option ${bean.producttype=="溫濕-E+E" ?"selected":null} value="溫濕-E+E">
-                                        溫濕-E+E
-                                    </option>
-                                    <option ${bean.producttype=="溫濕-其他" ?"selected":null} value="溫濕-其他">
-                                        溫濕-其他
-                                    </option>
-                                    <option ${bean.producttype=="紅外線" ?"selected":null} value="紅外線">
-                                        紅外線
-                                    </option>
-                                    <option ${bean.producttype=="壓力-JETEC" ?"selected":null}
-                                            value="壓力-JETEC">
-                                        壓力-JETEC
-                                    </option>
-                                    <option ${bean.producttype=="壓力-HUBA" ?"selected":null} value="壓力-HUBA">
-                                        壓力-HUBA
-                                    </option>
-                                    <option ${bean.producttype=="壓力-COPAL" ?"selected":null}
-                                            value="壓力-COPAL">
-                                        壓力-COPAL
-                                    </option>
-                                    <option ${bean.producttype=="壓力-其他" ?"selected":null} value="壓力-其他">
-                                        壓力-其他
-                                    </option>
-                                    <option ${bean.producttype=="差壓" ?"selected":null} value="差壓">差壓
-                                    </option>
-                                    <option ${bean.producttype=="氣體-JETEC" ?"selected":null}
-                                            value="氣體-JETEC">
-                                        氣體-JETEC
-                                    </option>
-                                    <option ${bean.producttype=="氣體-Senko" ?"selected":null}
-                                            value="氣體-Senko">
-                                        氣體-Senko
-                                    </option>
-                                    <option ${bean.producttype=="氣體-GASDNA" ?"selected":null}
-                                            value="氣體-GASDNA">
-                                        氣體-GASDNA
-                                    </option>
-                                    <option ${bean.producttype=="氣體-手持" ?"selected":null} value="氣體-手持">
-                                        氣體-手持
-                                    </option>
-                                    <option ${bean.producttype=="氣體-其他" ?"selected":null} value="氣體-其他">
-                                        氣體-其他
-                                    </option>
-                                    <option ${bean.producttype=="氣象儀器-土壤/pH" ?"selected":null}
-                                            value="氣象儀器-土壤/pH">
-                                        氣象儀器-土壤/pH
-                                    </option>
-                                    <option ${bean.producttype=="氣象儀器-日照/紫外線" ?"selected":null}
-                                            value="氣象儀器-日照/紫外線">
-                                        氣象儀器-日照/紫外線
-                                    </option>
-                                    <option ${bean.producttype=="氣象儀器-風速/風向" ?"selected":null}
-                                            value="氣象儀器-風速/風向">
-                                        氣象儀器-風速/風向
-                                    </option>
-                                    <option ${bean.producttype=="氣象儀器-雨量" ?"selected":null} value="氣象儀器-雨量">
-                                        氣象儀器-雨量
-                                    </option>
-                                    <option ${bean.producttype=="氣象儀器-其他" ?"selected":null} value="氣象儀器-其他">
-                                        氣象儀器-其他
-                                    </option>
-                                    <option ${bean.producttype=="水質相關" ?"selected":null} value="水質相關">
-                                        水質相關
-                                    </option>
-                                    <option ${bean.producttype=="液位/料位-JETEC" ?"selected":null}
-                                            value="液位/料位-JETEC">
-                                        液位/料位-JETEC
-                                    </option>
-                                    <option ${bean.producttype=="液位/料位-DINEL" ?"selected":null}
-                                            value="液位/料位-DINEL">
-                                        液位/料位-DINEL
-                                    </option>
-                                    <option ${bean.producttype=="液位/料位-HONDA" ?"selected":null}
-                                            value="液位/料位-HONDA">
-                                        液位/料位-HONDA
-                                    </option>
-                                    <option ${bean.producttype=="液位/料位-其他" ?"selected":null}
-                                            value="液位/料位-其他">
-                                        液位/料位-其他
-                                    </option>
-                                    <option ${bean.producttype=="溫度貼紙" ?"selected":null} value="溫度貼紙">
-                                        溫度貼紙
-                                    </option>
-                                    <option ${bean.producttype=="溫控器-TOHO" ?"selected":null}
-                                            value="溫控器-TOHO">
-                                        溫控器-TOHO
-                                    </option>
-                                    <option ${bean.producttype=="溫控器-其他" ?"selected":null} value="溫控器-其他">
-                                        溫控器-其他
-                                    </option>
-                                    <option ${bean.producttype=="感溫線棒" ?"selected":null} value="感溫線棒">
-                                        感溫線棒
-                                    </option>
-                                    <option ${bean.producttype=="無線傳輸" ?"selected":null} value="無線傳輸">
-                                        無線傳輸
-                                    </option>
-                                    <option ${bean.producttype=="編碼器/電位計" ?"selected":null} value="編碼器/電位計">
-                                        編碼器/電位計
-                                    </option>
-                                    <option ${bean.producttype=="能源管理控制" ?"selected":null} value="能源管理控制">
-                                        能源管理控制
-                                    </option>
-                                    <option ${bean.producttype=="食品" ?"selected":null} value="食品">食品
-                                    </option>
-                                    <option ${bean.producttype=="其它" ?"selected":null} value="其它">其它
-                                    </option>
+
+
+                                    <c:forEach varStatus="loop" begin="0" end="${library.size()-1}"
+                                               items="${library}" var="s">
+
+                                        <c:if test='${s.librarygroup == "producttype"}'>
+
+                                            <option value="${s.libraryoption}">${s.libraryoption}
+                                            </option>
+
+                                        </c:if>
+
+                                    </c:forEach>
+
+
+                                    <%--                                    --%>
+                                    <%--                                    <option ${bean.producttype=="大型顯示器" ?"selected":null} value="大型顯示器">--%>
+                                    <%--                                        大型顯示器--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="空氣品質" ?"selected":null} value="空氣品質">--%>
+                                    <%--                                        空氣品質--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="流量-AICHI" ?"selected":null}--%>
+                                    <%--                                            value="流量-AICHI">--%>
+                                    <%--                                        流量-AICHI--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="流量-RGL" ?"selected":null} value="流量-RGL">--%>
+                                    <%--                                        流量-RGL--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="流量-Siargo" ?"selected":null}--%>
+                                    <%--                                            value="流量-Siargo">--%>
+                                    <%--                                        流量-Siargo--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="流量-其他" ?"selected":null} value="流量-其他">--%>
+                                    <%--                                        流量-其他--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="記錄器" ?"selected":null} value="記錄器">--%>
+                                    <%--                                        記錄器--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="資料收集器-JETEC" ?"selected":null}--%>
+                                    <%--                                            value="資料收集器-JETEC">--%>
+                                    <%--                                        資料收集器-JETEC--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="資料收集器-其他" ?"selected":null}--%>
+                                    <%--                                            value="資料收集器-其他">--%>
+                                    <%--                                        資料收集器-其他--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="溫濕-JETEC" ?"selected":null}--%>
+                                    <%--                                            value="溫濕-JETEC">--%>
+                                    <%--                                        溫濕-JETEC--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="溫濕-GALLTEC" ?"selected":null}--%>
+                                    <%--                                            value="溫濕-GALLTEC">--%>
+                                    <%--                                        溫濕-GALLTEC--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="溫濕-E+E" ?"selected":null} value="溫濕-E+E">--%>
+                                    <%--                                        溫濕-E+E--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="溫濕-其他" ?"selected":null} value="溫濕-其他">--%>
+                                    <%--                                        溫濕-其他--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="紅外線" ?"selected":null} value="紅外線">--%>
+                                    <%--                                        紅外線--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="壓力-JETEC" ?"selected":null}--%>
+                                    <%--                                            value="壓力-JETEC">--%>
+                                    <%--                                        壓力-JETEC--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="壓力-HUBA" ?"selected":null} value="壓力-HUBA">--%>
+                                    <%--                                        壓力-HUBA--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="壓力-COPAL" ?"selected":null}--%>
+                                    <%--                                            value="壓力-COPAL">--%>
+                                    <%--                                        壓力-COPAL--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="壓力-其他" ?"selected":null} value="壓力-其他">--%>
+                                    <%--                                        壓力-其他--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="差壓" ?"selected":null} value="差壓">差壓--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="氣體-JETEC" ?"selected":null}--%>
+                                    <%--                                            value="氣體-JETEC">--%>
+                                    <%--                                        氣體-JETEC--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="氣體-Senko" ?"selected":null}--%>
+                                    <%--                                            value="氣體-Senko">--%>
+                                    <%--                                        氣體-Senko--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="氣體-GASDNA" ?"selected":null}--%>
+                                    <%--                                            value="氣體-GASDNA">--%>
+                                    <%--                                        氣體-GASDNA--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="氣體-手持" ?"selected":null} value="氣體-手持">--%>
+                                    <%--                                        氣體-手持--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="氣體-其他" ?"selected":null} value="氣體-其他">--%>
+                                    <%--                                        氣體-其他--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="氣象儀器-土壤/pH" ?"selected":null}--%>
+                                    <%--                                            value="氣象儀器-土壤/pH">--%>
+                                    <%--                                        氣象儀器-土壤/pH--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="氣象儀器-日照/紫外線" ?"selected":null}--%>
+                                    <%--                                            value="氣象儀器-日照/紫外線">--%>
+                                    <%--                                        氣象儀器-日照/紫外線--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="氣象儀器-風速/風向" ?"selected":null}--%>
+                                    <%--                                            value="氣象儀器-風速/風向">--%>
+                                    <%--                                        氣象儀器-風速/風向--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="氣象儀器-雨量" ?"selected":null} value="氣象儀器-雨量">--%>
+                                    <%--                                        氣象儀器-雨量--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="氣象儀器-其他" ?"selected":null} value="氣象儀器-其他">--%>
+                                    <%--                                        氣象儀器-其他--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="水質相關" ?"selected":null} value="水質相關">--%>
+                                    <%--                                        水質相關--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="液位/料位-JETEC" ?"selected":null}--%>
+                                    <%--                                            value="液位/料位-JETEC">--%>
+                                    <%--                                        液位/料位-JETEC--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="液位/料位-DINEL" ?"selected":null}--%>
+                                    <%--                                            value="液位/料位-DINEL">--%>
+                                    <%--                                        液位/料位-DINEL--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="液位/料位-HONDA" ?"selected":null}--%>
+                                    <%--                                            value="液位/料位-HONDA">--%>
+                                    <%--                                        液位/料位-HONDA--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="液位/料位-其他" ?"selected":null}--%>
+                                    <%--                                            value="液位/料位-其他">--%>
+                                    <%--                                        液位/料位-其他--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="溫度貼紙" ?"selected":null} value="溫度貼紙">--%>
+                                    <%--                                        溫度貼紙--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="溫控器-TOHO" ?"selected":null}--%>
+                                    <%--                                            value="溫控器-TOHO">--%>
+                                    <%--                                        溫控器-TOHO--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="溫控器-其他" ?"selected":null} value="溫控器-其他">--%>
+                                    <%--                                        溫控器-其他--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="感溫線棒" ?"selected":null} value="感溫線棒">--%>
+                                    <%--                                        感溫線棒--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="無線傳輸" ?"selected":null} value="無線傳輸">--%>
+                                    <%--                                        無線傳輸--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="編碼器/電位計" ?"selected":null} value="編碼器/電位計">--%>
+                                    <%--                                        編碼器/電位計--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="能源管理控制" ?"selected":null} value="能源管理控制">--%>
+                                    <%--                                        能源管理控制--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="食品" ?"selected":null} value="食品">食品--%>
+                                    <%--                                    </option>--%>
+                                    <%--                                    <option ${bean.producttype=="其它" ?"selected":null} value="其它">其它--%>
+                                    <%--                                    </option>--%>
                                 </select>
                             </div>
                             <div class="col-md-1 cellz">產品名稱</div>
@@ -1006,9 +1022,6 @@
                     </div>
 
 
-
-
-
                     <div class="row act" style="height: 30px;">
                         <a href="#" onclick="goWork()">新增工作項目</a>
                     </div>
@@ -1150,8 +1163,8 @@
         el: '.app',
         data() {
             return {
-                bosMassageList:[],//留言LIST
-                bosMassage:"",//留言
+                bosMassageList: [],//留言LIST
+                bosMassage: "",//留言
                 stateNum: 1,//麵包屑顯示用
                 quoteHeight: "",// 報價內容 高度用
                 messageheight: "",// 描述 高度用
@@ -1269,8 +1282,8 @@
                             this.bean.contactmoblie = formatPhone(this.bean.contactmoblie),
                             this.oldBean = Object.assign({}, this.bean),
                             this.bosMassageList = response.bean.bm,
-                            console.log(response.bean.customerid,"response.bean.bm"),
-                            console.log(response.bean.bm.length,"response.bean.bm")
+                            console.log(response.bean.customerid, "response.bean.bm"),
+                            console.log(response.bean.bm.length, "response.bean.bm")
 
 
                     )),
@@ -1679,7 +1692,7 @@
 
             },
             //送出留言
-            sendBosMessage(){
+            sendBosMessage() {
                 const data = {
                     "message": this.bosMassage,
                     "admin": '${user.name}',

@@ -145,7 +145,7 @@ public class MarketControler {
         }
 
 
-            MarketBean   save = ms.save(marketBean);
+        MarketBean save = ms.save(marketBean);
 
 
         return "redirect:/Market/Market/" + save.getMarketid();
@@ -396,7 +396,7 @@ public class MarketControler {
 //		contactBean.setDepartment(Bean.getDepartment());
 //		contactBean.setDirector(Bean.getDirector());
 //		contactBean.setFax(Bean.getFax());
-		contactBean.setRemark("");
+        contactBean.setRemark("");
 //		contactBean.setUser(Bean.getUser());
 
         cs.SaveContact(contactBean);
@@ -704,13 +704,7 @@ public class MarketControler {
         AdminBean aBean = (AdminBean) session.getAttribute("user");
         //如果有相同資料 就不處裡
         if (ms.existMarketState(aBean.getAdminid(), field, state)) {
-         ms.delMarketState(aBean.getAdminid(), field, state);
-
-
-
-
-
-
+            ms.delMarketState(aBean.getAdminid(), field, state);
             return ms.getMarketStateList(aBean.getAdminid());
         }
 
@@ -721,7 +715,7 @@ public class MarketControler {
                 MarketStateBean marketStateBean = ms.getMarketField(aBean.getAdminid(), "day");
                 marketStateBean.setState(state);
                 ms.sevaMarketStateBean(marketStateBean);
-            }else {
+            } else {
                 ms.saveMarketState(aBean.getAdminid(), field, state, type);
             }
         } else {
@@ -745,6 +739,7 @@ public class MarketControler {
         List<MarketStateBean> stateList = ms.getMarketStateList(aBean.getAdminid());
         return stateList;
     }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //刪除所有狀態
     @RequestMapping("/delAllState/{adminid}")
