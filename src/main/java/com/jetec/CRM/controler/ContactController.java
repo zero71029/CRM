@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,5 +35,13 @@ public class ContactController {
         pag--;
         Map<String, Object> result = cs.getContactList(pag);
         return result;
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//搜索聯絡人
+    @RequestMapping("/selectContact")
+    @ResponseBody
+    public List<ContactBean> selectContact(@RequestParam("name") String name) {
+        System.out.println("*****搜索聯絡人****");
+        return cs.selectContactByClientName(name);
     }
 }

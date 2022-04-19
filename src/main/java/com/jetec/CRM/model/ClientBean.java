@@ -264,5 +264,12 @@ public class ClientBean {
 		this.remark = remark;
 	}
 
-
+	@Override
+	public String toString() {
+		return "ClientBean{" +
+				"clientid=" + clientid +
+				", name='" + name + '\'' +
+				", sort='" + sort + '\'' +
+				'}';
+	}
 }

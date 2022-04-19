@@ -122,16 +122,7 @@ public class WorkControler {
         return cs.selectclient(name);
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//搜索聯絡人
-    @RequestMapping("/selectContact/{name}")
-    @ResponseBody
-    public List<ContactBean> selectContact(@PathVariable("name") String name) {
-        System.out.println("*****搜索聯絡人****");
-        System.out.println(name);
-        System.out.println(cs.selectContactByClientName(name));
-        return cs.selectContactByClientName(name);
-    }
+
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索潛在顧客

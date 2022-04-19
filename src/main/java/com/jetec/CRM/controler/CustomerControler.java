@@ -92,6 +92,7 @@ public class CustomerControler {
     public List<ClientBean> selectclientResponseBody(@PathVariable("name") String name) {
         System.out.println("搜索客戶");
         name = name.trim();
+        System.out.println(cs.selectclient(name));
         return cs.selectclient(name);
     }
 
@@ -158,15 +159,14 @@ public class CustomerControler {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // 搜索聯絡人
-    @RequestMapping("/selectContact")
-    public String sselectContact(Model model, @RequestParam("name") String name) {
-        System.out.println("搜索聯絡人");
-        name = name.trim();
-        System.out.println(cs.selectContact(name));
-        model.addAttribute("list", cs.selectContact(name));
-        return "/client/contactList";
-    }
+//    // 搜索聯絡人
+//    @RequestMapping("/selectContact")
+//    public String sselectContact(Model model, @RequestParam("name") String name) {
+//        System.out.println("搜索聯絡人");
+//        name = name.trim();
+//        model.addAttribute("list", cs.selectContact(name));
+//        return "/client/contactList";
+//    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //客戶轉換聯絡人

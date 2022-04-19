@@ -60,7 +60,7 @@
                         <div class="col-lg-5">
 
                             <div class="input-group mb-3" style="width: 95%; padding-left: 50px;">
-                                <input type="text" class="form-control" placeholder=" 名稱  or 統編 or 聯絡人or 電話" name="name"
+                                <input type="text" class="form-control" placeholder=" 名稱  or 統編 or   電話" name="name"
                                     v-model="inName">
                                 <button class="btn btn-outline-secondary" type="submit" id="selectClient"
                                     @click="selectClient">搜索</button>
