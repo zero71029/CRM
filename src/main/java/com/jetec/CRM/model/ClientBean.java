@@ -264,35 +264,5 @@ public class ClientBean {
 		this.remark = remark;
 	}
 
-	@Override
-	public String toString() {
-		return "ClientBean{" +
-				"clientid=" + clientid +
-				", name='" + name + '\'' +
-				", sort='" + sort + '\'' +
-				", url='" + url + '\'' +
-				", email='" + email + '\'' +
-				", industry='" + industry + '\'' +
-				", uniformnumber='" + uniformnumber + '\'' +
-				", phone='" + phone + '\'' +
-				", extension='" + extension + '\'' +
-				", fax='" + fax + '\'' +
-				", peoplenumber='" + peoplenumber + '\'' +
-				", billcity='" + billcity + '\'' +
-				", billtown='" + billtown + '\'' +
-				", billpostal='" + billpostal + '\'' +
-				", billaddress='" + billaddress + '\'' +
-				", delivercity='" + delivercity + '\'' +
-				", delivertown='" + delivertown + '\'' +
-				", deliverpostal='" + deliverpostal + '\'' +
-				", deliveraddress='" + deliveraddress + '\'' +
-				", remark='" + remark + '\'' +
-				", user='" + user + '\'' +
-				", state=" + state +
-				", contact=" + contact +
-				", work=" + work +
-				", address=" + address +
-				", tag=" + tag +
-				'}';
-	}
+
 }

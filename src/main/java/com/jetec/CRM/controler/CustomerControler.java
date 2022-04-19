@@ -163,6 +163,7 @@ public class CustomerControler {
     public String sselectContact(Model model, @RequestParam("name") String name) {
         System.out.println("搜索聯絡人");
         name = name.trim();
+        System.out.println(cs.selectContact(name));
         model.addAttribute("list", cs.selectContact(name));
         return "/client/contactList";
     }
