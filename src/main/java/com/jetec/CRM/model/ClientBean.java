@@ -41,7 +41,7 @@ public class ClientBean {
 	private String user;//負責人
 	private Integer state;//狀態
 	private String serialnumber;//編號
-
+	private String department;
 	
 	//聯繫人
 	@JsonIgnore
@@ -60,6 +60,15 @@ public class ClientBean {
 	@OneToMany(targetEntity = ClientTagBean.class ,mappedBy = "clientid", cascade = CascadeType.ALL)
 	@OrderBy("name")
 	private List<ClientTagBean> tag;
+
+
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
 
 	public String getSerialnumber() {
 		return serialnumber;

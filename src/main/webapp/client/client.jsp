@@ -149,6 +149,16 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-lg-1"></div>
+                                            <div class="col-lg-1 cell">部門</div>
+                                            <div class="col-lg-9 cell FormPadding">                                              
+                                                    <input type="text" class="form-control"   name="department"
+                                                    value="${bean.department}" maxlength="100" >                                            
+
+                                            </div>
+                                            <div class="col-lg-1"></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-1"></div>
                                             <div class="col-lg-1 cell">電話</div>
                                             <div class="col-lg-3 cell FormPadding">
 

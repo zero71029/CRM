@@ -34,9 +34,19 @@
         <jsp:include page="/Sidebar.jsp"></jsp:include>
         <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
         <div class="col-lg-11 app" v-cloak>
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- 上一頁 --> 
+                    <a href="${pageContext.request.contextPath}/system/libraryList.jsp"   style="text-decoration: none;">
+                        <img src="${pageContext.request.contextPath}/img/Pre.png" alt="上一頁"
+                            style="width: 60px;height: 54px;">
+                    </a>
+                  
+                    </i>
+                </div>
+            </div>
             <div class="row ">
                 <div class="col-md-12 ">
-
                     <ul  >
                         <li v-for="(s,index) in list" key="index"   :id="index"> {{s.libraryoption}}&nbsp;&nbsp;&nbsp;&nbsp;
                             <el-link @click="delLibrary(s.libraryid)" type="primary">remove</el-link>
@@ -51,9 +61,6 @@
                             Button
                         </button>
                     </div>
-                    
-
-
                 </div>
             </div>
         </div>
