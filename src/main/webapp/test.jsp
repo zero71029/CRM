@@ -49,10 +49,10 @@
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingOne">
                                             <button class="accordion-button collapsed" type="button"
-                                            onclick="javascript:location.href='${pageContext.request.contextPath}/Market/PotentialCustomerList'">
+                                                onclick="javascript:location.href='${pageContext.request.contextPath}/Market/PotentialCustomerList'">
                                                 重置
                                             </button>
-                                        </h2>                                        
+                                        </h2>
                                     </div>
                                     <!-- 負責人 -->
                                     <div class="accordion-item">
@@ -626,5 +626,61 @@
                 opacity: 0;
             }
         </style>
+
+<!-- SEO代碼 --><script type="text/javascript">
+  var ga = document.createElement('script'); ga.type = 'application/ld+json';
+  ga.textContent = `{
+        "@context": "http://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement":
+          [{
+            "@type": "ListItem",
+            "position": 1,
+            "name": "傳感器的專家",
+            "item": "https://www.jetec.com.tw/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "壓力",
+            "item": "https://www.jetec.com.tw/Pressure"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "手持式壓力計",
+            "item": "https://www.jetec.com.tw/PressureHandHeld"
+          },
+          {
+            "@type": "ListItem",
+            "position": 4,
+            "name": "CPMU 手持式壓力計",
+            "item": "https://www.jetec.com.tw/chinese/product1-2_CPMU.html"
+          }
+          ],"image":"https://www.jetec.com.tw/sites/default/files/2022-04/CPMU%20-72.png"
+      }`;
+  document.head.appendChild(ga);
+</script><!-- SEO代碼結束 -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<c:forEach varStatus="loop" begin="0" end="${library.size()-1}"
+items="${library}" var="s">
+<c:if test='${s.librarygroup == "MarketType"}'>
+    <option value="${s.libraryoption}">${s.libraryoption}
+    </option>
+</c:if>
+</c:forEach>
 
         </html>

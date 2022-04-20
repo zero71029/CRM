@@ -51,6 +51,7 @@
                             Button
                         </button>
                     </div>
+                    
 
 
                 </div>
@@ -58,6 +59,7 @@
         </div>
 </body>
 <script>
+     $(".system").show();
     const url = new URL(location.href);
 
     const librarygroup = url.searchParams.get("librarygroup")

@@ -42,6 +42,7 @@ public class ContactController {
     @ResponseBody
     public List<ContactBean> selectContact(@RequestParam("name") String name) {
         System.out.println("*****搜索聯絡人****");
-        return cs.selectContactByClientName(name);
+        System.out.println(cs.selectContact(name));
+        return cs.selectContact(name);
     }
 }
