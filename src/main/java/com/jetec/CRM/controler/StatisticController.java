@@ -5,12 +5,15 @@ import com.jetec.CRM.controler.service.MarketService;
 import com.jetec.CRM.controler.service.StatisticService;
 import com.jetec.CRM.controler.service.SystemService;
 import com.jetec.CRM.model.AdminBean;
+import com.jetec.CRM.model.LibraryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -62,7 +65,7 @@ public class StatisticController {
 //搜索
     @RequestMapping("/selectCompany")
     @ResponseBody
-    public Map<String, Object> selectCompany(@RequestParam("from") String startDay, @RequestParam("to") String endDay) {
+    public Map<String, Object> selectCompany(@RequestParam("from") String startDay, @RequestParam("to") String endDay,HttpServletRequest sce) {
         System.out.println("搜索公司數量");
         Map<String, Object> result = new HashMap<>();
 
@@ -79,10 +82,16 @@ public class StatisticController {
             endDay = endDay + " 24:00";
         }
         Map<String, Object> CompanyNumList = getListByDate(startDay.substring(0, 10), endDay.substring(0, 10));
+        ServletContext app = sce.getServletContext();
+        List<LibraryBean> libraryList = (List<LibraryBean>) app.getAttribute("library");
+
+
+
+
         result.put("CompanyNumList", CompanyNumList);//每天公司數量
         result.put("companyNum", ss.selectCompany(startDay, endDay));//公司名稱列表
         result.put("AdminCastNum", AdminCastNum(startDay, endDay));//取得個業務案件數量
-        result.put("producttype", producttype(startDay, endDay));//商品類別
+        result.put("producttype", producttype(startDay, endDay,libraryList));//商品類別
         result.put("BusinessState", BusinessState(startDay, endDay));//業務成功失敗
 
 
@@ -119,9 +128,14 @@ public class StatisticController {
 
     /////////////////////////////////////////////////////////////////////////////////////////
 //商品種類
-    private Map<String, Integer> producttype(@RequestParam("from") String startDay, @RequestParam("to") String endDay) {
+    private Map<String, Integer> producttype(@RequestParam("from") String startDay, @RequestParam("to") String endDay, List<LibraryBean> libraryBeanList) {
         System.out.println("商品種類");
         Map<String, Integer> result = new HashMap<>();
+
+
+
+
+
         String[] type = {"尚未分類", "大型顯示器", "空氣品質", "流量-AICHI", "流量-RGL", "流量-Siargo", "流量-其他", "記錄器", "資料收集器-JETEC", "資料收集器-其他", "溫濕-JETEC", "溫濕-GALLTEC", "溫濕-E+E", "溫濕-其他", "紅外線",
                 "壓力-JETEC", "壓力-HUBA", "壓力-COPAL", "壓力-其他", "差壓", "氣體-JETEC", "氣體-Senko", "氣體-GASDNA", "氣體-手持",
                 "氣體-其他", "氣象儀器-土壤/pH", "氣象儀器-日照/紫外線", "氣象儀器-風速/風向", "氣象儀器-雨量", "氣象儀器-其他", "水質相關", "液位/料位-JETEC",
@@ -131,10 +145,12 @@ public class StatisticController {
         String e = endDay + " 23:00";
 
         //取得資料
-        for (String name : type) {
-            Integer i = ss.selectProductType(name, s, e);
-            if (i > 0)
-                result.put(name, i);
+        for (LibraryBean bean : libraryBeanList) {
+            if("producttype".equals(bean.getLibrarygroup())){
+                Integer i = ss.selectProductType(bean.getLibraryoption(), s, e);
+                if (i > 0)
+                    result.put(bean.getLibraryoption(), i);
+            }
         }
 
 

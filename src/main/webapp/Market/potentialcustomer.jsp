@@ -220,13 +220,14 @@
                                             <input type="text" v-model.trim="customer.companynum"
                                                 class=" form-control cellFrom" name="companynum" maxlength="20"
                                                 list="contactmethod">
-
                                             <datalist id="contactmethod">
-                                                <option value="Line">
-                                                <option value="電話">
-                                                <option value="手機">
-                                                <option value="email"></option>
-                                                <option value="網頁留言"></option>
+                                                <c:forEach varStatus="loop" begin="0" end="${library.size()-1}"
+                                                    items="${library}" var="s">
+                                                    <c:if test='${s.librarygroup == "contactmethod"}'>
+                                                        <option value="${s.libraryoption}">${s.libraryoption}
+                                                        </option>
+                                                    </c:if>
+                                                </c:forEach>
                                             </datalist>
                                             <input type="text" class="form-control" name="" placeholder=""
                                                 maxlength="10">
