@@ -11,6 +11,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.jetec.CRM.model.*;
 import com.jetec.CRM.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,11 +32,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.jetec.CRM.Tool.ZeroTools;
 import com.jetec.CRM.controler.service.SystemService;
-import com.jetec.CRM.model.AdminBean;
-import com.jetec.CRM.model.AuthorizeBean;
-import com.jetec.CRM.model.BillboardBean;
-import com.jetec.CRM.model.BillboardFileBean;
-import com.jetec.CRM.model.LibraryBean;
 
 @Controller
 @RequestMapping("/system")   
@@ -509,5 +505,13 @@ public class SystemControler {
 		sce.setAttribute("library", lr.findAll(sort));
 
 		return ss.getlibrary(librarygroup);
+	}
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 查詢圖書館紀錄
+	@RequestMapping("/SetectLibraryRecord/{librarygroup}")
+	@ResponseBody
+	public List<LibraryChangeBean> SetectLibraryRecord(@PathVariable("librarygroup")String librarygroup) {
+		System.out.println("*****查詢圖書館紀錄*****");
+		return ss.SetectLibraryRecord(librarygroup);
 	}
 }

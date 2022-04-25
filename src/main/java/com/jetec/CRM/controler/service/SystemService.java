@@ -2,6 +2,7 @@ package com.jetec.CRM.controler.service;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -740,7 +741,7 @@ public class SystemService {
         if (!lr.existsByLibrarygroupAndLibraryoption(librarygroup, libraryoption)) {
             LibraryBean bean = new LibraryBean(zTools.getUUID(), librarygroup, libraryoption, remark);
             lr.save(bean);
-            LibraryChangeBean lcBeam = new LibraryChangeBean(zTools.getUUID(), librarygroup, libraryoption,"新增");
+            LibraryChangeBean lcBeam = new LibraryChangeBean(zTools.getUUID(), librarygroup, libraryoption,"新增", zTools.getTime(new Date()));
             lcr.save(lcBeam);
 
         }
@@ -753,10 +754,18 @@ public class SystemService {
         String librarygroup = null;
         if (op.isPresent()) {
           librarygroup = op.get().getLibrarygroup();
-            LibraryChangeBean lcBeam = new LibraryChangeBean(zTools.getUUID(), op.get().getLibrarygroup(), op.get().getLibraryoption(),"刪除");
+            LibraryChangeBean lcBeam = new LibraryChangeBean(zTools.getUUID(), op.get().getLibrarygroup(), op.get().getLibraryoption(),"刪除",zTools.getTime(new Date()));
             lcr.save(lcBeam);
             lr.delete(op.get());
         }
         return librarygroup;
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 查詢圖書館紀錄
+    public List<LibraryChangeBean> SetectLibraryRecord(String librarygroup){
+        Sort sort = Sort.by(Direction.DESC,"aaa");
+       Optional<List<LibraryChangeBean>> op = lcr.findByLibrarygroup(librarygroup,sort );
+
+        return op.get();
     }
 }

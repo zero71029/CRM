@@ -3,6 +3,7 @@ package com.jetec.CRM.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 @Entity
 @Table(name = "librarychange")
@@ -12,15 +13,17 @@ public class LibraryChangeBean {
     private String librarygroup;
     private String libraryoption;
     private String action;
+    private String aaa;
 
     public LibraryChangeBean() {
     }
 
-    public LibraryChangeBean(String librarychangeid, String librarygroup, String libraryoption, String action) {
+    public LibraryChangeBean(String librarychangeid, String librarygroup, String libraryoption, String action, String aaa) {
         this.librarychangeid = librarychangeid;
         this.librarygroup = librarygroup;
         this.libraryoption = libraryoption;
         this.action = action;
+        this.aaa = aaa;
     }
 
     @Override
@@ -31,6 +34,14 @@ public class LibraryChangeBean {
                 ", libraryoption='" + libraryoption + '\'' +
                 ", action='" + action + '\'' +
                 '}';
+    }
+
+    public String getAaa() {
+        return aaa;
+    }
+
+    public void setAaa(String aaa) {
+        this.aaa = aaa;
     }
 
     public String getLibrarychangeid() {

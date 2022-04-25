@@ -768,7 +768,6 @@
                     contentType: false,
                     processData: false,
                     success: function (json) {
-                        console.log(json);
                         if (json == "客戶已存在") {
                             vm.$message({
                                 message: json,
@@ -916,8 +915,7 @@
                         success: function (json) {
                             if (json == "客戶已存在") {
                                 $(".AAA").attr("action", "${pageContext.request.contextPath}/Market/changeMarket");
-                                $(".AAA")[0].submit();
-                                console.log("end");
+                                $(".AAA")[0].submit();                     
                                 return;
                             }
                             if (json == "不存在") {
@@ -953,8 +951,7 @@
                     url: '${pageContext.request.contextPath}/Market/existMarket/${bean.customerid}',
                     async: false,
                     cache: false,
-                    success: url => {
-                        console.log(url, "url")
+                    success: url => {                    
                         if (url) {//有資料提示   沒資料去儲存
                             vm.$message.error('錯誤 ,已經轉過了');
                         } else {
@@ -978,8 +975,7 @@
                     type: 'POST',
                     success: function (json) {
                         $(".helpList").empty();
-                        for (var h of json) {
-                            console.log(h)
+                        for (var h of json) {                          
                             $(".helpList").append('<li ">' + h.name + '<a style="right: 0px; position: absolute;" href="javascript:delHelp(`' + h.helperid + '`)" >remove</a></li>')
                         }
                     },

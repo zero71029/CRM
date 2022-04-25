@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -144,6 +148,40 @@ public class TaskController {
         System.out.println("*****刪除每日任務*****");
         TS.delMarket(id);
         return "刪除成功";
+    }
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//*******************
+    @RequestMapping("/sql")
+    @ResponseBody
+    public String sql() {
+        System.out.println("*****測試*****");
+        //////
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        try {
+            ProcessBuilder builder = new ProcessBuilder(
+                    "cmd.exe", "/c", "cd  C:\\MAMP\\bin\\mysql\\bin && mysqldump -uroot -proot crm > C:\\Users\\jetec\\SynologyDrive\\crm" + sdf.format(new Date()) + ".sql");
+            builder.redirectErrorStream(true);
+            Process p = null;
+
+            p = builder.start();
+
+            BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line;
+            while (true) {
+                line = r.readLine();
+                if (line == null) {
+                    break;
+                }
+                System.out.println(line);
+            }
+            return line;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "失敗";
+        }
+
     }
 
 }

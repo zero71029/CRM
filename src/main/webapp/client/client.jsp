@@ -90,7 +90,7 @@
                     <script src="${pageContext.request.contextPath}/js/jquery.twzipcode.min.js"></script>
                     <!-- 驗證UI -->
                     <script src="${pageContext.request.contextPath}/js/jquery.validate.min.js"></script>
-                    
+
                     <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
                     <div class="col-lg-11 app">
                         <div class="row">
@@ -139,10 +139,11 @@
 
                                                 <div class="input-group mb-3">
                                                     <input type="text" class="form-control" placeholder="名稱" name="name"
-                                                    value="${bean.name}" maxlength="100" required>
+                                                        value="${bean.name}" maxlength="100" required>
                                                     <span class="input-group-text">-</span>
-                                                    <input type="text" class="form-control" placeholder="編號" name="serialnumber"  value="${bean.serialnumber}">
-                                                  </div>
+                                                    <input type="text" class="form-control" placeholder="編號"
+                                                        name="serialnumber" value="${bean.serialnumber}">
+                                                </div>
 
                                             </div>
                                             <div class="col-lg-1"></div>
@@ -150,9 +151,9 @@
                                         <div class="row">
                                             <div class="col-lg-1"></div>
                                             <div class="col-lg-1 cell">部門</div>
-                                            <div class="col-lg-9 cell FormPadding">                                              
-                                                    <input type="text" class="form-control"   name="department"
-                                                    value="${bean.department}" maxlength="100" >                                            
+                                            <div class="col-lg-9 cell FormPadding">
+                                                <input type="text" class="form-control" name="department"
+                                                    value="${bean.department}" maxlength="100">
 
                                             </div>
                                             <div class="col-lg-1"></div>
@@ -229,36 +230,23 @@
                                             <div class="col-lg-1"></div>
                                             <div class="col-lg-1 cell">類別</div>
                                             <div class="col-lg-3 cell FormPadding">
+
+
                                                 <select name="sort" class="form-select cellFrom"
                                                     aria-label="Default select example">
-                                                    <option value="客戶" ${bean.sort=="客戶" ?"selected":null}
-                                                        class="selItemOff">客戶
-                                                    </option>
-                                                    <option value="潛在客戶" ${bean.sort=="潛在客戶" ?"selected":null}
-                                                        class="selItemOff">潛在客戶</option>
-                                                    <option value="經銷商" ${bean.sort=="經銷商" ?"selected":null}
-                                                        class="selItemOff">
-                                                        經銷商</option>
-                                                    <option value="分析師" ${bean.sort=="分析師" ?"selected":null}
-                                                        class="selItemOff">
-                                                        分析師</option>
-                                                    <option value="競爭對手" ${bean.sort=="競爭對手" ?"selected":null}
-                                                        class="selItemOff">競爭對手</option>
-                                                    <option value="整合商" ${bean.sort=="整合商" ?"selected":null}
-                                                        class="selItemOff">
-                                                        整合商</option>
-                                                    <option value="投資人" ${bean.sort=="投資人" ?"selected":null}
-                                                        class="selItemOff">
-                                                        投資人</option>
-                                                    <option value="合作夥伴" ${bean.sort=="合作夥伴" ?"selected":null}
-                                                        class="selItemOff">合作夥伴</option>
-                                                    <option value="媒體" ${bean.sort=="媒體" ?"selected":null}
-                                                        class="selItemOff">媒體
-                                                    </option>
+                                                    <c:forEach varStatus="loop" begin="0" end="${library.size()-1}"
+                                                        items="${library}" var="s">
+                                                        <c:if test='${s.librarygroup == "ClientSort"}'>
+                                                            <option value="${s.libraryoption}">${s.libraryoption}
+                                                            </option>
+                                                        </c:if>
+                                                    </c:forEach>
                                                     <option value="其他" ${bean.sort=="其他" ?"selected":null}
                                                         class="selItemOff">其他
                                                     </option>
                                                 </select>
+
+
                                             </div>
                                             <div class="col-lg-2 cell">產業</div>
                                             <div class="col-lg-4 cell FormPadding ">
