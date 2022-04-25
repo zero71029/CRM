@@ -163,10 +163,7 @@ public class TaskController {
             ProcessBuilder builder = new ProcessBuilder(
                     "cmd.exe", "/c", "cd  C:\\MAMP\\bin\\mysql\\bin && mysqldump -uroot -proot crm > C:\\Users\\jetec\\SynologyDrive\\crm" + sdf.format(new Date()) + ".sql");
             builder.redirectErrorStream(true);
-            Process p = null;
-
-            p = builder.start();
-
+            Process p = builder.start();
             BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
             String line;
             while (true) {
@@ -176,10 +173,10 @@ public class TaskController {
                 }
                 System.out.println(line);
             }
-            return line;
+            return "成功 已經輸出到NAS <br>" ;
         } catch (IOException e) {
             e.printStackTrace();
-            return "失敗";
+            return "輸出失敗,請聯絡管理員";
         }
 
     }

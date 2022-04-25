@@ -81,7 +81,10 @@
             <button class="system"
             onclick="javascript:location.href='${pageContext.request.contextPath}/system/libraryList.jsp'">下拉選單管理</button>
             <c:if test='${user.position == "系統"||user.position == "總經理"}'>
-
+                <button class="system"
+                        onclick="javascript:window.open('${pageContext.request.contextPath}/task/sql')">
+                    資料庫備份
+                </button>
                 <button class="system"
                         onclick="javascript:location.href='${pageContext.request.contextPath}/system/adminList/adminid'">
                     員工管理

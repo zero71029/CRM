@@ -627,9 +627,10 @@
             }
         </style>
 
-<!-- SEO代碼 --><script type="text/javascript">
-  var ga = document.createElement('script'); ga.type = 'application/ld+json';
-  ga.textContent = `{
+        <!-- SEO代碼 -->
+        <script type="text/javascript">
+            var ga = document.createElement('script'); ga.type = 'application/ld+json';
+            ga.textContent = `{
         "@context": "http://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement":
@@ -659,28 +660,17 @@
           }
           ],"image":"https://www.jetec.com.tw/sites/default/files/2022-04/CPMU%20-72.png"
       }`;
-  document.head.appendChild(ga);
-</script><!-- SEO代碼結束 -->
+            document.head.appendChild(ga);
+        </script><!-- SEO代碼結束 -->
 
 
 
 
-
-
-
-
-<strong></strong>
-
-
-
-
-
-<c:forEach varStatus="loop" begin="0" end="${library.size()-1}"
-items="${library}" var="s">
-<c:if test='${s.librarygroup == "MarketType"}'>
-    <option value="${s.libraryoption}">${s.libraryoption}
-    </option>
-</c:if>
-</c:forEach>
+        <c:forEach varStatus="loop" begin="0" end="${library.size()-1}" items="${library}" var="s">
+            <c:if test='${s.librarygroup == "MarketType"}'>
+                <option value="${s.libraryoption}">${s.libraryoption}
+                </option>
+            </c:if>
+        </c:forEach>
 
         </html>

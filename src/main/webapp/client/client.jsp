@@ -245,8 +245,6 @@
                                                         class="selItemOff">其他
                                                     </option>
                                                 </select>
-
-
                                             </div>
                                             <div class="col-lg-2 cell">產業</div>
                                             <div class="col-lg-4 cell FormPadding ">
