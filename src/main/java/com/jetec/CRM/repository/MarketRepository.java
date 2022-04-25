@@ -8,10 +8,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.jetec.CRM.model.MarketBean;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface MarketRepository extends JpaRepository<MarketBean, String> {
 
@@ -131,4 +133,9 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
     Integer getAminStateNum(String admin,String state, String startDay, String endDay);
 
 
+
+    @Modifying
+    @Transactional
+    @Query(value ="mysqldump -u root -proot --opt crm >  filename.sql", nativeQuery=true)
+    void layout();
 }

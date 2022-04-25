@@ -36,6 +36,8 @@ public class SystemService {
     AdminMailRepository amr;
     @Autowired
     LibraryRepository lr;
+    @Autowired
+    LibraryChangeRepository lcr;
 
     @Autowired
     BillboardRepository br;
@@ -738,6 +740,9 @@ public class SystemService {
         if (!lr.existsByLibrarygroupAndLibraryoption(librarygroup, libraryoption)) {
             LibraryBean bean = new LibraryBean(zTools.getUUID(), librarygroup, libraryoption, remark);
             lr.save(bean);
+            LibraryChangeBean lcBeam = new LibraryChangeBean(zTools.getUUID(), librarygroup, libraryoption,"新增");
+            lcr.save(lcBeam);
+
         }
     }
 
@@ -748,7 +753,9 @@ public class SystemService {
         String librarygroup = null;
         if (op.isPresent()) {
           librarygroup = op.get().getLibrarygroup();
-          lr.delete(op.get());
+            LibraryChangeBean lcBeam = new LibraryChangeBean(zTools.getUUID(), op.get().getLibrarygroup(), op.get().getLibraryoption(),"刪除");
+            lcr.save(lcBeam);
+            lr.delete(op.get());
         }
         return librarygroup;
     }
