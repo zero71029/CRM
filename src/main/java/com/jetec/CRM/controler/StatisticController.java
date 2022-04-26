@@ -2,6 +2,7 @@ package com.jetec.CRM.controler;
 
 import com.jetec.CRM.Tool.ZeroTools;
 import com.jetec.CRM.controler.service.MarketService;
+import com.jetec.CRM.controler.service.PotentialCustomerService;
 import com.jetec.CRM.controler.service.StatisticService;
 import com.jetec.CRM.controler.service.SystemService;
 import com.jetec.CRM.model.AdminBean;
@@ -30,6 +31,8 @@ public class StatisticController {
     SystemService systemService;
     @Autowired
     MarketService ms;
+    @Autowired
+    PotentialCustomerService pcs;
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //數據管理初始化
@@ -38,8 +41,9 @@ public class StatisticController {
     public Map<String, Object> init() {
         System.out.println("數據管理初始化");
         Map<String, Object> result = new HashMap<>();
-        result.put("SubmitBos", ms.getSubmitBos());
-        result.put("CallBos", ms.CallBos());
+        result.put("SubmitBos", ms.getSubmitBos());//提交主管
+        result.put("CallBos", ms.CallBos());//延長請求
+        result.put("potential", pcs.getPotentialSubmitBos());//提交主管
 
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -65,7 +69,7 @@ public class StatisticController {
 //搜索
     @RequestMapping("/selectCompany")
     @ResponseBody
-    public Map<String, Object> selectCompany(@RequestParam("from") String startDay, @RequestParam("to") String endDay,HttpServletRequest sce) {
+    public Map<String, Object> selectCompany(@RequestParam("from") String startDay, @RequestParam("to") String endDay, HttpServletRequest sce) {
         System.out.println("搜索公司數量");
         Map<String, Object> result = new HashMap<>();
 
@@ -86,14 +90,11 @@ public class StatisticController {
         List<LibraryBean> libraryList = (List<LibraryBean>) app.getAttribute("library");
 
 
-
-
         result.put("CompanyNumList", CompanyNumList);//每天公司數量
         result.put("companyNum", ss.selectCompany(startDay, endDay));//公司名稱列表
         result.put("AdminCastNum", AdminCastNum(startDay, endDay));//取得個業務案件數量
-        result.put("producttype", producttype(startDay, endDay,libraryList));//商品類別
+        result.put("producttype", producttype(startDay, endDay, libraryList));//商品類別
         result.put("BusinessState", BusinessState(startDay, endDay));//業務成功失敗
-
 
 
         return result;
@@ -133,9 +134,6 @@ public class StatisticController {
         Map<String, Integer> result = new HashMap<>();
 
 
-
-
-
         String[] type = {"尚未分類", "大型顯示器", "空氣品質", "流量-AICHI", "流量-RGL", "流量-Siargo", "流量-其他", "記錄器", "資料收集器-JETEC", "資料收集器-其他", "溫濕-JETEC", "溫濕-GALLTEC", "溫濕-E+E", "溫濕-其他", "紅外線",
                 "壓力-JETEC", "壓力-HUBA", "壓力-COPAL", "壓力-其他", "差壓", "氣體-JETEC", "氣體-Senko", "氣體-GASDNA", "氣體-手持",
                 "氣體-其他", "氣象儀器-土壤/pH", "氣象儀器-日照/紫外線", "氣象儀器-風速/風向", "氣象儀器-雨量", "氣象儀器-其他", "水質相關", "液位/料位-JETEC",
@@ -146,7 +144,7 @@ public class StatisticController {
 
         //取得資料
         for (LibraryBean bean : libraryBeanList) {
-            if("producttype".equals(bean.getLibrarygroup())){
+            if ("producttype".equals(bean.getLibrarygroup())) {
                 Integer i = ss.selectProductType(bean.getLibraryoption(), s, e);
                 if (i > 0)
                     result.put(bean.getLibraryoption(), i);
@@ -197,9 +195,9 @@ public class StatisticController {
 
         List<AdminBean> adminList = systemService.getAdminByDepartment("業務");
         for (AdminBean abean : adminList) {
-            List  sta = new ArrayList();
-            sta.add(ss.getAminStateNum(abean.getName(),"成功結案", startDay, endDay));
-            sta.add(ss.getAminStateNum(abean.getName(),"失敗結案", startDay, endDay));
+            List sta = new ArrayList();
+            sta.add(ss.getAminStateNum(abean.getName(), "成功結案", startDay, endDay));
+            sta.add(ss.getAminStateNum(abean.getName(), "失敗結案", startDay, endDay));
             result.put(abean.getName(), sta);
         }
 

@@ -413,9 +413,9 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-3 cellz">狀態</div>
-                                        <div class="col-md-7 cellz FormPadding">
+                                        <div class="col-md-4 cellz FormPadding">
                                             <select name="status" class="form-select cellFrom" @change="changeStatus"
-                                                v-model.trim="customer.status" aria-label="Default select example">
+                                                v-model="customer.status"  >
                                                 <option value="未處理">未處理
                                                 </option>
                                                 <option value="已聯繫">已聯繫
@@ -428,6 +428,27 @@
                                                 <option value="合格">合格</option>
                                             </select>
                                         </div>
+
+
+                                        <c:if test="${user.position != '職員' }">
+
+                                            <div class="col-md-5" v-show="customer.status  =='提交主管'">
+                                                <el-button size="mini" type="primary" @click="BosOperate('已聯繫')">
+                                                    撤回
+                                                </el-button>
+                                                <el-button size="mini" type="primary" @click="BosOperate('不合格')">
+                                                    失敗結案
+                                                </el-button>
+                                            </div>
+                                        </c:if>
+
+
+
+
+
+
+
+
                                     </div>
                                     <div class="row">
                                         <div class="col-md-3 cellz">重要性 <span style="color: red;">*</span></div>
@@ -915,7 +936,7 @@
                         success: function (json) {
                             if (json == "客戶已存在") {
                                 $(".AAA").attr("action", "${pageContext.request.contextPath}/Market/changeMarket");
-                                $(".AAA")[0].submit();                     
+                                $(".AAA")[0].submit();
                                 return;
                             }
                             if (json == "不存在") {
@@ -951,7 +972,7 @@
                     url: '${pageContext.request.contextPath}/Market/existMarket/${bean.customerid}',
                     async: false,
                     cache: false,
-                    success: url => {                    
+                    success: url => {
                         if (url) {//有資料提示   沒資料去儲存
                             vm.$message.error('錯誤 ,已經轉過了');
                         } else {
@@ -975,7 +996,7 @@
                     type: 'POST',
                     success: function (json) {
                         $(".helpList").empty();
-                        for (var h of json) {                          
+                        for (var h of json) {
                             $(".helpList").append('<li ">' + h.name + '<a style="right: 0px; position: absolute;" href="javascript:delHelp(`' + h.helperid + '`)" >remove</a></li>')
                         }
                     },
@@ -1138,6 +1159,7 @@
                         }
                         if (isok) {//通過驗證
                             var formData = new FormData($(".AAA")[0]);
+
                             if ("${bean.customerid}" == "") {//如果是新資料 就 提交表單
                                 $.ajax({
                                     url: '${pageContext.request.contextPath}/Market/SavePotentialCustomer',
@@ -1168,6 +1190,7 @@
                                         data[iterator] = [this.customer[iterator], this.oldCustomer[iterator]];
                                     }
                                 }
+
                                 axios
                                     .post('${pageContext.request.contextPath}/changeMessage/${bean.customerid}', data)
                                     .then(
@@ -1253,6 +1276,15 @@
                             .catch(function (error) { // 请求失败处理
                                 console.log(error);
                             });
+
+                    },
+                    //測回 或 失敗結案 快捷鍵
+                    BosOperate(state) {
+                     
+                        this.customer.status = state;
+                        // this.submitForm();
+                        //需要等 才能成功
+                        setTimeout(function(){vm.submitForm();},500);
 
                     },
                     open(s) {//修改追蹤資訊

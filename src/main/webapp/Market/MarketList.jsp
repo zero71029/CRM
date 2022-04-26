@@ -171,7 +171,7 @@
                 </div>
                 <div key="3">今天筆數 : {{todayTotal}}</div>
                 <div key="4">
-                    <el-button type="text" @click="SubmitBosVisible=true">提交主管 {{SubmitBos.length}}
+                    <el-button type="text" @click="SubmitBosVisible=true">提交主管 {{SubmitBos.length+PotentialSubmitBos.length}}
                     </el-button>
                     <el-button type="text" @click="CallBosVisible=true">延長請求 {{CallBos.length}}
                     </el-button>
@@ -193,6 +193,12 @@
                     <el-table :data="SubmitBos" @row-click="clickEndCast">
                         <el-table-column property="client" label="公司"></el-table-column>
                         <el-table-column property="message" label="描述"></el-table-column>
+                        <el-table-column property="aaa" label="創建日期" sortable></el-table-column>
+                    </el-table>
+                    <hr>
+                    <el-table :data="PotentialSubmitBos" @row-click="clickPotential">
+                        <el-table-column property="company" label="潛在客戶"></el-table-column>
+                        <el-table-column property="remark" label="詢問"></el-table-column>
                         <el-table-column property="aaa" label="創建日期" sortable></el-table-column>
                     </el-table>
                 </el-dialog>
@@ -746,6 +752,7 @@
             admin: '${user.name}',
             endCast: [],//到期資料
             endCastVisible: false,//到期資料彈窗
+            PotentialSubmitBos:[],//提交主管by淺在顧客
             SubmitBos: [],//提交主管
             SubmitBosVisible: false,//提交主管彈窗
             CallBos: [],//延長通知
@@ -851,6 +858,7 @@
                         this.list = response.list,
                             this.endCast = response.endCast,
                             this.todayTotal = response.todayTotal,
+                            this.PotentialSubmitBos = response.potential,
                             this.SubmitBos = response.SubmitBos,
                             this.CallBos = response.CallBos,
                             this.show = true,
@@ -901,6 +909,9 @@
             clickEndCast: function (row, column, event) {
                 window.open('${pageContext.request.contextPath}/Market/Market/' + row.marketid);
 
+            },
+            clickPotential:function(row, column, event){
+                window.open('${pageContext.request.contextPath}/Market/potentialcustomer/' + row.customerid);
             },
             handleCurrentChange(val) {//點擊分頁
                 // this.inSortState =[];

@@ -102,6 +102,7 @@ public class MarketControler {
         }
 
         //輸出
+        result.put("potential", PCS.getPotentialSubmitBos());//提交主管
         result.put("SubmitBos", ms.getSubmitBos());
         result.put("endCast", ms.getEndCast(aBean.getName()));
         result.put("todayTotal", ms.gettodayTotal());

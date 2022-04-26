@@ -29,7 +29,7 @@ public class config {
         System.out.println("現在時間 :" + dateFormat.format(new Date()));
         System.out.println("自動備份,輸出SQL");
         //////
-        SimpleDateFormat  sdf = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat  sdf = new SimpleDateFormat("yyyyMMdd-HH-mm");
         ProcessBuilder builder = new ProcessBuilder(
                 "cmd.exe", "/c", "cd  C:\\MAMP\\bin\\mysql\\bin && mysqldump -uroot -proot crm > C:\\Users\\jetec\\SynologyDrive\\crm"+sdf.format(new Date())+".sql");
         builder.redirectErrorStream(true);

@@ -307,4 +307,10 @@ public class PotentialCustomerService {
 
 
     }
+
+    //提交主管by淺在客戶
+
+    public List<PotentialCustomerBean> getPotentialSubmitBos() {
+        return  PCR.findByStatus("提交主管");
+    }
 }

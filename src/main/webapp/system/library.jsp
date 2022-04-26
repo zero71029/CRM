@@ -72,9 +72,7 @@
                                         <el-table-column prop="action" label="動作"></el-table-column>
                                         <el-table-column prop="libraryoption" label="名稱"> </el-table-column>
                                         <el-table-column prop="aaa" label="時間"></el-table-column>
-                                    </el-table>
-
-                                    <span>这是一段信息</span>
+                                    </el-table>                                   
                                 </el-dialog>
                             </div>
                         </div>
