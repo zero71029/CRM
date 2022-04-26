@@ -18,13 +18,13 @@ public class config {
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
-    @Scheduled(cron = "0 * * * * *") // fixedDelay = 60000 表示當前方法執行完畢 60000ms(1分鐘) 後，Spring scheduling會再次呼叫該方法
+    @Scheduled(cron = "0 0,10,20,30,40,50 * * * *")
     public void testCron() {
         System.out.println("現在時間 :" + dateFormat.format(new Date()));
     }
 
 
-    @Scheduled(cron = "0 0 22 * * *") // fixedDelay = 60000 表示當前方法執行完畢 60000ms(1分鐘) 後，Spring scheduling會再次呼叫該方法
+    @Scheduled(cron = "0 0 22 * * *")
     public void layoutSQL() throws IOException {
         System.out.println("現在時間 :" + dateFormat.format(new Date()));
         System.out.println("自動備份,輸出SQL");

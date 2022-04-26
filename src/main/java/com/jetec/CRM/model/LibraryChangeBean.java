@@ -3,7 +3,6 @@ package com.jetec.CRM.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Date;
 
 @Entity
 @Table(name = "librarychange")
@@ -14,6 +13,7 @@ public class LibraryChangeBean {
     private String libraryoption;
     private String action;
     private String aaa;
+    private String admin;
 
     public LibraryChangeBean() {
     }
@@ -34,6 +34,14 @@ public class LibraryChangeBean {
                 ", libraryoption='" + libraryoption + '\'' +
                 ", action='" + action + '\'' +
                 '}';
+    }
+
+    public String getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(String admin) {
+        this.admin = admin;
     }
 
     public String getAaa() {

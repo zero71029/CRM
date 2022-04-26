@@ -12,7 +12,6 @@ import javax.servlet.http.HttpSession;
 
 import com.jetec.CRM.model.*;
 import com.jetec.CRM.repository.*;
-import org.openqa.selenium.WebDriver.Options;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -713,7 +712,7 @@ public class SystemService {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //新增圖書館子項
-    public void addLibrary(String librarygroup, String libraryoption) {
+    public void addLibrary(String librarygroup, String libraryoption, String name) {
         String remark = null;
 
         switch (librarygroup) {
@@ -742,6 +741,7 @@ public class SystemService {
             LibraryBean bean = new LibraryBean(zTools.getUUID(), librarygroup, libraryoption, remark);
             lr.save(bean);
             LibraryChangeBean lcBeam = new LibraryChangeBean(zTools.getUUID(), librarygroup, libraryoption,"新增", zTools.getTime(new Date()));
+            lcBeam.setAdmin(name);
             lcr.save(lcBeam);
 
         }
@@ -749,12 +749,13 @@ public class SystemService {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 刪除圖書館子項
-    public String delLibrary(String libaryid) {
+    public String delLibrary(String libaryid, String name) {
         Optional<LibraryBean> op = lr.findById(libaryid);
         String librarygroup = null;
         if (op.isPresent()) {
           librarygroup = op.get().getLibrarygroup();
             LibraryChangeBean lcBeam = new LibraryChangeBean(zTools.getUUID(), op.get().getLibrarygroup(), op.get().getLibraryoption(),"刪除",zTools.getTime(new Date()));
+            lcBeam.setAdmin(name);
             lcr.save(lcBeam);
             lr.delete(op.get());
         }

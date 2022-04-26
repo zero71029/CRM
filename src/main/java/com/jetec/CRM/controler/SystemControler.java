@@ -479,31 +479,34 @@ public class SystemControler {
 //新增圖書館子項
 	@RequestMapping("/addLibrary")
 	@ResponseBody
-	public List<LibraryBean> addLibrary(@RequestParam("librarygroup")String librarygroup, @RequestParam("libraryoption")String libraryoption,HttpServletRequest req) {
+	public List<LibraryBean> addLibrary(@RequestParam("librarygroup")String librarygroup, @RequestParam("libraryoption")String libraryoption,HttpServletRequest req,HttpSession session) {
 		System.out.println("*****新增圖書館子項*****");
-
-		ss.addLibrary(librarygroup,libraryoption);
+		//取得使用者
+		AdminBean ad = (AdminBean) session.getAttribute("user");
+		System.out.println(ad);
+		//儲存
+		ss.addLibrary(librarygroup,libraryoption,ad.getName());
 		//更新application
 		ServletContext sce = req.getServletContext();
 		Sort sort = Sort.by(Sort.Direction.DESC, "libraryoption");
 		sce.setAttribute("library", lr.findAll(sort));
-
-
-
 		return ss.getlibrary(librarygroup);
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 刪除圖書館子項
 	@RequestMapping("/delLibrary/{libaryid}")
 	@ResponseBody
-	public List<LibraryBean> delLibrary(@PathVariable("libaryid")String libaryid,HttpServletRequest req) {
+	public List<LibraryBean> delLibrary(@PathVariable("libaryid")String libaryid,HttpServletRequest req,HttpSession session) {
 		System.out.println("*****刪除圖書館子項*****");
-		String librarygroup =  ss.delLibrary(libaryid);
+		//取得使用者
+		AdminBean ad = (AdminBean) session.getAttribute("user");
+		System.out.println(ad);
+		//刪除
+		String librarygroup =  ss.delLibrary(libaryid,ad.getName());
 		//更新application
 		ServletContext sce = req.getServletContext();
 		Sort sort = Sort.by(Sort.Direction.DESC, "libraryoption");
 		sce.setAttribute("library", lr.findAll(sort));
-
 		return ss.getlibrary(librarygroup);
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

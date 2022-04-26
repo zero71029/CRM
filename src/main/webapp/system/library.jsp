@@ -68,6 +68,7 @@
 
                                 <el-dialog title="紀錄" :visible.sync="recordVisible" width="30%">
                                     <el-table :data="recordList" style="width: 100%">
+                                        <el-table-column prop="admin" label="修改人"></el-table-column>
                                         <el-table-column prop="action" label="動作"></el-table-column>
                                         <el-table-column prop="libraryoption" label="名稱"> </el-table-column>
                                         <el-table-column prop="aaa" label="時間"></el-table-column>
