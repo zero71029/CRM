@@ -25,7 +25,7 @@ import com.jetec.CRM.model.WorkBean;
 
 @Controller
 @RequestMapping("/work")
-@PreAuthorize("hasAuthority('系統') OR hasAuthority('主管') OR hasAuthority('業務')OR hasAuthority('行銷')")
+@PreAuthorize("hasAuthority('系統') OR hasAuthority('主管') OR hasAuthority('業務')OR hasAuthority('行銷')OR hasAuthority('國貿')")
 public class WorkControler {
     @Autowired
     WorkSerivce ws;

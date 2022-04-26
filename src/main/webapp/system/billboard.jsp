@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
     <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    <!DOCTYPE HTML>
+        <!DOCTYPE HTML>
         <html lang="zh-TW">
 
         <head>
@@ -31,10 +31,10 @@
                         "insertdatetime media nonbreaking save table contextmenu directionality",
                         "emoticons template paste textcolor colorpicker textpattern imagetools"
                     ],
-                    toolbar1: "insertfile undo redo restoredraft| formatselect fontselect fontsizeselect lineheight| alignleft aligncenter alignright alignjustify | bullist numlist outdent indent  "+
-                     "bold italic underline strikethrough subscript superscript | forecolor backcolor charmap emoticons | link unlink image media | cut copy paste | insertdatetime fullscreen code|table hr pagebreak blockquote |"+
-                     "print preview",
-                    
+                    toolbar1: "insertfile undo redo restoredraft| formatselect fontselect fontsizeselect lineheight| alignleft aligncenter alignright alignjustify | bullist numlist outdent indent  " +
+                        "bold italic underline strikethrough subscript superscript | forecolor backcolor charmap emoticons | link unlink image media | cut copy paste | insertdatetime fullscreen code|table hr pagebreak blockquote |" +
+                        "print preview",
+
                     menubar: false,
                     image_advtab: true,
                     autosave_ask_before_unload: false,//關閉 嘗試關閉當前窗口時提示他們有未保存的更改
@@ -89,491 +89,524 @@
                 <div class="row">
                     <!-- <%-- 插入側邊欄--%> -->
                     <jsp:include page="/Sidebar.jsp"></jsp:include>
-            <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
-            <div class="col-lg-11 ">
-                <div class="row justify-content-end">
-                    <div class="col-md-8">
-                        <!-- <%-- 中間主體--%> -->
-                        <br>
-                        <!-- 上一頁 -->
-                        <div class="row">
-                            <div class="col-lg-2">
-                                <a href="javascript:history.back()" style="text-decoration: none;"><img
-                                        src="${pageContext.request.contextPath}/img/Pre.png" alt="上一頁"></a>
-                            </div>
-                        </div>
-                        <br>
+                    <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
+                    <div class="col-lg-11 ">
+                        <div class="row justify-content-end">
+                            <div class="col-md-8">
+                                <!-- <%-- 中間主體--%> -->
+                                <br>
+                                <!-- 上一頁 -->
+                                <div class="row">
+                                    <div class="col-lg-2">
+                                        <a href="javascript:history.back()" style="text-decoration: none;"><img
+                                                src="${pageContext.request.contextPath}/img/Pre.png" alt="上一頁"></a>
+                                    </div>
+                                </div>
+                                <br>
 
 
-                        <!-- 授權 -->
-                        <c:if test="${empty authorizeBean}">
-                            <c:if test="${empty bean}">
-                                <form action="${pageContext.request.contextPath}/system/authorize" method="POST"
-                                    name="authorize">
+                                <!-- 授權 -->
+                                <c:if test="${empty authorizeBean}">
+                                    <c:if test="${empty bean}">
+                                        <form action="${pageContext.request.contextPath}/system/authorize" method="POST"
+                                            name="authorize">
+                                            <div class="row">
+                                                <div class="col-lg-1 cell cellbackgroud">授權</div>
+                                                <div class="col-lg-5 cell" style="padding: 0%;">
+                                                    <select input type="text" class=" form-select cellFrom"
+                                                        name="adminid">
+                                                        <option class="selItemOff" value="0">新增</option>
+                                                        <c:if test="${not empty admin}">
+                                                            <c:forEach varStatus="loop" begin="0"
+                                                                end="${admin.size()-1}" items="${admin}" var="s">
+                                                                <option class="selItemOff" value="${s.adminid}">
+                                                                    ${s.name}
+                                                                </option>
+                                                            </c:forEach>
+                                                        </c:if>
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-4 cell" style="padding: 0%;"><button type="submit"
+                                                        style="width: 100%;background-color: #08604f;color: white;"
+                                                        class="btn ">發送</button></div>
+                                            </div>
+                                            <br><br>
+                                        </form>
+                                    </c:if>
+                                </c:if>
+
+
+
+
+                                <c:if test="${empty authorizeBean}">
+                                    <form action="${pageContext.request.contextPath}/system/SaveBillboard" method="post"
+                                        id="myform" class="g-3 needs-validation">
+                                </c:if>
+                                <c:if test="${not empty authorizeBean}">
+                                    <form action="${pageContext.request.contextPath}/saveAuthorize/${authorizeBean.id}"
+                                        method="post" id="myform" class="g-3 needs-validation">
+                                </c:if>
+
+
+                                <div class="row">
+                                    <input type="hidden" name="authorize" value="${param.authorize}">
+                                    <input type="hidden" name="billboardid" value="${bean.billboardid}">
+                                    <input type="hidden" name="user" value="${user.name}">
                                     <div class="row">
-                                        <div class="col-lg-1 cell cellbackgroud">授權</div>
-                                        <div class="col-lg-5 cell" style="padding: 0%;">
-                                            <select input type="text" class=" form-select cellFrom" name="adminid">
-                                                <option class="selItemOff" value="0">新增</option>
-                                                <c:if test="${not empty admin}">
-                                                    <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}"
-                                                        items="${admin}" var="s">
-                                                        <option class="selItemOff" value="${s.adminid}">${s.name}
-                                                        </option>
-                                                    </c:forEach>
-                                                </c:if>
+                                        <div class="col-lg-10 cell position-relative cellbackgroud"
+                                            style="text-align: center;color:white;background-color: #569b92; font-size: 20px;">
+                                            發布公告</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-1 cell position-relative cellbackgroud">發佈者</div>
+                                        <div class="col-lg-9 cell">${bean.user}${param.authorize}</div>
+                                    </div>
+
+                                    <div class="row">
+
+                                        <div class="col-lg-1 cell position-relative cellbackgroud">主題*</div>
+                                        <div class="col-lg-9 cell" style="padding: 0%;">
+                                            <input type="text" class=" form-control cellFrom" name="theme"
+                                                value="${bean.theme}" maxlength="90" required>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-lg-1 cell position-relative cellbackgroud">內容*</div>
+                                        <div class="col-lg-9 cell " style="padding: 0%;">
+                                            <textarea class="cellFrom" name="content" style="width: 100%;" rows="10"
+                                                required id="content" maxlength="950">${bean.content} </textarea>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-lg-1 cell cellbackgroud">狀態</div>
+                                        <div class="col-lg-4 cell" style="padding: 0%;">
+                                            <select input type="text" class=" form-select cellFrom" name="state">
+                                                <option ${bean.state=="公開" ?"selected":null} class="selItemOff">公開
+                                                </option>
+                                                <option ${bean.state=="封存" ?"selected":null} class="selItemOff">封存
+                                                </option>
                                             </select>
                                         </div>
-                                        <div class="col-lg-4 cell" style="padding: 0%;"><button type="submit"
-                                                style="width: 100%;background-color: #08604f;color: white;"
-                                                class="btn ">發送</button></div>
+                                        <div class="col-lg-1 cell cellbackgroud">日期</div>
+                                        <div class="col-lg-4 cell">${bean.createtime}</div>
                                     </div>
-                                    <br><br>
+                                    <div class="row">
+                                        <div class="col-lg-1 cell cellbackgroud">群組</div>
+                                        <div class="col-lg-4 cell" style="padding: 0%;">
+                                            <select input type="text" class=" form-select cellFrom billboardGroup"
+                                                name="billtowngroup">
+                                                <option ${bean.billtowngroup=="一般公告" ?"selected":null}
+                                                    class="selItemOff" value="一般公告">一般公告</option>
+                                                <option ${bean.billtowngroup=="生產" ?"selected":null} class="selItemOff"
+                                                    value="生產">生產</option>
+                                                <option ${bean.billtowngroup=="採購" ?"selected":null} class="selItemOff"
+                                                    value="採購">採購</option>
+                                                <option ${bean.billtowngroup=="研發" ?"selected":null} class="selItemOff"
+                                                    value="研發">研發</option>
+                                                <option ${bean.billtowngroup=="業務" ?"selected":null} class="selItemOff"
+                                                    value="業務">業務</option>
+                                                <option ${bean.billtowngroup=="行銷" ?"selected":null} class="selItemOff"
+                                                    value="行銷">行銷</option>
+                                                <option ${bean.billtowngroup=="財務" ?"selected":null} class="selItemOff"
+                                                    value="財務">財務</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-1 cell cellbackgroud">子項</div>
+                                        <div class="col-lg-4 cell" style="padding: 0%;">
+                                            <select name="billboardgroupid" id="" class="form-select billtownoption">
+                                                <!--  -->
+
+                                                <!--  -->
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+
+                                        <div class="col-lg-1 cell cellbackgroud">點讚人數</div>
+                                        <div class="col-lg-9 cell"> <a
+                                                href="javascript:ReadNum()">${bean.read.size()}</a>
+                                        </div>
+
+                                    </div>
+                                    <c:if test='${user.position == "系統" || user.position == "總經理"}'>
+                                        <div class="row">
+                                            <div class="col-lg-1 cell cellbackgroud">置頂</div>
+                                            <div class="col-lg-9 cell">
+                                                <input type="radio" name="top" id="asd" value="" ${empty bean?"checked"
+                                                    :""} ${bean.top=="" ?"checked":""}> <label for="asd">一般</label>
+                                                <input type="radio" name="top" id="top" value="置頂" ${bean.top=="置頂"
+                                                    ?"checked":""}><label for="top">置頂</label>
+                                            </div>
+
+                                        </div>
+                                    </c:if>
+                                    <c:if test='${!(user.position == "系統" || user.position == "總經理")}'>
+                                        <input type="hidden" name="top" value="">
+                                    </c:if>
+
+
+
+
+                                    <c:if test="${not empty bean}">
+                                        <div class="row">
+                                            <div onclick="advice()"
+                                                class="col-lg-1 cell position-relative cellbackgroud adv">
+                                            </div>
+                                            <style>
+                                                .adv {
+                                                    height: 27px;
+                                                    background-image: url(${pageContext.request.contextPath}/img/aaa.png);
+                                                    background-repeat: no-repeat;
+                                                    background-size: contain;
+                                                    background-position: center;
+                                                    border-top: #ccc 3px solid;
+                                                    border-right: black 2px solid;
+                                                    border-bottom: #000 2px solid;
+                                                    border-left: #ccc 3px solid;
+                                                    cursor: pointer;
+                                                }
+                                            </style>
+                                            <div class="col-lg-9 cell">
+                                                <c:if test="${not empty bean.advice}">
+                                                    <c:forEach varStatus="loop" begin="0" end="${bean.advice.size()-1}"
+                                                        items="${bean.advice}" var="ad">
+                                                        ${ad.formname} &nbsp;&nbsp;&nbsp;
+
+                                                    </c:forEach>
+                                                </c:if>
+                                            </div>
+                                        </div>
+                                    </c:if>
+
+
+                                    <c:if test="${bean.user == user.name  || empty bean}">
+                                        <div class="row">
+                                            <div class="col-lg-10" style="padding: 0%;">
+                                                <button type="submit"
+                                                    style="width: 100%;background-color: #08604f;color: white;"
+                                                    class="btn ">儲存</button>
+                                            </div>
+                                        </div>
+                                    </c:if>
+                                </div>
                                 </form>
-                            </c:if>
-                        </c:if>
+                                <br><br>
 
 
 
-
-                        <c:if test="${empty authorizeBean}">
-                            <form action="${pageContext.request.contextPath}/system/SaveBillboard" method="post"
-                                id="myform" class="g-3 needs-validation">
-                        </c:if>
-                        <c:if test="${not empty authorizeBean}">
-                            <form action="${pageContext.request.contextPath}/saveAuthorize/${authorizeBean.id}"
-                                method="post" id="myform" class="g-3 needs-validation">
-                        </c:if>
-
-
-                        <div class="row">
-                            <input type="hidden" name="authorize" value="${param.authorize}">
-                            <input type="hidden" name="billboardid" value="${bean.billboardid}">
-                            <input type="hidden" name="user" value="${user.name}">
-                            <div class="row">
-                                <div class="col-lg-10 cell position-relative cellbackgroud"
-                                    style="text-align: center;color:white;background-color: #569b92; font-size: 20px;">
-                                    發布公告</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-1 cell position-relative cellbackgroud">發佈者</div>
-                                <div class="col-lg-9 cell">${bean.user}${param.authorize}</div>
+                                <!-- 回覆內容 -->
+                                <c:if test="${not empty bean.reply}">
+                                    <c:forEach varStatus="loop" begin="0" end="${bean.reply.size()-1}"
+                                        items="${bean.reply}" var="s">
+                                        <div class="row" style="line-height: 2rem;">
+                                            <div class="col-md-1 cell cellbackgroud">${s.name}</div>
+                                            <div class="col-md-9 cell" style="position: relative;word-wrap:break-word;">
+                                                ${s.content} <span
+                                                    style="position: absolute;right: 0%;">${s.createtime}</span>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+                                </c:if>
+                                <br><br><br><br><br>
                             </div>
 
-                            <div class="row">
 
-                                <div class="col-lg-1 cell position-relative cellbackgroud">主題*</div>
-                                <div class="col-lg-9 cell" style="padding: 0%;">
-                                    <input type="text" class=" form-control cellFrom" name="theme" value="${bean.theme}"
-                                        maxlength="90" required>
-                                </div>
+                            <div class="col-md-3">
+                                <c:if test="${not empty bean}">
+                                    <br><br><br><br><br>
 
-                            </div>
-                            <div class="row">
-
-                                <div class="col-lg-1 cell position-relative cellbackgroud">內容*</div>
-                                <div class="col-lg-9 cell " style="padding: 0%;">
-                                    <textarea class="cellFrom" name="content" style="width: 100%;" rows="10" required id="content"
-                                        maxlength="950">${bean.content} </textarea>
-                                </div>
-
-                            </div>
-                            <div class="row">
-
-                                <div class="col-lg-1 cell cellbackgroud">狀態</div>
-                                <div class="col-lg-4 cell" style="padding: 0%;">
-                                    <select input type="text" class=" form-select cellFrom" name="state">
-                                        <option ${bean.state=="公開" ?"selected":null} class="selItemOff">公開</option>
-                                        <option ${bean.state=="封存" ?"selected":null} class="selItemOff">封存</option>
-                                    </select>
-                                </div>
-                                <div class="col-lg-1 cell cellbackgroud">日期</div>
-                                <div class="col-lg-4 cell">${bean.createtime}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-1 cell cellbackgroud">群組</div>
-                                <div class="col-lg-4 cell" style="padding: 0%;">
-                                    <select input type="text" class=" form-select cellFrom billboardGroup"
-                                        name="billtowngroup">
-                                        <option ${bean.billtowngroup=="一般公告" ?"selected":null} class="selItemOff"
-                                            value="一般公告">一般公告</option>
-                                        <option ${bean.billtowngroup=="生產" ?"selected":null} class="selItemOff"
-                                            value="生產">生產</option>
-                                        <option ${bean.billtowngroup=="採購" ?"selected":null} class="selItemOff"
-                                            value="採購">採購</option>
-                                        <option ${bean.billtowngroup=="研發" ?"selected":null} class="selItemOff"
-                                            value="研發">研發</option>
-                                        <option ${bean.billtowngroup=="業務" ?"selected":null} class="selItemOff"
-                                            value="業務">業務</option>
-                                        <option ${bean.billtowngroup=="行銷" ?"selected":null} class="selItemOff"
-                                            value="行銷">行銷</option>
-                                        <option ${bean.billtowngroup=="財務" ?"selected":null} class="selItemOff"
-                                            value="財務">財務</option>
-                                    </select>
-                                </div>
-                                <div class="col-lg-1 cell cellbackgroud">子項</div>
-                                <div class="col-lg-4 cell" style="padding: 0%;">
-                                    <select name="billboardgroupid" id="" class="form-select billtownoption">
-                                        <!--  -->
-
-                                        <!--  -->
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="row">
-
-                                <div class="col-lg-1 cell cellbackgroud">點讚人數</div>
-                                <div class="col-lg-9 cell"> <a href="javascript:ReadNum()">${bean.read.size()}</a>
-                                </div>
-
-                            </div>
-                            <c:if test='${user.position == "系統" || user.position == "總經理"}'>
-                                <div class="row">
-                                    <div class="col-lg-1 cell cellbackgroud">置頂</div>
-                                    <div class="col-lg-9 cell">
-                                        <input type="radio" name="top" id="asd" value="" ${empty bean?"checked" :""}
-                                            ${bean.top=="" ?"checked":""}> <label for="asd">一般</label>
-                                        <input type="radio" name="top" id="top" value="置頂" ${bean.top=="置頂"
-                                            ?"checked":""}><label for="top">置頂</label>
+                                    <br>
+                                    <!-- 附件 -->
+                                    <c:if test="${not empty bean.file}">
+                                        <div class="row">
+                                            <div class="col-lg-12 cell"
+                                                style="background-color : #569b92 ;text-align: center;">
+                                                附件</div>
+                                        </div>
+                                        <c:forEach varStatus="loop" begin="0" end="${bean.file.size()-1}"
+                                            items="${bean.file}" var="s">
+                                            <c:set var="url" value="${pageContext.request.contextPath}/file/${s.url}">
+                                            </c:set>
+                                            <div class="row" draggable="true"
+                                                ondragstart="event.dataTransfer.setData('text/plain', '<img width=100% src=${url} onerror=errorOne()>')">
+                                                <div class="col-md-2 cell position-relative cellbackgroud">附件</div>
+                                                <div class="col-lg-8 cell" style="word-wrap: break-word;"><a
+                                                        href="${pageContext.request.contextPath}/file/${s.url}"
+                                                        target="_blank">${s.name} </a>
+                                                </div>
+                                                <div class="col-md-2 cell position-relative ">
+                                                    <a
+                                                        href="${pageContext.request.contextPath}/system/remove/${s.fileid}/${bean.billboardid}">remove</a>
+                                                </div>
+                                            </div>
+                                        </c:forEach>
+                                    </c:if>
+                                    <img src="" alt="">
+                                    <!-- 上傳 -->
+                                    <div class="row">
+                                        <form class="row uppdf" action="" method="post" enctype='multipart/form-data'>
+                                            <input type="file" name="file1" onchange="upfile(0);" class="fileInput"
+                                                value="" />
+                                        </form>
                                     </div>
-
-                                </div>
-                            </c:if>
-                            <c:if test='${!(user.position == "系統" || user.position == "總經理")}'>
-                                <input type="hidden" name="top" value="">
-                            </c:if>
-
+                                    <!-- @表單 -->
+                                    <c:if test="${not empty admin}">
+                                        <form
+                                            action="${pageContext.request.contextPath}/system/advice/${user.adminid}/${bean.billboardid}"
+                                            method="post">
 
 
-
-                            <c:if test="${not empty bean}">
-                                <div class="row">
-                                    <div onclick="advice()" class="col-lg-1 cell position-relative cellbackgroud adv">
-                                    </div>
-                                    <style>
-                                        .adv {
-                                            height: 27px;
-                                            background-image: url(${pageContext.request.contextPath}/img/aaa.png);
-                                            background-repeat: no-repeat;
-                                            background-size: contain;
-                                            background-position: center;
-                                            border-top: #ccc 3px solid;
-                                            border-right: black 2px solid;
-                                            border-bottom: #000 2px solid;
-                                            border-left: #ccc 3px solid;
-                                            cursor: pointer;
-                                        }
-                                    </style>
-                                    <div class="col-lg-9 cell">
-                                        <c:if test="${not empty bean.advice}">
-                                            <c:forEach varStatus="loop" begin="0" end="${bean.advice.size()-1}"
-                                                items="${bean.advice}" var="ad">
-                                                ${ad.formname} &nbsp;&nbsp;&nbsp;
-
-                                            </c:forEach>
-                                        </c:if>
-                                    </div>
-                                </div>
-                            </c:if>
+                                            <div class="row advice" style="border: #08604f 1px solid;">
+                                                <div class="col-lg-12" style="background-color: #569b92;"><input
+                                                        type="checkbox" id="all">全部: </div>
+                                                <div class="col-lg-12" style="background-color: #569b92;"><input
+                                                        type="checkbox" id="group1">生產: </div>
 
 
-                            <c:if test="${bean.user == user.name  || empty bean}">
-                                <div class="row">
-                                    <div class="col-lg-10" style="padding: 0%;">
-                                        <button type="submit"
-                                            style="width: 100%;background-color: #08604f;color: white;"
-                                            class="btn ">儲存</button>
-                                    </div>
-                                </div>
-                            </c:if>
+                                                <!-- admin 迴圈 -->
+                                                <c:forEach varStatus="loop" begin="0" end="${admin.size()}"
+                                                    items="${admin}" var="s">
+                                                    <c:if test="${s.department == '生產'}">
+                                                        <div class="col-lg-4">
+                                                            <input type="checkbox" name="adviceto" id="${s.name}"
+                                                                class="group1" value="${s.adminid}"><label
+                                                                for="${s.name}">${s.name}
+                                                            </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                                        </div>
+                                                    </c:if>
+                                                </c:forEach><br>
+
+                                                <div class="col-lg-12" style="background-color: #569b92;"><input
+                                                        type="checkbox" id="group2">採購:</div>
+                                                <c:forEach varStatus="loop" begin="0" end="${admin.size()}"
+                                                    items="${admin}" var="s">
+                                                    <c:if test="${s.department == '採購'}">
+                                                        <div class="col-lg-4">
+                                                            <input type="checkbox" name="adviceto" id="${s.name}"
+                                                                class="group2" value="${s.adminid}"><label
+                                                                for="${s.name}">${s.name}
+                                                            </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                                        </div>
+                                                    </c:if>
+                                                </c:forEach><br>
+                                                <div class="col-lg-12" style="background-color: #569b92;">國貿:</div>
+                                                <c:forEach varStatus="loop" begin="0" end="${admin.size()}"
+                                                    items="${admin}" var="s">
+                                                    <c:if test="${s.department == '國貿'}">
+                                                        <div class="col-lg-4">
+                                                            <input type="checkbox" name="adviceto" id="${s.name}"
+                                                                class="group2" value="${s.adminid}"><label
+                                                                for="${s.name}">${s.name}
+                                                            </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                                        </div>
+                                                    </c:if>
+                                                </c:forEach><br>
+                                                <div class="col-lg-12" style="background-color: #569b92;"><input
+                                                        type="checkbox" id="group3">研發:</div>
+                                                <c:forEach varStatus="loop" begin="0" end="${admin.size()}"
+                                                    items="${admin}" var="s">
+                                                    <c:if test="${s.department == '研發'}">
+                                                        <div class="col-lg-4">
+                                                            <input type="checkbox" name="adviceto" id="${s.name}"
+                                                                class="group3" value="${s.adminid}"><label
+                                                                for="${s.name}">${s.name}
+                                                            </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                                        </div>
+                                                    </c:if>
+                                                </c:forEach><br>
+                                                <div class="col-lg-12" style="background-color: #569b92;"><input
+                                                        type="checkbox" id="group4">業務:</div>
+                                                <c:forEach varStatus="loop" begin="0" end="${admin.size()}"
+                                                    items="${admin}" var="s">
+                                                    <c:if test="${s.department == '業務'}">
+                                                        <div class="col-lg-4">
+                                                            <input type="checkbox" name="adviceto" id="${s.name}"
+                                                                class="group4" value="${s.adminid}"><label
+                                                                for="${s.name}">${s.name}
+                                                            </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                                        </div>
+                                                    </c:if>
+                                                </c:forEach><br>
+                                                <div class="col-lg-12" style="background-color: #569b92;"><input
+                                                        type="checkbox" id="group5">行銷:</div>
+                                                <c:forEach varStatus="loop" begin="0" end="${admin.size()}"
+                                                    items="${admin}" var="s">
+                                                    <c:if test="${s.department == '行銷'}">
+                                                        <div class="col-lg-4">
+                                                            <input type="checkbox" name="adviceto" id="${s.name}"
+                                                                class="group5" value="${s.adminid}"><label
+                                                                for="${s.name}">${s.name}
+                                                            </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                                        </div>
+                                                    </c:if>
+
+                                                </c:forEach><br>
+                                                <div class="col-lg-12" style="background-color: #569b92;"><input
+                                                        type="checkbox" id="group6">財務:</div>
+                                                <c:forEach varStatus="loop" begin="0" end="${admin.size()}"
+                                                    items="${admin}" var="s">
+                                                    <c:if test="${s.department == '財務'}">
+                                                        <div class="col-lg-4">
+                                                            <input type="checkbox" name="adviceto" id="${s.name}"
+                                                                class="group6" value="${s.adminid}"><label
+                                                                for="${s.name}">${s.name}
+                                                            </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                                        </div>
+                                                    </c:if>
+                                                </c:forEach><br>
+                                                <div class="col-lg-12" style="background-color: #569b92;"><input
+                                                        type="checkbox" id="group7">IT:</div>
+                                                <c:forEach varStatus="loop" begin="0" end="${admin.size()}"
+                                                    items="${admin}" var="s">
+                                                    <c:if test="${s.department == 'IT'}">
+                                                        <div class="col-lg-4">
+                                                            <input type="checkbox" name="adviceto" id="${s.name}"
+                                                                class="group7" value="${s.adminid}"><label
+                                                                for="${s.name}">${s.name}
+                                                            </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                                        </div>
+                                                    </c:if>
+                                                </c:forEach><br>
+                                                <div class="col-lg-12" style="background-color: #569b92;"><input
+                                                        type="checkbox" id="group8">總經理:</div>
+                                                <c:forEach varStatus="loop" begin="0" end="${admin.size()}"
+                                                    items="${admin}" var="s">
+                                                    <c:if test="${s.department == '總經理'}">
+                                                        <div class="col-lg-4">
+                                                            <input type="checkbox" name="adviceto" id="${s.name}"
+                                                                class="group8" value="${s.adminid}"><label
+                                                                for="${s.name}">${s.name}
+                                                            </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                                        </div>
+                                                    </c:if>
+                                                </c:forEach><br>
+
+                                                <button type="submit">標記</button>
+                                            </div>
+
+                                            <input type="hidden" name="adviceto" value="0">
+                                        </form>
+                                        <script>
+
+                                            var $all = $("input[name='adviceto']");
+                                            var $group1 = $(".group1");
+                                            var $group2 = $(".group2");
+                                            var $group3 = $(".group3");
+                                            var $group4 = $(".group4");
+                                            var $group5 = $(".group5");
+                                            var $group6 = $(".group6");
+                                            var $group7 = $(".group7");
+                                            var $group8 = $(".group8");
+                                            // 勾選單項
+                                            $("input[name='adviceto']").change(function () {
+                                                var $aa = $("input[name='adviceto']:checked");
+                                                $("#all").prop("checked", $aa.length == $all.length);
+                                            });
+                                            $(".group1").change(function () {
+                                                var $zx = $(".group1:checked");
+                                                $("#group1").prop("checked", $zx.length == $group1.length);
+                                            });
+                                            $(".group2").change(function () {
+                                                var $zx = $(".group2:checked");
+                                                $("#group2").prop("checked", $zx.length == $group2.length);
+                                            });
+                                            $(".group3").change(function () {
+                                                var $zx = $(".group3:checked");
+                                                $("#group3").prop("checked", $zx.length == $group3.length);
+                                            });
+                                            $(".group4").change(function () {
+                                                var $zx = $(".group4:checked");
+                                                $("#group4").prop("checked", $zx.length == $group4.length);
+                                            });
+                                            $(".group5").change(function () {
+                                                var $zx = $(".group5:checked");
+                                                $("#group5").prop("checked", $zx.length == $group5.length);
+                                            });
+                                            $(".group6").change(function () {
+                                                var $zx = $(".group6:checked");
+                                                $("#group6").prop("checked", $zx.length == $group6.length);
+                                            });
+                                            $(".group7").change(function () {
+                                                var $zx = $(".group7:checked");
+                                                $("#group7").prop("checked", $zx.length == $group7.length);
+                                            });
+                                            $(".group8").change(function () {
+                                                var $zx = $(".group8:checked");
+                                                $("#group8").prop("checked", $zx.length == $group8.length);
+                                            });
+                                            // 勾選全部
+                                            $("#all").change(function () {
+                                                $("input[type='checkbox']").prop("checked", this.checked);
+                                            });
+                                            $("#group1").change(function () {
+                                                $group1.prop("checked", this.checked);
+                                                var $aa = $("input[name='adviceto']:checked");
+                                                $("#all").prop("checked", $aa.length == $all.length);
+                                            });
+                                            $("#group2").change(function () {
+                                                $group2.prop("checked", this.checked);
+                                                var $aa = $("input[name='adviceto']:checked");
+                                                $("#all").prop("checked", $aa.length == $all.length);
+                                            });
+                                            $("#group3").change(function () {
+                                                $group3.prop("checked", this.checked);
+                                                var $aa = $("input[name='adviceto']:checked");
+                                                $("#all").prop("checked", $aa.length == $all.length);
+                                            });
+                                            $("#group4").change(function () {
+                                                $group4.prop("checked", this.checked);
+                                                var $aa = $("input[name='adviceto']:checked");
+                                                $("#all").prop("checked", $aa.length == $all.length);
+                                            });
+                                            $("#group5").change(function () {
+                                                $group5.prop("checked", this.checked);
+                                                var $aa = $("input[name='adviceto']:checked");
+                                                $("#all").prop("checked", $aa.length == $all.length);
+                                            });
+                                            $("#group6").change(function () {
+                                                $group6.prop("checked", this.checked);
+                                                var $aa = $("input[name='adviceto']:checked");
+                                                $("#all").prop("checked", $aa.length == $all.length);
+                                            });
+                                            $("#group7").change(function () {
+                                                $group7.prop("checked", this.checked);
+                                                var $aa = $("input[name='adviceto']:checked");
+                                                $("#all").prop("checked", $aa.length == $all.length);
+                                            });
+                                            $("#group8").change(function () {
+                                                $group8.prop("checked", this.checked);
+                                                var $aa = $("input[name='adviceto']:checked");
+                                                $("#all").prop("checked", $aa.length == $all.length);
+                                            });
+                                        </script>
+                                    </c:if>
+                                    <!-- @表單 /////////////////////////////////////////////////////////////////-->
+                                </c:if>
+                            </div>
+
                         </div>
-                        </form>
-                        <br><br>
-
-
-
-                        <!-- 回覆內容 -->
-                        <c:if test="${not empty bean.reply}">
-                            <c:forEach varStatus="loop" begin="0" end="${bean.reply.size()-1}" items="${bean.reply}"
-                                var="s">
-                                <div class="row" style="line-height: 2rem;">
-                                    <div class="col-md-1 cell cellbackgroud">${s.name}</div>
-                                    <div class="col-md-9 cell" style="position: relative;word-wrap:break-word;">
-                                        ${s.content} <span style="position: absolute;right: 0%;">${s.createtime}</span>
-                                    </div>
-                                </div>
-                            </c:forEach>
-                        </c:if>
-                        <br><br><br><br><br>
                     </div>
-
-
-                    <div class="col-md-3">
-                        <c:if test="${not empty bean}">
-                            <br><br><br><br><br>
-
-                            <br>
-                            <!-- 附件 -->
-                            <c:if test="${not empty bean.file}">
-                                <div class="row">
-                                    <div class="col-lg-12 cell" style="background-color : #569b92 ;text-align: center;">
-                                        附件</div>
-                                </div>
-                                <c:forEach varStatus="loop" begin="0" end="${bean.file.size()-1}" items="${bean.file}"
-                                    var="s">
-                                    <c:set var="url" value="${pageContext.request.contextPath}/file/${s.url}"></c:set>
-                                    <div class="row" draggable="true"
-                                        ondragstart="event.dataTransfer.setData('text/plain', '<img width=100% src=${url} onerror=errorOne()>')">
-                                        <div class="col-md-2 cell position-relative cellbackgroud">附件</div>
-                                        <div class="col-lg-8 cell" style="word-wrap: break-word;"><a
-                                                href="${pageContext.request.contextPath}/file/${s.url}"
-                                                target="_blank">${s.name} </a>
-                                        </div>
-                                        <div class="col-md-2 cell position-relative ">
-                                            <a
-                                                href="${pageContext.request.contextPath}/system/remove/${s.fileid}/${bean.billboardid}">remove</a>
-                                        </div>
-                                    </div>
-                                </c:forEach>
-                            </c:if>
-                            <img src="" alt="">
-                            <!-- 上傳 -->
-                            <div class="row">
-                                <form class="row uppdf" action="" method="post" enctype='multipart/form-data'>
-                                    <input type="file" name="file1" onchange="upfile(0);" class="fileInput" value="" />
-                                </form>
-                            </div>
-                            <!-- @表單 -->
-                            <c:if test="${not empty admin}">
-                                <form
-                                    action="${pageContext.request.contextPath}/system/advice/${user.adminid}/${bean.billboardid}"
-                                    method="post">
-
-
-                                    <div class="row advice" style="border: #08604f 1px solid;">
-                                        <div class="col-lg-12" style="background-color: #569b92;"><input type="checkbox"
-                                                id="all">全部: </div>
-                                        <div class="col-lg-12" style="background-color: #569b92;"><input type="checkbox"
-                                                id="group1">生產: </div>
-
-
-                                        <!-- admin 迴圈 -->
-                                        <c:forEach varStatus="loop" begin="0" end="${admin.size()}" items="${admin}"
-                                            var="s">
-                                            <c:if test="${s.department == '生產'}">
-                                                <div class="col-lg-4">
-                                                    <input type="checkbox" name="adviceto" id="${s.name}" class="group1"
-                                                        value="${s.adminid}"><label for="${s.name}">${s.name}
-                                                    </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-                                                </div>
-                                            </c:if>
-                                        </c:forEach><br>
-
-                                        <div class="col-lg-12" style="background-color: #569b92;"><input type="checkbox"
-                                                id="group2">採購:</div>
-                                        <c:forEach varStatus="loop" begin="0" end="${admin.size()}" items="${admin}"
-                                            var="s">
-                                            <c:if test="${s.department == '採購'}">
-                                                <div class="col-lg-4">
-                                                    <input type="checkbox" name="adviceto" id="${s.name}" class="group2"
-                                                        value="${s.adminid}"><label for="${s.name}">${s.name}
-                                                    </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-                                                </div>
-                                            </c:if>
-                                        </c:forEach><br>
-                                        <div class="col-lg-12" style="background-color: #569b92;"><input type="checkbox"
-                                                id="group3">研發:</div>
-                                        <c:forEach varStatus="loop" begin="0" end="${admin.size()}" items="${admin}"
-                                            var="s">
-                                            <c:if test="${s.department == '研發'}">
-                                                <div class="col-lg-4">
-                                                    <input type="checkbox" name="adviceto" id="${s.name}" class="group3"
-                                                        value="${s.adminid}"><label for="${s.name}">${s.name}
-                                                    </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-                                                </div>
-                                            </c:if>
-                                        </c:forEach><br>
-                                        <div class="col-lg-12" style="background-color: #569b92;"><input type="checkbox"
-                                                id="group4">業務:</div>
-                                        <c:forEach varStatus="loop" begin="0" end="${admin.size()}" items="${admin}"
-                                            var="s">
-                                            <c:if test="${s.department == '業務'}">
-                                                <div class="col-lg-4">
-                                                    <input type="checkbox" name="adviceto" id="${s.name}" class="group4"
-                                                        value="${s.adminid}"><label for="${s.name}">${s.name}
-                                                    </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-                                                </div>
-                                            </c:if>
-                                        </c:forEach><br>
-                                        <div class="col-lg-12" style="background-color: #569b92;"><input type="checkbox"
-                                                id="group5">行銷:</div>
-                                        <c:forEach varStatus="loop" begin="0" end="${admin.size()}" items="${admin}"
-                                            var="s">
-                                            <c:if test="${s.department == '行銷'}">
-                                                <div class="col-lg-4">
-                                                    <input type="checkbox" name="adviceto" id="${s.name}" class="group5"
-                                                        value="${s.adminid}"><label for="${s.name}">${s.name}
-                                                    </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-                                                </div>
-                                            </c:if>
-
-                                        </c:forEach><br>
-                                        <div class="col-lg-12" style="background-color: #569b92;"><input type="checkbox"
-                                                id="group6">財務:</div>
-                                        <c:forEach varStatus="loop" begin="0" end="${admin.size()}" items="${admin}"
-                                            var="s">
-                                            <c:if test="${s.department == '財務'}">
-                                                <div class="col-lg-4">
-                                                    <input type="checkbox" name="adviceto" id="${s.name}" class="group6"
-                                                        value="${s.adminid}"><label for="${s.name}">${s.name}
-                                                    </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-                                                </div>
-                                            </c:if>
-                                        </c:forEach><br>
-                                        <div class="col-lg-12" style="background-color: #569b92;"><input type="checkbox"
-                                                id="group7">IT:</div>
-                                        <c:forEach varStatus="loop" begin="0" end="${admin.size()}" items="${admin}"
-                                            var="s">
-                                            <c:if test="${s.department == 'IT'}">
-                                                <div class="col-lg-4">
-                                                    <input type="checkbox" name="adviceto" id="${s.name}" class="group7"
-                                                        value="${s.adminid}"><label for="${s.name}">${s.name}
-                                                    </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-                                                </div>
-                                            </c:if>
-                                        </c:forEach><br>
-                                        <div class="col-lg-12" style="background-color: #569b92;"><input type="checkbox"
-                                                id="group8">總經理:</div>
-                                        <c:forEach varStatus="loop" begin="0" end="${admin.size()}" items="${admin}"
-                                            var="s">
-                                            <c:if test="${s.department == '總經理'}">
-                                                <div class="col-lg-4">
-                                                    <input type="checkbox" name="adviceto" id="${s.name}" class="group8"
-                                                        value="${s.adminid}"><label for="${s.name}">${s.name}
-                                                    </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-                                                </div>
-                                            </c:if>
-                                        </c:forEach><br>
-
-                                        <button type="submit">標記</button>
-                                    </div>
-
-                                    <input type="hidden" name="adviceto" value="0">
-                                </form>
-                                <script>
-
-                                    var $all = $("input[name='adviceto']");
-                                    var $group1 = $(".group1");
-                                    var $group2 = $(".group2");
-                                    var $group3 = $(".group3");
-                                    var $group4 = $(".group4");
-                                    var $group5 = $(".group5");
-                                    var $group6 = $(".group6");
-                                    var $group7 = $(".group7");
-                                    var $group8 = $(".group8");
-                                    // 勾選單項
-                                    $("input[name='adviceto']").change(function () {
-                                        var $aa = $("input[name='adviceto']:checked");
-                                        $("#all").prop("checked", $aa.length == $all.length);
-                                    });
-                                    $(".group1").change(function () {
-                                        var $zx = $(".group1:checked");
-                                        $("#group1").prop("checked", $zx.length == $group1.length);
-                                    });
-                                    $(".group2").change(function () {
-                                        var $zx = $(".group2:checked");
-                                        $("#group2").prop("checked", $zx.length == $group2.length);
-                                    });
-                                    $(".group3").change(function () {
-                                        var $zx = $(".group3:checked");
-                                        $("#group3").prop("checked", $zx.length == $group3.length);
-                                    });
-                                    $(".group4").change(function () {
-                                        var $zx = $(".group4:checked");
-                                        $("#group4").prop("checked", $zx.length == $group4.length);
-                                    });
-                                    $(".group5").change(function () {
-                                        var $zx = $(".group5:checked");
-                                        $("#group5").prop("checked", $zx.length == $group5.length);
-                                    });
-                                    $(".group6").change(function () {
-                                        var $zx = $(".group6:checked");
-                                        $("#group6").prop("checked", $zx.length == $group6.length);
-                                    });
-                                    $(".group7").change(function () {
-                                        var $zx = $(".group7:checked");
-                                        $("#group7").prop("checked", $zx.length == $group7.length);
-                                    });
-                                    $(".group8").change(function () {
-                                        var $zx = $(".group8:checked");
-                                        $("#group8").prop("checked", $zx.length == $group8.length);
-                                    });
-                                    // 勾選全部
-                                    $("#all").change(function () {
-                                        $("input[type='checkbox']").prop("checked", this.checked);
-                                    });
-                                    $("#group1").change(function () {
-                                        $group1.prop("checked", this.checked);
-                                        var $aa = $("input[name='adviceto']:checked");
-                                        $("#all").prop("checked", $aa.length == $all.length);
-                                    });
-                                    $("#group2").change(function () {
-                                        $group2.prop("checked", this.checked);
-                                        var $aa = $("input[name='adviceto']:checked");
-                                        $("#all").prop("checked", $aa.length == $all.length);
-                                    });
-                                    $("#group3").change(function () {
-                                        $group3.prop("checked", this.checked);
-                                        var $aa = $("input[name='adviceto']:checked");
-                                        $("#all").prop("checked", $aa.length == $all.length);
-                                    });
-                                    $("#group4").change(function () {
-                                        $group4.prop("checked", this.checked);
-                                        var $aa = $("input[name='adviceto']:checked");
-                                        $("#all").prop("checked", $aa.length == $all.length);
-                                    });
-                                    $("#group5").change(function () {
-                                        $group5.prop("checked", this.checked);
-                                        var $aa = $("input[name='adviceto']:checked");
-                                        $("#all").prop("checked", $aa.length == $all.length);
-                                    });
-                                    $("#group6").change(function () {
-                                        $group6.prop("checked", this.checked);
-                                        var $aa = $("input[name='adviceto']:checked");
-                                        $("#all").prop("checked", $aa.length == $all.length);
-                                    });
-                                    $("#group7").change(function () {
-                                        $group7.prop("checked", this.checked);
-                                        var $aa = $("input[name='adviceto']:checked");
-                                        $("#all").prop("checked", $aa.length == $all.length);
-                                    });
-                                    $("#group8").change(function () {
-                                        $group8.prop("checked", this.checked);
-                                        var $aa = $("input[name='adviceto']:checked");
-                                        $("#all").prop("checked", $aa.length == $all.length);
-                                    });
-                                </script>
-                            </c:if>
-                             <!-- @表單 /////////////////////////////////////////////////////////////////-->
-                        </c:if>
-                    </div>
-
                 </div>
-            </div></div></div>
+            </div>
         </body>
         <!-- @ java 轉資料給javaScript -->
         <c:forEach varStatus="loop" begin="0" end="${bean.advice.size()}" items="${bean.advice}" var="ad">
             <script>
-                var a = "${ad.formname}"                
+                var a = "${ad.formname}"
                 $("#${ad.formname}").prop("checked", true);
             </script>
         </c:forEach>

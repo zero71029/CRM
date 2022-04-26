@@ -491,6 +491,21 @@
                                                     </c:if>
                                                 </c:forEach><br>
                                             </div>
+                                            <div class="col-lg-12" style="background-color: #569b92;">國貿:</div>
+                                            <div class="row">
+                                                <c:forEach varStatus="loop" begin="0" end="${admin.size()}"
+                                                    items="${admin}" var="s">
+                                                    <c:if test="${s.department == '國貿'}">
+                                                        <div class="col-lg-4">
+                                                            <input type="checkbox" name="adviceto" id="${s.name}"
+                                                                class="group2" value="${s.adminid}"><label
+                                                                for="${s.name}">${s.name}
+                                                            </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                                                        </div>
+                                                    </c:if>
+                                                </c:forEach><br>
+                                            </div>
                                             <div class="col-lg-12" style="background-color: #569b92;"><input
                                                     type="checkbox" id="group3">研發:</div>
                                             <div class="row">

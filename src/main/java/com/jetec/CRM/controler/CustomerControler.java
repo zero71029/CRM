@@ -23,7 +23,7 @@ import com.jetec.CRM.model.WorkBean;
 
 @Controller
 @RequestMapping("/CRM")
-@PreAuthorize("hasAuthority('系統') OR hasAuthority('主管') OR hasAuthority('業務')")
+@PreAuthorize("hasAuthority('系統') OR hasAuthority('主管') OR hasAuthority('業務')OR hasAuthority('國貿')")
 public class CustomerControler {
     @Autowired
     ClientService cs;

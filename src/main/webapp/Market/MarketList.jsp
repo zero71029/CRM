@@ -9,6 +9,7 @@
     <title>CRM</title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}\icons\bootstrap-icons.css">
 
     <!-- <%-- 主要的CSS、JS放在這裡--%> -->
     <!-- <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css"> -->
@@ -42,23 +43,24 @@
                 <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                     <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off"
                            onclick="javascript: window.open('${pageContext.request.contextPath}/Market/Market.jsp')">
-                    <label class="btn btn-outline-primary state1" for="btncheck1">新增</label>
+                    <label class="btn btn-outline-primary state1" for="btncheck1"><i
+                        class="bi bi-clipboard-check"></i>新增</label>
 
 
                     <c:if test="${user.position == '主管' || user.position == '系統'}">
                         <label class="btn btn-outline-primary state2"
-                               onclick="sta()">刪除</label>
+                               onclick="sta()"><i class="bi bi-trash"></i>刪除</label>
                     </c:if>
 
                     <input type="checkbox" class="btn-check" id="btncheck3" v-model="btncheck3">
                     <label class="btn btn-outline-primary" for="btncheck3"
-                           @click="aadmin(admin)">{{admin}}</label>
+                           @click="aadmin(admin)"><i  class="bi bi-person-square"></i>{{admin}}</label>
 
 
                     <label class="btn btn-outline-primary" data-bs-toggle="offcanvas"
-                           data-bs-target="#offcanvasRight" id="search">搜索</label>
+                           data-bs-target="#offcanvasRight" id="search"><i class="bi-search"></i>搜索</label>
                     <label class="btn btn-outline-primary" data-bs-toggle="offcanvas"
-                           data-bs-target="#StateSetSlider" id="StateSet">狀態設定</label>
+                           data-bs-target="#StateSetSlider" id="StateSet"><i class="bi bi-wrench"></i>狀態設定</label>
                 </div>
             </div>
             <!-- <%-- 中間主體--%> -->

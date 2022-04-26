@@ -161,6 +161,8 @@
                                             財務</option>
                                         <option ${bean.department=="IT" ?"selected":null} class="selItemOff" value="IT">
                                             IT</option>
+                                        <option ${bean.department=="國貿" ?"selected":null} class="selItemOff" value="國貿">
+                                            國貿</option>
                                         <option ${bean.department=="總經理" ?"selected":null} class="selItemOff"
                                             value="總經理">總經理</option>
                                     </select>
