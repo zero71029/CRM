@@ -40,8 +40,10 @@ public class MarketService {
         String uuid = zTools.getUUID();
 
 
-//        if (!mr.existsByFileforeignid(marketBean.getFileforeignid())){
-//        }
+        //如果沒有customerid
+        if (marketBean.getCustomerid() == null || marketBean.getCustomerid().isEmpty() || marketBean.getCustomerid().equals("")) {
+            marketBean.setCustomerid(uuid);
+        }
 
 
         //如果沒有Fileforeignid

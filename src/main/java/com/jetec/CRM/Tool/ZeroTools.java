@@ -269,7 +269,7 @@ public class ZeroTools {
      *
      * @return String UUID
      */
-    public String getUUID() {
+    public static String  getUUID() {
         String s = UUID.randomUUID().toString();
         // 去掉“-”符號
         return s.substring(0, 8) + s.substring(9, 13) + s.substring(14, 18) + s.substring(19, 23) + s.substring(24);
@@ -277,7 +277,7 @@ public class ZeroTools {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //時間格式畫
-    public String getTime(Date date) {
+    public static String getTime(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         return sdf.format(date);
     }

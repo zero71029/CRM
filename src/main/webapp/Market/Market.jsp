@@ -184,7 +184,7 @@
                                         <el-button type="text" icon="el-icon-search" @click="openClient"
                                                    style="float:right"></el-button>
                                     </div>
-                                    <div class="col-md-6 FormPadding" style="background-color: #EEE;">
+                                    <div class="col-md-6 FormPadding  clientDiv" style="background-color: #EEE;">
                                         <a href="#" @click.stop.prevent="goClient">{{bean.client}}</a>
                                         <input type="hidden" class="form-control cellzFrom client"
                                                v-model.trim="bean.client" name="client" maxlength="100"
@@ -1722,37 +1722,52 @@
                 if (this.bean.name == null || this.bean.name == "") {
                     $("input[name='name']").css("border", "red 1px solid");
                     isok = false;
+                }else{
+                    $("input[name='name']").css("border", "black 1px solid");
                 }
                 if (this.bean.client == null || this.bean.client == "") {
-                    $("input[name='client']").css("border", "red 1px solid");
+                    $(".clientDiv").css("border", "red 1px solid");
                     isok = false;
+                }else{
+                    $(".clientDiv").css("border", "black 1px solid");
                 }
 
                 if (this.bean.contactname == null || this.bean.contactname == "") {
                     $("input[name='contactname']").css("border", "red 1px solid");
                     isok = false;
+                }else{
+                    $("input[name='contactname']").css("border", "black 1px solid");
                 }
                 if (this.bean.producttype == null || this.bean.producttype == "") {
                     $("select[name='producttype']").css("border", "red 1px solid");
                     isok = false;
+                }else{
+                    $("select[name='producttype']").css("border", "black 1px solid");
                 }
 
 
                 if (this.bean.message == null || this.bean.message == "") {
                     $("#message").css("border", "red 1px solid");
                     isok = false;
+                }else{
+                    $("#message").css("border", "black 1px solid");
                 }
                 if (this.bean.important == null || this.bean.important == "" || this.bean.important == "無") {
                     $("#important").css("border", "red 1px solid");
                     isok = false;
+                }else{
+                    $("#important").css("border", "black 1px solid");
                 }
                 if (this.bean.source == null || this.bean.source == "") {
                     $("#source").css("border", "red 1px solid");
                     isok = false;
+                }else{
+                    $("#source").css("border", "black 1px solid");
                 }
 
 
                 if (isok) {//通過驗證
+
                     if ("${bean.marketid}" == "") {//如果是新資料 就 提交表單
                         $('.basefrom').submit();
                     } else {//如果不是新資料 就 紀錄修改
