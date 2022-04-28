@@ -17,7 +17,7 @@
             <style>
                 [v-cloak] {
                     display: none;
-               }
+                }
 
                 .app {
                     background-color: #e4f3ef;
@@ -37,8 +37,12 @@
                             <div class="col-lg-2"></div>
                             <div class="col-lg-8">
 
-                                <el-button type="success" icon="el-icon-arrow-left" circle onclick="javascript:location.href='${pageContext.request.contextPath}/JobDescription/JobDescriptionList.jsp'"></el-button>
+                                <el-button type="success" icon="el-icon-arrow-left" circle
+                                    onclick="javascript:location.href='${pageContext.request.contextPath}/JobDescription/JobDescriptionList.jsp'">
+                                </el-button>
                                 <el-button type="primary" icon="el-icon-edit" circle @click="save"></el-button>
+                                <el-button type="warning" icon="el-icon-printer" circle @click="print">
+                                </el-button>
 
                                 <form action="" method="post" class="jobdescription">
                                     <input type="hidden" name="jobdescriptionid" v-model="bean.jobdescriptionid">
@@ -48,8 +52,7 @@
                                             <td></td>
                                             <td class="text-end">
                                                 <el-date-picker name="aaa" v-model="bean.aaa" type="date"
-                                                    placeholder="選擇日期" format="yyyy 年 MM 月 dd 日"
-                                                    value-format="yyyy-MM-dd">
+                                                    placeholder="選擇日期" format="yyyy-MM-dd" value-format="yyyy-MM-dd">
                                                 </el-date-picker>
                                             </td>
                                         </tr>
@@ -70,7 +73,7 @@
                                             <td style="text-align: right;">到職⽇:
 
                                                 <el-date-picker name="arrivaldate" v-model="bean.arrivaldate"
-                                                    type="date" placeholder="選擇日期" format="yyyy 年 MM 月 dd 日"
+                                                    type="date" placeholder="選擇日期" format="yyyy-MM-dd"
                                                     value-format="yyyy-MM-dd">
                                                 </el-date-picker>
 
@@ -103,7 +106,7 @@
 
                                         <tr style="margin-bottom: 300px;">
                                             <td colspan="3"><textarea style="width: 100%" rows="20" name="workcontent"
-                                                    v-model.trim="bean.workcontent" placeholder=" 
+                                                    id="workcontent" v-model.trim="bean.workcontent" placeholder=" 
   ⽬的：資訊相關業務，維持公司資訊電腦網路等系統運作正常。網站相關業務，更新維護網站正常
   運作與功能開發。資料庫後台管理，維持資料庫後台正常運作與功能性開發，內部帳號密碼安全管
   理。
@@ -171,29 +174,37 @@
                         }
                     }, created() {
                         const url = new URL(location.href);
-                        const id = url.searchParams.get("id"); 
-                        $.ajax({
-                            url: '${pageContext.request.contextPath}/JobDescription/init/'+id,
-                            type: 'POST',
-                            async: false,
-                            cache: false,
-                            success: (response => (
+                        const id = url.searchParams.get("id");
+                        if (id != null) {
+                            $.ajax({
+                                url: '${pageContext.request.contextPath}/JobDescription/init/' + id,
+                                type: 'POST',
+                                async: false,
+                                cache: false,
+                                success: (response => (
 
-                                console.log(response)
+                                    this.bean = response.jobdescription
 
-                            )),
-                            error: function (returndata) {
-                                console.log(returndata);
-                            }
-                        })
+                                )),
+                                error: function (returndata) {
+                                    console.log(returndata);
+                                }
+                            })
+                        }
+
+
+
+
+
+
 
 
                     }, methods: {
                         save() {
-                            var formData = new FormData($(".jobdescription")[0]);
+
                             var isok = true;
 
-                          
+
                             if (this.bean.jobname == "") isok = false;
                             if (this.bean.admin == "") isok = false;
                             if (this.bean.arrivaldate == "") isok = false;
@@ -205,31 +216,58 @@
                             if (this.bean.department == "") isok = false;
 
 
-                            if(isok){
+                            if (isok) {
 
-                                $.ajax({
-                                url: '${pageContext.request.contextPath}/JobDescription/saveJobDescription',
-                                type: 'POST',
-                                data: formData,
-                                async: false,
-                                cache: false,
-                                contentType: false,
-                                processData: false,
-                                success: (response => (
-                                    this.bean.jobdescriptionid = response,
-                                    console.log(response)
 
-                                )),
-                                error: function (returndata) {
-                                    console.log(returndata);
-                                }
-                            })
 
-                            }else{
+                                this.$confirm('確定儲存修改?', '提示', {
+                                    confirmButtonText: '确定',
+                                    cancelButtonText: '取消',
+                                    type: 'warning'
+                                }).then(() => {
+
+                                    var formData = new FormData($(".jobdescription")[0]);
+                                    $.ajax({
+                                        url: '${pageContext.request.contextPath}/JobDescription/saveJobDescription',
+                                        type: 'POST',
+                                        data: formData,
+                                        async: false,
+                                        cache: false,
+                                        contentType: false,
+                                        processData: false,
+                                        success: (response => (
+                                            this.bean.jobdescriptionid = response,
+                                            location.href = "${pageContext.request.contextPath}/JobDescription/JobDescription.jsp?id=" + response
+
+
+                                        )),
+                                        error: function (returndata) {
+                                            console.log(returndata);
+                                        }
+                                    })
+
+
+
+                                }).catch(() => {
+                                    this.$message({
+                                        type: 'info',
+                                        message: '已取消'
+                                    });
+                                });
+
+                            } else {
                                 alert("有空格,不能儲存")
                             }
-
-
+                        },
+                        print() {
+                            if (this.bean.jobdescriptionid) {
+                                location.href = "${pageContext.request.contextPath}/JobDescription/print/" + this.bean.jobdescriptionid;
+                            } else {
+                                this.$message({
+                                    message: '請先儲存',
+                                    type: 'warning'
+                                });
+                            }
 
 
 
@@ -237,8 +275,11 @@
                     },
 
                 }
-                )
+                )                
             </script>
+
+
+
         </body>
 
         </html>

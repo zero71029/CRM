@@ -19,8 +19,9 @@ public class JobDescriptionService {
         jdr.save((jdBean));
     }
 
-    public List<JobDescriptionBean> findAll() {
+    public List<JobDescriptionBean> findAll() { return  jdr.findAll(); }
 
-        return  jdr.findAll();
-    }
+    public JobDescriptionBean findById(String jobdescriptionid) {return jdr.findById(jobdescriptionid).get();}
+
+
 }

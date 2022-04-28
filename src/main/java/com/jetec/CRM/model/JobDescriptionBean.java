@@ -17,6 +17,7 @@ public class JobDescriptionBean {
     private String workcontent;
     private String assessmentindicators;
     private String aaa;
+    private String department;
 
     @Override
     public String toString() {
@@ -30,7 +31,16 @@ public class JobDescriptionBean {
                 ", workcontent='" + workcontent + '\'' +
                 ", assessmentindicators='" + assessmentindicators + '\'' +
                 ", aaa='" + aaa + '\'' +
+                ", department='" + department + '\'' +
                 '}';
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
     }
 
     public String getJobdescriptionid() {

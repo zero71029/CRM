@@ -39,6 +39,12 @@
             .contentTextarea {
                 border: 0px;
             }
+            .app {
+                    background-color: #e4f3ef;
+                }
+                table{
+                    background-color: white;
+                }
         </style>
 
         <body>

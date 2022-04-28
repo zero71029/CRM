@@ -643,22 +643,22 @@
           {
             "@type": "ListItem",
             "position": 2,
-            "name": "壓力",
-            "item": "https://www.jetec.com.tw/Pressure"
+            "name": "產業應用",
+            "item": "https://www.jetec.com.tw/Application"
           },
           {
             "@type": "ListItem",
             "position": 3,
-            "name": "手持式壓力計",
-            "item": "https://www.jetec.com.tw/PressureHandHeld"
+            "name": "氣體產品應用",
+            "item": "https://www.jetec.com.tw/chinese/application_gas.html"
           },
           {
             "@type": "ListItem",
             "position": 4,
-            "name": "CPMU 手持式壓力計",
-            "item": "https://www.jetec.com.tw/chinese/product1-2_CPMU.html"
+            "name": "倉庫氣體偵測器~透過一氧化碳偵測器可確認內部空氣品質，環境安全警示，能有效減少危險產生",
+            "item": "https://www.jetec.com.tw/chinese/application_gas-warehouse.html"
           }
-          ],"image":"https://www.jetec.com.tw/sites/default/files/2022-04/CPMU%20-72.png"
+          ],"image":"https://www.jetec.com.tw/picture/Apply/1/warehouse.jpg"
       }`;
             document.head.appendChild(ga);
         </script><!-- SEO代碼結束 -->
@@ -674,3 +674,4 @@
         </c:forEach>
 
         </html>
+
