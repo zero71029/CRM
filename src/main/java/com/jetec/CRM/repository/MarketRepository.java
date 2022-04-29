@@ -133,9 +133,7 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
     Integer getAminStateNum(String admin,String state, String startDay, String endDay);
 
 
-
-    @Modifying
-    @Transactional
-    @Query(value ="mysqldump -u root -proot --opt crm >  filename.sql", nativeQuery=true)
-    void layout();
+//    @Modifying
+//    @Query(value = "update market set ?2 = ?3 where marketid = ?1", nativeQuery = true)
+//    void updata(String marketid, String field, String val);
 }

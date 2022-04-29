@@ -1,10 +1,7 @@
 package com.jetec.CRM.controler;
 
 import com.jetec.CRM.Tool.ZeroTools;
-import com.jetec.CRM.controler.service.ClientService;
-import com.jetec.CRM.controler.service.DirectorService;
-import com.jetec.CRM.controler.service.MarketService;
-import com.jetec.CRM.controler.service.PotentialCustomerService;
+import com.jetec.CRM.controler.service.*;
 import com.jetec.CRM.model.*;
 import com.jetec.CRM.repository.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Date;
+import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("/Market")
@@ -36,7 +36,8 @@ public class MarketControler {
     ZeroTools zTools;
     @Autowired
     DirectorService DS;
-
+    @Autowired
+    SystemService ss;
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @RequestMapping("/init/{id}")
@@ -156,7 +157,6 @@ public class MarketControler {
     @RequestMapping("/Market/{id}")
     public String Market(Model model, @PathVariable("id") String id) {
         System.out.println("進入詳細");
-        System.out.println(ms.getById(id));
         model.addAttribute("bean", ms.getById(id));
         return "/Market/Market";
     }
@@ -751,5 +751,73 @@ public class MarketControler {
 
         return true;
     }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //失去焦點,儲存
+    @RequestMapping("/blur")
+    @ResponseBody
+    public boolean blur(@RequestParam("marketid") String marketid, @RequestParam("field") String field, @RequestParam("val") String val, HttpSession session) {
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/crm", "root", "root");
+            stmt = conn.createStatement();
+            AdminBean adminBean = (AdminBean) session.getAttribute("user");
+            //存修改
+//            MarketBean marketBean = ms.getById(marketid);
+//            System.out.println(marketBean.get(field));
+            String sql1 = "select " + field + " from market where marketid = '" + marketid + "'";
+            rs = stmt.executeQuery(sql1);
+            rs.next();
+            String source;
+            ChangeMessageBean cmbean;
+            if ("cost".equals(field)) {
+                cmbean = new ChangeMessageBean(zTools.getUUID(), marketid, field, String.valueOf(rs.getInt(1)), val, zTools.getTime(new Date()));
+                cmbean.setName(adminBean.getName());
+                if (String.valueOf(rs.getInt(1)).equals(val)) {
+
+                } else {
+                    ss.saveChangeMesssage(cmbean);
+                }
+            } else {
+                cmbean = new ChangeMessageBean(zTools.getUUID(), marketid, field, rs.getString(1), val, zTools.getTime(new Date()));
+                cmbean.setName(adminBean.getName());
+                if (rs.getString(1).equals(val)) {
+
+                } else {
+                    ss.saveChangeMesssage(cmbean);
+                }
+
+            }
+            //updata
+//        ms.updata(marketid,field,val);
+            String sql = "update market set " + field + " = '" + val + "' where marketid ='" + marketid + "'";
+            System.out.println(sql);
+            stmt.executeUpdate(sql);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //先建立後釋放，後建立先釋放
+        try {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (Exception e) {
+
+        }
+
+
+        return true;
+    }
+
 
 }

@@ -20,4 +20,6 @@ public interface MarketStateRepository extends JpaRepository<MarketStateBean, St
 
 
 	MarketStateBean findByAdminidAndFieldAndState(Integer adminid, String field, String state);
+
+
 }

@@ -192,13 +192,6 @@
                             })
                         }
 
-
-
-
-
-
-
-
                     }, methods: {
                         save() {
 
@@ -217,15 +210,11 @@
 
 
                             if (isok) {
-
-
-
                                 this.$confirm('確定儲存修改?', '提示', {
                                     confirmButtonText: '确定',
                                     cancelButtonText: '取消',
                                     type: 'warning'
                                 }).then(() => {
-
                                     var formData = new FormData($(".jobdescription")[0]);
                                     $.ajax({
                                         url: '${pageContext.request.contextPath}/JobDescription/saveJobDescription',
@@ -237,17 +226,13 @@
                                         processData: false,
                                         success: (response => (
                                             this.bean.jobdescriptionid = response,
-                                            location.href = "${pageContext.request.contextPath}/JobDescription/JobDescription.jsp?id=" + response
-
-
+                                            this.$message({ type: 'success', message: '儲存成功' }),
+                                            setTimeout(function () { location.href = "${pageContext.request.contextPath}/JobDescription/JobDescription.jsp?id=" + response }, 1000)
                                         )),
                                         error: function (returndata) {
                                             console.log(returndata);
                                         }
                                     })
-
-
-
                                 }).catch(() => {
                                     this.$message({
                                         type: 'info',
@@ -268,9 +253,6 @@
                                     type: 'warning'
                                 });
                             }
-
-
-
                         }
                     },
 

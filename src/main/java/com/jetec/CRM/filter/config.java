@@ -31,7 +31,7 @@ public class config {
         //////
         SimpleDateFormat  sdf = new SimpleDateFormat("yyyyMMdd-HH-mm");
         ProcessBuilder builder = new ProcessBuilder(
-                "cmd.exe", "/c", "cd  C:\\MAMP\\bin\\mysql\\bin && mysqldump -uroot -proot crm > C:\\Users\\jetec\\SynologyDrive\\crm"+sdf.format(new Date())+".sql");
+                "cmd.exe", "/c", "cd  C:\\MAMP\\bin\\mysql\\bin && mysqldump -uroot -proot crm > C:\\Users\\jetec\\SynologyDrive\\crm" + sdf.format(new Date()) + "自動.sql");
         builder.redirectErrorStream(true);
         Process p = builder.start();
         BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));

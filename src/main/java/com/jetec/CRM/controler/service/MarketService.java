@@ -551,4 +551,7 @@ public class MarketService {
     }
 
 
+//    public void updata(String marketid, String field, String val) {
+//        mr.updata(marketid,field,val);
+//    }
 }

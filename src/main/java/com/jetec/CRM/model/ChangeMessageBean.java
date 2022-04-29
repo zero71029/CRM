@@ -17,6 +17,12 @@ public class ChangeMessageBean {
     private String after;
     private String createtime;
 
+
+
+
+
+
+
     public ChangeMessageBean() {
     }
 
@@ -28,6 +34,10 @@ public class ChangeMessageBean {
         this.after = after;
         this.createtime = createtime;
     }
+
+
+
+
 
     public String getName() {
         return name;
