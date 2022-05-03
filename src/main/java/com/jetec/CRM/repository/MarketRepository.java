@@ -1,19 +1,16 @@
 package com.jetec.CRM.repository;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-
+import com.jetec.CRM.model.MarketBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.jetec.CRM.model.MarketBean;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public interface MarketRepository extends JpaRepository<MarketBean, String> {
 
@@ -131,6 +128,9 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
     Integer getProductTypeNum(String name, String startDay, String endDay);
     @Query(value = "SELECT  COUNT(*)  from market WHERE user = ?1 AND stage = ?2 AND   aaa BETWEEN ?3 AND ?4 ", nativeQuery = true)
     Integer getAminStateNum(String admin,String state, String startDay, String endDay);
+
+
+
 
 
 //    @Modifying

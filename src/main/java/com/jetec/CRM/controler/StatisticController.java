@@ -60,8 +60,8 @@ public class StatisticController {
         Map<String, Object> CompanyNumList = getListByDate(startDay, endDay);
 
         result.put("CompanyNumList", CompanyNumList);//每天公司數量
-        result.put("companyNum", ss.selectCompany(startDay, endDay));//公司名稱列表
-        result.put("AdminCastNum", AdminCastNum(startDay, endDay));//取得個業務案件數量
+        //result.put("companyNum", ss.selectCompany(startDay, endDay));//公司名稱列表
+//        result.put("AdminCastNum", AdminCastNum(startDay, endDay));//取得個業務案件數量
         return result;
     }
 
@@ -90,11 +90,17 @@ public class StatisticController {
         List<LibraryBean> libraryList = (List<LibraryBean>) app.getAttribute("library");
 
 
+
         result.put("CompanyNumList", CompanyNumList);//每天公司數量
         result.put("companyNum", ss.selectCompany(startDay, endDay));//公司名稱列表
         result.put("AdminCastNum", AdminCastNum(startDay, endDay));//取得個業務案件數量
         result.put("producttype", producttype(startDay, endDay, libraryList));//商品類別
         result.put("BusinessState", BusinessState(startDay, endDay));//業務成功失敗
+        result.put("MaxNumCompany", ss.getMaxNumCompany(startDay, endDay));//案件最多的5間公司
+        result.put("SuccessMaxNumCompany", ss.getSuccessMaxNumCompany(startDay, endDay));//成功案件最多的5間公司
+        result.put("FailMaxNumCompany", ss.getFailMaxNumCompany(startDay, endDay));//失敗案件最多的5間公司
+
+
 
 
         return result;

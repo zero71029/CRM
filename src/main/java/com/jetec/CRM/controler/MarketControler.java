@@ -753,10 +753,11 @@ public class MarketControler {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //失去焦點,儲存
+    //失去焦點,自動儲存
     @RequestMapping("/blur")
     @ResponseBody
     public boolean blur(@RequestParam("marketid") String marketid, @RequestParam("field") String field, @RequestParam("val") String val, HttpSession session) {
+        System.out.println("失去焦點,自動儲存");
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;

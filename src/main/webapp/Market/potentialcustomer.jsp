@@ -361,7 +361,7 @@
                                 <div class="col-md-5  ASDFG">
                                     <div class="row">
                                         <div class="col-md-3 cellz">潛在客戶負責人</div>
-                                        <div class="col-md-7 cellz FormPadding">
+                                        <div class="col-md-4 cellz FormPadding">
                                             <c:set var="salary"
                                                 value="${user.position != '職員' || user.name == '江緯哲'|| user.name == '謝姍妤'|| user.name == '林冠樺'|| user.name == '莊文菊'|| user.name == '陳彥霖'}">
                                             </c:set>
@@ -387,21 +387,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row ">
-                                        <div class="col-md-3 cellz"></div>
-                                    </div>
-                                    <div class="row ">
-                                        <div class="col-md-3 cellz"></div>
-                                        <div class="col-md-7 ">
-                                            <ul class="helpList " style="position: relative;">
-                                                <c:forEach varStatus="loop" begin="0" end="${bean.helper.size()}"
-                                                    items="${bean.helper}" var="s">
-                                                    <li>${s.name}<a style="right: 0px; position: absolute;"
-                                                            href="javascript:delHelp('${s.helperid}')">remove</a></li>
-                                                </c:forEach>
-                                            </ul>
-                                        </div>
-                                    </div>
+
 
 
                                     <div class="row">
@@ -452,7 +438,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-3 cellz">重要性 <span style="color: red;">*</span></div>
-                                        <div class="col-md-7 cellz FormPadding">
+                                        <div class="col-md-4 cellz FormPadding">
                                             <select class="form-select cellFrom" name="important"
                                                 v-model.trim="important">
                                                 <option value="高">高</option>

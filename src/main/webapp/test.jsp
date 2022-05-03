@@ -607,6 +607,7 @@
             });
         </script>
         <style>
+            /*  */
             /* 可以设置不同的进入和离开动画 */
             /* 设置持续时间和动画函数 */
             .slide-fade-enter-active {
@@ -674,4 +675,3 @@
         </c:forEach>
 
         </html>
-
