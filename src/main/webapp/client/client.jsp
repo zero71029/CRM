@@ -586,7 +586,7 @@
                                         <div class="row ">
                                             <div class="col-lg-1"></div>
                                             <div class="col-lg-10 row contact" style="margin: 0%;"
-                                                onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/contact/${s.contactid}'">
+                                                onclick="javascript:window.open('${pageContext.request.contextPath}/CRM/contact/${s.contactid}')">
                                                 <div class="col-lg-2">${s.name}</div>
                                                 <div class="col-lg-2">${s.jobtitle}</div>
                                                 <div class="col-lg-2">${s.phone}</div>
@@ -625,7 +625,7 @@
                                         <div class="col-lg-4">名稱</div>
                                         <div class="col-lg-2">聯絡人</div>
                                         <div class="col-lg-2">負責人</div>
-                                        <div class="col-lg-2">金額</div>
+                                        <div class="col-lg-2">日期</div>
                                         <div class="col-lg-2">階段</div>
                                     </div>
                                 </div>
@@ -636,12 +636,12 @@
                                             <div class="row ">
                                                 <div class="col-lg-1"></div>
                                                 <div class="col-lg-10 row contact" style="margin: 0%;"
-                                                    onclick="javascript:location.href='${pageContext.request.contextPath}/Market/Market/${s.marketid}'">
+                                                    onclick="javascript:window.open('${pageContext.request.contextPath}/Market/Market/${s.marketid}')">
 
                                                     <div class="col-lg-4">${s.name}</div>
                                                     <div class="col-lg-2">${s.contactname}</div>
                                                     <div class="col-lg-2">${s.user}</div>
-                                                    <div class="col-lg-2">${s.cost}</div>
+                                                    <div class="col-lg-2">${s.aaa}</div>
                                                     <div class="col-lg-2">${s.stage}</div>
                                                 </div>
                                             </div>

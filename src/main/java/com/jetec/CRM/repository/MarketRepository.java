@@ -10,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public interface MarketRepository extends JpaRepository<MarketBean, String> {
 
@@ -22,7 +21,7 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
 
     List<MarketBean> findByContactnameLikeIgnoreCase(String string, Sort sort);
 
-    List<MarketBean> findByClient(String name);
+    List<MarketBean> findByClient(String name, Sort aaa);
 
     List<MarketBean> findByStage(String string, Sort sort);
 

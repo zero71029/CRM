@@ -22,7 +22,17 @@
         <!-- 引入element-ui样式 -->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/js/element-ui.css">
         <!-- 引入element-ui组件库 -->
-        <script src="${pageContext.request.contextPath}/js/element-ui.js"></script>
+        <script src="${pageContext.request.contextPath}/js/element-ui.js"></script>        
+        <script src="//unpkg.com/element-ui/lib/umd/locale/zh-TW.js"></script>
+        <script>         
+            ELEMENT.locale(ELEMENT.lang.zhTW)
+        </script>
+
+
+
+
+
+
 
         <!-- <%-- 抬頭--%> -->
         <header class="mainColor headtop">

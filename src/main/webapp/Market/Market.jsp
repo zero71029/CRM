@@ -1073,7 +1073,7 @@
                                         const end = new Date();
                                         const start = new Date();
                                         start.setTime(start.getTime());
-                                        picker.$emit('pick', [start, end]);
+                                        picker.$emit('pick', new Date());
                                     }
                                 }, {
                                     text: '最近一周',
@@ -1081,7 +1081,7 @@
                                         const end = new Date();
                                         const start = new Date();
                                         start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-                                        picker.$emit('pick', [start, end]);
+                                        picker.$emit('pick', start);
                                     }
                                 }, {
                                     text: '最近一個月',
@@ -1089,7 +1089,7 @@
                                         const end = new Date();
                                         const start = new Date();
                                         start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-                                        picker.$emit('pick', [start, end]);
+                                        picker.$emit('pick',start);
                                     }
                                 }, {
                                     text: '最近三個月',
@@ -1097,7 +1097,7 @@
                                         const end = new Date();
                                         const start = new Date();
                                         start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-                                        picker.$emit('pick', [start, end]);
+                                        picker.$emit('pick',start);
                                     }
                                 }]
                         },

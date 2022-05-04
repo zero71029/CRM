@@ -63,7 +63,7 @@ public class StatisticService {
 
             while (rs.next()){
                 Map<String, String>  map= new HashMap<>();
-                System.out.println(rs.getString(1)+" : "+rs.getString(2));
+                
                 map.put("company",rs.getString(1));
                 map.put("num",rs.getString(2));
                 result.add(map);
@@ -102,7 +102,7 @@ public class StatisticService {
 
             while (rs.next()){
                 Map<String, String>  map= new HashMap<>();
-                System.out.println(rs.getString(1)+" : "+rs.getString(2));
+                
                 map.put("company",rs.getString(1));
                 map.put("num",rs.getString(2));
                 result.add(map);
@@ -141,7 +141,7 @@ public class StatisticService {
 
             while (rs.next()){
                 Map<String, String>  map= new HashMap<>();
-                System.out.println(rs.getString(1)+" : "+rs.getString(2));
+                
                 map.put("company",rs.getString(1));
                 map.put("num",rs.getString(2));
                 result.add(map);

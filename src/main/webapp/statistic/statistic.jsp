@@ -73,8 +73,8 @@
                             </div>
 
                         </div>
-                        <div class="row">
-                            <div class="col-lg-12">
+                        <div class="row" >
+                            <div class="col-lg-12" >
                                 <el-switch v-model="ProductSwitch" v-show="producttype != ''" active-text="精簡"
                                     inactive-text="原始">
                                 </el-switch>
@@ -82,42 +82,39 @@
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row" v-if="MaxNumCompany.length > 0">
                             <div class="col-lg-4">
 
                                 案件最多的公司
                                 <el-table :data="MaxNumCompany" style="width: 100%">
-                                    <el-table-column prop="company" label="公司" >
+                                    <el-table-column prop="company" label="公司">
                                     </el-table-column>
                                     <el-table-column prop="num" label="數量">
                                     </el-table-column>
-                         
+
                                 </el-table>
                             </div>
 
                             <div class="col-lg-4">
                                 成功案件最多的公司
                                 <el-table :data="SuccessMaxNumCompany" style="width: 100%">
-                                    <el-table-column prop="company" label="公司" >
+                                    <el-table-column prop="company" label="公司">
                                     </el-table-column>
                                     <el-table-column prop="num" label="數量">
                                     </el-table-column>
-                         
+
                                 </el-table>
                             </div>
                             <div class="col-lg-4">
                                 失敗案件最多的公司
                                 <el-table :data="FailMaxNumCompany" style="width: 100%">
-                                    <el-table-column prop="company" label="公司" >
+                                    <el-table-column prop="company" label="公司">
                                     </el-table-column>
                                     <el-table-column prop="num" label="數量">
                                     </el-table-column>
-                         
+
                                 </el-table>
                             </div>
-
-
-                            
                         </div>
 
 
@@ -171,8 +168,8 @@
                 el: ".app",
                 data() {
                     return {
-                        FailMaxNumCompany:[],//失敗案件最多的公司
-                        SuccessMaxNumCompany:[],//成功案件最多的公司
+                        FailMaxNumCompany: [],//失敗案件最多的公司
+                        SuccessMaxNumCompany: [],//成功案件最多的公司
                         MaxNumCompany: [],//案件最多的公司
                         ProductSwitch: false,//商品開關
                         BusinessState: [],//業務成功失敗
@@ -417,8 +414,8 @@
                                 this.AdminCastNum = response.AdminCastNum,
                                 this.producttype = response.producttype,
                                 this.BusinessState = response.BusinessState,
-                                this.MaxNumCompany=response.MaxNumCompany,
-                                this.SuccessMaxNumCompany=response.SuccessMaxNumCompany,
+                                this.MaxNumCompany = response.MaxNumCompany,
+                                this.SuccessMaxNumCompany = response.SuccessMaxNumCompany,
                                 this.FailMaxNumCompany = response.FailMaxNumCompany,
                                 console.log("案件最多", response.MaxNumCompany),
                                 console.log(response, "response")

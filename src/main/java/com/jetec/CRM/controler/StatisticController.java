@@ -100,9 +100,6 @@ public class StatisticController {
         result.put("SuccessMaxNumCompany", ss.getSuccessMaxNumCompany(startDay, endDay));//成功案件最多的5間公司
         result.put("FailMaxNumCompany", ss.getFailMaxNumCompany(startDay, endDay));//失敗案件最多的5間公司
 
-
-
-
         return result;
 
     }
