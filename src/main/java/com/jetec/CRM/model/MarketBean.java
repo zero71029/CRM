@@ -1,6 +1,7 @@
 package com.jetec.CRM.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +39,6 @@ public class MarketBean implements Serializable {
     private String stage;// 階段
     private String need;// 需求確認(沒使用了)
     private String roianalyze;// ROI分析(沒使用了)
-    private Date ccc;// 創建時間
     private String product;//產品名稱
     private String producttype;//產品類別
     private String phone;// 公司電話
@@ -57,6 +57,8 @@ public class MarketBean implements Serializable {
     private String callhelp;//求助
     private String fileforeignid;//附件id
     private String founder;//創始人
+
+
 
 
     public Object get( String name) {
@@ -78,7 +80,6 @@ public class MarketBean implements Serializable {
            case "source":return source;
            case "clinch":return clinch;
            case "stage":return stage;
-           case "ccc":return ccc;
            case "product":return product;
            case "producttype":return producttype;
            case "phone":return phone;
@@ -140,6 +141,8 @@ public class MarketBean implements Serializable {
 //	@JsonIgnore
 //	@OneToMany(targetEntity = WorkBean.class, mappedBy = "marketid", cascade = CascadeType.ALL)
 //	private List<WorkBean> work;
+
+
 
 
     public List<BosMessageBean> getBm() {
@@ -410,13 +413,7 @@ public class MarketBean implements Serializable {
         this.roianalyze = roianalyze;
     }
 
-    public Date getCcc() {
-        return ccc;
-    }
 
-    public void setCcc(Date ccc) {
-        this.ccc = ccc;
-    }
 
     public String getProduct() {
         return product;

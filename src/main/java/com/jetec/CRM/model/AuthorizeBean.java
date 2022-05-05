@@ -13,7 +13,7 @@ public class AuthorizeBean {
 	@Id
 	private String id;
 	private String used;
-	private Date createtime;
+
 	public String getId() {
 		return id;
 	}
@@ -26,18 +26,12 @@ public class AuthorizeBean {
 	public void setUsed(String used) {
 		this.used = used;
 	}
-	public Date getCreatetime() {
-		return createtime;
-	}
-	public void setCreatetime(Date createtime) {
-		this.createtime = createtime;
-	}
+
 	@Override
 	public String toString() {
-		return "AuthorizeBean [id=" + id + ", used=" + used + ", createtime=" + createtime + "]";
+		return "AuthorizeBean{" +
+				"id='" + id + '\'' +
+				", used='" + used + '\'' +
+				'}';
 	}
-	
-	
-;	
-
 }

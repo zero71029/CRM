@@ -31,7 +31,7 @@ public class WorkBean {
 	private Integer contactid;//聯絡人
 	private String customerid;//潛在顧客	
 	private String marketid;//銷售機會
-	private Date createtime;//創造時間	
+
 	private String track;
 	private String marketname;
 	private String customername;
@@ -62,7 +62,7 @@ public class WorkBean {
 				", contactid=" + contactid +
 				", customerid='" + customerid + '\'' +
 				", marketid='" + marketid + '\'' +
-				", createtime=" + createtime +
+
 				", track='" + track + '\'' +
 				", marketname='" + marketname + '\'' +
 				", customername='" + customername + '\'' +
@@ -194,10 +194,6 @@ public class WorkBean {
 	public void setMarketid(String marketid) {
 		this.marketid = marketid;
 	}
-	public Date getCreatetime() {
-		return createtime;
-	}
-	public void setCreatetime(Date createtime) {
-		this.createtime = createtime;
-	}
+
+
 }

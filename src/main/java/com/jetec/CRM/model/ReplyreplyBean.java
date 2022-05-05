@@ -16,7 +16,7 @@ public class ReplyreplyBean {
 	private String replyid;		
 	private String name;
 	private String content;
-	private Date createtime;
+	private Date lastmodified;
 	public String getId() {
 		return id;
 	}
@@ -41,18 +41,23 @@ public class ReplyreplyBean {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public String getCreatetime() {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		return sdf.format(createtime);
-	}
-	public void setCreatetime(Date createtime) {
-		this.createtime = createtime;
-	}
-	@Override
-	public String toString() {
-		return "replyreplyBean [id=" + id + ", replyid=" + replyid +  ", name=" + name
-				+ ", content=" + content + ", createtime=" + createtime + "]";
+
+	public Date getLastmodified() {
+		return lastmodified;
 	}
 
-	
+	public void setLastmodified(Date lastmodified) {
+		this.lastmodified = lastmodified;
+	}
+
+	@Override
+	public String toString() {
+		return "ReplyreplyBean{" +
+				"id='" + id + '\'' +
+				", replyid='" + replyid + '\'' +
+				", name='" + name + '\'' +
+				", content='" + content + '\'' +
+				", lastmodified=" + lastmodified +
+				'}';
+	}
 }

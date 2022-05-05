@@ -21,8 +21,7 @@ import java.util.stream.Collectors;
 public class MarketService {
     @Autowired
     MarketRepository mr;
-    @Autowired
-    MarketRemarkRepository mrr;
+
     @Autowired
     TrackRepository tr;
     @Autowired
@@ -111,16 +110,13 @@ public class MarketService {
         return mr.getById(id);
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////
-    public void SaveRemark(MarketRemarkBean mrb) {
-        mrr.save(mrb);
-    }
+
 
     /////////////////////////////////////////////////////////////////////////////////////
     // 刪除銷售機會
     public void delMarket(List<String> id) {
         for (String i : id) {
-            mrr.deleteByMarketid(i);
+
             mr.deleteById(i);
         }
     }
@@ -140,7 +136,7 @@ public class MarketService {
         // 用業務搜索
         for (MarketBean p : mr.findByUserLikeIgnoreCase("%" + name + "%", sort)) {
             for (MarketBean bean : result) {
-                if (bean.getMarketid() == p.getMarketid()) {
+                if (bean.getMarketid().equals(p.getMarketid()) ) {
                     boo = false;
                 }
             }
@@ -150,7 +146,7 @@ public class MarketService {
         // 用客戶搜索
         for (MarketBean p : mr.findByClientLikeIgnoreCase("%" + name + "%", sort)) {
             for (MarketBean bean : result) {
-                if (bean.getMarketid() == p.getMarketid()) {
+                if (bean.getMarketid().equals(p.getMarketid())) {
                     boo = false;
                 }
             }
@@ -160,7 +156,7 @@ public class MarketService {
         // 用聯絡人搜索
         for (MarketBean p : mr.findByContactnameLikeIgnoreCase("%" + name + "%", sort)) {
             for (MarketBean bean : result) {
-                if (bean.getMarketid() == p.getMarketid()) {
+                if (bean.getMarketid().equals(p.getMarketid())) {
                     boo = false;
                 }
             }
@@ -173,11 +169,7 @@ public class MarketService {
         return result;
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////
-//刪除備註
-    public void delRemark(Integer remarkId) {
-        mrr.deleteById(remarkId);
-    }
+
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //存追蹤
@@ -240,12 +232,7 @@ public class MarketService {
 
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//搜索銷售機會by狀態
-    public List<MarketBean> selectStage(String name) {
-        Sort sort = Sort.by(Direction.DESC, "marketid");
-        return mr.findByStage(name, sort);
-    }
+
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //銷售機會列表

@@ -27,7 +27,7 @@ public class DirectorService {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //讀取主管留言
     public List<BosMessageBean> getBosMessageList(String bosid) {
-        Sort sort = Sort.by(Sort.Direction.DESC,"createtime");
+        Sort sort = Sort.by(Sort.Direction.DESC,"lastmodified");
         return bmr.findByBosid(bosid,sort);
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -35,7 +35,7 @@ public class DirectorService {
     public List<BosMessageBean> delBosMessageList(String bosmessageid) {
         String bosid = bmr.getById(bosmessageid).getBosid();
         bmr.deleteByBosmessageid(bosmessageid);
-        Sort sort = Sort.by(Sort.Direction.DESC,"createtime");
+        Sort sort = Sort.by(Sort.Direction.DESC,"lastmodified");
         return bmr.findByBosid(bosid,sort);
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

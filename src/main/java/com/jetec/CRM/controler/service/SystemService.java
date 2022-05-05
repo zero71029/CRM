@@ -114,7 +114,7 @@ public class SystemService {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取公佈欄列表
     public List<BillboardBean> getBillboardList(String state, AdminBean adminBean, Integer pag, Sort sort) {
-//		Sort sort = Sort.by(Direction.DESC, "createtime");		
+//		Sort sort = Sort.by(Direction.DESC, "lastmodified");
 //		分頁
 //		Page<BillboardBean> page = br.findAll( PageRequest.of(pag, 12, sort));
 //		page.getSize();每頁條數
@@ -256,6 +256,7 @@ public class SystemService {
         bean.setBillboardgroupid(bgb.getBillboardgroupid());
 
         // 儲存
+        bean.setLastmodified(new Date());
         BillboardBean save = br.save(bean);
         // 如果封存 mail未讀全刪
         if (save.getState().equals("封存")) {
@@ -383,6 +384,7 @@ public class SystemService {
         // 插入換行
         String content = bean.getContent();
         bean.setContent(content.replaceAll("\\n", "<br>"));
+        bean.setLastmodified(new Date());
         return billboardReplyRepository.save(bean);
     }
 
@@ -463,7 +465,7 @@ public class SystemService {
         List<BillboardBean> result = new ArrayList<BillboardBean>();
         boolean boo = true;
         // 搜索主題
-        Sort sort = Sort.by(Direction.DESC, "createtime");
+        Sort sort = Sort.by(Direction.DESC, "lastmodified");
         for (BillboardBean p : br.findByThemeLikeIgnoreCaseAndState("%" + search + "%", "公開", sort)) {
             result.add(p);
         }
@@ -570,7 +572,7 @@ public class SystemService {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取回覆
     public List<BillboardReplyBean> getBillboardReply(Integer Billboardid) {
-        Sort sort = Sort.by(Direction.DESC, "createtime");
+        Sort sort = Sort.by(Direction.DESC, "lastmodified");
         return billboardReplyRepository.getByBillboardid(Billboardid, sort);
     }
 
@@ -637,19 +639,9 @@ public class SystemService {
 
     }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-    // reply..createtime
-//	public List<BillboardBean> replycreatetime(String string, AdminBean adminBean, Integer pag) {
-//		Sort sort = Sort.by(Direction.DESC, "createtime");
-//		List<BillboardReplyBean> replyList = billboardReplyRepository.findAll();
-//		for (BillboardReplyBean reply : replyList) {
-//
-//		}
-//
-//		return null;
-//	}
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //刪除檔案
     public void delBbillboardFfile() {

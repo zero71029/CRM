@@ -13,7 +13,7 @@ public class ReplyTimeBean {
 	@Id
 	private Integer billboardid;
 	private String aaa;
-	private  Date createtime;
+	private  Date lastmodified;
 	
 	
 	
@@ -38,16 +38,21 @@ public class ReplyTimeBean {
 	public void setAaa(String aaa) {
 		this.aaa = aaa;
 	}
-	public Date getCreatetime() {
-		return createtime;
+
+	public Date getLastmodified() {
+		return lastmodified;
 	}
-	public void setCreatetime(Date createtime) {
-		this.createtime = createtime;
+
+	public void setLastmodified(Date lastmodified) {
+		this.lastmodified = lastmodified;
 	}
+
 	@Override
 	public String toString() {
-		return "ReplyTimeBean [billboardid=" + billboardid + ", aaa=" + aaa + ", createtime=" + createtime + "]";
+		return "ReplyTimeBean{" +
+				"billboardid=" + billboardid +
+				", aaa='" + aaa + '\'' +
+				", lastmodified=" + lastmodified +
+				'}';
 	}
-	
-	
 }

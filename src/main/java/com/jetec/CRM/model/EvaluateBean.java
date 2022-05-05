@@ -20,7 +20,7 @@ public class EvaluateBean {
     private String assessment;//考評
     private String director;//主管
     private String hr;//人事
-    private Date createtime;
+
     private String costtime;//總花費時間
     //任務
     @JsonIgnore
@@ -128,14 +128,6 @@ public class EvaluateBean {
         this.hr = hr;
     }
 
-    public Date getCreatetime() {
-        return createtime;
-    }
-
-    public void setCreatetime(Date createtime) {
-        this.createtime = createtime;
-    }
-
     @Override
     public String toString() {
         return "EvaluateBean{" +
@@ -144,10 +136,10 @@ public class EvaluateBean {
                 ", name='" + name + '\'' +
                 ", evaluatedate='" + evaluatedate + '\'' +
                 ", remark='" + remark + '\'' +
+                ", score='" + score + '\'' +
                 ", assessment='" + assessment + '\'' +
                 ", director='" + director + '\'' +
                 ", hr='" + hr + '\'' +
-                ", createtime=" + createtime +
                 ", costtime='" + costtime + '\'' +
                 ", task=" + task +
                 '}';

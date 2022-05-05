@@ -172,11 +172,11 @@ public class SystemControler {
 			pag = 1;
 		pag--;
 		// 分頁 全部有幾頁
-		Pageable p = (Pageable) PageRequest.of(pag, 30, Direction.DESC, "createtime");
+		Pageable p = (Pageable) PageRequest.of(pag, 30, Direction.DESC, "lastmodified");
 		Page<BillboardBean> page = (Page<BillboardBean>) br.getByStateAndTop("公開", "", p);
 		model.addAttribute("TotalPages", page.getTotalPages());
 		// 公佈欄列表
-		Sort sort = Sort.by(Direction.DESC, "createtime");
+		Sort sort = Sort.by(Direction.DESC, "lastmodified");
 		model.addAttribute("list", ss.getBillboardList("公開", adminBean, pag, sort));
 		return "/system/billboardList";
 	}
@@ -187,7 +187,7 @@ public class SystemControler {
 	public String OffShelf(Model model, HttpSession session) {
 		System.out.println("*****讀取公佈欄列表 封存*****");
 		AdminBean adminBean = (AdminBean) session.getAttribute("user");
-		Sort sort = Sort.by(Direction.DESC, "createtime");
+		Sort sort = Sort.by(Direction.DESC, "lastmodified");
 		model.addAttribute("list", ss.getBillboardList("封存", adminBean, 0, sort));
 		return "/system/OffShelf";
 	}
@@ -239,7 +239,7 @@ public class SystemControler {
 			authorizeBean.setId(uuid);
 			authorizeBean.setUsed(aBean.getName());
 			authorizeRepository.save(authorizeBean);
-			String text = String.format("<a href='http://192.168.11.114:8080/CRM/authorize/%s'>點擊鍊接留言</a>", uuid);
+			String text = String.format("<a href='http://192.168.11.100:8080/CRM/authorize/%s'>點擊鍊接留言</a>", uuid);
 			String maillist = "";
 			zTools.mail(mailTo, text, Subject, maillist);
 		} else {

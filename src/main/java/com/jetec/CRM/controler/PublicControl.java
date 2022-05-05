@@ -73,7 +73,7 @@ public class PublicControl {
     // 主頁面
     @RequestMapping(path = {"/", "/index"})
     public String index() {
-        return "redirect:/billboard?pag=1&sort=createtime";
+        return "redirect:/billboard?pag=1&sort=lastmodified";
     }
 
     // 主頁面
@@ -85,13 +85,15 @@ public class PublicControl {
 //        List<BillboardBean> advice = new ArrayList<BillboardBean>();
 //        List<BillboardBean> unread = new ArrayList<BillboardBean>();
 
+        if(sortString.equals("createtime"))sortString ="lastmodified";
+
+
         // 分頁
         if (pag < 1)
             pag = 1;
         pag--;
         Sort sort = Sort.by(Direction.DESC, sortString);
         Pageable p = (Pageable) PageRequest.of(pag, 30, sort);
-
         Page<BillboardBean> page = (Page<BillboardBean>) br.getByStateAndTop("公開", "", p);
 //		全部有幾頁
         model.addAttribute("TotalPages", page.getTotalPages());
@@ -114,11 +116,10 @@ public class PublicControl {
 //            }
 
             //////////////////////////////////////////////////////////////////////////////
-            if (sortString.equals("createtime"))
+            if (sortString.equals("lastmodified"))
                 model.addAttribute("list", ss.getBillboardList("公開", adminBean, pag, sort));
-            if (sortString.equals("reply.createtime")) {
+            if (sortString.equals("reply.lastmodified")) {
 
-//				List<BillboardBean> Beans = ss.replycreatetime("公開", adminBean, pag);
 
                 model.addAttribute("list", ss.getBillboardList("公開", adminBean, pag, sort));
 
@@ -128,9 +129,9 @@ public class PublicControl {
 //            model.addAttribute("unread", unread);// 抓被未讀的資料
         } else {
             AdminBean xxx = null;
-            if (sortString.equals("createtime"))
+            if (sortString.equals("lastmodified"))
                 model.addAttribute("list", ss.getBillboardList("公開", xxx, pag, sort));
-            if (sortString.equals("reply.createtime")) {
+            if (sortString.equals("reply.lastmodified")) {
                 model.addAttribute("list", ss.getBillboardList("公開", xxx, pag, sort));
             }
         }
@@ -481,6 +482,7 @@ public class PublicControl {
         ReplyTimeBean replyTimeBean = new ReplyTimeBean();
         replyTimeBean.setBillboardid(bb.getBillboardid());
         replyTimeBean.setAaa("1");
+        replyTimeBean.setLastmodified(new Date());
         rtr.save(replyTimeBean);
         return "redirect:/billboardReply/" + bean.getBillboardid();
     }
@@ -509,6 +511,7 @@ public class PublicControl {
     public String saveReplyreply(ReplyreplyBean replyreplyBean, @RequestParam("billboardid") Integer billboardid) {
         System.out.println("*****儲存留言的留言*****");
         System.out.println(replyreplyBean);
+        replyreplyBean.setLastmodified(new Date());
         ss.saveReplyreply(replyreplyBean);
         return "redirect:/billboardReply/" + billboardid;
     }
@@ -735,7 +738,7 @@ public class PublicControl {
     public List<BosMessageBean> SaveMessage(@RequestBody Map<String, String> body) {
         System.out.println("*****儲存主管留言*****");
         System.out.println(body);
-        BosMessageBean bmBean = new BosMessageBean(zTools.getUUID(), body.get("bosmessage"), body.get("admin"), body.get("message"));
+        BosMessageBean bmBean = new BosMessageBean(zTools.getUUID(), body.get("bosmessage"), body.get("admin"), body.get("message"),ZeroTools.getTime(new Date()));
         ds.save(bmBean);
         System.out.println(ds.getBosMessageList(body.get("bosmessage")));
         return ds.getBosMessageList(body.get("bosmessage"));

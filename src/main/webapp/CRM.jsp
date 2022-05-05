@@ -241,8 +241,8 @@
                                             <th scope="col-lg">
                                                 <c:if test="${not empty param.sort}">
                                                     <a
-                                                        href="${pageContext.request.contextPath}/billboard?pag=${param.pag==''?'1':param.pag}&sort=${param.sort == 'createtime'?'reply.createtime':'createtime'}">最後回覆時間</a>${param.sort
-                                                    == 'reply.createtime'?'▼':''}
+                                                        href="${pageContext.request.contextPath}/billboard?pag=${param.pag==''?'1':param.pag}&sort=${param.sort == 'lastmodified'?'reply.lastmodified':'lastmodified'}">最後回覆時間</a>${param.sort
+                                                    == 'reply.lastmodified'?'▼':''}
                                                 </c:if>
                                                 <c:if test="${empty param.sort}">
                                                     最後回覆時間
@@ -348,12 +348,12 @@
                                                     <!-- //////////////////////////////////////////////////////////////// -->
                                                     <!-- 發布時間 -->
                                                     <td style="text-align: center;">${s.user}${s.remark}<br>
-                                                        ${s.createtime}
+                                                        ${s.lastmodified}
                                                     </td>
                                                     <!-- 最後回覆時間 -->
                                                     <td style="text-align: center;">
                                                         ${s.reply[0].name}
-                                                        <br>${s.reply[0].createtime}
+                                                        <br>${s.reply[0].lastmodified}
                                                         ${reply}
                                                     </td>
                                                     <!-- 回應 -->
@@ -423,7 +423,7 @@
                                         <tbody>
                                             <tr v-for="(s, index) in unread" :key="index">
                                                 <th scope="row" @click="gobillboard(s.billboardid)"
-                                                    style="cursor: pointer;">{{s.createtime}}</th>
+                                                    style="cursor: pointer;">{{s.lastmodified}}</th>
                                                 <td colspan="2" @click="gobillboard(s.billboardid)"
                                                     style="cursor: pointer;">
                                                     <el-popover placement="top-start" width="200" trigger="hover">
@@ -438,7 +438,7 @@
                                             </tr>
                                             <tr v-for="(s, index) in advice" :key="index">
                                                 <th scope="row" @click="gobillboard(s.billboardid)"
-                                                    style="cursor: pointer;">{{s.createtime}}</th>
+                                                    style="cursor: pointer;">{{s.lastmodified}}</th>
                                                 <td colspan="2" @click="gobillboard(s.billboardid)"
                                                     style="cursor: pointer;">
 
@@ -514,7 +514,7 @@
                             type: 'get',
                             success: json => {
                                 this.unread = json.unread,
-                                    this.advice = json.advice
+                                this.advice = json.advice
                             },
                             error: function (returndata) {
                                 console.log(returndata.responseJSON.message);

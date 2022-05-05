@@ -41,7 +41,6 @@ public class PotentialCustomerBean implements Serializable {
     private String postal;
     private String address;
     private String remark;//備註
-    private Date createtime;//創建時間
     private String important;//重要性
     private String line;
     private String extension;//電話分機
@@ -186,14 +185,6 @@ public class PotentialCustomerBean implements Serializable {
         this.helper = helper;
     }
 
-    public String getCreatetime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-        return sdf.format(createtime);
-    }
-
-    public void setCreatetime(Date createtime) {
-        this.createtime = createtime;
-    }
 
     public List<WorkBean> getWork() {
         return work;

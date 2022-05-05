@@ -16,7 +16,7 @@ public class BillboardAdviceBean {
 	private Integer advicefrom;
 	private Integer adviceto;
 	private Integer billboardid;
-	private Date createtime;
+
 	private String reply;
 	
 	
@@ -59,17 +59,16 @@ public class BillboardAdviceBean {
 	public void setBillboardid(Integer billboardid) {
 		this.billboardid = billboardid;
 	}
-	public Date getCreatetime() {
-		return createtime;
-	}
-	public void setCreatetime(Date createtime) {
-		this.createtime = createtime;
-	}
+
 	@Override
 	public String toString() {
-		return "BillboardAdviceBean [adviceid=" + adviceid + ", advicefrom=" + advicefrom + ", adviceto=" + adviceto
-				+ ", billboardid=" + billboardid + ", createtime=" + createtime + "]";
+		return "BillboardAdviceBean{" +
+				"adviceid='" + adviceid + '\'' +
+				", formname='" + formname + '\'' +
+				", advicefrom=" + advicefrom +
+				", adviceto=" + adviceto +
+				", billboardid=" + billboardid +
+				", reply='" + reply + '\'' +
+				'}';
 	}
-	
-	
 }

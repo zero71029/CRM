@@ -24,7 +24,7 @@ public class ClientAddressBean {
 	private String town;
 	private String postal;
 	private String address;
-	private Date createtime;
+
 	
 	
 	//客戶
@@ -71,17 +71,17 @@ public class ClientAddressBean {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public Date getCreatetime() {
-		return createtime;
-	}
-	public void setCreatetime(Date createtime) {
-		this.createtime = createtime;
-	}
+
 	@Override
 	public String toString() {
-		return "ClientAddressBean [addressid=" + addressid + ", clientid=" + clientid + ", city=" + city + ", town="
-				+ town + ", postal=" + postal + ", address=" + address + ", createtime=" + createtime + "]";
+		return "ClientAddressBean{" +
+				"addressid='" + addressid + '\'' +
+				", clientid=" + clientid +
+				", city='" + city + '\'' +
+				", town='" + town + '\'' +
+				", postal='" + postal + '\'' +
+				", address='" + address + '\'' +
+				", client=" + client +
+				'}';
 	}
-
-	
 }

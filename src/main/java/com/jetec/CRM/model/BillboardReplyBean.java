@@ -21,7 +21,7 @@ public class BillboardReplyBean {
 	private Integer billboardid;	
 	private String name;
 	private String content;
-	private Date createtime;
+	private Date lastmodified;
 	
 	
 	
@@ -29,7 +29,7 @@ public class BillboardReplyBean {
 	//回覆
 	@JsonIgnore
 	@OneToMany(targetEntity = ReplyreplyBean.class ,mappedBy = "replyid", cascade = CascadeType.ALL)
-	@OrderBy("createtime DESC")
+	@OrderBy("lastmodified DESC")
 	private List<BillboardReplyBean> reply;
 	//@他人
 	@JsonIgnore
@@ -88,18 +88,26 @@ public class BillboardReplyBean {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public String getCreatetime() {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		return sdf.format(createtime);
+
+	public Date getLastmodified() {
+		return lastmodified;
 	}
-	public void setCreatetime(Date createtime) {
-		this.createtime = createtime;
+
+	public void setLastmodified(Date lastmodified) {
+		this.lastmodified = lastmodified;
 	}
+
 	@Override
 	public String toString() {
-		return "BillboardReplyBean [replyid=" + replyid + ", billboardid=" + billboardid + ", name=" + name
-				+ ", content=" + content + ", createtime=" + createtime + "]";
+		return "BillboardReplyBean{" +
+				"replyid='" + replyid + '\'' +
+				", billboardid=" + billboardid +
+				", name='" + name + '\'' +
+				", content='" + content + '\'' +
+				", lastmodified=" + lastmodified +
+				", reply=" + reply +
+				", advice=" + advice +
+				", file=" + file +
+				'}';
 	}
-	
-	
 }

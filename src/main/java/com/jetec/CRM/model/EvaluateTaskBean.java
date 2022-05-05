@@ -16,7 +16,7 @@ public class EvaluateTaskBean {
     private String important;
     private String costtime;
     private String taskdate;
-    private Date createtime;
+
 
 
     public EvaluateTaskBean() {
@@ -86,25 +86,5 @@ public class EvaluateTaskBean {
         this.taskdate = taskdate;
     }
 
-    public Date getCreatetime() {
-        return createtime;
-    }
 
-    public void setCreatetime(Date createtime) {
-        this.createtime = createtime;
-    }
-
-    @Override
-    public String toString() {
-        return "EvaluateTaskBean{" +
-                "taskid='" + taskid + '\'' +
-                ", evaluateid='" + evaluateid + '\'' +
-                ", finish='" + finish + '\'' +
-                ", content='" + content + '\'' +
-                ", important='" + important + '\'' +
-                ", costtime='" + costtime + '\'' +
-                ", taskdate='" + taskdate + '\'' +
-                ", createtime=" + createtime +
-                '}';
-    }
 }

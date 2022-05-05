@@ -18,7 +18,6 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Date;
-import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("/Market")
@@ -146,7 +145,6 @@ public class MarketControler {
 
         }
 
-
         MarketBean save = ms.save(marketBean);
 
 
@@ -161,14 +159,7 @@ public class MarketControler {
         return "/Market/Market";
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//存備註
-    @RequestMapping("/SaveRemark")
-    public String SaveRemark(MarketRemarkBean mrb) {
-        System.out.println("存備註");
-        ms.SaveRemark(mrb);
-        return "redirect:/Market/Market/" + mrb.getMarketid();
-    }
+
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //刪除銷售機會
@@ -208,12 +199,12 @@ public class MarketControler {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //刪除備註
-    @RequestMapping("/delRemark/{remarkId}/{MarketId}")
-    public String delRemark(@PathVariable("remarkId") Integer remarkId, @PathVariable("MarketId") Integer MarketId) {
-        System.out.println("*****刪除備註*****");
-        ms.delRemark(remarkId);
-        return "redirect:/Market/Market/" + MarketId;
-    }
+//    @RequestMapping("/delRemark/{remarkId}/{MarketId}")
+//    public String delRemark(@PathVariable("remarkId") Integer remarkId, @PathVariable("MarketId") Integer MarketId) {
+//        System.out.println("*****刪除備註*****");
+//        ms.delRemark(remarkId);
+//        return "redirect:/Market/Market/" + MarketId;
+//    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //存追蹤	
@@ -602,6 +593,7 @@ public class MarketControler {
             trackBean.setCustomerid(uuid);
             MarketBean marketBean = ms.getById(marketid);
             marketBean.setCustomerid(uuid);
+
             ms.save(marketBean);
         }
         // 插入日期
@@ -619,13 +611,7 @@ public class MarketControler {
         String uuid = zTools.getUUID();
         if (trackBean.getTrackid() == null || trackBean.getTrackid().isEmpty())
             trackBean.setTrackid(uuid);
-//插入Customerid
-//		if (trackBean.getCustomerid() == null || trackBean.getCustomerid().isEmpty()) {
-//			trackBean.setCustomerid(uuid);
-//			MarketBean marketBean = ms.getById(marketid);
-//			marketBean.setCustomerid(uuid);
-//			ms.save(marketBean);
-//		}
+
 //插入日期
         trackBean.setTracktime(zTools.getTime(new Date()));
         ms.SaveTrack(trackBean);
@@ -644,6 +630,7 @@ public class MarketControler {
         if (clicks == null) clicks = 0;
         clicks++;
         mBean.setClicks(clicks);
+
         ms.save(mBean);
         return "嘿嘿";
     }

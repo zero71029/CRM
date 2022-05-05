@@ -1,7 +1,6 @@
 package com.jetec.CRM.repository;
 
-import java.util.List;
-
+import com.jetec.CRM.model.PotentialCustomerBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -9,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.jetec.CRM.model.PotentialCustomerBean;
+import java.util.List;
 
 public interface PotentialCustomerRepository extends JpaRepository<PotentialCustomerBean, String> {
 
@@ -30,11 +29,9 @@ public interface PotentialCustomerRepository extends JpaRepository<PotentialCust
 
     List<PotentialCustomerBean> findByIndustry(String industry);
 
-    List<PotentialCustomerBean> findByCreatetimeBetween(String from, String to);
 
     List<PotentialCustomerBean> findByTrackbeanTracktimeBetween(String from, String to);
 
-    List<PotentialCustomerBean> findByTrackbeanTracktimeBetween(String from, String to, Sort sort);
 
 
     @Query(value = "SELECT  *  from potentialcustomer where status = '未處理' OR status = '已聯繫' OR status = '提交主管'", nativeQuery = true)

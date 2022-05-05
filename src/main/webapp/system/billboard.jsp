@@ -192,7 +192,7 @@
                                             </select>
                                         </div>
                                         <div class="col-lg-1 cell cellbackgroud">日期</div>
-                                        <div class="col-lg-4 cell">${bean.createtime}</div>
+                                        <div class="col-lg-4 cell">${bean.lastmodified}</div>
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-1 cell cellbackgroud">群組</div>
@@ -307,7 +307,7 @@
                                             <div class="col-md-1 cell cellbackgroud">${s.name}</div>
                                             <div class="col-md-9 cell" style="position: relative;word-wrap:break-word;">
                                                 ${s.content} <span
-                                                    style="position: absolute;right: 0%;">${s.createtime}</span>
+                                                    style="position: absolute;right: 0%;">${s.lastmodified}</span>
                                             </div>
                                         </div>
                                     </c:forEach>

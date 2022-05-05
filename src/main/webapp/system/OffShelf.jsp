@@ -113,7 +113,7 @@
                                                 <td
                                                     onclick="javascript:location.href='${pageContext.request.contextPath}/system/billboard/${s.billboardid}'">
 
-                                                    ${s.createtime}
+                                                    ${s.lastmodified}
 
                                                 </td>
                                             </tr>

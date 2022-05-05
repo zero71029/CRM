@@ -14,27 +14,27 @@ public class BosMessageBean {
     private String  bosid;//上一層外鍵	
     private String  name;//留言者
     private String  message;//留言內容
-    private Date createtime;//創建時間
+//    private Date createtime;//最後修改時間
+    private String lastmodified;
+
     public BosMessageBean(){
 
     }
 
-    public BosMessageBean(String bosmessageid, String bosid, String name, String message) {
+    public BosMessageBean(String bosmessageid, String bosid, String name, String message, String lastmodified) {
         this.bosmessageid = bosmessageid;
         this.bosid = bosid;
         this.name = name;
         this.message = message;
+        this.lastmodified = lastmodified;
     }
 
-    @Override
-    public String toString() {
-        return "{" +
-                "'bosmessageid':'" + bosmessageid + '\'' +
-                ", 'bosid':'" + bosid + '\'' +
-                ", 'name':'" + name + '\'' +
-                ", 'message':'" + message + '\'' +
-                ", 'createtime':" + createtime +
-                '}';
+    public String getLastmodified() {
+        return lastmodified;
+    }
+
+    public void setLastmodified(String lastmodified) {
+        this.lastmodified = lastmodified;
     }
 
     public String getBosmessageid() {
@@ -69,11 +69,4 @@ public class BosMessageBean {
         this.message = message;
     }
 
-    public Date getCreatetime() {
-        return createtime;
-    }
-
-    public void setCreatetime(Date createtime) {
-        this.createtime = createtime;
-    }
 }

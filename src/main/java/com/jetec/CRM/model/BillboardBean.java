@@ -1,23 +1,10 @@
 package com.jetec.CRM.model;
 
-import java.text.SimpleDateFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "billboard")
@@ -28,8 +15,7 @@ public class BillboardBean {
 	private String user; //發表人	
 	private String theme; //主題	
 	private String content; //內容	
-	private String state; //狀態	
-	private Date createtime; //創造時間	
+	private String state; //狀態
 	private String replytime; //最後回覆時間	
 	private String time;//
 	private String top;//
@@ -37,7 +23,7 @@ public class BillboardBean {
 	private String billboardgroupid;
 	private String billtowngroup;
 	private String  remark;//備註
-	
+	private Date lastmodified; //創造時間
 	
 	//以讀人數
 	@JsonIgnore
@@ -46,7 +32,7 @@ public class BillboardBean {
 	//回覆
 	@JsonIgnore
 	@OneToMany(targetEntity = BillboardReplyBean.class ,mappedBy = "billboardid", cascade = CascadeType.ALL)
-	@OrderBy("createtime DESC")
+	@OrderBy("lastmodified DESC")
 	private List<BillboardReplyBean> reply;
 	//分類群組
 	@ManyToOne(targetEntity = BillboardGroupBean.class,fetch = FetchType.EAGER)
@@ -177,19 +163,31 @@ public class BillboardBean {
 	public void setState(String state) {
 		this.state = state;
 	}
-	public String getCreatetime() {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		return sdf.format(createtime); 
-	}
-	public void setCreatetime(Date createtime) {
-		this.createtime = createtime;
+
+	public Date getLastmodified() {
+		return lastmodified;
 	}
 
+	public void setLastmodified(Date lastmodified) {
+		this.lastmodified = lastmodified;
+	}
+
+	@Override
 	public String toString() {
-		return "BillboardBean [billboardid=" + billboardid + ", user=" + user + ", theme=" + theme + ", content="
-				+ content + ", state=" + state + ", createtime=" + createtime +  "]";
+		return "BillboardBean{" +
+				"billboardid=" + billboardid +
+				", user='" + user + '\'' +
+				", theme='" + theme + '\'' +
+				", content='" + content + '\'' +
+				", state='" + state + '\'' +
+				", lastmodified=" + lastmodified +
+				", replytime='" + replytime + '\'' +
+				", time='" + time + '\'' +
+				", top='" + top + '\'' +
+				", readcount='" + readcount + '\'' +
+				", billboardgroupid='" + billboardgroupid + '\'' +
+				", billtowngroup='" + billtowngroup + '\'' +
+				", remark='" + remark + '\'' +
+				'}';
 	}
-	
-	
-
 }

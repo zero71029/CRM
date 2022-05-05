@@ -10,6 +10,8 @@ public class ForgetAuthorizeBean {
 	@Id
 	private String id;
 	private String email;
+
+
 	public String getId() {
 		return id;
 	}

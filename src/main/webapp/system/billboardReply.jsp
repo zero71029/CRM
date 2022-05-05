@@ -58,7 +58,7 @@
                                                 <!-- 上一頁 -->
                                                 <!-- <a href="#" onclick="self.location=document.referrer;" -->
                                                 <a href="#"
-                                                    onclick="location.href='${pageContext.request.contextPath}/billboard?pag=1&sort=createtime';"
+                                                    onclick="location.href='${pageContext.request.contextPath}/billboard?pag=1&sort=lastmodified';"
                                                     style="text-decoration: none;">
                                                     <img src="${pageContext.request.contextPath}/img/Pre.png" alt="上一頁">
                                                 </a>${bean.bgb.billboardgroup}>${bean.bgb.billboardoption}
@@ -163,7 +163,7 @@
                                             <div class="col-md-8 cell" style="position: relative;">
                                                 ${bean.theme}
                                                 <span
-                                                    style="color: #8e8e8e; position: absolute ;right: 0%;">${bean.createtime}</span>
+                                                    style="color: #8e8e8e; position: absolute ;right: 0%;">${bean.lastmodified}</span>
 
                                             </div>
                                         </div>
@@ -236,10 +236,7 @@
                                                                 action="${pageContext.request.contextPath}/replyChange"
                                                                 class="replyText showText${s.replyid}" method="post">
                                                                 <textarea name="content" id="" style="width: 100%;"
-                                                                    rows="3" maxlength="950">${s.content}
-                                                          
-                                                        
-                                                        </textarea>
+                                                                    rows="3" maxlength="950">${s.content}</textarea>
                                                                 <input type="hidden" name="replyid"
                                                                     value="${s.replyid}">
                                                                 <input type="hidden" name="billboardid"
@@ -257,7 +254,7 @@
                                                     <div class="col-md-1"></div>
                                                     <div class="col-md-5 "
                                                         style="position: relative; word-wrap:break-word;color: #8e8e8e; ">
-                                                        ${s.createtime}
+                                                        ${s.lastmodified}
                                                     </div>
                                                     <div class="col-md-3 ccc" style="text-align: right;">
                                                         <c:if test="${s.name == user.name}">
@@ -304,7 +301,7 @@
                                                                         ${reply.content}
                                                                     </div>
                                                                     <div class="col-md-3 ">
-                                                                        ${reply.createtime} <c:if
+                                                                        ${reply.lastmodified} <c:if
                                                                             test="${reply.name == user.name}">
                                                                             <a
                                                                                 href="javascript:removeReplyreply('${reply.id}')">刪</a>

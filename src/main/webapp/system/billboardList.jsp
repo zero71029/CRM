@@ -170,7 +170,7 @@
                                                 </td>
                                                 <td> ${s.user}</td>
                                                 <td> ${s.state}</td>
-                                                <td> ${s.createtime}</td>
+                                                <td> ${s.lastmodified}</td>
                                             </tr>
                                         </c:forEach>
                                     </c:if>

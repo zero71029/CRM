@@ -30,7 +30,7 @@ public class QuotationBean {
 	private String contactjobtitle;
 	private String remark;
 	private String user;
-	private Date createtime;
+
 	
 	@JsonIgnore
 	@OneToMany(targetEntity = QuotationDetailBean.class,orphanRemoval=true, cascade = CascadeType.ALL)
@@ -106,12 +106,9 @@ public class QuotationBean {
 	public void setUser(String user) {
 		this.user = user;
 	}
-	public Date getCreatetime() {
-		return createtime;
-	}
-	public void setCreatetime(Date createtime) {
-		this.createtime = createtime;
-	}
+
+
+
 	@Override
 	public String toString() {
 		return "QuotationBean [qdb=" + qdb + "]";

@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Timestamp;
+import java.util.Date;
 
 
 @Entity
@@ -17,7 +18,7 @@ public class MarketFileBean {
     private String url;
     private String authorize;
     private String name;
-    private Timestamp createtime;
+
 
     public MarketFileBean() {
     }
@@ -30,13 +31,7 @@ public class MarketFileBean {
         this.name = name;
     }
 
-    public Timestamp getCreatetime() {
-        return createtime;
-    }
 
-    public void setCreatetime(Timestamp createtime) {
-        this.createtime = createtime;
-    }
 
     public String getFileid() {
         return fileid;
@@ -80,6 +75,8 @@ public class MarketFileBean {
         this.fileforeignid = fileforeignid;
     }
 
+
+
     @Override
     public String toString() {
         return "MarketFileBean{" +
@@ -88,7 +85,7 @@ public class MarketFileBean {
                 ", url='" + url + '\'' +
                 ", authorize='" + authorize + '\'' +
                 ", name='" + name + '\'' +
-                ", createtime=" + createtime +
+
                 '}';
     }
 }

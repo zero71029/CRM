@@ -1,18 +1,7 @@
 package com.jetec.CRM.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.io.Serializable;
-import java.util.Date;
+import javax.persistence.*;
 import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 
 @Entity
@@ -28,7 +17,6 @@ public class AdminBean  {
     private String password;//
     private String 	state;//
     private String 	position;//職位
-    private  Date create_data;//
     private String department;//部門	
     private String 	director;//主管
     private String 	dutyDay;//到職日
@@ -135,12 +123,7 @@ public class AdminBean  {
 	public void setPosition(String position) {
 		this.position = position;
 	}
-	public Date getCreate_data() {
-		return create_data;
-	}
-	public void setCreate_data(Date create_data) {
-		this.create_data = create_data;
-	}
+
 	public String getDepartment() {
 		return department;
 	}
@@ -165,7 +148,6 @@ public class AdminBean  {
 				", password='" + password + '\'' +
 				", state='" + state + '\'' +
 				", position='" + position + '\'' +
-				", create_data=" + create_data +
 				", department='" + department + '\'' +
 				", director='" + director + '\'' +
 				", dutyDay='" + dutyDay + '\'' +

@@ -84,7 +84,7 @@
                     <tr>
                         <td><input type="checkbox" id="activity" @change="changeActivity"></td>
                         <td></td>
-                        <td>
+                        <td style="max-width: 180px;">
                             <el-select v-model="inSortState" multiple placeholder="階段" @change="sortState"
                                        size="mini">
                                 <el-option v-for="item in options" :key="item.value" :label="item.label"
@@ -92,7 +92,7 @@
                                 </el-option>
                             </el-select>
                         </td>
-                        <td>客戶</td>
+                        <td style="width: 230px;">客戶</td>
                         <td>描述</td>
                         <td>負責人</td>
                         <td>機率</td>

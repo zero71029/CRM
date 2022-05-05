@@ -310,7 +310,7 @@
                                 <div class="col-md-1 cell cellbackgroud">${s.name}</div>
                                 <div class="col-md-9 cell" style="position: relative;word-wrap:break-word;">
                                         ${s.content} <span
-                                        style="position: absolute;right: 0%;">${s.createtime}</span>
+                                        style="position: absolute;right: 0%;">${s.lastmodified}</span>
                                 </div>
                             </div>
                         </c:forEach>
