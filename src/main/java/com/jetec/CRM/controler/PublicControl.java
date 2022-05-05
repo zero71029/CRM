@@ -79,11 +79,9 @@ public class PublicControl {
     // 主頁面
     @RequestMapping(path = {"billboard"})
     public String billboard(Model model, HttpSession session, @RequestParam("pag") Integer pag,
-                            @RequestParam("sort") String sortString, Authentication authentication) {
+                            @RequestParam("sort") String sortString ) {
         System.out.println("*****主頁面*****");
 
-//        List<BillboardBean> advice = new ArrayList<BillboardBean>();
-//        List<BillboardBean> unread = new ArrayList<BillboardBean>();
 
         if(sortString.equals("createtime"))sortString ="lastmodified";
 
@@ -144,8 +142,8 @@ public class PublicControl {
     public Map<String, Object> CRMInit(HttpSession session) {
         System.out.println("*****初始化*****");
         Map<String, Object> result = new HashMap<>();
-        List<BillboardBean> advice = new ArrayList<BillboardBean>();
-        List<BillboardBean> unread = new ArrayList<BillboardBean>();
+        List<BillboardBean> advice = new ArrayList<>();
+        List<BillboardBean> unread = new ArrayList<>();
 
         // 抓取登入者
         AdminBean user = (AdminBean) session.getAttribute("user");
@@ -324,7 +322,7 @@ public class PublicControl {
     @ResponseBody
     public String upFile(MultipartHttpServletRequest multipartRequest,
                          @PathVariable("authorizeId") String authorizeId) {
-        System.out.println("*****上傳型錄*****");
+        System.out.println("*****上傳型錄");
         String uuid = zTools.getUUID();
         Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
         System.out.println("fileMap " + fileMap);
@@ -459,8 +457,8 @@ public class PublicControl {
         String mailTo = abean.getEmail();
         String Subject = bean.getName() + "回覆留言";
         String text = "主題 :" + bb.getTheme() + "<br>回覆 :" + bean.getContent();
-        StringBuilder maillist = new StringBuilder();
-        zTools.mail(mailTo, text, Subject, maillist.toString());
+
+        zTools.mail(mailTo, text, Subject, "");
         // 給發佈人 存mail
         if (!user.getName().equals(abean.getName()))
             ss.saveMail(abean.getAdminid(), bean.getBillboardid(), "新留言");

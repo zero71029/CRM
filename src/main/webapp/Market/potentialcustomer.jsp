@@ -349,7 +349,7 @@
                                         <div class="col-md-8 cellz FormPadding">
 
                                             <el-input type="textarea" v-model="customer.remark" rows="5" id="remark"
-                                                maxlength="500" show-word-limit name="remark"
+                                                maxlength="600" show-word-limit name="remark"
                                                 @input="changeTextarea('remark')">
 
 

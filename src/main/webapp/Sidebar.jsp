@@ -84,6 +84,15 @@
                     <!-- <i class="el-icon-pie-chart"></i>  -->
                     數據管理
                 </button>
+
+                <button class="list-group-item"
+                    onclick="javascript:location.href='${pageContext.request.contextPath}/Task/TaskList.jsp'">
+                    每日任務
+                </button>
+                <button class="list-group-item"
+                    onclick="javascript:location.href='${pageContext.request.contextPath}/JobDescription/JobDescriptionList.jsp'">
+                    ⼯作職掌說明
+                </button>
                 <c:if test='${user.position == "主管" || user.position == "系統" ||user.position == "總經理"}'>
                     <button class="list-group-item " onclick="system()">
                         系統管理
@@ -105,14 +114,6 @@
                         討論區管理
                     </button>
                 </c:if>
-                <button class="list-group-item"
-                    onclick="javascript:location.href='${pageContext.request.contextPath}/Task/TaskList.jsp'">
-                    每日任務
-                </button>
-                <button class="list-group-item"
-                    onclick="javascript:location.href='${pageContext.request.contextPath}/JobDescription/JobDescriptionList.jsp'">
-                    ⼯作職掌說明
-                </button>
             </ul>
             <!-- session 認證-->
             <c:if test='${empty user}'>

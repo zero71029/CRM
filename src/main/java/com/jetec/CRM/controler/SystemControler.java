@@ -305,48 +305,10 @@ public class SystemControler {
 					String bin_path = tomcat_path.substring(tomcat_path.lastIndexOf("\\") + 1, tomcat_path.length());
 					System.out.println("Tomcat伺服器所在路徑的最後一個檔案目錄: " + bin_path);
 					System.out.println("bin_path == " + bin_path);
-					String path2 = "E:/CRMfile/";
+					String path2 = "C:/CRMfile/";
 //					String path2 = "E:/CRMfile/";
 					String path3 = "C:\\Users\\Rong\\Desktop\\tomcat-9.0.41\\webapps\\CRM\\WEB-INF\\classes\\static\\file\\";
-					// 檔案輸出
-//					String filePath =path2 + uuid+lastname;
-//					System.out.println("檔案輸出到"+filePath);
-//					fileMap.get("file" + i).transferTo(new File(filePath));
-//					// 檔案複製
-//					String pic_path = null;
-//					try {
-//						// 判斷最後一個檔案目錄是否為bin目錄
-//						if (("bin").equals(bin_path)) {
-//							System.out.println("binbinbinbinbinbinbinbinbinbinbinbin");
-//							// 獲取儲存上傳圖片的檔案路徑
-//							pic_path = tomcat_path.substring(0, System.getProperty("user.dir").lastIndexOf("\\"))
-//									+ "/webapps/CRM/WEB-INF/classes/static/file/";
-//							// 列印路徑							
-//							File source = new File(filePath);
-//							File dest = new File(pic_path + uuid+lastname);
-//							System.out.println("複製到"+pic_path+uuid+lastname);
-//							Files.copy(source.toPath(), dest.toPath());
-//							System.out.println("複製成功");
-//						} else {
-//							File source = new File(filePath);
-//							File dest = new File(path3 + uuid+lastname);
-//							System.out.println("複製2到"+pic_path+path3 + uuid+lastname);
-//							Files.copy(source.toPath(), dest.toPath());
-//							System.out.println("複製2成功");
-//						}
-//
-//					} catch (Exception e) {
-//						System.out.println("複製失敗");
-//					}
-//
-////3. 儲存檔案名稱到資料庫
-//					BillboardFileBean billBoardFileBean = new BillboardFileBean();
-//					billBoardFileBean.setBillboardid(billboardid);
-//					billBoardFileBean.setFileid(uuid);
-//					billBoardFileBean.setUrl(uuid + lastname); //使用uuid建檔名
-////					billBoardFileBean.setUrl(fileMap.get("file" + i).getOriginalFilename());
-//					billBoardFileBean.setName(fileMap.get("file" + i).getOriginalFilename());
-//					ss.saveUrl(billBoardFileBean);
+
 
 					// 檔案輸出
 					System.out.println("檔案輸出到" + path2 + fileMap.get("file" + i).getOriginalFilename());

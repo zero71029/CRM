@@ -24,10 +24,10 @@ public interface WorKRepository extends JpaRepository<WorkBean, String> {
 
 	List<WorkBean> findByUserAndState(String name, String state);
 
-	@Query(value = "SELECT  *  from work where state != '失敗結案' AND state != '成功結案' order by createtime DESC ", nativeQuery = true)
+	@Query(value = "SELECT  *  from work where state != '失敗結案' AND state != '成功結案' order by aaa DESC ", nativeQuery = true)
 	Page<WorkBean> findStage(Pageable p);
 
-	@Query(value = "SELECT  count(*)  from work where state != '失敗結案' AND state != '成功結案' order by createtime DESC ", nativeQuery = true)
+	@Query(value = "SELECT  count(*)  from work where state != '失敗結案' AND state != '成功結案' order by aaa DESC ", nativeQuery = true)
 	Integer getTotal();
 
 	Page<WorkBean> findByNameLikeIgnoreCase(String string, Pageable p);
