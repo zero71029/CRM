@@ -62,12 +62,8 @@ public class TaskController {
         } else {
             bean.setName(bean.getName());
         }
-        int i = 0;
+
         for (EvaluateTaskBean task : bean.getTask()) {
-//            if (task.getTaskid() == null || task.getTaskid().isEmpty()) {
-//                task.setTaskid(zTools.getUUID());
-//                i++;
-//            }
             task.setEvaluateid(bean.getEvaluateid());
             task.setTaskdate(ddd);
         }
@@ -156,7 +152,7 @@ public class TaskController {
     @RequestMapping("/sql")
     @ResponseBody
     public String sql() {
-        System.out.println("*****測試*****");
+        System.out.println("*****資料庫備份*****");
         //////
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         try {
@@ -181,5 +177,8 @@ public class TaskController {
         }
 
     }
+
+
+
 
 }

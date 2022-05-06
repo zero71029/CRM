@@ -128,8 +128,7 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
     @Query(value = "SELECT  COUNT(*)  from market WHERE user = ?1 AND stage = ?2 AND   aaa BETWEEN ?3 AND ?4 ", nativeQuery = true)
     Integer getAminStateNum(String admin,String state, String startDay, String endDay);
 
-
-
+    List<MarketBean> findByClientid(Integer clientid);
 
 
 //    @Modifying

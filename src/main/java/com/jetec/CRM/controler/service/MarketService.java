@@ -537,6 +537,10 @@ public class MarketService {
 
     }
 
+    public List<MarketBean> getAll() {
+        return mr.findAll();
+    }
+
 
 //    public void updata(String marketid, String field, String val) {
 //        mr.updata(marketid,field,val);

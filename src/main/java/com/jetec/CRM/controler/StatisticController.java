@@ -73,14 +73,14 @@ public class StatisticController {
         System.out.println("搜索公司數量");
         Map<String, Object> result = new HashMap<>();
 
-        if (startDay == null || startDay == "") {
+        if (startDay == null || startDay.equals("")) {
             startDay = zTools.getTime(new Date());
             startDay = startDay.substring(0, 10);
             startDay = startDay + " 00:00";
         } else {
             startDay = startDay + " 00:00";
         }
-        if (endDay == "") {
+        if (Objects.equals(endDay, "")) {
             endDay = zTools.getTime(new Date());
         } else {
             endDay = endDay + " 24:00";
@@ -122,7 +122,6 @@ public class StatisticController {
         while (addDay(endDay).compareTo(startDay) > 0) {
             String s = startDay + " 00:00";
             String e = startDay + " 23:00";
-            List<String> ll = ss.selectCompany(s, e);
             result.put(startDay, ss.selectCompany(s, e));
             startDay = addDay(startDay);
         }
@@ -135,13 +134,6 @@ public class StatisticController {
     private Map<String, Integer> producttype(@RequestParam("from") String startDay, @RequestParam("to") String endDay, List<LibraryBean> libraryBeanList) {
         System.out.println("商品種類");
         Map<String, Integer> result = new HashMap<>();
-
-
-        String[] type = {"尚未分類", "大型顯示器", "空氣品質", "流量-AICHI", "流量-RGL", "流量-Siargo", "流量-其他", "記錄器", "資料收集器-JETEC", "資料收集器-其他", "溫濕-JETEC", "溫濕-GALLTEC", "溫濕-E+E", "溫濕-其他", "紅外線",
-                "壓力-JETEC", "壓力-HUBA", "壓力-COPAL", "壓力-其他", "差壓", "氣體-JETEC", "氣體-Senko", "氣體-GASDNA", "氣體-手持",
-                "氣體-其他", "氣象儀器-土壤/pH", "氣象儀器-日照/紫外線", "氣象儀器-風速/風向", "氣象儀器-雨量", "氣象儀器-其他", "水質相關", "液位/料位-JETEC",
-                "液位/料位-DINEL", "液位/料位-HONDA", "液位/料位-其他", "溫度貼紙", "溫控器-TOHO", "溫控器-其他", "感溫線棒", "無線傳輸", "編碼器/電位計", "能源管理控制", "食品", "其它"};
-
         String s = startDay + " 00:00";
         String e = endDay + " 23:00";
 
@@ -198,7 +190,7 @@ public class StatisticController {
 
         List<AdminBean> adminList = systemService.getAdminByDepartment("業務");
         for (AdminBean abean : adminList) {
-            List sta = new ArrayList();
+            List<Integer> sta = new ArrayList<>();
             sta.add(ss.getAminStateNum(abean.getName(), "成功結案", startDay, endDay));
             sta.add(ss.getAminStateNum(abean.getName(), "失敗結案", startDay, endDay));
             result.put(abean.getName(), sta);

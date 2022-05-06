@@ -1,9 +1,7 @@
 package com.jetec.CRM.controler;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.jetec.CRM.controler.service.ClientService;
+import com.jetec.CRM.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -13,13 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jetec.CRM.controler.service.ClientService;
-import com.jetec.CRM.model.ClientAddressBean;
-import com.jetec.CRM.model.ClientBean;
-import com.jetec.CRM.model.ContactBean;
-import com.jetec.CRM.model.MarketBean;
-import com.jetec.CRM.model.QuotationBean;
-import com.jetec.CRM.model.WorkBean;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/CRM")
@@ -44,9 +37,24 @@ public class CustomerControler {
         System.out.println("*****儲存客戶*****");
         System.out.println(clientBean);
 
+
+
         clientBean.setState(1);
-        ClientBean save =
-            cs.SaveAdmin(clientBean);
+        ClientBean save =  cs.SaveAdmin(clientBean);
+
+
+        List<MarketBean>  marketList= cs.getMarketListByClientid(clientBean.getClientid());
+        for (MarketBean marketBean:marketList ) {
+            marketBean.setClient(clientBean.getName());
+
+
+            if(clientBean.getSerialnumber() == null ||clientBean.getSerialnumber().equals("")){
+                System.out.println("沒有編號");
+            }else {
+                marketBean.setSerialnumber(clientBean.getSerialnumber());
+            }
+            cs.saveMarket(marketBean);
+        }
         return "redirect:/CRM/client/"+save.getClientid();
     }
 

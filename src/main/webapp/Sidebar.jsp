@@ -22,9 +22,9 @@
         <!-- 引入element-ui样式 -->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/js/element-ui.css">
         <!-- 引入element-ui组件库 -->
-        <script src="${pageContext.request.contextPath}/js/element-ui.js"></script>        
+        <script src="${pageContext.request.contextPath}/js/element-ui.js"></script>
         <script src="//unpkg.com/element-ui/lib/umd/locale/zh-TW.js"></script>
-        <script>         
+        <script>
             ELEMENT.locale(ELEMENT.lang.zhTW)
         </script>
 
@@ -93,12 +93,11 @@
                     onclick="javascript:location.href='${pageContext.request.contextPath}/JobDescription/JobDescriptionList.jsp'">
                     ⼯作職掌說明
                 </button>
-                <c:if test='${user.position == "主管" || user.position == "系統" ||user.position == "總經理"}'>
+                <c:if
+                    test='${user.position == "主管" || user.position == "系統" ||user.position == "總經理" ||user.name == "謝姍妤"}'>
                     <button class="list-group-item " onclick="system()">
                         系統管理
                     </button>
-                    <button class="system"
-                        onclick="javascript:location.href='${pageContext.request.contextPath}/system/libraryList.jsp'">下拉選單管理</button>
                     <c:if test='${user.position == "系統"||user.position == "總經理"}'>
                         <button class="system"
                             onclick="javascript:window.open('${pageContext.request.contextPath}/task/sql')">
@@ -113,6 +112,11 @@
                         onclick="javascript:location.href='${pageContext.request.contextPath}/system/billboardList?pag=1'">
                         討論區管理
                     </button>
+                    <button class="system"
+                        onclick="javascript:location.href='${pageContext.request.contextPath}/system/libraryList.jsp'">下拉選單管理
+                    </button>
+
+
                 </c:if>
             </ul>
             <!-- session 認證-->

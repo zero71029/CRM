@@ -93,8 +93,8 @@ public class ZeroTools {
      * @maillist 群發郵件
      *
      */
-    private String STMP = "";
-    private String secret = "";
+    private final String STMP = "tlcfmczhhdahukbj";
+    private final String secret = "";
 
     // 郵件
     public void mail(String mailTo, String text, String Subject, String maillist) {
@@ -252,9 +252,8 @@ public class ZeroTools {
             res.close();
 
             // 判斷成功存在session
-            if ((boolean) json.get("success")) {
-                return true;
-            }
+            if ((boolean) json.get("success"))  return true;
+
             return false;
         } catch (Exception e) {
             // TODO Auto-generated catch block

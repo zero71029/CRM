@@ -401,7 +401,7 @@
                                         <div class="col-md-3 cellz">狀態</div>
                                         <div class="col-md-4 cellz FormPadding">
                                             <select name="status" class="form-select cellFrom" @change="changeStatus"
-                                                v-model="customer.status"  >
+                                                v-model="customer.status">
                                                 <option value="未處理">未處理
                                                 </option>
                                                 <option value="已聯繫">已聯繫
@@ -1266,11 +1266,11 @@
                     },
                     //測回 或 失敗結案 快捷鍵
                     BosOperate(state) {
-                     
+
                         this.customer.status = state;
                         // this.submitForm();
                         //需要等 才能成功
-                        setTimeout(function(){vm.submitForm();},500);
+                        setTimeout(function () { vm.submitForm(); }, 500);
 
                     },
                     open(s) {//修改追蹤資訊
@@ -1453,7 +1453,47 @@
 
                             this.changeStatusVisible = true;
                         }
-                    },
+                    }, //失去焦點,儲存
+                    chageToSave(field, val) {
+                        console.log("this",this);
+                        if (this.bean.marketid) {
+                            console.log(this.oldBean[field]);
+                            console.log(field, val);
+                            if (this.oldBean[field] != val) {
+                                let data = new FormData();
+                                data.append("marketid", this.bean.marketid);
+                                data.append("field", field);
+                                data.append("val", val);
+
+                                $.ajax({
+                                    url: '${pageContext.request.contextPath}/Market/blur',
+                                    type: 'POST',
+                                    data: data,
+                                    async: false,
+                                    cache: false,
+                                    contentType: false,
+                                    processData: false,
+                                    success: (response => (
+
+                                        this.$message({
+                                            message: '儲存 ' + field + " = " + val,
+                                            type: 'success'
+                                        }),
+                                        this.oldBean = Object.assign({}, this.bean)
+
+
+                                    )),
+                                    error: function (returndata) {
+                                        console.log(returndata);
+                                    }
+                                })
+                            }
+                        }
+                    }
+
+
+
+
 
                 },
             })

@@ -328,4 +328,11 @@ public class ClientService {
 		return result;
     }
 
+	public void saveMarket(MarketBean marketBean) {
+		mr.save(marketBean);
+	}
+
+	public List<MarketBean> getMarketListByClientid(Integer clientid) {
+		return mr.findByClientid(clientid);
+	}
 }

@@ -52,7 +52,7 @@ public class PotentialController {
     public Map<String, Object> clientList(@RequestParam("pag") Integer pag) {
         System.out.println("*****讀取潛在客戶列表*****");
         pag--;
-        Map<String, Object> result = new HashMap();
+        Map<String, Object> result = new HashMap<>();
         result.put("list", PCS.getList(pag));
         result.put("todayTotal", PCS.gettodayTotal());
         return result;
@@ -89,7 +89,7 @@ public class PotentialController {
     @RequestMapping("/selectDate")
     public List<PotentialCustomerBean> selectDate(@RequestParam("startDay") String startDay, @RequestParam("endDay") String endDay) {
         System.out.println("搜索潛在客戶 日期");
-        if (startDay == null || startDay == "") {
+        if (startDay == null || startDay.equals("") ) {
 //			startDay = zTools.getTime(new Date());
 //			startDay = startDay.substring(0,10);
 //			startDay = startDay + " 00:00";
@@ -97,7 +97,7 @@ public class PotentialController {
         } else {
             startDay = startDay + " 00:00";
         }
-        if (endDay == "") {
+        if (endDay.equals("") ) {
             endDay = zTools.getTime(new Date());
         } else {
             endDay = endDay + " 24:00";
@@ -145,7 +145,7 @@ public class PotentialController {
     @RequestMapping("/selectSource")
     public List<PotentialCustomerBean> selectSource(@RequestBody Map<String, Object> data) {
         System.out.println("搜索潛在客戶by來源");
-        List<PotentialCustomerBean> result = new ArrayList<PotentialCustomerBean>();
+        List<PotentialCustomerBean> result = new ArrayList<>();
         for (String source : (List<String>) data.get("source")) {
 
             result.addAll(PCS.selectSource(source));
@@ -175,12 +175,11 @@ public class PotentialController {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索潛在客戶by追蹤時間
     @RequestMapping("/selectTrackDate")
-    public List<PotentialCustomerBean> selectTrackDate(@RequestParam("from") String from,
-                                                       @RequestParam("to") String to) {
+    public List<PotentialCustomerBean> selectTrackDate(@RequestParam("from") String from,  @RequestParam("to") String to) {
         System.out.println("搜索潛在客戶by追蹤時間");
         List<PotentialCustomerBean> list = PCS.selectPotentialCustomerTrack(from, to);
-        LinkedHashSet<PotentialCustomerBean> hashSet = new LinkedHashSet<PotentialCustomerBean>(list);
-        List<PotentialCustomerBean> result = new ArrayList<PotentialCustomerBean>(hashSet);
+        LinkedHashSet<PotentialCustomerBean> hashSet = new LinkedHashSet<>(list);
+        List<PotentialCustomerBean> result = new ArrayList<>(hashSet);
         return result;
     }
 
@@ -267,12 +266,12 @@ public class PotentialController {
     @RequestMapping("/selectPotential")
     public List<PotentialCustomerBean> selectPotential(@RequestParam("startDay") String startDay, @RequestParam("endDay") String endDay, @RequestParam("key") String key, @RequestParam("val") List<String> val) {
         System.out.println("搜索潛在客戶ByAll");
-        if (startDay == null || startDay == "") {
+        if (startDay == null || startDay.equals("")) {
             startDay = "2022-02-01 00:00";
         } else {
             startDay = startDay + " 00:00";
         }
-        if (endDay == "") {
+        if (endDay.equals("")) {
             endDay = zTools.getTime(new Date());
         } else {
             endDay = endDay + " 24:00";

@@ -1,16 +1,7 @@
 package com.jetec.CRM.controler;
 
-import java.io.File;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
+import com.jetec.CRM.Tool.ZeroTools;
+import com.jetec.CRM.controler.service.SystemService;
 import com.jetec.CRM.model.*;
 import com.jetec.CRM.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +12,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,12 +20,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.jetec.CRM.Tool.ZeroTools;
-import com.jetec.CRM.controler.service.SystemService;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/system")   
-@PreAuthorize("hasAuthority('系統') OR hasAuthority('主管') OR hasAuthority('業務')")
+@PreAuthorize("hasAuthority('系統') OR hasAuthority('主管') OR hasAuthority('業務')OR hasAuthority('謝姍妤')" )
 public class SystemControler {
 
 	@Autowired
@@ -71,8 +67,8 @@ public class SystemControler {
 		System.out.println("*****員工列表排序*****");
 		ServletContext app = sce.getServletContext();
 		List<LibraryBean> list = (List<LibraryBean>) app.getAttribute("library");//拿列表
-		List<String> department = new ArrayList<String>();//部門列表
-		List<String> nnn = new ArrayList<String>();
+		List<String> department = new ArrayList<>();//部門列表
+		List<String> nnn = new ArrayList<>();
 		if (so.equals("department")) {
 			for (LibraryBean library : list) {//把要排的單獨拿出來
 				if (library.getLibrarygroup().equals("department"))
@@ -123,20 +119,20 @@ public class SystemControler {
 				}
 			}
 		}
-//		System.out.println(department);
-//		System.out.println(nnn);
+
 		nnn.add(name);
 		System.out.println(nnn);
-		List<AdminBean> Billboard = new ArrayList<AdminBean>();
-		List<AdminBean> dList = new ArrayList<AdminBean>();
+		List<AdminBean> Billboard = new ArrayList<>();
+		List<AdminBean> dList ;
 		for (String d : nnn) {///再根據列表去脂料庫拿取
 			if (so.equals("department")) {
 				dList = ar.getByDepartment(d);
 			} else {
 				dList = ar.getByPosition(d);
 			}
-			for (AdminBean r : dList)
-				Billboard.add(r);
+			Billboard.addAll(dList);
+
+
 		}
 
 		model.addAttribute("list", Billboard);
@@ -172,8 +168,8 @@ public class SystemControler {
 			pag = 1;
 		pag--;
 		// 分頁 全部有幾頁
-		Pageable p = (Pageable) PageRequest.of(pag, 30, Direction.DESC, "lastmodified");
-		Page<BillboardBean> page = (Page<BillboardBean>) br.getByStateAndTop("公開", "", p);
+		Pageable p =  PageRequest.of(pag, 30, Direction.DESC, "lastmodified");
+		Page<BillboardBean> page = br.getByStateAndTop("公開", "", p);
 		model.addAttribute("TotalPages", page.getTotalPages());
 		// 公佈欄列表
 		Sort sort = Sort.by(Direction.DESC, "lastmodified");
@@ -281,8 +277,7 @@ public class SystemControler {
 //上傳型錄
 	@RequestMapping("/upFile/{billboardid}")
 	@ResponseBody
-	public String upFile(MultipartHttpServletRequest multipartRequest, @PathVariable("billboardid") Integer billboardid,
-			Model model) {
+	public String upFile(MultipartHttpServletRequest multipartRequest, @PathVariable("billboardid") Integer billboardid) {
 		System.out.println("*****上傳型錄*****");
 		String uuid = zTools.getUUID();
 		Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
@@ -314,7 +309,7 @@ public class SystemControler {
 					System.out.println("檔案輸出到" + path2 + fileMap.get("file" + i).getOriginalFilename());
 					fileMap.get("file" + i).transferTo(new File(path2 + fileMap.get("file" + i).getOriginalFilename()));
 					// 檔案複製
-					String pic_path = null;
+					String pic_path  ;
 					try {
 						// 判斷最後一個檔案目錄是否為bin目錄
 						if (("bin").equals(bin_path)) {
@@ -420,7 +415,7 @@ public class SystemControler {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //修改員工
 	@RequestMapping("/SaveAdmin")
-	public String SaveAdmin(AdminBean abean, HttpServletRequest req, HttpSession session) {
+	public String SaveAdmin(AdminBean abean, HttpServletRequest req ) {
 		System.out.println("*****修改員工*****");
 		ar.save(abean);
 		ServletContext sce = req.getServletContext();

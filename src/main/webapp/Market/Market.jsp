@@ -1608,7 +1608,6 @@
                     },
                     //失去焦點,儲存
                     chageToSave(field, val) {
-
                         if (this.bean.marketid) {
                             console.log(this.oldBean[field]);
                             console.log(field, val);

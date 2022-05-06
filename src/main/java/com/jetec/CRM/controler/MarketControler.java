@@ -82,12 +82,10 @@ public class MarketControler {
     public Map<String, Object> Market(@RequestParam("pag") Integer pag, HttpSession session) {
         System.out.println("*****讀取銷售機會列表****");
         pag--;
-        Map<String, Object> result = new HashMap();
+        Map<String, Object> result = new HashMap<>();
         AdminBean aBean = (AdminBean) session.getAttribute("user");
         List<MarketStateBean> stateList = ms.getMarketStateList(aBean.getAdminid());
-        List<MarketBean> list = new ArrayList<>();
-//        Map<String, Object> map = new HashMap<>();
-
+        List<MarketBean> list ;
         //
         if (stateList.size() > 0) {
             System.out.println(stateList.size());
@@ -177,7 +175,7 @@ public class MarketControler {
     @RequestMapping("/selectMarket")
     public List<MarketBean> selectMarket(@RequestParam("from") String startDay, @RequestParam("to") String endDay, @RequestParam("key") String key, @RequestParam("val") List<String> val) {
         System.out.println("搜索銷售機會ALL");
-        if (startDay == null || startDay == "") {
+        if (startDay == null || startDay.equals("")) {
 //            startDay = zTools.getTime(new Date());
 //            startDay = startDay.substring(0, 10);
 //            startDay = startDay + " 00:00";
@@ -185,7 +183,7 @@ public class MarketControler {
         } else {
             startDay = startDay + " 00:00";
         }
-        if (endDay == "") {
+        if (endDay.equals("") ) {
             endDay = zTools.getTime(new Date());
         } else {
             endDay = endDay + " 24:00";
@@ -351,7 +349,7 @@ public class MarketControler {
         clientBean.setSerialnumber(Bean.getSerialnumber());
 
 
-        ClientBean saveBean = cs.SaveAdmin(clientBean);
+        cs.SaveAdmin(clientBean);
         return "新增客戶";
     }
 
@@ -359,7 +357,7 @@ public class MarketControler {
 //判斷聯絡人存在
     @RequestMapping("/existsContact")
     @ResponseBody
-    public String existsContact(PotentialCustomerBean Bean, Model model) {
+    public String existsContact(PotentialCustomerBean Bean) {
         System.out.println("*****判斷聯絡人存在****");
         if (cs.existsContactByName(Bean.getName(), Bean.getCompany())) {
             System.out.println("*****聯絡人已存在****");
@@ -501,7 +499,7 @@ public class MarketControler {
     @ResponseBody
     public List<MarketBean> selectDate(@RequestParam("from") String startDay, @RequestParam("to") String endDay) {
         System.out.println("搜索銷售機會 日期");
-        if (startDay == null || startDay == "") {
+        if (startDay == null || startDay.equals("") ) {
 //            startDay = zTools.getTime(new Date());
 //            startDay = startDay.substring(0, 10);
 //            startDay = startDay + " 00:00";
@@ -509,7 +507,7 @@ public class MarketControler {
         } else {
             startDay = startDay + " 00:00";
         }
-        if (endDay == "") {
+        if (endDay.equals("")) {
             endDay = zTools.getTime(new Date());
         } else {
             endDay = endDay + " 24:00";
@@ -623,7 +621,7 @@ public class MarketControler {
     //點擊數
     @RequestMapping("/clicks/{id}")
     @ResponseBody
-    public String clicks(Model model, @PathVariable("id") String id) {
+    public String clicks( @PathVariable("id") String id) {
         System.out.println("點擊數");
         MarketBean mBean = ms.getById(id);
         Integer clicks = mBean.getClicks();
@@ -724,8 +722,7 @@ public class MarketControler {
         System.out.println("刪除使用者狀態");
         ms.delState(marketstateid);
         AdminBean aBean = (AdminBean) session.getAttribute("user");
-        List<MarketStateBean> stateList = ms.getMarketStateList(aBean.getAdminid());
-        return stateList;
+        return ms.getMarketStateList(aBean.getAdminid());
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -759,7 +756,7 @@ public class MarketControler {
             String sql1 = "select " + field + " from market where marketid = '" + marketid + "'";
             rs = stmt.executeQuery(sql1);
             rs.next();
-            String source;
+
             ChangeMessageBean cmbean;
             if ("cost".equals(field)) {
                 cmbean = new ChangeMessageBean(zTools.getUUID(), marketid, field, String.valueOf(rs.getInt(1)), val, zTools.getTime(new Date()));
@@ -805,6 +802,34 @@ public class MarketControler {
 
 
         return true;
+    }
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//*******************
+    @RequestMapping("/check")
+    @ResponseBody
+    public String check() {
+        System.out.println("*****測試*****");
+        //////
+        List<MarketBean> marketBeanList = new ArrayList<>();
+        marketBeanList =     ms.getAll();
+        for(MarketBean mBean : marketBeanList){
+           ClientBean clientBean = cs.getById(mBean.getClientid());
+           if(!clientBean.getName().equals(mBean.getClient())){
+               System.out.println(clientBean.getName() +"  :  "+mBean.getClient());
+
+               mBean.setClient(clientBean.getName() );
+               ms.save(mBean);
+
+
+
+           }
+        }
+
+
+        System.out.println("修改結束");
+        return "修改結束";
     }
 
 

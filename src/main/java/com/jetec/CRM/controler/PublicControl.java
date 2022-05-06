@@ -91,8 +91,8 @@ public class PublicControl {
             pag = 1;
         pag--;
         Sort sort = Sort.by(Direction.DESC, sortString);
-        Pageable p = (Pageable) PageRequest.of(pag, 30, sort);
-        Page<BillboardBean> page = (Page<BillboardBean>) br.getByStateAndTop("公開", "", p);
+        Pageable p =  PageRequest.of(pag, 30, sort);
+        Page<BillboardBean> page =  br.getByStateAndTop("公開", "", p);
 //		全部有幾頁
         model.addAttribute("TotalPages", page.getTotalPages());
 
@@ -353,7 +353,7 @@ public class PublicControl {
                     fileMap.get("file" + i).transferTo(new File(path2));
                     System.out.println("輸出成功");
                     // 檔案複製
-                    String pic_path = null;
+                    String pic_path ;
                     try {
                         // 判斷最後一個檔案目錄是否為bin目錄
                         if (("bin").equals(bin_path)) {
@@ -520,8 +520,8 @@ public class PublicControl {
     @ResponseBody
     public String removeReplyreply(@PathVariable("ReplyreplyId") String ReplyreplyId) {
         System.out.println("*****刪除留言的留言*****");
-        String result = ss.removeReplyreply(ReplyreplyId);
-        return result;
+
+        return ss.removeReplyreply(ReplyreplyId);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -530,8 +530,8 @@ public class PublicControl {
     @ResponseBody
     public List<ReplyAdviceBbean> replyAdvice(@PathVariable("ReplyId") String ReplyId) {
         System.out.println("*****讀取留言的@*****");
-        List<ReplyAdviceBbean> result = ss.replyAdvice(ReplyId);
-        return result;
+
+        return ss.replyAdvice(ReplyId);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -582,7 +582,7 @@ public class PublicControl {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 忘記密碼
     @RequestMapping("/forget")
-    public String forget(AdminBean bean, Model model, Locale locale, HttpSession session) {
+    public String forget(AdminBean bean, Model model) {
         System.out.println("*****忘記密碼******");
         System.out.println(bean);
         String uuid = zTools.getUUID();
@@ -645,8 +645,8 @@ public class PublicControl {
     @RequestMapping("/workitem/{adminname}")
     @ResponseBody
     public List<WorkBean> workitem(@PathVariable("adminname") String adminname) {
-        List<WorkBean> result = ws.workitem(adminname);
-        return result;
+
+        return ws.workitem(adminname);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -654,8 +654,8 @@ public class PublicControl {
     @RequestMapping("/marketitem/{adminname}")
     @ResponseBody
     public List<MarketBean> marketitem(@PathVariable("adminname") String adminname) {
-        List<MarketBean> result = ws.marketitem(adminname);
-        return result;
+
+        return ws.marketitem(adminname);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -663,8 +663,8 @@ public class PublicControl {
     @RequestMapping("/PotentialItem/{adminname}")
     @ResponseBody
     public List<PotentialCustomerBean> PotentialItem(@PathVariable("adminname") String adminname) {
-        List<PotentialCustomerBean> result = ws.PotentialItem(adminname);
-        return result;
+
+        return ws.PotentialItem(adminname);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
