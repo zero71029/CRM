@@ -1,12 +1,14 @@
 package com.jetec.CRM.controler;
 
-import java.io.File;
+import java.io.*;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import com.jetec.CRM.controler.service.UpfileService;
 import com.jetec.CRM.model.MarketFileBean;
+import com.jetec.CRM.repository.ZeroMailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -60,7 +62,7 @@ public class UpfileController {
                     System.out.println("Tomcat伺服器所在路徑的最後一個檔案目錄: " + bin_path);
                     System.out.println("bin_path == " + bin_path);
 
-					String path2 = "C:/CRMfile/" + fileMap.get("file" + i).getOriginalFilename();
+                    String path2 = "C:/CRMfile/" + fileMap.get("file" + i).getOriginalFilename();
                     String path3 = "C:\\Users\\Rong\\Desktop\\tomcat-9.0.41\\webapps\\CRM\\WEB-INF\\classes\\static\\file\\"
                             + fileMap.get("file" + i).getOriginalFilename();
 //檔案輸出
@@ -236,4 +238,112 @@ public class UpfileController {
         US.delByName(bean.getName());
         return null;
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//上傳
+    @RequestMapping("/zeroMail")
+    @ResponseBody
+    public String zeroMail(MultipartHttpServletRequest multipartRequest) {
+        System.out.println("*****上傳郵件地址*****");
+        Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
+        System.out.println("fileMap " + fileMap);//圖片儲存
+        try {
+//2. 儲存圖片到資料夾
+            if (fileMap.get("file") != null) {//讀取檔眳
+                //讀取檔名
+                String filename = fileMap.get("file").getOriginalFilename();
+                System.out.println(filename);
+                //替換特殊符號
+                if (filename.indexOf("[") > 0) {
+                    filename = filename.replace("[", "-");
+                }
+                if (filename.indexOf("]") > 0) {
+                    filename = filename.replace("]", "-");
+                }
+                //讀取副檔名
+//                String lastname = fileMap.get("file").getOriginalFilename()
+//                        .substring(fileMap.get("file").getOriginalFilename().indexOf("."));
+//                System.out.println(lastname);
+                String path2 = "C:/CRMfile/" + filename;
+                //檔案輸出
+                System.out.println("檔案輸出到" + path2);
+                fileMap.get("file").transferTo(new File(path2));
+                System.out.println("輸出成功");
+
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return "上傳成功";
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//寄信
+    @RequestMapping("/sendMail")
+    @ResponseBody
+    public List<String> sendMail(@RequestParam("fileName") String fileName, @RequestParam("content") String content, @RequestParam("Subject") String Subject) {
+        //讀取檔案
+        Integer i = US.getZeroMailnum();
+        List<String> suCompany = new ArrayList<>();
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(new FileInputStream("C:/CRMfile/" + fileName)));
+            String line = null;
+            System.out.println("=================================================================");
+
+            while ((line = reader.readLine()) != null) {
+                String item[] = line.split(",");
+                /** 讀取 **/
+                String email= item[0].trim();
+                String company;
+                String contact;
+                try {
+                    company = item[1].trim();
+                }catch (Exception e){
+                    company = "";
+                }
+
+                try {
+                    contact = item[2].trim();
+                }catch (Exception e){
+                    contact = "";
+                }
+                try {
+
+                    System.out.print(email + "\t" + company + "\t" + contact + "\n");
+
+                    String result = content.replace("@company", company);
+                    result = result.replace("@contact", contact);
+                    System.out.println(email.indexOf("@") > 0);
+                    i++;
+
+                    if (email.indexOf("@") > 0) {
+                        //寄信去
+                        if (i > 450) {
+                            break;
+                        } else {
+
+                            zTools.mail(email, result, Subject, "");
+                            Thread.sleep(100);
+                            suCompany.add(company);//成功的公司
+                        }
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        US.saveZeroMailnum(i);
+
+
+        return suCompany;
+    }
+
+
 }

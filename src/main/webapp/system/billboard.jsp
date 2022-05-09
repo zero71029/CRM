@@ -91,7 +91,7 @@
                     <jsp:include page="/Sidebar.jsp"></jsp:include>
                     <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
                     <div class="col-lg-11 ">
-                        <div class="row justify-content-end">
+                        <div class="row ">
                             <div class="col-md-8">
                                 <!-- <%-- 中間主體--%> -->
                                 <br>

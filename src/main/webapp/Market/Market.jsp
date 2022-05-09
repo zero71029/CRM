@@ -407,9 +407,7 @@
                                                         <option value="內部詢價中">
                                                             內部詢價中
                                                         </option>
-                                                        <option value="報價處理中">
-                                                            報價處理中
-                                                        </option>
+
                                                         <option value="已報價">
                                                             已報價
                                                         </option>

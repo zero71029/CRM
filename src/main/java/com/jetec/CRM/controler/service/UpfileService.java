@@ -1,12 +1,16 @@
 package com.jetec.CRM.controler.service;
 
+import com.jetec.CRM.Tool.ZeroTools;
 import com.jetec.CRM.model.MarketFileBean;
+import com.jetec.CRM.model.ZeroMailBean;
 import com.jetec.CRM.repository.MarketFileRepository;
+import com.jetec.CRM.repository.ZeroMailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -15,6 +19,8 @@ public class UpfileService {
 
     @Autowired
     MarketFileRepository MFR;
+    @Autowired
+    ZeroMailRepository zmr;
 
     public MarketFileBean save(MarketFileBean fileBean) {
         return MFR.save(fileBean);
@@ -44,5 +50,29 @@ public class UpfileService {
         file.delete();
         File file2 = new File("e:/CRMfile/" + name);
         file2.delete();
+    }
+    ////////////////////////////////////////////////////////
+//取得今天已經寄件數量
+    public Integer getZeroMailnum() {
+        LocalDate ld = LocalDate.now();
+        if(zmr.existsByCreatetime(ld+"")){
+            ZeroMailBean zeroMailBean =  zmr.findByCreatetime(ld.toString());
+            return zeroMailBean.getNum();
+        }else {
+            return 0;
+        }
+    }
+
+    public void saveZeroMailnum(Integer i) {
+
+        LocalDate ld = LocalDate.now();
+        if(zmr.existsByCreatetime(ld.toString())){
+            ZeroMailBean zeroMailBean =  zmr.findByCreatetime(ld.toString());
+           zeroMailBean.setNum(i);
+            zmr.save(zeroMailBean);
+        }else {
+
+            zmr.save(new ZeroMailBean(ZeroTools.getUUID(),ld.toString(),i));
+        }
     }
 }
