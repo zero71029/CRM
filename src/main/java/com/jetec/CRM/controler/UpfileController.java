@@ -318,17 +318,14 @@ public class UpfileController {
                     result = result.replace("@contact", contact);
                     System.out.println(email.indexOf("@") > 0);
                     i++;
-
                     if (email.indexOf("@") > 0) {
                         //寄信去
-                        if (i > 450) {
-                            break;
-                        } else {
+
 
                             zTools.SynologyMail(email, result, Subject, "");
                             Thread.sleep(100);
                             suCompany.add(company);//成功的公司
-                        }
+
                     }
 
                 } catch (Exception e) {

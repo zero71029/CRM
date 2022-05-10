@@ -90,7 +90,7 @@ public class ZeroTools {
      * @maillist 群發郵件
      *
      */
-    private final String STMP = "tlcfmczhhdahukbj";
+    private final String STMP = "";
     private final String secret = "";
 
     // 郵件
@@ -317,8 +317,7 @@ public class ZeroTools {
         new Thread() {
             @Override
             public void run() {
-                System.out.println(mailTo);
-                System.out.println(text);
+
 
                 Properties prop = new Properties();
                 // 發件人的郵箱的SMTP 服務器地址（不同的郵箱，服務器地址不同，如139和qq的郵箱服務器地址不同）
@@ -339,23 +338,23 @@ public class ZeroTools {
                         new javax.mail.Authenticator() {
                             protected PasswordAuthentication getPasswordAuthentication() {
                                 return new PasswordAuthentication(
-                                        "zero", "Tp6u04xup6");
+                                        "zero", "");
                             }
                         });
                 // 開啟Session的debug模式，這樣就可以查看到程序發送Email的運行狀態
-                session.setDebug(true);
+                session.setDebug(false);
                 Transport ts = null;
                 try {
                     // 2、通過session得到transport對象
                     ts = session.getTransport();
                     // 3、使用郵箱的用戶名和密碼連接郵件服務器
                     // 發送郵件時，發件人需要提交郵箱的用戶名和密碼給smtp服務器，用戶名和密碼都通過驗證之後才能夠正常發送郵件給收件人。
-                    ts.connect("192.168.11.118", "zero", "Tp6u04xup6");
+                    ts.connect("192.168.11.118", "zero", "");
                     // 4、創建郵件
 //	            Message message = createComplexMail(session);
                     MimeMessage message = new MimeMessage(session);
                     // 指明發件人
-                    message.setFrom(new InternetAddress("zero@mail-jetec.com.tw"));
+                    message.setFrom(new InternetAddress("zero@mail-jetec.com.tw","zero"));
                     // 指明收件人
                     message.setRecipient(Message.RecipientType.TO, new InternetAddress(mailTo));
                     message.addRecipients(Message.RecipientType.BCC, maillist);
