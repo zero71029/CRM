@@ -1196,7 +1196,7 @@
                         var isok = true;
 
 
-                        if(this.bean.source == "其他" && (this.bean.othersource ==  null ||this.bean.othersource == "")){
+                        if(this.bean.source == "其他" && (this.bean.othersource ==  null ||this.bean.othersource == ""||this.bean.othersource == "其他")){
                             isok = false;
 
                             this.$message.error('其他來源,需要填');

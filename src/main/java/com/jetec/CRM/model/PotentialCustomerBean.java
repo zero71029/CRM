@@ -50,6 +50,8 @@ public class PotentialCustomerBean implements Serializable {
     private String fileforeignid;//附件id
     private String contacttitle;//聯絡人稱謂
     private String founder;//創始人
+    private String othersource;//其他來源
+
     @Override
     public String toString() {
         return "PotentialCustomerBean{" +
@@ -80,6 +82,15 @@ public class PotentialCustomerBean implements Serializable {
     //留言
     @OneToMany(targetEntity = BosMessageBean.class, mappedBy = "bosid", cascade = CascadeType.ALL)
     private List<BosMessageBean> bm;
+
+
+    public String getOthersource() {
+        return othersource;
+    }
+
+    public void setOthersource(String othersource) {
+        this.othersource = othersource;
+    }
 
     public String getFounder() {
         return founder;

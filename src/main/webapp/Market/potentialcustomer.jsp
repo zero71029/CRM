@@ -328,6 +328,30 @@
                                             </select>
                                         </div>
                                     </div>
+
+
+
+                                    <div class="row"  v-show="customer.source == '其他'">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-2 cellz"></div>
+                                        <div class="col-md-3 cellz FormPadding">
+                                           
+                                        </div>
+                                        <div class="col-md-2 cellz">其他來源 <span style="color: red;">*</span></div>
+                                        <div class="col-md-3 cellz FormPadding ">
+                                            <input type="text" class=" form-control cellFrom" name="othersource" style="border: red 1px solid;"
+                                            v-model.trim="customer.othersource" maxlength="20">                                                                  
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+
+
+
                                     <div class="row">
                                         <div class="col-md-1"></div>
                                         <div class="col-md-2 cellz">縣市</div>
@@ -1119,6 +1143,13 @@
                         this.customer.company = this.companyName;
                         //表單驗證
                         var isok = true;
+
+                        if(this.customer.source == "其他" && (this.customer.othersource ==  null ||this.customer.othersource == "" ||this.customer.othersource == "其他")){
+                            isok = false;
+                            this.$message.error('其他來源,需要填');
+                        }
+
+
                         if (this.companyName == null || this.companyName == "") {
                             $("input[name='company']").css("border", "red 1px solid");
                             isok = false;
@@ -1202,7 +1233,7 @@
                                         ))
                             }
                         } else {
-                            alert("紅框要輸入")
+                            alert("紅框要輸入");
                         }
                     },
                     showbosMassage() {//點擊留言 顯示區塊

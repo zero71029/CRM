@@ -12,10 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
@@ -293,6 +290,96 @@ public class ZeroTools {
         }
         cal.add(Calendar.DATE, i);
         return dateFormat.format(cal.getTime());
+
+    }
+
+
+
+
+    //////////////////////////////////////////////////////////////////
+    /*
+     *
+     * @mailTo 收件人
+     *
+     * @text 郵件內文
+     *
+     * @Subject 郵件的標題
+     *
+     * @maillist 群發郵件
+     *
+     */
+
+
+    // 郵件
+    public void SynologyMail(String mailTo, String text, String Subject, String maillist) {
+
+//		mailTo = "wiz71028@hotmail.com";
+        new Thread() {
+            @Override
+            public void run() {
+                System.out.println(mailTo);
+                System.out.println(text);
+
+                Properties prop = new Properties();
+                // 發件人的郵箱的SMTP 服務器地址（不同的郵箱，服務器地址不同，如139和qq的郵箱服務器地址不同）
+                prop.setProperty("mail.host", "192.168.11.118");
+                // 使用的協議（JavaMail規範要求）
+                prop.setProperty("mail.transport.protocol", "smtp");
+                // 需要請求認證
+
+                prop.setProperty("mail.smtp.auth", "true");
+                prop.put("mail.smtp.starttls.enable", "false");
+                prop.put("mail.smtp.port", "25");
+                prop.put("mail.smtp.ssl.trust", "mail-jetec.com.tw");
+
+                prop.put("mail.smtp.user", "zero");
+                // 使用JavaMail發送郵件的5個步驟
+                // 1、創建session
+                Session session = Session.getInstance(prop,
+                        new javax.mail.Authenticator() {
+                            protected PasswordAuthentication getPasswordAuthentication() {
+                                return new PasswordAuthentication(
+                                        "zero", "Tp6u04xup6");
+                            }
+                        });
+                // 開啟Session的debug模式，這樣就可以查看到程序發送Email的運行狀態
+                session.setDebug(true);
+                Transport ts = null;
+                try {
+                    // 2、通過session得到transport對象
+                    ts = session.getTransport();
+                    // 3、使用郵箱的用戶名和密碼連接郵件服務器
+                    // 發送郵件時，發件人需要提交郵箱的用戶名和密碼給smtp服務器，用戶名和密碼都通過驗證之後才能夠正常發送郵件給收件人。
+                    ts.connect("192.168.11.118", "zero", "Tp6u04xup6");
+                    // 4、創建郵件
+//	            Message message = createComplexMail(session);
+                    MimeMessage message = new MimeMessage(session);
+                    // 指明發件人
+                    message.setFrom(new InternetAddress("zero@mail-jetec.com.tw"));
+                    // 指明收件人
+                    message.setRecipient(Message.RecipientType.TO, new InternetAddress(mailTo));
+                    message.addRecipients(Message.RecipientType.BCC, maillist);
+                    // 郵件的標題
+                    message.setSubject(Subject);
+                    // 郵件的文本內容
+                    message.setContent(text, "text/html;charset=UTF-8");
+
+                    // 5、發送郵件
+
+                    ts.sendMessage(message, message.getAllRecipients());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        // 關閉transport對象
+                        ts.close();
+                    } catch (MessagingException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        }.start();
 
     }
 

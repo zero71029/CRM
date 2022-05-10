@@ -325,7 +325,7 @@ public class UpfileController {
                             break;
                         } else {
 
-                            zTools.mail(email, result, Subject, "");
+                            zTools.SynologyMail(email, result, Subject, "");
                             Thread.sleep(100);
                             suCompany.add(company);//成功的公司
                         }

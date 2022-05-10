@@ -58,14 +58,14 @@ public class StatisticService {
         try {
             conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/crm", "root", "root");
             stmt = conn.createStatement();
-            String sql = "select client , count(*) count from market m where  aaa BETWEEN '"+startDay+"' AND '"+endDay+"' group by client order  by count desc  limit 5";
+            String sql = "select client ,clientid, count(*) count from market m where  aaa BETWEEN '"+startDay+"' AND '"+endDay+"' group by client order  by count desc  limit 5";
             rs = stmt.executeQuery(sql);
 
             while (rs.next()){
                 Map<String, String>  map= new HashMap<>();
-                
                 map.put("company",rs.getString(1));
-                map.put("num",rs.getString(2));
+                map.put("num",rs.getString(3));
+                map.put("clientid",rs.getString(2));
                 result.add(map);
             }
 
@@ -97,14 +97,15 @@ public class StatisticService {
         try {
             conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/crm", "root", "root");
             stmt = conn.createStatement();
-            String sql = "select client , count(*) count from market m where  stage = '成功結案'          AND  aaa BETWEEN '"+startDay+"' AND '"+endDay+"' group by client order  by count desc  limit 5";
+            String sql = "select client ,clientid, count(*) count from market m where  stage = '成功結案'          AND  aaa BETWEEN '"+startDay+"' AND '"+endDay+"' group by client order  by count desc  limit 5";
             rs = stmt.executeQuery(sql);
 
             while (rs.next()){
                 Map<String, String>  map= new HashMap<>();
                 
                 map.put("company",rs.getString(1));
-                map.put("num",rs.getString(2));
+                map.put("clientid",rs.getString(2));
+                map.put("num",rs.getString(3));
                 result.add(map);
             }
 
@@ -136,14 +137,14 @@ public class StatisticService {
         try {
             conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/crm", "root", "root");
             stmt = conn.createStatement();
-            String sql = "select client , count(*) count from market m where  stage = '失敗結案'          AND  aaa BETWEEN '"+startDay+"' AND '"+endDay+"' group by client order  by count desc  limit 5";
+            String sql = "select client ,clientid, count(*) count from market m where  stage = '失敗結案'          AND  aaa BETWEEN '"+startDay+"' AND '"+endDay+"' group by client order  by count desc  limit 5";
             rs = stmt.executeQuery(sql);
 
             while (rs.next()){
                 Map<String, String>  map= new HashMap<>();
-                
                 map.put("company",rs.getString(1));
-                map.put("num",rs.getString(2));
+                map.put("clientid",rs.getString(2));
+                map.put("num",rs.getString(3));
                 result.add(map);
             }
 

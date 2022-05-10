@@ -73,8 +73,8 @@
                             </div>
 
                         </div>
-                        <div class="row" >
-                            <div class="col-lg-12" >
+                        <div class="row">
+                            <div class="col-lg-12">
                                 <el-switch v-model="ProductSwitch" v-show="producttype != ''" active-text="精簡"
                                     inactive-text="原始">
                                 </el-switch>
@@ -87,7 +87,10 @@
 
                                 案件最多的公司
                                 <el-table :data="MaxNumCompany" style="width: 100%">
-                                    <el-table-column prop="company" label="公司">
+                                    <el-table-column  label="公司">
+                                        <template slot-scope="scope">
+                                            <a :href="'${pageContext.request.contextPath}/CRM/client/'+scope.row.clientid" target="_blank">{{scope.row.company}}</a>
+                                        </template>
                                     </el-table-column>
                                     <el-table-column prop="num" label="數量">
                                     </el-table-column>
@@ -98,7 +101,10 @@
                             <div class="col-lg-4">
                                 成功案件最多的公司
                                 <el-table :data="SuccessMaxNumCompany" style="width: 100%">
-                                    <el-table-column prop="company" label="公司">
+                                    <el-table-column  label="公司">
+                                        <template slot-scope="scope">
+                                            <a :href="'${pageContext.request.contextPath}/CRM/client/'+scope.row.clientid" target="_blank">{{scope.row.company}}</a>
+                                        </template>
                                     </el-table-column>
                                     <el-table-column prop="num" label="數量">
                                     </el-table-column>
@@ -108,7 +114,12 @@
                             <div class="col-lg-4">
                                 失敗案件最多的公司
                                 <el-table :data="FailMaxNumCompany" style="width: 100%">
-                                    <el-table-column prop="company" label="公司">
+
+
+                                    <el-table-column  label="公司">
+                                        <template slot-scope="scope">
+                                            <a :href="'${pageContext.request.contextPath}/CRM/client/'+scope.row.clientid" target="_blank">{{scope.row.company}}</a>
+                                        </template>
                                     </el-table-column>
                                     <el-table-column prop="num" label="數量">
                                     </el-table-column>
