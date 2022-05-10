@@ -293,10 +293,10 @@
                                                 <div class="col-md-2 cellz">來源 <span style="color: red;">*</span></div>
                                                 <div class="col-md-4 FormPadding">
 
-                                                    <input type="text" class="form-control" placeholder="" id="source"
+                                                    <select type="text" class="form-control" placeholder="" id="source"
                                                         maxlength="90" name="source" v-model.trim="bean.source"
                                                         @blur="chageToSave('source',bean.source)" list="sourceList">
-
+                                                        <option value="其他">其他
                                                     <datalist id="sourceList">
                                                         <c:forEach varStatus="loop" begin="0" end="${library.size()-1}"
                                                             items="${library}" var="s">
@@ -306,6 +306,7 @@
                                                             </c:if>
                                                         </c:forEach>
                                                     </datalist>
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -314,6 +315,18 @@
                                                     <input type="text" class="form-control cellzFrom" name="line"
                                                         @blur="chageToSave('line',bean.line)" v-model.trim="bean.line"
                                                         maxlength="200">
+                                                </div>
+                                                <div class="col-md-2 cellz"><span v-show="bean.source == '其他'" >其他來源</span></div>
+                                                <div class="col-md-4 FormPadding">
+                                                    <input type="text" v-show="bean.source == '其他'" name="othersource" v-model="bean.othersource" style="border: 1px red solid;" class="form-control" maxlength="90">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-2 cellz">傳真</div>
+                                                <div class="col-md-4 FormPadding">
+                                                    <input type="text" class="form-control cellzFrom" name="fax"
+                                                        @blur="chageToSave('fax',bean.fax)" v-model.trim="bean.fax"
+                                                        maxlength="20">
                                                 </div>
                                                 <div class="col-md-2 cellz">聯絡方式</div>
                                                 <div class="col-md-4 FormPadding">
@@ -332,14 +345,7 @@
                                                     </datalist>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-2 cellz">傳真</div>
-                                                <div class="col-md-4 FormPadding">
-                                                    <input type="text" class="form-control cellzFrom" name="fax"
-                                                        @blur="chageToSave('fax',bean.fax)" v-model.trim="bean.fax"
-                                                        maxlength="20">
-                                                </div>
-                                            </div>
+                                            
                                         </div>
                                         <div class="col-md-6">
                                             <div class="row">&nbsp;</div>
@@ -1188,6 +1194,17 @@
                     submitForm() {//送出表單
                         //表單驗證
                         var isok = true;
+
+
+                        if(this.bean.source == "其他" && (this.bean.othersource ==  null ||this.bean.othersource == "")){
+                            isok = false;
+
+                            this.$message.error('其他來源,需要填');
+
+
+                        }
+
+
                         if (this.bean.name == null || this.bean.name == "") {
                             $("input[name='name']").css("border", "red 1px solid");
                             isok = false;

@@ -1448,14 +1448,23 @@
 
                     },//改變狀態
                     changeStatus() {
-                        console.log(this.customer.status, "改變狀態");
-                        if (this.customer.status == "合格") {
+                        
+                        if (this.customer.user == null || this.customer.user == "" || this.customer.user == "無") {
+                            this.$message.error('需要先設定 負責人');
+                            this.customer.status =  this.oldCustomer.status;
 
-                            this.changeStatusVisible = true;
+
+                        } else {
+                            if (this.customer.status == "合格") {
+
+                                this.changeStatusVisible = true;
+                            }
                         }
+              
+
                     }, //失去焦點,儲存
                     chageToSave(field, val) {
-                        console.log("this",this);
+                        console.log("this", this);
                         if (this.bean.marketid) {
                             console.log(this.oldBean[field]);
                             console.log(field, val);

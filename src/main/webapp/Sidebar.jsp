@@ -109,14 +109,12 @@
                         </button>
                     </c:if>
                     <button class="system"
+                        onclick="javascript:location.href='${pageContext.request.contextPath}/system/libraryList.jsp'">下拉選單管理
+                    </button>
+                    <button class="system"
                         onclick="javascript:location.href='${pageContext.request.contextPath}/system/billboardList?pag=1'">
                         討論區管理
                     </button>
-                    <button class="system"
-                        onclick="javascript:location.href='${pageContext.request.contextPath}/system/libraryList.jsp'">下拉選單管理
-                    </button>
-
-
                 </c:if>
             </ul>
             <!-- session 認證-->

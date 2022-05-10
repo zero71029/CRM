@@ -57,7 +57,7 @@ public class MarketBean implements Serializable {
     private String callhelp;//求助
     private String fileforeignid;//附件id
     private String founder;//創始人
-
+    private String othersource;//其他來源
 
 
 
@@ -97,6 +97,7 @@ public class MarketBean implements Serializable {
            case "callhelp":return callhelp;
            case "fileforeignid":return fileforeignid;
            case "founder":return founder;
+           case "othersource":return othersource;
 
        }
 
@@ -480,6 +481,14 @@ public class MarketBean implements Serializable {
 
     public void setTrackbean(List<TrackBean> trackbean) {
         this.trackbean = trackbean;
+    }
+
+    public String getOthersource() {
+        return othersource;
+    }
+
+    public void setOthersource(String othersource) {
+        this.othersource = othersource;
     }
 
     @Override

@@ -350,8 +350,7 @@
 
                                     <el-checkbox-group v-model="inStateList">
                                         <el-checkbox label="尚未處理"></el-checkbox>
-                                        <el-checkbox label="內部詢價中"></el-checkbox>
-                                        <el-checkbox label="報價處理中"></el-checkbox>
+                                        <el-checkbox label="內部詢價中"></el-checkbox>                                     
                                         <el-checkbox label="已報價"></el-checkbox>
                                         <el-checkbox label="提交主管"></el-checkbox>
                                         <el-checkbox label="成功結案"></el-checkbox>
@@ -616,12 +615,7 @@
                                 </el-button>
                             </div>
 
-                            <div style="float: left;margin: 3px;">
-                                <el-button type="info" size="mini" plain
-                                           @click="AddState('state','報價處理中','info')"
-                                           icon="el-icon-s-goods">報價處理中
-                                </el-button>
-                            </div>
+
                             <div style="float: left;margin: 3px;">
                                 <el-button type="info" size="mini" plain
                                            @click="AddState('state','已報價','info')"
