@@ -292,12 +292,10 @@
                                                 </div>
                                                 <div class="col-md-2 cellz">來源 <span style="color: red;">*</span></div>
                                                 <div class="col-md-4 FormPadding">
-
                                                     <select type="text" class="form-control" placeholder="" id="source"
                                                         maxlength="90" name="source" v-model.trim="bean.source"
                                                         @blur="chageToSave('source',bean.source)" list="sourceList">
-                                                        <option value="其他">其他
-                                                    <datalist id="sourceList">
+                                                        <option value="其他">其他</option>
                                                         <c:forEach varStatus="loop" begin="0" end="${library.size()-1}"
                                                             items="${library}" var="s">
                                                             <c:if test='${s.librarygroup == "MarketSource"}'>
@@ -305,7 +303,6 @@
                                                                 </option>
                                                             </c:if>
                                                         </c:forEach>
-                                                    </datalist>
                                                     </select>
                                                 </div>
                                             </div>
@@ -316,9 +313,12 @@
                                                         @blur="chageToSave('line',bean.line)" v-model.trim="bean.line"
                                                         maxlength="200">
                                                 </div>
-                                                <div class="col-md-2 cellz"><span v-show="bean.source == '其他'" >其他來源</span></div>
+                                                <div class="col-md-2 cellz"><span
+                                                        v-show="bean.source == '其他'">其他來源</span></div>
                                                 <div class="col-md-4 FormPadding">
-                                                    <input type="text" v-show="bean.source == '其他'" name="othersource" v-model="bean.othersource" style="border: 1px red solid;" class="form-control" maxlength="90">
+                                                    <input type="text" v-show="bean.source == '其他'" name="othersource"
+                                                        v-model="bean.othersource" style="border: 1px red solid;"
+                                                        class="form-control" maxlength="90">
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -345,7 +345,7 @@
                                                     </datalist>
                                                 </div>
                                             </div>
-                                            
+
                                         </div>
                                         <div class="col-md-6">
                                             <div class="row">&nbsp;</div>
@@ -444,6 +444,34 @@
                                                         </el-button>
                                                     </div>
                                                 </c:if>
+                                            </div>
+                                            <div class="row" v-show="bean.stage == '失敗結案' || bean.stage == '提交主管'">
+                                                <div class="col-md-1 ">
+                                                </div>
+                                                <div class="col-md-2 cellz">
+                                                    結案理由
+                                                    <span style="color: red;">*</span>
+                                                </div>
+                                                <div class="col-md-4 FormPadding" id="closereason"
+                                                    style="border: red 1px solid;">
+                                                    <select class="form-select cellzFrom" name="closereason"
+                                                        @blur="chageToSave('closereason',bean.closereason)"
+                                                        v-model.trim="bean.closereason">
+                                                        <c:forEach varStatus="loop" begin="0" end="${library.size()-1}"
+                                                            items="${library}" var="s">
+                                                            <c:if test='${s.librarygroup == "closereason"}'>
+                                                                <option value="${s.libraryoption}">${s.libraryoption}
+                                                                </option>
+                                                            </c:if>
+                                                        </c:forEach>
+                                                        <option value="其他">
+                                                            其他
+                                                        </option>
+                                                        <option value="自動結案" v-show="bean.closereason == '自動結案'">
+                                                            自動結案
+                                                        </option>
+                                                    </select>
+                                                </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-1 ">
@@ -1093,7 +1121,7 @@
                                         const end = new Date();
                                         const start = new Date();
                                         start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-                                        picker.$emit('pick',start);
+                                        picker.$emit('pick', start);
                                     }
                                 }, {
                                     text: '最近三個月',
@@ -1101,7 +1129,7 @@
                                         const end = new Date();
                                         const start = new Date();
                                         start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-                                        picker.$emit('pick',start);
+                                        picker.$emit('pick', start);
                                     }
                                 }]
                         },
@@ -1196,7 +1224,7 @@
                         var isok = true;
 
 
-                        if(this.bean.source == "其他" && (this.bean.othersource ==  null ||this.bean.othersource == ""||this.bean.othersource == "其他")){
+                        if (this.bean.source == "其他" && (this.bean.othersource == null || this.bean.othersource == "" || this.bean.othersource == "其他")) {
                             isok = false;
 
                             this.$message.error('其他來源,需要填');

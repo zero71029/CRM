@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpSession;
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.Date;
 
@@ -476,7 +477,7 @@ public class MarketControler {
         bean.setFileforeignid(pBean.getFileforeignid());
         bean.setMarketfilelist(pBean.getMarketfilelist());
         bean.setContacttitle(pBean.getContacttitle());
-
+        bean.setOthersource(pBean.getOthersource());
 
         Map<String, Object> result = new HashMap<>();
         result.put("bean", bean);
@@ -769,12 +770,15 @@ public class MarketControler {
             } else {
                 cmbean = new ChangeMessageBean(zTools.getUUID(), marketid, field, rs.getString(1), val, zTools.getTime(new Date()));
                 cmbean.setName(adminBean.getName());
-                if (rs.getString(1).equals(val)) {
 
-                } else {
-                    ss.saveChangeMesssage(cmbean);
+                if(!(rs.getString(1) == null )){
+
+                    if (rs.getString(1).equals(val)) {
+
+                    } else {
+                        ss.saveChangeMesssage(cmbean);
+                    }
                 }
-
             }
             //updata
 //        ms.updata(marketid,field,val);
@@ -821,16 +825,22 @@ public class MarketControler {
 
                mBean.setClient(clientBean.getName() );
                ms.save(mBean);
-
-
-
            }
         }
-
 
         System.out.println("修改結束");
         return "修改結束";
     }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//*******************
+    @RequestMapping("/XXX")
+    @ResponseBody
+    public String AutoCloseCase() {
 
+         ms.AutoCloseCase();
+
+
+    return "";
+    }
 
 }

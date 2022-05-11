@@ -240,7 +240,7 @@ public class UpfileController {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//上傳
+//上傳郵件地址
     @RequestMapping("/zeroMail")
     @ResponseBody
     public String zeroMail(MultipartHttpServletRequest multipartRequest) {
@@ -289,7 +289,7 @@ public class UpfileController {
         List<String> suCompany = new ArrayList<>();
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new InputStreamReader(new FileInputStream("C:/CRMfile/" + fileName)));
+            reader = new BufferedReader(new InputStreamReader(new FileInputStream("C:/CRMfile/" + fileName),"UTF-8"));
             String line = null;
             System.out.println("=================================================================");
 
@@ -311,21 +311,18 @@ public class UpfileController {
                     contact = "";
                 }
                 try {
-
                     System.out.print(email + "\t" + company + "\t" + contact + "\n");
-
                     String result = content.replace("@company", company);
                     result = result.replace("@contact", contact);
+                    String resultSubject = Subject.replace("@company", company);
+                    resultSubject = resultSubject.replace("@contact", contact);
                     System.out.println(email.indexOf("@") > 0);
                     i++;
                     if (email.indexOf("@") > 0) {
                         //寄信去
-
-
-                            zTools.SynologyMail(email, result, Subject, "");
+                            zTools.SynologyMail(email, result, resultSubject, "");
                             Thread.sleep(100);
                             suCompany.add(company);//成功的公司
-
                     }
 
                 } catch (Exception e) {
@@ -341,6 +338,16 @@ public class UpfileController {
 
         return suCompany;
     }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//寄預覽信
+//    @RequestMapping("/testMail")
+//    @ResponseBody
+//    public boolean testMail(@RequestParam("fileName") String fileName, @RequestParam("content") String content, @RequestParam("Subject") String Subject) {
+//
+//
+//        zTools.SynologyMail(email, result, resultSubject, "");
+//        return true;
+//    }
 
 
 }

@@ -58,48 +58,88 @@ public class MarketBean implements Serializable {
     private String fileforeignid;//附件id
     private String founder;//創始人
     private String othersource;//其他來源
+    private String closereason;//結案理由
+
+
+    public Object get(String name) {
+        switch (name) {
+            case "name":
+                return this.name;
+            case "user":
+                return user;
+            case "serialnumber":
+                return serialnumber;
+            case "endtime":
+                return endtime;
+            case "message":
+                return message;
+            case "client":
+                return client;
+            case "contactname":
+                return contactname;
+            case "contactphone":
+                return contactphone;
+            case "contactextension":
+                return contactextension;
+            case "contactmoblie":
+                return contactmoblie;
+            case "contactemail":
+                return contactemail;
+            case "contactmethod":
+                return contactmethod;
+            case "contacttitle":
+                return contacttitle;
+            case "type":
+                return type;
+            case "source":
+                return source;
+            case "clinch":
+                return clinch;
+            case "stage":
+                return stage;
+            case "product":
+                return product;
+            case "producttype":
+                return producttype;
+            case "phone":
+                return phone;
+            case "extension":
+                return extension;
+            case "aaa":
+                return aaa;
+            case "important":
+                return important;
+            case "line":
+                return line;
+            case "customerid":
+                return customerid;
+            case "clicks":
+                return clicks;
+            case "fax":
+                return fax;
+            case "clientid":
+                return clientid;
+            case "quote":
+                return quote;
+            case "jobtitle":
+                return jobtitle;
+            case "callbos":
+                return callbos;
+            case "callhelp":
+                return callhelp;
+            case "fileforeignid":
+                return fileforeignid;
+            case "founder":
+                return founder;
+            case "othersource":
+                return othersource;
+            case "closereason":
+                return closereason;
 
 
 
-    public Object get( String name) {
-       switch (name){
-           case "name":return this.name;
-           case "user":return user;
-           case "serialnumber":return serialnumber;
-           case "endtime":return endtime;
-           case "message":return message;
-           case "client":return client;
-           case "contactname":return contactname;
-           case "contactphone":return contactphone;
-           case "contactextension":return contactextension;
-           case "contactmoblie":return contactmoblie;
-           case "contactemail":return contactemail;
-           case "contactmethod":return contactmethod;
-           case "contacttitle":return contacttitle;
-           case "type":return type;
-           case "source":return source;
-           case "clinch":return clinch;
-           case "stage":return stage;
-           case "product":return product;
-           case "producttype":return producttype;
-           case "phone":return phone;
-           case "extension":return extension;
-           case "aaa":return aaa;
-           case "important":return important;
-           case "line":return line;
-           case "customerid":return customerid;
-           case "clicks":return clicks;
-           case "fax":return fax;
-           case "clientid":return clientid;
-           case "quote":return  quote;
-           case "jobtitle":return jobtitle;
-           case "callbos":return callbos;
-           case "callhelp":return callhelp;
-           case "fileforeignid":return fileforeignid;
-           case "founder":return founder;
-           case "othersource":return othersource;
 
-       }
+        }
 
 
         return null;
@@ -144,7 +184,13 @@ public class MarketBean implements Serializable {
 //	private List<WorkBean> work;
 
 
+    public String getClosereason() {
+        return closereason;
+    }
 
+    public void setClosereason(String closereason) {
+        this.closereason = closereason;
+    }
 
     public List<BosMessageBean> getBm() {
         return bm;
@@ -415,7 +461,6 @@ public class MarketBean implements Serializable {
     }
 
 
-
     public String getProduct() {
         return product;
     }
@@ -496,7 +541,9 @@ public class MarketBean implements Serializable {
         return "MarketBean{" +
                 "marketid='" + marketid + '\'' +
                 ", name='" + name + '\'' +
-                ", trackbean=" + trackbean +
+                ", createtime='" + createtime + '\'' +
+                ", endtime='" + endtime + '\'' +
+                "stage = "+stage+
                 '}';
     }
 }

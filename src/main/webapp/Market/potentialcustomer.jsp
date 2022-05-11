@@ -301,46 +301,31 @@
                                         <div class="col-md-3 cellz FormPadding ">
                                             <select class="form-select cellFrom " id="source" name="source"
                                                 v-model.trim="customer.source">
-                                                <option value="廣告" class="selItemOff">
-                                                    廣告
-                                                </option>
-                                                <option value="員工推薦" class="selItemOff">
-                                                    員工推薦
-                                                </option>
-                                                <option value="外部推薦" class="selItemOff">
-                                                    外部推薦
-                                                </option>
-                                                <option value="合作夥伴" class="selItemOff">
-                                                    合作夥伴
-                                                </option>
-                                                <option value="參展" class="selItemOff">
-                                                    參展
-                                                </option>
-                                                <option value="網絡搜索" class="selItemOff">
-                                                    網絡搜索
-                                                </option>
-                                                <option value="口碑" class="selItemOff">
-                                                    口碑
-                                                </option>
-                                                <option value="其他" class="selItemOff">
-                                                    其他
-                                                </option>
+                                                <option value="其他">其他</option>
+                                                <c:forEach varStatus="loop" begin="0" end="${library.size()-1}"
+                                                    items="${library}" var="s">
+                                                    <c:if test='${s.librarygroup == "MarketSource"}'>
+                                                        <option value="${s.libraryoption}">${s.libraryoption}
+                                                        </option>
+                                                    </c:if>
+                                                </c:forEach>
                                             </select>
                                         </div>
                                     </div>
 
 
 
-                                    <div class="row"  v-show="customer.source == '其他'">
+                                    <div class="row" v-show="customer.source == '其他'">
                                         <div class="col-md-1"></div>
                                         <div class="col-md-2 cellz"></div>
                                         <div class="col-md-3 cellz FormPadding">
-                                           
+
                                         </div>
                                         <div class="col-md-2 cellz">其他來源 <span style="color: red;">*</span></div>
                                         <div class="col-md-3 cellz FormPadding ">
-                                            <input type="text" class=" form-control cellFrom" name="othersource" style="border: red 1px solid;"
-                                            v-model.trim="customer.othersource" maxlength="20">                                                                  
+                                            <input type="text" class=" form-control cellFrom" name="othersource"
+                                                style="border: red 1px solid;" v-model.trim="customer.othersource"
+                                                maxlength="20">
                                         </div>
                                     </div>
 
@@ -451,15 +436,39 @@
                                                 </el-button>
                                             </div>
                                         </c:if>
-
-
-
-
-
-
-
-
                                     </div>
+
+
+
+
+
+
+                                    <div class="row"  v-show="customer.status == '不合格' || customer.status == '提交主管'">
+
+                                        <div class="col-md-3 cellz">
+                                            結案理由
+                                            <span style="color: red;">*</span>
+                                        </div>
+                                        <div class="col-md-4 FormPadding" id="closereason">
+                                            <select class="form-select cellzFrom" name="closereason"
+                                                v-model.trim="customer.closereason">
+                                                <c:forEach varStatus="loop" begin="0" end="${library.size()-1}"
+                                                    items="${library}" var="s">
+                                                    <c:if test='${s.librarygroup == "closereason"}'>
+                                                        <option value="${s.libraryoption}">${s.libraryoption}
+                                                        </option>
+                                                    </c:if>
+                                                </c:forEach>
+                                                <option value="其他"> 其他 </option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+
+
+
+
                                     <div class="row">
                                         <div class="col-md-3 cellz">重要性 <span style="color: red;">*</span></div>
                                         <div class="col-md-4 cellz FormPadding">
@@ -1144,7 +1153,7 @@
                         //表單驗證
                         var isok = true;
 
-                        if(this.customer.source == "其他" && (this.customer.othersource ==  null ||this.customer.othersource == "" ||this.customer.othersource == "其他")){
+                        if (this.customer.source == "其他" && (this.customer.othersource == null || this.customer.othersource == "" || this.customer.othersource == "其他")) {
                             isok = false;
                             this.$message.error('其他來源,需要填');
                         }
@@ -1479,10 +1488,10 @@
 
                     },//改變狀態
                     changeStatus() {
-                        
+
                         if (this.customer.user == null || this.customer.user == "" || this.customer.user == "無") {
                             this.$message.error('需要先設定 負責人');
-                            this.customer.status =  this.oldCustomer.status;
+                            this.customer.status = this.oldCustomer.status;
 
 
                         } else {
@@ -1491,7 +1500,7 @@
                                 this.changeStatusVisible = true;
                             }
                         }
-              
+
 
                     }, //失去焦點,儲存
                     chageToSave(field, val) {

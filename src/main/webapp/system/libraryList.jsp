@@ -38,19 +38,23 @@
                                     <tr onclick="goDetail('MarketType')" class="item">
                                         <td>產業</td>
                                     </tr>
+                                    <tr onclick="goDetail('MarketSource')" class="item">
+                                        <td> 來源 </td>
+                                    </tr>
                                     <tr onclick="goDetail('contactmethod')" class="item">
                                         <td>聯絡方式</td>
+                                    </tr>
+                                    <tr onclick="goDetail('closereason')" class="item">
+                                        <td> 結案理由 </td>
+                                    </tr>
+                                    <tr onclick="goDetail('ClientSort')" class="item">
+                                        <td>客戶 - 類別 </td>
                                     </tr>
                                     <tr onclick="goDetail('producttype')" style="" class="item">
                                         <td>銷售機會 - 產品類別</td>
                                     </tr>
 
-                                    <tr onclick="goDetail('MarketSource')" class="item">
-                                        <td>銷售機會 - 來源 </td>
-                                    </tr>
-                                    <tr onclick="goDetail('ClientSort')" class="item">
-                                        <td>客戶 - 類別 </td>
-                                    </tr>
+
 
                                     <%-- <tr onclick="goDetail('position')" class="item">--%>
                                         <%-- <td>員工管理 - 職位</td>--%>

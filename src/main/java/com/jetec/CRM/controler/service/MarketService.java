@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -111,7 +112,6 @@ public class MarketService {
     }
 
 
-
     /////////////////////////////////////////////////////////////////////////////////////
     // 刪除銷售機會
     public void delMarket(List<String> id) {
@@ -136,7 +136,7 @@ public class MarketService {
         // 用業務搜索
         for (MarketBean p : mr.findByUserLikeIgnoreCase("%" + name + "%", sort)) {
             for (MarketBean bean : result) {
-                if (bean.getMarketid().equals(p.getMarketid()) ) {
+                if (bean.getMarketid().equals(p.getMarketid())) {
                     boo = false;
                 }
             }
@@ -168,7 +168,6 @@ public class MarketService {
         }
         return result;
     }
-
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -231,7 +230,6 @@ public class MarketService {
         return mr.findAaa(startTime, endTime);
 
     }
-
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -530,15 +528,30 @@ public class MarketService {
     public void delAllState(Integer adminid) {
         msr.deleteByAdminid(adminid);
     }
+
     //刪除使用者狀態
     public void delMarketState(Integer adminid, String field, String state) {
-        MarketStateBean msBean = msr.findByAdminidAndFieldAndState(adminid,field,state);
+        MarketStateBean msBean = msr.findByAdminidAndFieldAndState(adminid, field, state);
         msr.delete(msBean);
 
     }
 
     public List<MarketBean> getAll() {
         return mr.findAll();
+    }
+//轉賣 時間到自動結案
+    public void AutoCloseCase() {
+        System.out.println("======================================================================");
+        System.out.println("自動結案");
+        LocalDate ld = LocalDate.now();
+        List<MarketBean> list = mr.findByCreatetimeAndEndtimeLessThanEqualAndStageNotAndStageNot("轉賣/自用", ld.toString(),"失敗結案","成功結案");
+        list.stream().forEach((e)->{
+            System.out.println(e);
+            e.setClosereason("自動結案");
+            e.setStage("失敗結案");
+            mr.save(e);
+        });
+        System.out.println(list.size());
     }
 
 

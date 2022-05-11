@@ -1,6 +1,6 @@
 package com.jetec.CRM.filter;
 
-import com.jetec.CRM.repository.MarketRepository;
+import com.jetec.CRM.controler.service.MarketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -14,7 +14,7 @@ import java.util.Date;
 @Configuration
 public class config {
     @Autowired
-    MarketRepository mr;
+    MarketService ms;
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
@@ -32,6 +32,7 @@ public class config {
         SimpleDateFormat  sdf = new SimpleDateFormat("yyyyMMdd-HH-mm");
         ProcessBuilder builder = new ProcessBuilder(
                 "cmd.exe", "/c", "cd  C:\\MAMP\\bin\\mysql\\bin && mysqldump -uroot -proot crm > C:\\Users\\jetec\\SynologyDrive\\crm" + sdf.format(new Date()) + "自動.sql");
+        //列印執行結果
         builder.redirectErrorStream(true);
         Process p = builder.start();
         BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -41,6 +42,13 @@ public class config {
             if (line == null) { break; }
             System.out.println(line);
         }
+
+        ms.AutoCloseCase();
+
+
+
+
+
     }
 
 

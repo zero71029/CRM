@@ -51,7 +51,7 @@ public class PotentialCustomerBean implements Serializable {
     private String contacttitle;//聯絡人稱謂
     private String founder;//創始人
     private String othersource;//其他來源
-
+    private String closereason;//結案理由
     @Override
     public String toString() {
         return "PotentialCustomerBean{" +
@@ -83,6 +83,13 @@ public class PotentialCustomerBean implements Serializable {
     @OneToMany(targetEntity = BosMessageBean.class, mappedBy = "bosid", cascade = CascadeType.ALL)
     private List<BosMessageBean> bm;
 
+    public String getClosereason() {
+        return closereason;
+    }
+
+    public void setClosereason(String closereason) {
+        this.closereason = closereason;
+    }
 
     public String getOthersource() {
         return othersource;
