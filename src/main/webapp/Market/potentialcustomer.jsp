@@ -321,10 +321,10 @@
                                         <div class="col-md-3 cellz FormPadding">
 
                                         </div>
-                                        <div class="col-md-2 cellz">其他來源 <span style="color: red;">*</span></div>
+                                        <div class="col-md-2 cellz">其他來源 </div>
                                         <div class="col-md-3 cellz FormPadding ">
                                             <input type="text" class=" form-control cellFrom" name="othersource"
-                                                style="border: red 1px solid;" v-model.trim="customer.othersource"
+                                                v-model.trim="customer.othersource"
                                                 maxlength="20">
                                         </div>
                                     </div>
@@ -1152,11 +1152,6 @@
                         this.customer.company = this.companyName;
                         //表單驗證
                         var isok = true;
-
-                        if (this.customer.source == "其他" && (this.customer.othersource == null || this.customer.othersource == "" || this.customer.othersource == "其他")) {
-                            isok = false;
-                            this.$message.error('其他來源,需要填');
-                        }
 
 
                         if (this.companyName == null || this.companyName == "") {

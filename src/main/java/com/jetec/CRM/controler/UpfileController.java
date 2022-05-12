@@ -1,14 +1,10 @@
 package com.jetec.CRM.controler;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
+import com.jetec.CRM.Tool.ZeroTools;
 import com.jetec.CRM.controler.service.UpfileService;
 import com.jetec.CRM.model.MarketFileBean;
-import com.jetec.CRM.repository.ZeroMailRepository;
+import com.jetec.CRM.model.ReplyFileBean;
+import com.jetec.CRM.repository.ReplyFileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,9 +14,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.jetec.CRM.Tool.ZeroTools;
-import com.jetec.CRM.model.ReplyFileBean;
-import com.jetec.CRM.repository.ReplyFileRepository;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class UpfileController {

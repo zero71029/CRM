@@ -406,7 +406,7 @@
                                                 </div>
                                                 <div class="col-md-4 FormPadding">
                                                     <select class=" form-select cellzFrom" name="stage"
-                                                        @blur="chageToSave('stage',bean.stage)" v-model="bean.stage">
+                                                        @change="chageToSave('stage',bean.stage)" v-model="bean.stage">
                                                         <option value="尚未處理" selected>
                                                             尚未處理
                                                         </option>
@@ -445,7 +445,8 @@
                                                     </div>
                                                 </c:if>
                                             </div>
-                                            <div class="row" v-show="bean.stage == '失敗結案' || bean.stage == '提交主管'">
+                                            <div class="row"
+                                                v-show="bean.stage == '失敗結案' || bean.stage == '提交主管' || bean.stage == '成功結案' ">
                                                 <div class="col-md-1 ">
                                                 </div>
                                                 <div class="col-md-2 cellz">
@@ -469,6 +470,9 @@
                                                         </option>
                                                         <option value="自動結案" v-show="bean.closereason == '自動結案'">
                                                             自動結案
+                                                        </option>
+                                                        <option value="失敗復活" v-show="bean.closereason == '失敗復活'">
+                                                            失敗復活
                                                         </option>
                                                     </select>
                                                 </div>
@@ -1224,12 +1228,16 @@
                         var isok = true;
 
 
+                        if(this.bean.marketid != ""  && this.bean.othersource.length < 2){
+                            isok = false;
+                            this.$message.error('其他來源,需要填');
+                        }
+
+
+
                         if (this.bean.source == "其他" && (this.bean.othersource == null || this.bean.othersource == "" || this.bean.othersource == "其他")) {
                             isok = false;
-
                             this.$message.error('其他來源,需要填');
-
-
                         }
 
 
@@ -1608,10 +1616,8 @@
                     },
                     //測回 或 失敗結案 快捷鍵
                     BosOperate(state) {
-
                         this.bean.stage = state;
                         this.submitForm();
-
                     },
                     //送出留言
                     sendBosMessage() {
@@ -1651,40 +1657,68 @@
                     },
                     //失去焦點,儲存
                     chageToSave(field, val) {
-                        if (this.bean.marketid) {
-                            console.log(this.oldBean[field]);
-                            console.log(field, val);
+                        if (this.bean.marketid) {//有id有案件
+                            
+                            var oldstage = this.oldBean.stage
+
+                            //儲存改變
                             if (this.oldBean[field] != val) {
-                                let data = new FormData();
+                                var data = new FormData();
                                 data.append("marketid", this.bean.marketid);
                                 data.append("field", field);
                                 data.append("val", val);
-
-                                $.ajax({
-                                    url: '${pageContext.request.contextPath}/Market/blur',
-                                    type: 'POST',
-                                    data: data,
-                                    async: false,
-                                    cache: false,
-                                    contentType: false,
-                                    processData: false,
-                                    success: (response => (
-
-                                        this.$message({
-                                            message: '儲存 ' + field + " = " + val,
-                                            type: 'success'
-                                        }),
-                                        this.oldBean = Object.assign({}, this.bean)
-
-
-                                    )),
-                                    error: function (returndata) {
-                                        console.log(returndata);
-                                    }
-                                })
+                                this.saveChage(data);
                             }
+
+
+                            //如果是復活
+                            if (field == "stage" && oldstage == "失敗結案") {
+                                this.bean.closereason = "失敗復活";
+                                var data = new FormData();
+                                data.append("marketid", this.bean.marketid);
+                                data.append("field", "closereason");
+                                data.append("val", "失敗復活");
+                                this.saveChage(data);
+
+                            }
+                            //如果私敗
+                            if (field == "stage" && this.bean.stage == "失敗結案") {
+                                this.bean.closereason = "其他";
+                                var data = new FormData();
+                                data.append("marketid", this.bean.marketid);
+                                data.append("field", "closereason");
+                                data.append("val", "其他");
+                                this.saveChage(data);
+
+                            }
+
+
                         }
-                    }
+                    }, saveChage(data) {
+                        $.ajax({
+                            url: '${pageContext.request.contextPath}/Market/blur',
+                            type: 'POST',
+                            data: data,
+                            async: false,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            success: (response => (
+
+                                this.$message({
+                                    message: '儲存 ' + data.get("field") + " = " + data.get("val"),
+                                    type: 'success'
+                                }),
+                                this.oldBean = Object.assign({}, this.bean)
+
+
+                            )),
+                            error: function (returndata) {
+                                console.log(returndata);
+                            }
+                        })
+                    },
+
                 },
             })
 
