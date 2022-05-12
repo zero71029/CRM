@@ -53,6 +53,7 @@ public class TaskService {
         Map<String, Object> map = new HashMap<>();
         map.put("list", page.getContent());
         map.put("total", page.getTotalElements());
+        map.put("userList", er.getName());
 
         return map;
     }
@@ -72,5 +73,13 @@ public class TaskService {
         for (String i : id) {
            er.deleteById(i);
         }
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//搜索每日任務
+    public List<EvaluateBean> selecttask(String name, Integer pag) {
+        Pageable p =   PageRequest.of(pag, 20,Sort.Direction.DESC,"evaluatedate");
+        Page<EvaluateBean> page = er.findByName(name,p);
+        return page.getContent();
     }
 }

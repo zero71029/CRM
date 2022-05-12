@@ -42,15 +42,9 @@
                                     <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
                                     <label class="btn btn-outline-primary state2" for="btncheck2"
                                         onclick="sta()">刪除</label>
+                                    <label @click="searchBox = true" class="btn btn-outline-primary state2">搜索</label>
                                 </c:if>
-                                <!-- 
-                                <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off">
-                                <label class="btn btn-outline-primary" for="btncheck3">XXX</label>
 
-
-                                <input type="checkbox" class="btn-check" id="btncheck4" autocomplete="off">
-                                <label class="btn btn-outline-primary" for="btncheck4"
-                                    onclick="javascript:location.href='${pageContext.request.contextPath}/task/closed'">XXX</label> -->
                             </div>
                         </div>
                         <!-- <%-- 中間表格--%> -->
@@ -74,6 +68,18 @@
                                 :page-size="20" layout="  prev, pager, next" :total="total">
                             </el-pagination>
                         </div>
+                        <!-- 滑塊 -->
+                        <el-drawer title="我嵌套了表格!" :visible.sync="searchBox" direction="rtl" size="30%">
+                            <el-button type="primary" v-for="(s, index) in userList" :key="index" @click="search(s)">
+                                {{s}}</el-button>
+                        </el-drawer>
+
+
+
+
+
+
+
                     </div>
                 </div>
             </div>
@@ -86,7 +92,9 @@
                         currentPage1: 1,//當前分頁
                         total: 1,//所有筆數
                         list: [],
-                        selectIn: ""//搜索框
+                        selectIn: "",//搜索框
+                        searchBox: false,//滑塊顯示
+                        userList: ""//
                     }
                 },
                 created() {
@@ -99,7 +107,9 @@
                         .get(url)//銷售機會列表
                         .then(response => (
                             this.list = response.data.list,
-                            this.total = response.data.total
+                            this.total = response.data.total,
+                            this.userList = response.data.userList
+
                         ))
                         .catch(function (error) {
                             console.log(error);
@@ -110,9 +120,17 @@
                         location.href = '${pageContext.request.contextPath}/task/detail/' + evaluateid
                     },
                     handleCurrentChange(val) {//點擊分頁
+                        if ("${user.position}" == "主管" || "${user.position}" == "系統") {
+                            var url = '${pageContext.request.contextPath}/task/directorTaskList?pag=' + val;
+                        } else {
+                            var url = '${pageContext.request.contextPath}/task/taskList?pag=' + val + '&name=${user.name}';
+                        }
+
+                        console.log(url);
+
                         if (this.selectIn == "") {
                             axios
-                                .get('${pageContext.request.contextPath}/task/taskList?pag=' + val)
+                                .get(url)
                                 .then(response => (
                                     this.list = response.data.list,
                                     this.total = response.data.total
@@ -135,6 +153,18 @@
                         var $all = $("input[name=mak]");
                         var $zx = $("input[name=mak]:checked");
                         $("#activity").prop("checked", $zx.length == $all.length);
+                    }, search(s) {
+                        this.selectIn = s;
+                        axios
+                            .get('${pageContext.request.contextPath}/task/taskList?name=' + this.selectIn + "&pag=1" )
+                            .then(response => (
+                                this.list = response.data.list,
+                            this.total = response.data.total
+                 
+                            ))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
                     }
                 },
 

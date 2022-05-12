@@ -113,7 +113,7 @@ public class TaskController {
     @ResponseBody
     @RequestMapping("/directorTaskList")
     public Map<String, Object> directorTaskList(@RequestParam("pag") Integer pag) {
-        System.out.println("任務列表");
+        System.out.println("主管任務列表");
         pag--;
         return TS.getList(pag);
     }
@@ -121,7 +121,7 @@ public class TaskController {
     @ResponseBody
     @RequestMapping("/taskList")
     public Map<String, Object> workList(@RequestParam("pag") Integer pag, @RequestParam("name") String name) {
-        System.out.println("任務列表");
+        System.out.println("個人任務列表");
         pag--;
         return TS.getList(pag, name);
     }
@@ -177,7 +177,15 @@ public class TaskController {
         }
 
     }
-
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//搜索每日任務
+    @RequestMapping("/selecttask")
+    @ResponseBody
+    public List<EvaluateBean> selecttask(@RequestParam("pag") Integer pag, @RequestParam("name") String name) {
+        System.out.println("*****搜索每日任務*****");
+        pag--;
+        return TS.selecttask(name,pag);
+    }
 
 
 

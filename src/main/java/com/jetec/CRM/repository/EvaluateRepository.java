@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.jetec.CRM.model.EvaluateBean;
 
+import java.util.List;
+
 public interface EvaluateRepository extends JpaRepository<EvaluateBean,String> {
 
 
@@ -21,4 +23,8 @@ public interface EvaluateRepository extends JpaRepository<EvaluateBean,String> {
 
 
     Page<EvaluateBean> findByName(String name, Pageable p);
+
+
+    @Query(value ="SELECT DISTINCT name from evaluate ", nativeQuery=true)
+    List<String> getName();
 }
