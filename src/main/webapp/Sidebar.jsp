@@ -28,7 +28,19 @@
             ELEMENT.locale(ELEMENT.lang.zhTW)
         </script>
 
+        <style>
+            /* @media (min-width:996px) {
+                .list-group {
+                    position: fixed;
+                }
+            } */
 
+            @media (max-width:996px) {
+                .navfix {
+                    height: auto;
+                }
+            }
+        </style>
 
 
 
@@ -50,6 +62,7 @@
         </header>
         <!--側邊欄 -->
         <div class="col-lg-1 navfix mainColor" style="padding: 0%;">
+
             <ul class="list-group">
                 <button class="list-group-item" onclick="market()">
                     營銷模塊

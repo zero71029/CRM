@@ -105,8 +105,10 @@ public class MarketControler {
         result.put("SubmitBos", ms.getSubmitBos());
         result.put("endCast", ms.getEndCast(aBean.getName()));
         result.put("todayTotal", ms.gettodayTotal());
-        result.put("CallBos", ms.CallBos());
-        result.put("marketstate", ms.getMarketStateList(aBean.getAdminid()));
+        result.put("CallBos", ms.CallBos());// 搜索銷售機會by延長申請
+        result.put("marketstate", ms.getMarketStateList(aBean.getAdminid()));//getM使用者狀態列表
+        result.put("markeCreateTime", ms.getCreatetimeAndEndtime("轉賣/自用"));//轉賣今天到期
+
         return result;
     }
 

@@ -553,6 +553,12 @@ public class MarketService {
         });
         System.out.println(list.size());
     }
+    //
+    public List<MarketBean> getCreatetimeAndEndtime(String Createtime) {
+
+     return   mr.findByCreatetimeAndEndtimeLessThanEqualAndStageNotAndStageNot("轉賣/自用", LocalDate.now().toString(),"失敗結案","成功結案");
+
+    }
 
 
 //    public void updata(String marketid, String field, String val) {

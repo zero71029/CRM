@@ -135,6 +135,8 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
 
     List<MarketBean> findByCreatetimeAndEndtimeLessThanEqualAndStageNotAndStageNot(String s, String toString, String 失敗結案, String 成功結案);
 
+    List<MarketBean> findByCreatetimeAndEndtimeLessThanEqual(String createtime, String toString);
+
 
 //    @Modifying
 //    @Query(value = "update market set ?2 = ?3 where marketid = ?1", nativeQuery = true)

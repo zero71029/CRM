@@ -177,8 +177,26 @@
                     </el-button>
                     <el-button type="text" @click="CallBosVisible=true">延長請求 {{CallBos.length}}
                     </el-button>
+                    <el-button type="text" @click="CreateVisible = true">轉賣/自用 - 今天到期 {{markeCreateTime.length}}</el-button>
                 </div>
             </transition-group>
+
+
+            <!-- 轉賣/自用 - 今天到期 彈窗-->
+            <el-dialog title="轉賣/自用 - 今天到期" :visible.sync="CreateVisible"
+                       :default-sort="{prop: 'stage', order: 'descending'}">
+                <el-table :data="markeCreateTime" @row-click="clickEndCast">
+                    <el-table-column property="client" label="公司"></el-table-column>
+                    <el-table-column property="message" label="描述"></el-table-column>
+                    <el-table-column property="stage" label="階段" sortable></el-table-column>
+                    <el-table-column property="user" label="負者人" sortable></el-table-column>
+                </el-table>
+            </el-dialog>
+
+
+
+
+
             <!-- 到期任務 彈窗-->
             <el-dialog title="到期任務 (延長結束時間 或 結案)" :visible.sync="endCastVisible"
                        :default-sort="{prop: 'stage', order: 'descending'}">
@@ -736,6 +754,8 @@
                 value: '失敗結案',
                 label: '失敗結案'
             }],
+            markeCreateTime:[],//轉賣今天到期
+            CreateVisible:false,
             inSortState: "",//排序用
             btncheck3: false,//個人頁面按鈕
             todayTotal: "",//
@@ -861,7 +881,8 @@
                             this.endCast.length > 0 ? this.endCastVisible = true : this.endCastVisible = false,
                             this.oldList = this.list,
                             this.MarketStateList = response.marketstate,
-                            this.total = response.total
+                            this.total = response.total,
+                            this.markeCreateTime = response.markeCreateTime
 
                     },
                     error: function (returndata) {
@@ -1158,15 +1179,6 @@
                         }
                     }
                 }
-
-
-
-
-
-
-
-
-
                 this.total = 20;
                 this.oldList = this.list
             },

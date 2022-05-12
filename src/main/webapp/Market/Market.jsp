@@ -1228,7 +1228,7 @@
                         var isok = true;
 
 
-                        if(this.bean.marketid != ""  && this.bean.othersource.length < 2){
+                        if(this.bean.marketid != ""   && this.bean.source == "其他" && this.bean.othersource.length < 2){
                             isok = false;
                             this.$message.error('其他來源,需要填');
                         }

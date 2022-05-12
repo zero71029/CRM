@@ -69,8 +69,8 @@
                             </el-pagination>
                         </div>
                         <!-- 滑塊 -->
-                        <el-drawer title="我嵌套了表格!" :visible.sync="searchBox" direction="rtl" size="30%">
-                            <el-button type="primary" v-for="(s, index) in userList" :key="index" @click="search(s)">
+                        <el-drawer title="搜索" :visible.sync="searchBox" direction="rtl" size="30%">
+                            <el-button type="primary" v-for="(s, index) in userList" :key="index" @click="search(s)" size="small">
                                 {{s}}</el-button>
                         </el-drawer>
 
@@ -125,9 +125,6 @@
                         } else {
                             var url = '${pageContext.request.contextPath}/task/taskList?pag=' + val + '&name=${user.name}';
                         }
-
-                        console.log(url);
-
                         if (this.selectIn == "") {
                             axios
                                 .get(url)
@@ -156,11 +153,10 @@
                     }, search(s) {
                         this.selectIn = s;
                         axios
-                            .get('${pageContext.request.contextPath}/task/taskList?name=' + this.selectIn + "&pag=1" )
+                            .get('${pageContext.request.contextPath}/task/taskList?name=' + this.selectIn + "&pag=1")
                             .then(response => (
                                 this.list = response.data.list,
-                            this.total = response.data.total
-                 
+                                this.total = response.data.total
                             ))
                             .catch(function (error) {
                                 console.log(error);
