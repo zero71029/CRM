@@ -135,7 +135,7 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
 
     List<MarketBean> findByCreatetimeAndEndtimeLessThanEqualAndStageNotAndStageNot(String s, String toString, String 失敗結案, String 成功結案);
 
-    List<MarketBean> findByCreatetimeAndEndtimeLessThanEqual(String createtime, String toString);
+    List<MarketBean> findByClosereason(String 結案理由, Sort aaa);
 
 
 //    @Modifying

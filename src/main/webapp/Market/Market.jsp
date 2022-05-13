@@ -345,12 +345,102 @@
                                                     </datalist>
                                                 </div>
                                             </div>
+                                            <div class="row">&nbsp;</div>
 
+                                            <div class="row" style="text-align: center;">
+                                                <div class="col-md-12 bg-danger text-white"
+                                                    style="font-size: 1.5rem;border-radius: 5px 5px 0 0 ;">
+                                                    需求
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-2 cellz">產品類別<span style="color: red;">*</span></div>
+                                                <div class="col-md-4 FormPadding">
+                                                    <select name="producttype" id="Product_Type" v-model="bean.producttype"
+                                                        @blur="chageToSave('producttype',bean.producttype)"
+                                                        class=" form-select cellzFrom">
+                                                        <option ${bean.producttype=="尚未分類" ?"selected":null} value="尚未分類"
+                                                            selected="selected">請選擇...
+                                                        </option>  
+                                                        <c:forEach varStatus="loop" begin="0" end="${library.size()-1}"
+                                                            items="${library}" var="s">        
+                                                            <c:if test='${s.librarygroup == "producttype"}'>        
+                                                                <option value="${s.libraryoption}">${s.libraryoption}
+                                                                </option>        
+                                                            </c:if>        
+                                                        </c:forEach>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-2 cellz">產品名稱</div>
+                                                <div class="col-md-4 FormPadding">
+                                                    <input type="text" class=" form-control cellzFrom" name="product"
+                                                        @blur="chageToSave('product',bean.product)" v-model.trim="bean.product"
+                                                        maxlength="20">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+        
+                                                <div class="col-md-2 cellz">預算</div>
+                                                <div class="col-md-4 FormPadding">
+                                                    <input type="number" class=" form-control cellzFrom" name="cost"
+                                                        @blur="chageToSave('cost',bean.cost)" v-model.trim="bean.cost"
+                                                        maxlength="30">
+                                                </div>
+                                                <div class="col-md-2 cellz">成交機率</div>
+        
+                                                <div class="col-md-4 FormPadding clinch">
+                                                    <el-rate v-model.trim="bean.clinch"
+                                                        :colors="{ 2: '#99A9BF', 3:  '#F7BA2A', 4: '#FF9900', 5: 'red' }">
+                                                    </el-rate>
+                                                    <input type="hidden" name="clinch" v-model.trim="bean.clinch">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+        
+                                                <div class="col-md-2 cellz">案件類型</div>
+                                                <div class="col-md-4 FormPadding">
+                                                    <select name="createtime" id="createtime" v-model="bean.createtime"
+                                                        @change="changeCreateTime" class=" form-select cellzFrom">
+                                                        <option value="轉賣">轉賣</option>
+                                                        <option value="自用">自用</option>
+                                                        <option value="設計/預算規劃">設計/預算規劃</option>
+                                                        <option value="工程標案">工程標案</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-2 cellz">結束時間
+                                                    <el-button type="text" icon="el-icon-phone-outline" @click="callBos"
+                                                        style="float:right"></el-button>
+                                                </div>
+                                                <div class="col-md-4 FormPadding">
+                                                    <c:if test="${user.position != '職員' }">
+                                                        <el-date-picker v-model="bean.endtime" align="right" type="date"
+                                                            @blur="chageToSave('endtime',bean.endtime)" name="endtime"
+                                                            placeholder="選擇日期" :picker-options="pickerOptions"
+                                                            value-format="yyyy-MM-dd">
+                                                        </el-date-picker>
+                                                    </c:if>
+                                                    <c:if test="${user.position == '職員' }">
+                                                        <input type="text" :class="CallBosCss" name="endtime"
+                                                            @blur="chageToSave('endtime',bean.endtime)"
+                                                            v-model.trim="bean.endtime" readonly>
+                                                    </c:if>
+                                                </div>
+                                            </div>
+                                            <!-- /////////////////////////////////////////////////////////////////////////// -->
+                                            <div class="row">
+                                                <div class="col-md-2 cellz">描述<span style="color: red;">*</span></div>
+                                                <div class="col-md-10 FormPadding">
+                                                    <div v-html="messageheight" id="messageheight"
+                                                        style="position: absolute;width: 541px;z-index: -1;"></div>
+                                                    <el-input type="textarea" v-model="bean.message" rows="5" id="message"
+                                                        @blur="chageToSave('message',bean.message)" maxlength="950"
+                                                        show-word-limit name="message" @input="changeTextarea('message')">
+                                                </div>
+                                                <br><br>
+                                            </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="row">&nbsp;</div>
-
-
                                             <div class="row" style="line-height: 2.5rem;">
                                                 <div class="col-md-1 ">
                                                 </div>
@@ -430,7 +520,6 @@
                                                         </option>
                                                     </select>
                                                 </div>
-
                                                 <c:if test="${user.position != '職員' }">
 
                                                     <div class="col-md-5" v-show="bean.stage  =='提交主管'">
@@ -560,109 +649,7 @@
                                     </div>
                                     <!-- ////////////////////////////////////////////////////////////////////////////////// -->
                                     <div class="row">&nbsp;</div>
-                                    <div class="row" style="text-align: center;">
-                                        <div class="col-md-6 bg-danger text-white"
-                                            style="font-size: 1.5rem;border-radius: 5px 5px 0 0 ;">
-                                            需求
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-1 cellz">產品類別<span style="color: red;">*</span></div>
-                                        <div class="col-md-2 FormPadding">
-                                            <select name="producttype" id="Product_Type" v-model="bean.producttype"
-                                                @blur="chageToSave('producttype',bean.producttype)"
-                                                class=" form-select cellzFrom">
-                                                <option ${bean.producttype=="尚未分類" ?"selected":null} value="尚未分類"
-                                                    selected="selected">請選擇...
-                                                </option>
 
-
-                                                <c:forEach varStatus="loop" begin="0" end="${library.size()-1}"
-                                                    items="${library}" var="s">
-
-                                                    <c:if test='${s.librarygroup == "producttype"}'>
-
-                                                        <option value="${s.libraryoption}">${s.libraryoption}
-                                                        </option>
-
-                                                    </c:if>
-
-                                                </c:forEach>
-
-
-
-                                            </select>
-                                        </div>
-                                        <div class="col-md-1 cellz">產品名稱</div>
-                                        <div class="col-md-2 FormPadding">
-                                            <input type="text" class=" form-control cellzFrom" name="product"
-                                                @blur="chageToSave('product',bean.product)" v-model.trim="bean.product"
-                                                maxlength="20">
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-
-                                        <div class="col-md-1 cellz">預算</div>
-                                        <div class="col-md-2 FormPadding">
-                                            <input type="number" class=" form-control cellzFrom" name="cost"
-                                                @blur="chageToSave('cost',bean.cost)" v-model.trim="bean.cost"
-                                                maxlength="30">
-                                        </div>
-                                        <div class="col-md-1 cellz">成交機率</div>
-
-                                        <div class="col-md-2 FormPadding clinch">
-                                            <el-rate v-model.trim="bean.clinch"
-                                                :colors="{ 2: '#99A9BF', 3:  '#F7BA2A', 4: '#FF9900', 5: 'red' }">
-                                            </el-rate>
-                                            <input type="hidden" name="clinch" v-model.trim="bean.clinch">
-                                        </div>
-                                    </div>
-
-
-                                    <div class="row">
-
-                                        <div class="col-md-1 cellz">案件類型</div>
-                                        <div class="col-md-2 FormPadding">
-                                            <select name="createtime" id="createtime" v-model="bean.createtime"
-                                                @change="changeCreateTime" class=" form-select cellzFrom">
-                                                <option value="轉賣/自用">轉賣/自用</option>
-                                                <option value="設計/預算規劃">設計/預算規劃</option>
-                                                <option value="工程標案">工程標案</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-1 cellz">結束時間
-                                            <el-button type="text" icon="el-icon-phone-outline" @click="callBos"
-                                                style="float:right"></el-button>
-                                        </div>
-                                        <div class="col-md-2 FormPadding">
-                                            <c:if test="${user.position != '職員' }">
-                                                <el-date-picker v-model="bean.endtime" align="right" type="date"
-                                                    @blur="chageToSave('endtime',bean.endtime)" name="endtime"
-                                                    placeholder="選擇日期" :picker-options="pickerOptions"
-                                                    value-format="yyyy-MM-dd">
-                                                </el-date-picker>
-                                            </c:if>
-                                            <c:if test="${user.position == '職員' }">
-                                                <input type="text" :class="CallBosCss" name="endtime"
-                                                    @blur="chageToSave('endtime',bean.endtime)"
-                                                    v-model.trim="bean.endtime" readonly>
-                                            </c:if>
-                                        </div>
-                                    </div>
-
-                                    <!-- /////////////////////////////////////////////////////////////////////////// -->
-                                    <div class="row">
-                                        <div class="col-md-1 cellz">描述<span style="color: red;">*</span></div>
-                                        <div class="col-md-5 FormPadding">
-                                            <div v-html="messageheight" id="messageheight"
-                                                style="position: absolute;width: 541px;z-index: -1;"></div>
-                                            <el-input type="textarea" v-model="bean.message" rows="5" id="message"
-                                                @blur="chageToSave('message',bean.message)" maxlength="950"
-                                                show-word-limit name="message" @input="changeTextarea('message')">
-                                        </div>
-                                        <br><br>
-                                    </div>
                                     <p>&nbsp;</p>
                                     <div class="row">
                                         <div class="col-md-3"></div>
@@ -1513,13 +1500,16 @@
                     },
                     //切換案件類型
                     changeCreateTime: function () {
+                        this.chageToSave('createtime', this.bean.createtime);
                         var day = new Date(this.bean.aaa);
-                        if (this.bean.createtime == "轉賣/自用") day.setDate(day.getDate() + 7);
+                        if (this.bean.createtime == "轉賣") day.setDate(day.getDate() + 7);
+                        if (this.bean.createtime == "自用") day.setDate(day.getDate() + 7);
                         if (this.bean.createtime == "設計/預算規劃") day.setDate(day.getDate() + 14);
                         if (this.bean.createtime == "工程標案") day.setDate(day.getDate() + 30);
                         this.bean.endtime = formatDay(day);
                         this.chageToSave('endtime', formatDay(day));
-                        this.chageToSave('createtime', this.bean.createtime)
+                        
+                    
                     },
                     //通知主管
                     callBos: function () {

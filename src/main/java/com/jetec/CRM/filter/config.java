@@ -26,6 +26,10 @@ public class config {
 
     @Scheduled(cron = "0 0 22 * * *")
     public void layoutSQL() throws IOException {
+        //轉賣 自動結案
+        ms.AutoCloseCase("轉賣/自用");
+        ms.AutoCloseCase("轉賣");
+
         System.out.println("現在時間 :" + dateFormat.format(new Date()));
         System.out.println("自動備份,輸出SQL");
         //////
@@ -43,7 +47,7 @@ public class config {
             System.out.println(line);
         }
 
-        ms.AutoCloseCase();
+
 
 
 

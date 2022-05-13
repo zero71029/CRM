@@ -182,8 +182,8 @@
             </transition-group>
 
 
-            <!-- 轉賣/自用 - 今天到期 彈窗-->
-            <el-dialog title="轉賣/自用 - 今天到期" :visible.sync="CreateVisible"
+            <!-- 轉賣  - 今天到期 彈窗-->
+            <el-dialog title="轉賣 - 今天到期" :visible.sync="CreateVisible"
                        :default-sort="{prop: 'stage', order: 'descending'}">
                 <el-table :data="markeCreateTime" @row-click="clickEndCast">
                     <el-table-column property="client" label="公司"></el-table-column>
@@ -570,7 +570,15 @@
                                 </div>
                             </div>
                         </div>
-
+                        <!-- 自動結案 -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" @click="getAutoClose"
+                                        data-bs-toggle="collapse" data-bs-target="#i13">
+                                        自動結案
+                                </button>
+                            </h2>
+                        </div>
 
 
 
@@ -1350,6 +1358,23 @@
                     cache: false,
                     success: (response => (
                         location.href = "${pageContext.request.contextPath}/Market/MarketList.jsp"
+
+                    )),
+                    error: function (returndata) {
+                        console.log(returndata);
+                    }
+                })
+            },
+            getAutoClose(){
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/Market/getAutoClose/',
+                    type: 'POST',
+                    async: false,
+                    cache: false,
+                    success: (response => (
+                        console.log(response),
+                        this.list = response.list,
+                        this.todayTotal =1
 
                     )),
                     error: function (returndata) {

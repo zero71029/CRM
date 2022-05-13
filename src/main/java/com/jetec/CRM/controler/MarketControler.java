@@ -835,15 +835,19 @@ public class MarketControler {
         return "修改結束";
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//*******************
+    //手動 將轉賣過期 自動結案
     @RequestMapping("/XXX")
     @ResponseBody
     public String AutoCloseCase() {
-
-         ms.AutoCloseCase();
-
-
+         ms.AutoCloseCase("轉賣/自用");
     return "";
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //讀取 自動結案
+    @RequestMapping("/getAutoClose")
+    @ResponseBody
+    public Map<String, Object> getAutoClose() {
+        return ms.getAutoClose();
     }
 
 }

@@ -540,11 +540,11 @@ public class MarketService {
         return mr.findAll();
     }
 //轉賣 時間到自動結案
-    public void AutoCloseCase() {
+    public void AutoCloseCase(String Createtime) {
         System.out.println("======================================================================");
         System.out.println("自動結案");
         LocalDate ld = LocalDate.now();
-        List<MarketBean> list = mr.findByCreatetimeAndEndtimeLessThanEqualAndStageNotAndStageNot("轉賣/自用", ld.toString(),"失敗結案","成功結案");
+        List<MarketBean> list = mr.findByCreatetimeAndEndtimeLessThanEqualAndStageNotAndStageNot(Createtime, ld.toString(),"失敗結案","成功結案");
         list.stream().forEach((e)->{
             System.out.println(e);
             e.setClosereason("自動結案");
@@ -555,9 +555,15 @@ public class MarketService {
     }
     //
     public List<MarketBean> getCreatetimeAndEndtime(String Createtime) {
-
      return   mr.findByCreatetimeAndEndtimeLessThanEqualAndStageNotAndStageNot("轉賣/自用", LocalDate.now().toString(),"失敗結案","成功結案");
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //手動 將轉賣過期 自動結案
+    public Map<String, Object> getAutoClose() {
+        Map<String, Object> result = new HashMap<>();
 
+        result.put("list",mr.findByClosereason("自動結案",Sort.by(Direction.DESC,"aaa"))) ;
+        return result;
     }
 
 
