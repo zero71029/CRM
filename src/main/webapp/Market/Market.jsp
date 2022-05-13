@@ -1159,7 +1159,6 @@
                             cache: false,//不快取頁面
                             success: (response => (
                                 this.bean = response.bean,
-
                                 this.existsCustomer = response.existsCustomer,
                                 this.changeMessageList = response.changeMessageList,
                                 this.bean.phone = formatPhone(this.bean.phone),
