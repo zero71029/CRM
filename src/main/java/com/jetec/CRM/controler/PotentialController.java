@@ -227,8 +227,10 @@ public class PotentialController {
     public Map<String, Object> getCompanyByName(@PathVariable("company") String company) {
         Map<String, Object> map = new HashMap<>();
         ClientBean cBean = CS.getCompanyByName(company);
-        map.put("company", cBean);
-        map.put("contact", CS.getByNameAndCompany(cBean.getUser(), company));
+        if(cBean != null){
+            map.put("company", cBean);
+            map.put("contact", CS.getByNameAndCompany(cBean.getUser(), company));
+        }
         return map;
     }
 

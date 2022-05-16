@@ -305,7 +305,7 @@ public class PublicControl {
         } else {
             String save = ss.SaveAdmin(abean);
             ServletContext sce = req.getServletContext();
-            sce.setAttribute("admin", ar.findAll());
+            sce.setAttribute("admin", ar.findByStateOrState("在職","新"));
             AdminBean user = (AdminBean) session.getAttribute("user");
             if (user != null)
                 if (user.getPosition().equals("系統") || user.getPosition().equals("主管"))

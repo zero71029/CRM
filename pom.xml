@@ -50,11 +50,11 @@
 			<artifactId>google-api-client</artifactId>
 			<version>1.31.2</version>
 		</dependency>
-		<dependency>
-			<groupId>com.att.inno</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.13</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>com.att.inno</groupId>-->
+<!--			<artifactId>log4j</artifactId>-->
+<!--			<version>1.2.13</version>-->
+<!--		</dependency>-->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>

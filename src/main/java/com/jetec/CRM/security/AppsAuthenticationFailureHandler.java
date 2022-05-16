@@ -24,7 +24,6 @@ public class AppsAuthenticationFailureHandler implements AuthenticationFailureHa
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException exception) throws IOException, ServletException {
 		System.out.println("登入失敗");
-
 	
 		String username = request.getParameter("username"); // 取得登入帳號
 		String password = request.getParameter("password");

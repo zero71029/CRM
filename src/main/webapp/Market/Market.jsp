@@ -1071,7 +1071,7 @@
                         clientList: [],//客戶列表
                         bean: {
                             fileforeignid: Math.random() * 1000,
-                            createtime: "轉賣/自用",//案件類型
+                            createtime: "自用",//案件類型
                             clinch: 3,
                             phone: "",
                             stage: "",
@@ -1152,10 +1152,7 @@
                                 this.bean.contactphone = formatPhone(this.bean.contactphone),
                                 this.bean.contactmoblie = formatPhone(this.bean.contactmoblie),
                                 this.oldBean = Object.assign({}, this.bean),
-                                this.bosMassageList = response.bean.bm,
-                                console.log(response.bean.customerid, "response.bean.bm"),
-                                console.log(response.bean.bm.length, "response.bean.bm")
-
+                                this.bosMassageList = response.bean.bm
 
                             )),
                             error: function (returndata) {
