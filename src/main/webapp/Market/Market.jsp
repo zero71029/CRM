@@ -356,30 +356,31 @@
                                             <div class="row">
                                                 <div class="col-md-2 cellz">產品類別<span style="color: red;">*</span></div>
                                                 <div class="col-md-4 FormPadding">
-                                                    <select name="producttype" id="Product_Type" v-model="bean.producttype"
+                                                    <select name="producttype" id="Product_Type"
+                                                        v-model="bean.producttype"
                                                         @blur="chageToSave('producttype',bean.producttype)"
                                                         class=" form-select cellzFrom">
-                                                        <option ${bean.producttype=="尚未分類" ?"selected":null} value="尚未分類"
-                                                            selected="selected">請選擇...
-                                                        </option>  
+                                                        <option ${bean.producttype=="尚未分類" ?"selected":null}
+                                                            value="尚未分類" selected="selected">請選擇...
+                                                        </option>
                                                         <c:forEach varStatus="loop" begin="0" end="${library.size()-1}"
-                                                            items="${library}" var="s">        
-                                                            <c:if test='${s.librarygroup == "producttype"}'>        
+                                                            items="${library}" var="s">
+                                                            <c:if test='${s.librarygroup == "producttype"}'>
                                                                 <option value="${s.libraryoption}">${s.libraryoption}
-                                                                </option>        
-                                                            </c:if>        
+                                                                </option>
+                                                            </c:if>
                                                         </c:forEach>
                                                     </select>
                                                 </div>
                                                 <div class="col-md-2 cellz">產品名稱</div>
                                                 <div class="col-md-4 FormPadding">
                                                     <input type="text" class=" form-control cellzFrom" name="product"
-                                                        @blur="chageToSave('product',bean.product)" v-model.trim="bean.product"
-                                                        maxlength="20">
+                                                        @blur="chageToSave('product',bean.product)"
+                                                        v-model.trim="bean.product" maxlength="20">
                                                 </div>
                                             </div>
                                             <div class="row">
-        
+
                                                 <div class="col-md-2 cellz">預算</div>
                                                 <div class="col-md-4 FormPadding">
                                                     <input type="number" class=" form-control cellzFrom" name="cost"
@@ -387,7 +388,7 @@
                                                         maxlength="30">
                                                 </div>
                                                 <div class="col-md-2 cellz">成交機率</div>
-        
+
                                                 <div class="col-md-4 FormPadding clinch">
                                                     <el-rate v-model.trim="bean.clinch"
                                                         :colors="{ 2: '#99A9BF', 3:  '#F7BA2A', 4: '#FF9900', 5: 'red' }">
@@ -396,7 +397,7 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-        
+
                                                 <div class="col-md-2 cellz">案件類型</div>
                                                 <div class="col-md-4 FormPadding">
                                                     <select name="createtime" id="createtime" v-model="bean.createtime"
@@ -432,9 +433,10 @@
                                                 <div class="col-md-10 FormPadding">
                                                     <div v-html="messageheight" id="messageheight"
                                                         style="position: absolute;width: 541px;z-index: -1;"></div>
-                                                    <el-input type="textarea" v-model="bean.message" rows="5" id="message"
-                                                        @blur="chageToSave('message',bean.message)" maxlength="950"
-                                                        show-word-limit name="message" @input="changeTextarea('message')">
+                                                    <el-input type="textarea" v-model="bean.message" rows="5"
+                                                        id="message" @blur="chageToSave('message',bean.message)"
+                                                        maxlength="950" show-word-limit name="message"
+                                                        @input="changeTextarea('message')">
                                                 </div>
                                                 <br><br>
                                             </div>
@@ -1211,7 +1213,7 @@
                         var isok = true;
 
 
-                        if(this.bean.marketid != ""   && this.bean.source == "其他" && this.bean.othersource.length < 2){
+                        if (this.bean.marketid != "" && this.bean.source == "其他" && this.bean.othersource.length < 2) {
                             isok = false;
                             this.$message.error('其他來源,需要填');
                         }
@@ -1505,8 +1507,8 @@
                         if (this.bean.createtime == "工程標案") day.setDate(day.getDate() + 30);
                         this.bean.endtime = formatDay(day);
                         this.chageToSave('endtime', formatDay(day));
-                        
-                    
+
+
                     },
                     //通知主管
                     callBos: function () {
@@ -1644,7 +1646,7 @@
                     //失去焦點,儲存
                     chageToSave(field, val) {
                         if (this.bean.marketid) {//有id有案件
-                            
+
                             var oldstage = this.oldBean.stage
 
                             //儲存改變
@@ -1708,8 +1710,14 @@
                 },
             })
 
-            function formatDay(day) {
-                return day.getFullYear() + "-" + (day.getMonth() + 1) + "-" + day.getDate();
+
+
+            function formatDay(day) {    
+                let a = day.getMonth() + 1;
+                let mon =a+"";
+                let b = day.getDate() ;
+                let d =(b+"").padStart(2, "0");
+                return day.getFullYear() + "-" + mon.padStart(2, "0") + "-" + d ;
             }
         </script>
 

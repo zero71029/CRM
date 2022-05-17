@@ -108,7 +108,11 @@ public class MarketControler {
         result.put("todayTotal", ms.gettodayTotal());
         result.put("CallBos", ms.CallBos());// 搜索銷售機會by延長申請
         result.put("marketstate", ms.getMarketStateList(aBean.getAdminid()));//getM使用者狀態列表
-        result.put("markeCreateTime", ms.getCreatetimeAndEndtime("轉賣/自用"));//轉賣今天到期
+        List<MarketBean>  mList = ms.getCreatetimeAndEndtime("轉賣/自用");
+        mList.addAll(ms.getCreatetimeAndEndtime("轉賣"));
+        mList.forEach(System.out::println);
+
+        result.put("markeCreateTime",  mList);//轉賣今天到期
 
         return result;
     }
@@ -471,7 +475,7 @@ public class MarketControler {
         bean.setJobtitle(pBean.getJobtitle());
         bean.setClinch(3);
         bean.setFax((pBean.getFax()));
-        bean.setCreatetime("轉賣/自用");
+        bean.setCreatetime("轉賣");
         //設定結束日期
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar calendar = Calendar.getInstance();
@@ -840,6 +844,7 @@ public class MarketControler {
     @ResponseBody
     public String AutoCloseCase() {
          ms.AutoCloseCase("轉賣/自用");
+        ms.AutoCloseCase("轉賣");
     return "";
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

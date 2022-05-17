@@ -137,7 +137,6 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
 
     List<MarketBean> findByClosereason(String 結案理由, Sort aaa);
 
-
 //    @Modifying
 //    @Query(value = "update market set ?2 = ?3 where marketid = ?1", nativeQuery = true)
 //    void updata(String marketid, String field, String val);

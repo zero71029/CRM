@@ -190,6 +190,7 @@
                     <el-table-column property="message" label="描述"></el-table-column>
                     <el-table-column property="stage" label="階段" sortable></el-table-column>
                     <el-table-column property="user" label="負者人" sortable></el-table-column>
+                    <el-table-column property="createtime" label="案件類型" sortable></el-table-column>
                 </el-table>
             </el-dialog>
 
@@ -1386,6 +1387,7 @@
     })
 </script>
 
+<p style="text-align:center"></p>
 <style>
     .el-date-editor--daterange.el-input__inner {
         width: auto;
