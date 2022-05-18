@@ -399,6 +399,9 @@ public class MarketService {
             case "quote":
                 result.addAll(mr.findByQuoteLikeIgnoreCaseAndAaaBetween("%" + val.get(0) + "%", startDay, endDay, sort));
                 break;
+            case "closereason":
+                result.addAll(mr.findByClosereasonAndAaaBetween( val.get(0) , startDay, endDay, sort));
+                break;
         }
 
         return result;

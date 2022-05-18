@@ -537,7 +537,7 @@
                                                 </c:if>
                                             </div>
                                             <div class="row"
-                                                v-show="bean.stage == '失敗結案' || bean.stage == '提交主管' || bean.stage == '成功結案' ">
+                                                v-show="bean.stage == '失敗結案' || bean.stage == '提交主管' ">
                                                 <div class="col-md-1 ">
                                                 </div>
                                                 <div class="col-md-2 cellz">
@@ -1657,6 +1657,19 @@
                                 data.append("val", val);
                                 this.saveChage(data);
                             }
+
+                        
+
+                            if (field == "stage" && this.bean.stage == "成功結案") {
+                                this.bean.closereason = "成功結案";
+                                var data = new FormData();
+                                data.append("marketid", this.bean.marketid);
+                                data.append("field", "closereason");
+                                data.append("val", "成功結案");
+                                this.saveChage(data);
+                            }
+
+
 
 
                             //如果是復活

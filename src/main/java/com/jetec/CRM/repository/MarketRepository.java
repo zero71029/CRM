@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -136,6 +137,10 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
     List<MarketBean> findByCreatetimeAndEndtimeLessThanEqualAndStageNotAndStageNot(String s, String toString, String 失敗結案, String 成功結案);
 
     List<MarketBean> findByClosereason(String 結案理由, Sort aaa);
+
+
+
+    List<MarketBean> findByClosereasonAndAaaBetween(String s, String startDay, String endDay, Sort sort);
 
 //    @Modifying
 //    @Query(value = "update market set ?2 = ?3 where marketid = ?1", nativeQuery = true)

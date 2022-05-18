@@ -110,7 +110,7 @@ public class MarketControler {
         result.put("marketstate", ms.getMarketStateList(aBean.getAdminid()));//getM使用者狀態列表
         List<MarketBean>  mList = ms.getCreatetimeAndEndtime("轉賣/自用");
         mList.addAll(ms.getCreatetimeAndEndtime("轉賣"));
-        mList.forEach(System.out::println);
+//        mList.forEach(System.out::println);
 
         result.put("markeCreateTime",  mList);//轉賣今天到期
 
