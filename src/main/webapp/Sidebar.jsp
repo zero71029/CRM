@@ -122,6 +122,9 @@
                         </button>
                     </c:if>
                     <button class="system"
+                        onclick="javascript:location.href='${pageContext.request.contextPath}/system/AccountApplicationList.jsp'">新進⼈員帳號申請表
+                    </button>
+                    <button class="system"
                         onclick="javascript:location.href='${pageContext.request.contextPath}/system/libraryList.jsp'">下拉選單管理
                     </button>
                     <button class="system"

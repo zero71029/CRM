@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.Collection;
+
 import java.util.Date;
 import java.util.List;
 
@@ -29,10 +29,10 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
     List<MarketBean> findByUserAndStage(String adminname, String stage);
 
     @Query(value = "SELECT  *  from market where stage != '失敗結案' AND stage != '成功結案' AND(ccc BETWEEN ?1 AND ?2 )", nativeQuery = true)
-    public List<MarketBean> findCreatetime(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
+     List<MarketBean> findCreatetime(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
 
     @Query(value = "SELECT  *  from market where (ccc BETWEEN :startTime AND :endTime )", nativeQuery = true)
-    public List<MarketBean> findConflictMettinds(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
+     List<MarketBean> findConflictMettinds(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
 
     List<MarketBean> findByContactphone(String phone);
 
@@ -111,7 +111,7 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
 
     List<MarketBean> findByNameLikeIgnoreCaseOrClientLikeIgnoreCaseAndAaaBetween(String s, String s1, String startDay, String endDay, Sort sort);
 
-    List<MarketBean> findByCallhelpAndStageNotAndStageNot(String s, String 失敗結案, String 成功結案);
+    List<MarketBean> findByCallhelpAndStageNotAndStageNot(String s, String Stage, String s2);
 
     MarketBean findByCustomerid(String customerid);
 
@@ -134,9 +134,9 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
 
 
 
-    List<MarketBean> findByCreatetimeAndEndtimeLessThanEqualAndStageNotAndStageNot(String s, String toString, String 失敗結案, String 成功結案);
+    List<MarketBean> findByCreatetimeAndEndtimeLessThanEqualAndStageNotAndStageNot(String s, String toString, String Stage, String Stage2);
 
-    List<MarketBean> findByClosereason(String 結案理由, Sort aaa);
+    List<MarketBean> findByClosereason(String Closereason, Sort aaa);
 
 
 
