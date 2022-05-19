@@ -536,8 +536,7 @@
                                                     </div>
                                                 </c:if>
                                             </div>
-                                            <div class="row"
-                                                v-show="bean.stage == '失敗結案' || bean.stage == '提交主管' ">
+                                            <div class="row" v-show="bean.stage == '失敗結案' || bean.stage == '提交主管' ">
                                                 <div class="col-md-1 ">
                                                 </div>
                                                 <div class="col-md-2 cellz">
@@ -566,6 +565,16 @@
                                                             失敗復活
                                                         </option>
                                                     </select>
+                                                </div>
+                                            </div>
+                                            <div class="row" v-show="(bean.stage == '失敗結案' || bean.stage == '提交主管') && bean.closereason == '其他' ">
+                                                <div class="col-md-1 ">
+                                                </div>
+                                                <div class="col-md-2 cellz">
+                                                    其他結案理由 </div>
+                                                <div class="col-md-4 FormPadding">
+                                                    <input type="text" class="form-control" name="closeextend"
+                                                        v-model="bean.closeextend">
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -1658,7 +1667,7 @@
                                 this.saveChage(data);
                             }
 
-                        
+
 
                             if (field == "stage" && this.bean.stage == "成功結案") {
                                 this.bean.closereason = "成功結案";
@@ -1725,12 +1734,12 @@
 
 
 
-            function formatDay(day) {    
+            function formatDay(day) {
                 let a = day.getMonth() + 1;
-                let mon =a+"";
-                let b = day.getDate() ;
-                let d =(b+"").padStart(2, "0");
-                return day.getFullYear() + "-" + mon.padStart(2, "0") + "-" + d ;
+                let mon = a + "";
+                let b = day.getDate();
+                let d = (b + "").padStart(2, "0");
+                return day.getFullYear() + "-" + mon.padStart(2, "0") + "-" + d;
             }
         </script>
 

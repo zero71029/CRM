@@ -438,7 +438,7 @@
                                         </c:if>
                                     </div>
 
-
+<a href="" ></a>
 
 
 
@@ -464,6 +464,15 @@
                                         </div>
                                     </div>
 
+                                    <div class="row" v-show="(customer.status == '不合格' || customer.status == '提交主管') && customer.closereason == '其他'">
+
+                                        <div class="col-md-3 cellz">
+                                            其他結案理由 </div>
+                                        <div class="col-md-4 FormPadding">
+                                            <input type="text" class="form-control" name="closeextend"
+                                                v-model="customer.closeextend">
+                                        </div>
+                                    </div>
 
 
 

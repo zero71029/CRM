@@ -51,7 +51,15 @@ public class AccountApplicationController {
         model.addAttribute("error", mess);
         return "/system/AccountApplication";
     }
-
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//刪除工作項目
+    @RequestMapping("/del")
+    @ResponseBody
+    public String delMarket(@RequestParam("id") List<Integer> id) {
+        System.out.println("*****刪除工作項目*****");
+        as.del(id);
+        return "刪除成功";
+    }
 
 
 }

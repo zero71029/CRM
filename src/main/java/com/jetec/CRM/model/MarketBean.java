@@ -1,17 +1,8 @@
 package com.jetec.CRM.model;
 
+import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
 
 @Entity
 @Table(name = "market")
@@ -59,7 +50,7 @@ public class MarketBean implements Serializable {
     private String founder;//創始人
     private String othersource;//其他來源
     private String closereason;//結案理由
-
+    private String closeextend;//結案理由延伸
 
     public Object get(String name) {
         switch (name) {
@@ -137,8 +128,6 @@ public class MarketBean implements Serializable {
                 return closereason;
 
 
-
-
         }
 
 
@@ -183,6 +172,14 @@ public class MarketBean implements Serializable {
 //	@OneToMany(targetEntity = WorkBean.class, mappedBy = "marketid", cascade = CascadeType.ALL)
 //	private List<WorkBean> work;
 
+
+    public String getCloseextend() {
+        return closeextend;
+    }
+
+    public void setCloseextend(String closeextend) {
+        this.closeextend = closeextend;
+    }
 
     public String getClosereason() {
         return closereason;
@@ -543,7 +540,7 @@ public class MarketBean implements Serializable {
                 ", name='" + name + '\'' +
                 ", createtime='" + createtime + '\'' +
                 ", endtime='" + endtime + '\'' +
-                "stage = "+stage+
+                "stage = " + stage +
                 '}';
     }
 }

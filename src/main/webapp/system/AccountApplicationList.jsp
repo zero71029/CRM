@@ -56,7 +56,7 @@
                                 <td>⽇期</td>   
                             </tr>
                              <tr class="item" v-for="(s, index) in list" :key="index">
-                                <td><input type="checkbox" :value="s.jobdescriptionid" name="mak" @change="clickmak"></td>
+                                <td><input type="checkbox" :value="s.applicationid" name="mak" @change="clickmak"></td>
                                 <td @click="detail(s.applicationid)">
                                     {{s.admin}}</td>
                                 <td @click="detail(s.applicationid)">
@@ -85,37 +85,37 @@
       
             //  刪除按鈕
             function sta() {
-                // var $zx = $("input[name=mak]:checked");
-                // if ($zx.length == 0) {
-                //     alert("須勾選要刪除項目");
-                // } else {
-                //     if (confirm("警告 ! 確定修改?")) {
-                //         var parm = "";
-                //         for (var a = 0; a < $zx.length; a++) {
-                //             parm += "id=" + $($zx[a]).val();
-                //             if (a < $zx.length - 1) parm += "&";
-                //         }
-                //         console.log(parm);
-                //         $.ajax({
-                //             url: '${pageContext.request.contextPath}/work/delWork',//接受請求的Servlet地址
-                //             type: 'POST',
-                //             data: parm,
-                //             // dataType:"json",
-                //             // async: false,//同步請求
-                //             // cache: false,//不快取頁面
-                //             // contentType: false,//當form以multipart/form-data方式上傳檔案時，需要設定為false
-                //             // processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
+                var $zx = $("input[name=mak]:checked");
+                if ($zx.length == 0) {
+                    alert("須勾選要刪除項目");
+                } else {
+                    if (confirm("警告 ! 確定修改?")) {
+                        var parm = "";
+                        for (var a = 0; a < $zx.length; a++) {
+                            parm += "id=" + $($zx[a]).val();
+                            if (a < $zx.length - 1) parm += "&";
+                        }
+                        console.log(parm);
+                        $.ajax({
+                            url: '${pageContext.request.contextPath}/AccountApplication/del',//接受請求的Servlet地址
+                            type: 'POST',
+                            data: parm,
+                            // dataType:"json",
+                            // async: false,//同步請求
+                            // cache: false,//不快取頁面
+                            // contentType: false,//當form以multipart/form-data方式上傳檔案時，需要設定為false
+                            // processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
 
-                //             success: function (json) {
-                //                 alert(json);
-                //                 window.location.href = "${pageContext.request.contextPath}/Market/workList.jsp";
-                //             },
-                //             error: function (returndata) {
-                //                 console.log(returndata);
-                //             }
-                //         });
-                //     }
-                // }
+                            success: function (json) {
+                                alert(json);
+                                window.location.href = "${pageContext.request.contextPath}/system/AccountApplicationList.jsp";
+                            },
+                            error: function (returndata) {
+                                console.log(returndata);
+                            }
+                        });
+                    }
+                }
 
             }
 

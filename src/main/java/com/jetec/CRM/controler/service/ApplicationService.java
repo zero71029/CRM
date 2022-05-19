@@ -15,19 +15,20 @@ import java.util.List;
 public class ApplicationService {
 
     @Autowired
-    ApplicationRepository  ar;
-
+    ApplicationRepository ar;
 
 
     public ApplicationBean save(ApplicationBean aBean) {
-     return   ar.save(aBean);
+        return ar.save(aBean);
     }
 
     public List<ApplicationBean> findAll() {
-        return ar.findAll(Sort.by(Sort.Direction.DESC,"createtime"));
+        return ar.findAll(Sort.by(Sort.Direction.DESC, "createtime"));
     }
 
     public ApplicationBean getById(Integer applicationid) {
         return ar.findById(applicationid).get();
     }
+
+    public void del(List<Integer> id) { id.forEach(ar::deleteById); }
 }
