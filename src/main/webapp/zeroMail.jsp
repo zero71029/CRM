@@ -126,7 +126,7 @@
         </script>
 
         <script>
-
+            $(".marketing").show();
 
             var vm = new Vue({
                 el: ".app",
@@ -229,6 +229,11 @@
             .el-upload-list__item-name [class^=el-icon] {
                 height: auto;
             }
+
+            .zeroMail {
+                    /* 按鈕顏色 */
+                    background-color: #afe3d5;
+                }
         </style>
 
         </html>

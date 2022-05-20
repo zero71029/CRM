@@ -64,6 +64,7 @@
         <div class="col-lg-1 navfix mainColor" style="padding: 0%;">
 
             <ul class="list-group">
+                <!--  -->
                 <button class="list-group-item" onclick="market()">
                     營銷模塊
                 </button>
@@ -79,6 +80,7 @@
                 </button>
                 <!-- <button class="market"
                     onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/QuotationList'">報價單</button> -->
+                <!--  -->
                 <button class="list-group-item" onclick="client()">
                     客戶管理
                 </button>
@@ -89,15 +91,13 @@
                     onclick="javascript:location.href='${pageContext.request.contextPath}/client/contactList.jsp'">聯絡人
                 </button>
                 <!-- <button class="client">流失客戶</button> -->
-                <!-- <button class="list-group-item" onclick="javascript:location.href=''">
-            服務管理
-        </button> -->
+                <!-- <button class="list-group-item" onclick="javascript:location.href=''"> 服務管理 </button> -->
                 <button class="list-group-item "
                     onclick="javascript:location.href='${pageContext.request.contextPath}/statistic/statistic.jsp'">
                     <!-- <i class="el-icon-pie-chart"></i>  -->
                     數據管理
                 </button>
-
+                <!--  -->
                 <button class="list-group-item"
                     onclick="javascript:location.href='${pageContext.request.contextPath}/Task/TaskList.jsp'">
                     每日任務
@@ -106,6 +106,25 @@
                     onclick="javascript:location.href='${pageContext.request.contextPath}/JobDescription/JobDescriptionList.jsp'">
                     ⼯作職掌說明
                 </button>
+
+
+
+                <!--  -->
+                <c:if test='${ user.position == "系統" ||user.position == "總經理" ||user.department == "行銷"}'>
+                    <button class="list-group-item " onclick="marketing()">
+                        行銷部
+                    </button>
+                    <button class="marketing zeroMail"
+                        onclick="javascript:window.open('${pageContext.request.contextPath}/zeroMail.jsp')">
+                        郵件
+                    </button>
+
+                </c:if>
+
+
+
+
+                <!--  -->
                 <c:if
                     test='${user.position == "主管" || user.position == "系統" ||user.position == "總經理" ||user.name == "謝姍妤"}'>
                     <button class="list-group-item " onclick="system()">
@@ -202,23 +221,33 @@
             $(".market").hide();
             $(".client").hide();
             $(".system").hide();
+            $(".marketing").hide();
+            function marketing() {
+                $(".marketing").toggle();
+                $(".client").hide();
+                $(".system").hide();
+                $(".market").hide();
+            }
 
             function market() {
                 $(".market").toggle();
                 $(".client").hide();
                 $(".system").hide();
+                $(".marketing").hide();
             }
 
             function client() {
                 $(".client").toggle();
                 $(".market").hide();
                 $(".system").hide();
+                $(".marketing").hide();
             }
 
             function system() {
                 $(".system").toggle();
                 $(".market").hide();
                 $(".client").hide();
+                $(".marketing").hide();
             }
 
             var Signout = '${user.name}';
