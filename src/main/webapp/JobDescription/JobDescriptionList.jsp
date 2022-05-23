@@ -207,6 +207,7 @@
                 var $all = $("input[name=mak]");
                 $all.prop("checked", this.checked);
             });
+            $(".employee").show();
         </script>
 
 

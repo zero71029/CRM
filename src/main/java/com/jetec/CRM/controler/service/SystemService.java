@@ -124,7 +124,7 @@ public class SystemService {
 //		page.getTotalPages();全部有幾頁		
 //		List<BillboardBean> result = page.getContent();
 
-        Pageable p = (Pageable) PageRequest.of(pag, 30, sort);
+        Pageable p = (Pageable) PageRequest.of(pag, 40, sort);
         // 結果容器
         List<BillboardBean> resulet = new ArrayList<BillboardBean>();
         // 把系統置頂抓出來

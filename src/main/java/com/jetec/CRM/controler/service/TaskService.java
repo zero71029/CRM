@@ -2,7 +2,6 @@ package com.jetec.CRM.controler.service;
 
 import com.jetec.CRM.model.EvaluateBean;
 import com.jetec.CRM.model.EvaluateTaskBean;
-import com.jetec.CRM.model.WorkBean;
 import com.jetec.CRM.repository.EvaluateRepository;
 import com.jetec.CRM.repository.EvaluateTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +47,7 @@ public class TaskService {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //任務列表
     public Map<String, Object> getList(Integer pag) {
-        Pageable p =   PageRequest.of(pag, 20, Sort.Direction.DESC,"evaluatedate");
+        Pageable p =   PageRequest.of(pag, 40, Sort.Direction.DESC,"evaluatedate");
         Page<EvaluateBean> page =  er.findAll(p);
         Map<String, Object> map = new HashMap<>();
         map.put("list", page.getContent());
@@ -59,7 +58,7 @@ public class TaskService {
     }
 
     public Map<String, Object> getList(Integer pag, String name) {
-        Pageable p =   PageRequest.of(pag, 20,Sort.Direction.DESC,"evaluatedate");
+        Pageable p =   PageRequest.of(pag, 40,Sort.Direction.DESC,"evaluatedate");
         Page<EvaluateBean> page = er.findByName(name,p);
         Map<String, Object> map = new HashMap<>();
         map.put("list", page.getContent());
@@ -78,7 +77,7 @@ public class TaskService {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索每日任務
     public List<EvaluateBean> selecttask(String name, Integer pag) {
-        Pageable p =   PageRequest.of(pag, 20,Sort.Direction.DESC,"evaluatedate");
+        Pageable p =   PageRequest.of(pag, 40,Sort.Direction.DESC,"evaluatedate");
         Page<EvaluateBean> page = er.findByName(name,p);
         return page.getContent();
     }

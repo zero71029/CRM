@@ -1,7 +1,9 @@
 package com.jetec.CRM.controler.service;
 
+import com.jetec.CRM.model.MarketBean;
 import com.jetec.CRM.repository.MarketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -165,5 +167,17 @@ public class StatisticService {
             System.out.println(e);
         }
         return result;
+    }
+
+    public List<MarketBean> getMarketByState(String state, String startDay, String endDay) {
+        return mr.findByStageAndAaaBetween(state,startDay,endDay, Sort.by(Sort.Direction.DESC,"aaa"));
+    }
+
+    public List<MarketBean> getMarketByCloseNot(String startDay, String endDay) {
+        return mr.findCreatetime();
+    }
+
+    public List<MarketBean> getMarketByAaa(String startDay, String endDay) {
+        return mr.findAaaXXXXXXX(startDay,endDay);
     }
 }

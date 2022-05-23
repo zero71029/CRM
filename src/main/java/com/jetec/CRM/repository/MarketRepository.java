@@ -28,8 +28,7 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
 
     List<MarketBean> findByUserAndStage(String adminname, String stage);
 
-    @Query(value = "SELECT  *  from market where stage != '失敗結案' AND stage != '成功結案' AND(ccc BETWEEN ?1 AND ?2 )", nativeQuery = true)
-     List<MarketBean> findCreatetime(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
+
 
     @Query(value = "SELECT  *  from market where (ccc BETWEEN :startTime AND :endTime )", nativeQuery = true)
      List<MarketBean> findConflictMettinds(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
@@ -141,6 +140,12 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
 
 
     List<MarketBean> findByClosereasonAndAaaBetween(String s, String startDay, String endDay, Sort sort);
+
+    @Query(value = "SELECT  *  from market where stage != '失敗結案' AND stage != '成功結案'", nativeQuery = true)
+    List<MarketBean> findCreatetime();
+
+    @Query(value = "SELECT  *  from market where (stage = '失敗結案' OR stage = '成功結案') AND aaa BETWEEN ?1 AND ?2", nativeQuery = true)
+    List<MarketBean> findAaaXXXXXXX(String startDay, String endDay);
 
 //    @Modifying
 //    @Query(value = "update market set ?2 = ?3 where marketid = ?1", nativeQuery = true)

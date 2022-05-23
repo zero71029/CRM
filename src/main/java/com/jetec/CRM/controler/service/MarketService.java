@@ -78,7 +78,7 @@ public class MarketService {
     /////////////////////////////////////////////////////////////////////////////////////
     // 銷售機會列表
     public List<MarketBean> getList(Integer pag) {
-        Pageable p = PageRequest.of(pag, 20, Direction.DESC, "aaa");
+        Pageable p = PageRequest.of(pag, 40, Direction.DESC, "aaa");
         Page<MarketBean> page = mr.findStage(p);
         List<MarketBean> result = new ArrayList<>();
         if (pag == 0)
@@ -486,11 +486,10 @@ public class MarketService {
         list = list.stream().sorted(Comparator.comparing(MarketBean::getAaa).reversed()).collect(Collectors.toList());
 
 
-        System.out.println("*******************************************");
-        System.out.println("抓到 " + list.size() + "筆資料");
-        //pag
+
+        //pag 手寫分頁
         int total = list.size();
-        for (int i = pag * 20; i < pag * 20 + 20; i++) {
+        for (int i = pag * 40; i < pag * 40 + 40; i++) {
             if (i + 1 > total) break;
             Marketlist.add(list.get(i));
         }

@@ -91,7 +91,7 @@ public class PublicControl {
             pag = 1;
         pag--;
         Sort sort = Sort.by(Direction.DESC, sortString);
-        Pageable p =  PageRequest.of(pag, 30, sort);
+        Pageable p =  PageRequest.of(pag, 40, sort);
         Page<BillboardBean> page =  br.getByStateAndTop("公開", "", p);
 //		全部有幾頁
         model.addAttribute("TotalPages", page.getTotalPages());

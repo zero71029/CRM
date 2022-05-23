@@ -81,6 +81,7 @@
             </div>
         </body>
         <script>
+           
             const vm = new Vue({
                 el: '.app',
                 data() {
@@ -181,6 +182,7 @@
                     }
                 }
             }
+            $(".employee").show();
         </script>
 
         </html>

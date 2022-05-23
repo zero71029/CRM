@@ -130,12 +130,6 @@
 
 
 
-
-
-
-
-
-
                         <!-- 提交主管 彈窗-->
                         <c:if test="${user.position == '主管' || user.position == '系統'}">
                             <el-dialog title="提交主管" :visible.sync="SubmitBosVisible"
@@ -173,7 +167,7 @@
         </body>
 
         <script>
-
+            $(".statistic").show();
 
             var vm = new Vue({
                 el: ".app",

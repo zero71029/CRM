@@ -35,7 +35,6 @@
                 <div class="row">
                     <!-- <%-- 插入側邊欄--%> -->
                     <jsp:include page="/Sidebar.jsp"></jsp:include>
-
                     <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
                     <div class="col-md-11 app" v-cloak>
                         <!-- <%-- 抬頭按鈕--%> -->
@@ -176,7 +175,7 @@
                                 </el-button>
                                 <el-button type="text" @click="CallBosVisible=true">延長請求 {{CallBos.length}}
                                 </el-button>
-                                <el-button type="text" @click="CreateVisible = true">轉賣/自用 - 今天到期
+                                <el-button type="text" @click="CreateVisible = true">轉賣 - 今天到期
                                     {{markeCreateTime.length}}</el-button>
                             </div>
                         </transition-group>
@@ -1017,8 +1016,6 @@
                         if (this.intracktime != "") {//最後追蹤時間
                             url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=tractime&val=" + this.intracktime;
 
-                        } else if (this.inUserList != "") {//負責人
-                            url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=UserList&val=" + this.inUserList;
                         } else if (this.name != "") {//機會民稱 客戶
                             url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=name&val=" + this.name;
                         }
@@ -1042,9 +1039,13 @@
                             url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=product&val=" + this.product;
                         } else if (this.checkedCities != "") {//產品類別
                             url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=checkedCitiest&val=" + this.product;
-                        } else if (this.quote != "") {//產品類別
+                        } else if (this.quote != "") {//報價內容
                             url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=quote&val=" + this.quote;
-                        } else if (this.AutoClose) {url ='${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=closereason&val=自動結案" ; }
+                        } else if (this.AutoClose) {
+                            url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=closereason&val=自動結案";
+                        } else if (this.inUserList != "") {//負責人
+                            url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=UserList&val=" + this.inUserList;
+                        }
 
 
 
@@ -1184,6 +1185,17 @@
                                     this.list.push(bean);
                                 }
                             }
+                        }
+                        if (this.quote != "") {//報價內容
+                            this.oldList = this.list;
+                            this.list = [];
+                            this.oldList.forEach((val, index, arr) => {
+                                if (val.quote != null)
+                                    if (val.quote.indexOf(this.quote) >= 0) {
+                                        this.list.push(val);
+                                    }
+                            })
+
                         }
 
 

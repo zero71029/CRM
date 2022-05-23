@@ -205,6 +205,7 @@
                     }
                 }
             }
+            $(".employee").show();
         </script>
 
         </html>

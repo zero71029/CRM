@@ -93,7 +93,7 @@ public class ClientService {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取聯絡人列表
 	public Map<String, Object> getContactList(Integer pag) {
-		Pageable p = PageRequest.of(pag, 20);
+		Pageable p = PageRequest.of(pag, 40);
 		Map<String, Object> result = new HashMap();
 		Page<ContactBean> page = contactRepository.findAll(p);
 		List<ContactBean> aaa = page.getContent();
@@ -316,7 +316,7 @@ public class ClientService {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取客戶列表pag
     public Map<String, Object> init(Integer pag) {
-		Pageable p = PageRequest.of(pag, 20, Sort.Direction.ASC, "clientid");
+		Pageable p = PageRequest.of(pag, 40, Sort.Direction.ASC, "clientid");
 		Page<ClientBean> page = cr.findAll(p);
 		Map<String, Object> result = new HashMap();
 		result.put("list", page.getContent());

@@ -90,10 +90,7 @@ public class MarketControler {
         List<MarketBean> list ;
         //
         if (stateList.size() > 0) {
-            System.out.println(stateList.size());
             result = ms.getStateList(stateList, pag);
-
-
         } else {
             list = ms.getList(pag);
             result.put("list", list);

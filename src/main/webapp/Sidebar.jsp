@@ -97,16 +97,38 @@
                     <!-- <i class="el-icon-pie-chart"></i>  -->
                     數據管理
                 </button>
+
+                <button class="statistic"
+                    onclick="javascript:location.href='${pageContext.request.contextPath}/statistic/CloseState.jsp'">
+                    結案狀態
+                </button>
+
+
+
+
+
                 <!--  -->
-                <button class="list-group-item"
+
+                <button class="list-group-item" onclick="employee()">
+                    員工區
+                </button>
+
+
+
+
+
+                <button class="employee"
                     onclick="javascript:location.href='${pageContext.request.contextPath}/Task/TaskList.jsp'">
                     每日任務
                 </button>
-                <button class="list-group-item"
+                <button class="employee"
                     onclick="javascript:location.href='${pageContext.request.contextPath}/JobDescription/JobDescriptionList.jsp'">
                     ⼯作職掌說明
                 </button>
-
+                <button class="employee"
+                    onclick="javascript:window.open('${pageContext.request.contextPath}/system/AccountApplication.jsp')">
+                    E-Mail/NAS帳號申請表
+                </button>
 
 
                 <!--  -->
@@ -217,11 +239,24 @@
 
                 }, 60000);//10分鐘
             }
-
+            $(".statistic").hide();
             $(".market").hide();
             $(".client").hide();
             $(".system").hide();
             $(".marketing").hide();
+            $(".employee").hide();
+
+            function employee() {
+                $(".employee").toggle();
+                $(".statistic").hide();
+                $(".market").hide();
+                $(".client").hide();
+                $(".system").hide();
+                $(".marketing").hide();
+            }
+
+
+
             function marketing() {
                 $(".marketing").toggle();
                 $(".client").hide();

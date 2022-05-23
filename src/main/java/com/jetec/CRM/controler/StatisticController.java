@@ -7,6 +7,7 @@ import com.jetec.CRM.controler.service.StatisticService;
 import com.jetec.CRM.controler.service.SystemService;
 import com.jetec.CRM.model.AdminBean;
 import com.jetec.CRM.model.LibraryBean;
+import com.jetec.CRM.model.MarketBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static java.util.stream.Collectors.toList;
 
 @Controller
 @RequestMapping("/statistic")
@@ -44,7 +47,6 @@ public class StatisticController {
         result.put("SubmitBos", ms.getSubmitBos());//提交主管
         result.put("CallBos", ms.CallBos());//延長請求
         result.put("potential", pcs.getPotentialSubmitBos());//提交主管
-
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String endDay = sdf.format(new Date());
@@ -195,8 +197,90 @@ public class StatisticController {
             sta.add(ss.getAminStateNum(abean.getName(), "失敗結案", startDay, endDay));
             result.put(abean.getName(), sta);
         }
+        return result;
+    }
+    //////////////////////////////////////////////////////////////////////////////
+    //結案狀態
+    @ResponseBody
+    @RequestMapping("/CloseState")
+    private Map<String, Object> CloseState(@RequestParam("from") String startDay, @RequestParam("to") String endDay) {
+        System.out.println("結案狀態");
+        Map<String, Object> result = new HashMap<>();
+
+
+        if (Objects.equals(endDay, "")) {
+            endDay = zTools.getTime(new Date());
+        } else {
+            endDay = endDay + " 24:00";
+        }
+        if (startDay == null || startDay.equals("")) {
+            startDay = zTools.addDay(endDay,-7);
+            startDay = startDay.substring(0, 10);
+            startDay = startDay + " 00:00";
+        } else {
+            startDay = startDay + " 00:00";
+        }
+        List<MarketBean> l = ss.getMarketByState("私敗結案",startDay,endDay);
+        result.put("success",ss.getMarketByState("成功結案",startDay,endDay));
+        result.put("fail",ss.getMarketByState("失敗結案",startDay,endDay));
+        result.put("other",ss.getMarketByCloseNot(startDay,endDay));
+        l.forEach(System.out::println);
+
+        return result;
+    }
+
+    //////////////////////////////////////////////////////////////////////////////
+    //結案狀態
+    @ResponseBody
+    @RequestMapping("/CloseState2")
+    private Map<String, Object> CloseState2(@RequestParam("from") String startDay, @RequestParam("to") String endDay) {
+        System.out.println("結案狀態");
+        Map<String, Object> result = new HashMap<>();
+
+
+        if (Objects.equals(endDay, "")) {
+            endDay = zTools.getTime(new Date());
+        } else {
+            endDay = endDay + " 24:00";
+        }
+        if (startDay == null || startDay.equals("")) {
+            startDay = zTools.addDay(endDay,-7);
+            startDay = startDay.substring(0, 10);
+            startDay = startDay + " 00:00";
+        } else {
+            startDay = startDay + " 00:00";
+        }
+
+
+
+        List<MarketBean> l = ss.getMarketByAaa( startDay,endDay);
+        List<Map<String ,String>> success = new ArrayList<>();
+        l.stream().filter(e->e.getStage().equals("成功結案")).forEach(e->{
+            Map<String ,String> x = new HashMap<>();
+            x.put("client",e.getClient());
+            x.put("aaa",e.getAaa());
+            x.put("user",e.getUser());
+            success.add(x);
+        });
+
+        List<Map<String ,String>> fail = new ArrayList<>();
+        l.stream().filter(e->e.getStage().equals("失敗結案")).forEach(e->{
+            Map<String ,String> x = new HashMap<>();
+            x.put("client",e.getClient());
+            x.put("closereason",e.getClosereason());
+            fail.add(x);
+        });
+
+
+
+        System.out.println(l.size());
+
+        result.put("success",success);
+        result.put("fail",fail);
+        result.put("other",ss.getMarketByCloseNot(startDay,endDay));
 
 
         return result;
     }
+
 }
