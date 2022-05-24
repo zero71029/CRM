@@ -35,6 +35,7 @@ public class MarketBean implements Serializable {
     private String phone;// 公司電話
     private String extension;//電話分機
     private String aaa;// 創建時間 字串
+    private String bbb;//最後修改時間
     private String important;//重要性
     private String line;
     private String customerid;//追蹤資訊
@@ -52,88 +53,8 @@ public class MarketBean implements Serializable {
     private String closereason;//結案理由
     private String closeextend;//結案理由延伸
 
-    public Object get(String name) {
-        switch (name) {
-            case "name":
-                return this.name;
-            case "user":
-                return user;
-            case "serialnumber":
-                return serialnumber;
-            case "endtime":
-                return endtime;
-            case "message":
-                return message;
-            case "client":
-                return client;
-            case "contactname":
-                return contactname;
-            case "contactphone":
-                return contactphone;
-            case "contactextension":
-                return contactextension;
-            case "contactmoblie":
-                return contactmoblie;
-            case "contactemail":
-                return contactemail;
-            case "contactmethod":
-                return contactmethod;
-            case "contacttitle":
-                return contacttitle;
-            case "type":
-                return type;
-            case "source":
-                return source;
-            case "clinch":
-                return clinch;
-            case "stage":
-                return stage;
-            case "product":
-                return product;
-            case "producttype":
-                return producttype;
-            case "phone":
-                return phone;
-            case "extension":
-                return extension;
-            case "aaa":
-                return aaa;
-            case "important":
-                return important;
-            case "line":
-                return line;
-            case "customerid":
-                return customerid;
-            case "clicks":
-                return clicks;
-            case "fax":
-                return fax;
-            case "clientid":
-                return clientid;
-            case "quote":
-                return quote;
-            case "jobtitle":
-                return jobtitle;
-            case "callbos":
-                return callbos;
-            case "callhelp":
-                return callhelp;
-            case "fileforeignid":
-                return fileforeignid;
-            case "founder":
-                return founder;
-            case "othersource":
-                return othersource;
-            case "closereason":
-                return closereason;
 
 
-        }
-
-
-        return null;
-
-    }
 
     public String getContactmethod() {
         return contactmethod;
@@ -172,6 +93,14 @@ public class MarketBean implements Serializable {
 //	@OneToMany(targetEntity = WorkBean.class, mappedBy = "marketid", cascade = CascadeType.ALL)
 //	private List<WorkBean> work;
 
+
+    public String getBbb() {
+        return bbb;
+    }
+
+    public void setBbb(String bbb) {
+        this.bbb = bbb;
+    }
 
     public String getCloseextend() {
         return closeextend;
@@ -542,5 +471,85 @@ public class MarketBean implements Serializable {
                 ", endtime='" + endtime + '\'' +
                 "stage = " + stage +
                 '}';
+    }
+    public Object get(String name) {
+        switch (name) {
+            case "name":
+                return this.name;
+            case "user":
+                return user;
+            case "serialnumber":
+                return serialnumber;
+            case "endtime":
+                return endtime;
+            case "message":
+                return message;
+            case "client":
+                return client;
+            case "contactname":
+                return contactname;
+            case "contactphone":
+                return contactphone;
+            case "contactextension":
+                return contactextension;
+            case "contactmoblie":
+                return contactmoblie;
+            case "contactemail":
+                return contactemail;
+            case "contactmethod":
+                return contactmethod;
+            case "contacttitle":
+                return contacttitle;
+            case "type":
+                return type;
+            case "source":
+                return source;
+            case "clinch":
+                return clinch;
+            case "stage":
+                return stage;
+            case "product":
+                return product;
+            case "producttype":
+                return producttype;
+            case "phone":
+                return phone;
+            case "extension":
+                return extension;
+            case "aaa":
+                return aaa;
+            case "important":
+                return important;
+            case "line":
+                return line;
+            case "customerid":
+                return customerid;
+            case "clicks":
+                return clicks;
+            case "fax":
+                return fax;
+            case "clientid":
+                return clientid;
+            case "quote":
+                return quote;
+            case "jobtitle":
+                return jobtitle;
+            case "callbos":
+                return callbos;
+            case "callhelp":
+                return callhelp;
+            case "fileforeignid":
+                return fileforeignid;
+            case "founder":
+                return founder;
+            case "othersource":
+                return othersource;
+            case "closereason":
+                return closereason;
+        }
+
+
+        return null;
+
     }
 }

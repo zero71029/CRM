@@ -789,6 +789,14 @@ public class MarketControler {
             String sql = "update market set " + field + " = '" + val + "' where marketid ='" + marketid + "'";
             System.out.println(sql);
             stmt.executeUpdate(sql);
+
+
+             sql = "update market set  bbb = '" +ZeroTools.getTime(new Date()) + "' where marketid ='" + marketid + "'";
+            System.out.println(sql);
+            stmt.executeUpdate(sql);
+
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }

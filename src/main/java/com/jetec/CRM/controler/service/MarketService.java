@@ -72,6 +72,7 @@ public class MarketService {
         if (marketBean.getAaa() == "") {
             marketBean.setAaa(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()));
         }
+        marketBean.setBbb(ZeroTools.getTime(new Date()));
         return mr.save(marketBean);
     }
 
@@ -552,6 +553,7 @@ public class MarketService {
             System.out.println(e);
             e.setClosereason("自動結案");
             e.setStage("失敗結案");
+            e.setBbb(ZeroTools.getTime(new Date()));
             mr.save(e);
         });
         System.out.println(list.size());
