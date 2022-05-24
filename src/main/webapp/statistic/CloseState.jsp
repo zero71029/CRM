@@ -18,6 +18,10 @@
                 [v-cloak] {
                     display: none;
                 }
+
+                .app {
+                    background-color: #e4f3ef;
+                }
             </style>
         </head>
 
@@ -82,8 +86,9 @@
                                     <div class="col-md-4">
 
                                         <div id="fail" style="width: 100%;height:300px;"> </div>
-                                        <el-table :data="fail" style="width: 100%" :default-sort="{prop: 'closereason', order: 'descending'}">
-                                            <el-table-column label="公司" >
+                                        <el-table :data="fail" style="width: 100%"
+                                            :default-sort="{prop: 'closereason', order: 'descending'}">
+                                            <el-table-column label="公司">
                                                 <template slot-scope="scope">
                                                     <a :href="'${pageContext.request.contextPath}/Market/Market/'+scope.row.marketid"
                                                         target="_blank"> {{scope.row.client}}</a>
@@ -106,10 +111,14 @@
                 el: ".app",
                 data() {
                     return {
-                        v:true,
+                        DayNum: 7,
+                        v: true,
                         success: [],
                         fail: [],
                         other: [],
+                        oldfail: [],
+                        oldother: [],
+                        oldsuccess: [],
                         inDay: "",
                         pickerOptions: {
                             shortcuts: [
@@ -160,6 +169,9 @@
                             this.fail = response.fail;
                             this.success = response.success;
                             this.other = response.other;
+                            this.oldfail = response.fail;
+                            this.oldother = response.other;
+                            this.oldsuccess = response.success;;
 
                         },
                         error: function (returndata) {
@@ -172,6 +184,7 @@
                     this.OtherPie();
                     this.SuccessPie();
                     this.FailPie();
+
                 },
                 methods: {
                     //圓餅圖
@@ -180,7 +193,7 @@
                         obj.push({ value: this.success.length, name: "成功結案" + this.success.length });
                         obj.push({ value: this.fail.length, name: "失敗結案" + this.fail.length });
                         obj.push({ value: this.other.length, name: "未結案" + this.other.length });
-                   
+
                         var chartDom = document.getElementById('pie');
                         var myChart = echarts.init(chartDom);
                         var option;
@@ -221,10 +234,10 @@
                             if (e.stage == "提交主管") 提交主管++
                         });
                         var obj = [];
-                        obj.push({ value: 已報價, name: "已報價" + 已報價 });
-                        obj.push({ value: 內部詢價中, name: "內部詢價中" + 內部詢價中 });
-                        obj.push({ value: 尚未處理, name: "尚未處理" + 尚未處理 });
-                        obj.push({ value: 提交主管, name: "提交主管" + 提交主管 });                    
+                        obj.push({ value: 已報價, name: "已報價" + 已報價, url: "已報價" });
+                        obj.push({ value: 內部詢價中, name: "內部詢價中" + 內部詢價中, url: "內部詢價中" });
+                        obj.push({ value: 尚未處理, name: "尚未處理" + 尚未處理, url: "尚未處理" });
+                        obj.push({ value: 提交主管, name: "提交主管" + 提交主管, url: "提交主管" });
                         var chartDom = document.getElementById('other');
                         var myChart = echarts.init(chartDom);
                         var option;
@@ -252,6 +265,13 @@
                             ]
                         };
                         option && myChart.setOption(option);
+                        myChart.on('click', function (params) {
+                            console.log(params.data.url);
+                            vm.other = [];
+                            vm.oldother.forEach(e => {
+                                if (e.stage == params.data.url) vm.other.push(e);
+                            })
+                        });
                     },
                     //成功結案
                     SuccessPie() {
@@ -267,9 +287,9 @@
                             this.success.forEach(e => {
                                 if (user == e.user) i++;
                             });
-                            obj.push({ value: i, name: user + i });
+                            obj.push({ value: i, name: user + i, url: user });
                         });
-                      
+
                         var chartDom = document.getElementById('success');
                         var myChart = echarts.init(chartDom);
                         var option;
@@ -297,8 +317,14 @@
                             ]
                         };
                         option && myChart.setOption(option);
+                        myChart.on('click', function (params) {
+                            vm.success = [];
+                            vm.oldsuccess.forEach(e => {
+                                if (e.user == params.data.url) vm.success.push(e);
+                            })
+                        });
                     },
-                    //成功結案
+                    //失敗結案
                     FailPie() {
                         var obj = [];
                         var set = new Set();
@@ -308,14 +334,13 @@
                         });
                         //統計數量
                         set.forEach(closereason => {
-                          
+
                             let i = 0
                             this.fail.forEach(e => {
                                 if (closereason == e.closereason) i++;
                             });
-                            obj.push({ value: i, name: closereason + i });
+                            obj.push({ value: i, name: closereason + i, url: closereason });
                         });
-                   
                         var chartDom = document.getElementById('fail');
                         var myChart = echarts.init(chartDom);
                         var option;
@@ -343,8 +368,22 @@
                             ]
                         };
                         option && myChart.setOption(option);
-                    }, BelieveInLight() {
-                        console.log(this.inDay);   
+                        // 处理点击事件并且...
+                        myChart.on('click', function (params) {
+
+                            vm.fail = [];
+                            vm.oldfail.forEach(e => {
+                                if (e.closereason == params.data.url) vm.fail.push(e);
+                            })
+                        });
+                    }, BelieveInLight() {//送出搜索
+
+                        //計算相差幾天
+                        const day1 = new Date(this.inDay[0]);
+                        const day2 = new Date(this.inDay[1]);
+                        const difference = Math.abs(day2 - day1);
+                        this.DayNum = difference / (1000 * 3600 * 24);
+                        //送出搜索
                         $.ajax({
                             url: '${pageContext.request.contextPath}/statistic/CloseState2?from=' + this.inDay[0] + '&to=' + this.inDay[1],
                             type: 'POST',
@@ -354,7 +393,9 @@
                                 this.fail = response.fail;
                                 this.success = response.success;
                                 this.other = response.other;
-                                console.log(response);
+                                this.oldfail = response.fail;
+                                this.oldother = response.other;
+                                this.oldsuccess = response.success;;
                                 this.pie();
                                 this.OtherPie();
                                 this.SuccessPie();
@@ -369,6 +410,7 @@
                     }
                 },
             })
+
         </script>
 
 

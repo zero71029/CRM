@@ -10,6 +10,8 @@ import com.jetec.CRM.model.LibraryBean;
 import com.jetec.CRM.model.MarketBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -260,6 +262,7 @@ public class StatisticController {
             x.put("client",e.getClient());
             x.put("aaa",e.getAaa());
             x.put("user",e.getUser());
+            x.put("marketid",e.getMarketid());
             success.add(x);
         });
 
@@ -268,6 +271,7 @@ public class StatisticController {
             Map<String ,String> x = new HashMap<>();
             x.put("client",e.getClient());
             x.put("closereason",e.getClosereason());
+            x.put("marketid",e.getMarketid());
             fail.add(x);
         });
 
@@ -282,5 +286,10 @@ public class StatisticController {
 
         return result;
     }
+
+
+
+
+
 
 }

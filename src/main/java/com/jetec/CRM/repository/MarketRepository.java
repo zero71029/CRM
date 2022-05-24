@@ -144,8 +144,20 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
     @Query(value = "SELECT  *  from market where stage != '失敗結案' AND stage != '成功結案'", nativeQuery = true)
     List<MarketBean> findCreatetime();
 
-    @Query(value = "SELECT  *  from market where (stage = '失敗結案' OR stage = '成功結案') AND aaa BETWEEN ?1 AND ?2", nativeQuery = true)
+    @Query(value = """
+    select * from market m 
+    where  marketid = ANY( select marketid from 
+    (select changeid marketid,max(createtime)   from changemessage c  
+    where c.createtime BETWEEN ?1 AND ?2 group by changeid) as a) and (stage = '失敗結案' OR stage = '成功結案')
+   """, nativeQuery = true)
     List<MarketBean> findAaaXXXXXXX(String startDay, String endDay);
+//   Strin a = """
+//    select * from market m
+//    where  marketid = ANY( select marketid from
+//    (select changeid marketid,max(createtime)   from changemessage c
+//    where c.createtime BETWEEN '2022-04-28 17:36' AND '2022-05-24 17:36' group by changeid) as a) and (stage = '失敗結案' OR stage = '成功結案')
+//   """ ;
+
 
 //    @Modifying
 //    @Query(value = "update market set ?2 = ?3 where marketid = ?1", nativeQuery = true)

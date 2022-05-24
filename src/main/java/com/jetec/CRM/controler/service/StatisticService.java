@@ -180,4 +180,10 @@ public class StatisticService {
     public List<MarketBean> getMarketByAaa(String startDay, String endDay) {
         return mr.findAaaXXXXXXX(startDay,endDay);
     }
+
+
+
+
+
+
 }

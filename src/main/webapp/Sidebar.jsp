@@ -239,14 +239,15 @@
 
                 }, 60000);//10分鐘
             }
+            $(".employee").hide();
             $(".statistic").hide();
             $(".market").hide();
             $(".client").hide();
             $(".system").hide();
             $(".marketing").hide();
-            $(".employee").hide();
 
-            function employee() {
+
+            function employee() {//員工區
                 $(".employee").toggle();
                 $(".statistic").hide();
                 $(".market").hide();
@@ -257,18 +258,22 @@
 
 
 
-            function marketing() {
+            function marketing() {//行銷部
                 $(".marketing").toggle();
                 $(".client").hide();
                 $(".system").hide();
                 $(".market").hide();
+                $(".employee").hide();
+                $(".statistic").hide();
             }
 
-            function market() {
+            function market() {//營消磨塊
                 $(".market").toggle();
                 $(".client").hide();
                 $(".system").hide();
                 $(".marketing").hide();
+                $(".employee").hide();
+                $(".statistic").hide();
             }
 
             function client() {
@@ -276,6 +281,8 @@
                 $(".market").hide();
                 $(".system").hide();
                 $(".marketing").hide();
+                $(".employee").hide();
+                $(".statistic").hide();
             }
 
             function system() {
@@ -283,6 +290,8 @@
                 $(".market").hide();
                 $(".client").hide();
                 $(".marketing").hide();
+                $(".employee").hide();
+                $(".statistic").hide();
             }
 
             var Signout = '${user.name}';
