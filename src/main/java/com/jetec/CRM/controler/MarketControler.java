@@ -102,14 +102,12 @@ public class MarketControler {
         result.put("potential", PCS.getPotentialSubmitBos());//提交主管
         result.put("SubmitBos", ms.getSubmitBos());
         result.put("endCast", ms.getEndCast(aBean.getName()));
-        result.put("todayTotal", ms.gettodayTotal());
+        result.put("todayTotal", ms.gettodayTotal());//今天新增案件數量
         result.put("CallBos", ms.CallBos());// 搜索銷售機會by延長申請
         result.put("marketstate", ms.getMarketStateList(aBean.getAdminid()));//getM使用者狀態列表
-        List<MarketBean>  mList = ms.getCreatetimeAndEndtime("轉賣/自用");
-        mList.addAll(ms.getCreatetimeAndEndtime("轉賣"));
-//        mList.forEach(System.out::println);
+        result.put("pcc", ms.getMarketByStageAndUser("潛在客戶轉",aBean.getName()));
 
-        result.put("markeCreateTime",  mList);//轉賣今天到期
+        result.put("markeCreateTime",  ms.getCreatetimeAndEndtime("轉賣"));//轉賣今天到期
 
         return result;
     }
@@ -465,14 +463,14 @@ public class MarketControler {
         bean.setCustomerid(pBean.getCustomerid());
         bean.setExtension(pBean.getExtension());
         bean.setContactextension(pBean.getExtension());
-        bean.setStage("尚未處理");
+        bean.setStage("潛在客戶轉");
         bean.setClientid(clientBean.getClientid());
         bean.setContactmethod(pBean.getCompanynum());
         bean.setSerialnumber(pBean.getSerialnumber());
         bean.setJobtitle(pBean.getJobtitle());
         bean.setClinch(3);
         bean.setFax((pBean.getFax()));
-        bean.setCreatetime("轉賣");
+        bean.setCreatetime("");
         //設定結束日期
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar calendar = Calendar.getInstance();

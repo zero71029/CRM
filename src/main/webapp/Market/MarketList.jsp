@@ -63,8 +63,7 @@
                                         class="bi bi-wrench"></i>狀態設定</label>
                             </div>
                         </div>
-                        <!-- <%-- 中間主體--%> -->
-
+                        <!-- <%-- 中間主體--%> -->                     
                         <div class="row" style="border-bottom: #0a53be 1px solid">
                             <div class="col-lg-12">
                                 <el-tag style="margin: 5px" v-for="tag in MarketStateList" key="tag.marketstateid"
@@ -165,7 +164,7 @@
                             <!-- 分頁 -->
                             <div class="block text-center" key="2" v-if="show">
                                 <el-pagination @current-change="handleCurrentChange" :current-page.sync="currentPage1"
-                                    :page-size="20" layout="  prev, pager, next" :total="total">
+                                    :page-size="40" layout="  prev, pager, next" :total="total">
                                 </el-pagination>
                             </div>
                             <div key="3">今天筆數 : {{todayTotal}}</div>
@@ -193,6 +192,17 @@
                             </el-table>
                         </el-dialog>
 
+
+
+
+                        <!-- 潛在客戶轉 超過三天 彈窗-->
+                        <el-dialog title="潛在客戶轉 超過三天" :visible.sync="pccVisible">
+                            <el-table :data="pcc" @row-click="clickEndCast">
+                                <el-table-column property="client" label="公司"></el-table-column>
+                                <el-table-column property="message" label="描述"></el-table-column>
+                                <el-table-column property="stage" label="階段"></el-table-column>
+                            </el-table>
+                        </el-dialog>
 
 
 
@@ -729,6 +739,8 @@
             const vm = new Vue({
                 el: '.app',
                 data: {
+                    pccVisible: true,
+                    pcc: [],//3天前潛在客戶轉
                     MarketStateList: [],//狀態列表
                     stateDay: "",//狀態日期
                     options: [
@@ -883,8 +895,9 @@
                                     this.oldList = this.list,
                                     this.MarketStateList = response.marketstate,
                                     this.total = response.total,
-                                    this.markeCreateTime = response.markeCreateTime
-
+                                    this.markeCreateTime = response.markeCreateTime,
+                                    this.pcc = response.pcc;
+                                    this.pccVisible = this.pcc.length > 0;
                             },
                             error: function (returndata) {
                                 console.log(returndata);

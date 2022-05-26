@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -572,6 +573,13 @@ public class MarketService {
 
         result.put("list", mr.findByClosereason("自動結案", Sort.by(Direction.DESC, "aaa")));
         return result;
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //market BY 階段 和 業務
+    public List<MarketBean> getMarketByStageAndUser(String stage,String user) {
+        String day = LocalDate.now().minusDays(3).toString();
+
+        return mr.findByStageAndUserAndAaaLessThan(stage,user,day);
     }
 
 

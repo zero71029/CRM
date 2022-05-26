@@ -7,6 +7,11 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/css/bootstrap.min.css">
         <script src="${pageContext.request.contextPath}/bootstrap/js/bootstrap.min.js"></script>
 
+        <!-- <%-- jQuery放這裡 --%> -->
+        <script src="${pageContext.request.contextPath}/js/jquery-3.4.1.js"></script>
+        <script src="${pageContext.request.contextPath}/jquery-ui-1.13.0.custom/jquery-ui.min.js"></script>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/jquery-ui-1.13.0.custom/jquery-ui.min.css">
+
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,11 +25,12 @@
                 <div class="col-lg-3 app"></div>
                 <div class="col-lg-6 app">
                     <h3 style="text-align: center; color: red;">${error}</h3>
-                    <button class="btn btn-primary" onclick="javascript:location.href='${pageContext.request.contextPath}/system/AccountApplicationList.jsp'">返回上頁</button>
+                    <button class="btn btn-primary"
+                        onclick="javascript:location.href='${pageContext.request.contextPath}/system/AccountApplicationList.jsp'">返回上頁</button>
                     <form action="${pageContext.request.contextPath}/AccountApplication/save" method="post">
 
                         <input type="hidden" name="applicationid" value="${bean.applicationid}">
-                  
+
                         <input type="hidden" name="createtime" value="${bean.createtime}">
                         <table class="table table-striped text-center">
                             <tr>
@@ -34,8 +40,8 @@
 
                             <tr>
                                 <td style="width: 180px;">到職⽇</td>
-                                <td><input type="text" class="form-control" name="arrivetime"
-                                        value="${bean.arrivetime}"></td>
+                                <td><input type="text" class="form-control arrivetime" name="arrivetime" value="${bean.arrivetime}"
+                                    readonly></td>
                             </tr>
                             <tr>
                                 <td>申請⼈ <span style="color: red;"> *</span></td>
@@ -77,7 +83,14 @@
 
             </div>
         </div>
-
+        <script>
+            // 日期UI
+            $(".arrivetime").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: "yy-mm-dd"
+            });
+        </script>
 
 
 

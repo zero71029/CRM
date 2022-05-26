@@ -398,7 +398,7 @@
                                             </div>
                                             <div class="row">
 
-                                                <div class="col-md-2 cellz">案件類型</div>
+                                                <div class="col-md-2 cellz">案件類型 <span style="color: red;">*</span></div>
                                                 <div class="col-md-4 FormPadding">
                                                     <select name="createtime" id="createtime" v-model="bean.createtime"
                                                         @change="changeCreateTime" class=" form-select cellzFrom">
@@ -502,10 +502,12 @@
                                                         <option value="尚未處理" selected>
                                                             尚未處理
                                                         </option>
+                                                        <option value="潛在客戶轉">
+                                                            潛在客戶轉
+                                                        </option>
                                                         <option value="內部詢價中">
                                                             內部詢價中
                                                         </option>
-
                                                         <option value="已報價">
                                                             已報價
                                                         </option>
@@ -1082,14 +1084,14 @@
                         clientList: [],//客戶列表
                         bean: {
                             fileforeignid: Math.random() * 1000,
-                            createtime: "自用",//案件類型
+                            createtime: "",//案件類型
                             clinch: 3,
                             phone: "",
                             stage: "",
                             customerid: "",
                             important: "無",
                             endtime: myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate(),
-                            aaa: new Date(),
+                            aaa: formatDay(new Date()),
                             contacttitle: "",
                             source: "",
                         },
@@ -1280,7 +1282,12 @@
                         } else {
                             $("#source").css("border", "black 1px solid");
                         }
-
+                        if (this.bean.createtime == null || this.bean.createtime == "") {
+                            $("#createtime").css("border", "red 1px solid");
+                            isok = false;
+                        } else {
+                            $("#createtime").css("border", "black 1px solid");
+                        }
 
                         if (isok) {//通過驗證
 
@@ -1734,13 +1741,13 @@
 
 
 
-            function formatDay(day) {
-                let a = day.getMonth() + 1;
-                let mon = a + "";
-                let b = day.getDate();
-                let d = (b + "").padStart(2, "0");
-                return day.getFullYear() + "-" + mon.padStart(2, "0") + "-" + d;
-            }
+function formatDay(day) {
+    let a = day.getMonth() + 1;
+    let mon = a + "";
+    let b = day.getDate();
+    let d = (b + "").padStart(2, "0");
+    return day.getFullYear() + "-" + mon.padStart(2, "0") + "-" + d;
+}
         </script>
 
         <style>

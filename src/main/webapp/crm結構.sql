@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： localhost:3306
--- 產生時間： 2022-05-19 08:13:09
+-- 產生時間： 2022-05-24 09:23:22
 -- 伺服器版本： 5.7.24
 -- PHP 版本： 8.0.1
 
@@ -95,7 +95,7 @@ CREATE TABLE `agreement` (
 CREATE TABLE `application` (
   `applicationid` int(32) NOT NULL,
   `admin` varchar(100) COLLATE utf8_bin NOT NULL COMMENT '申請⼈',
-  `english` varchar(10) COLLATE utf8_bin DEFAULT NULL COMMENT '護照英⽂名',
+  `english` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '護照英⽂名',
   `department` varchar(20) COLLATE utf8_bin DEFAULT NULL COMMENT '部⾨職位',
   `privateemail` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '私⼈Email',
   `privateid` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT 'ID名稱',
@@ -468,6 +468,7 @@ CREATE TABLE `market` (
   `producttype` varchar(20) COLLATE utf8_bin DEFAULT NULL COMMENT '產品類別',
   `phone` varchar(20) COLLATE utf8_bin DEFAULT NULL COMMENT '公司電話',
   `aaa` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '創建時間	',
+  `bbb` varchar(20) COLLATE utf8_bin DEFAULT NULL COMMENT '最後修改時間',
   `important` varchar(5) COLLATE utf8_bin DEFAULT NULL COMMENT '重要性',
   `line` varchar(200) COLLATE utf8_bin DEFAULT NULL COMMENT 'LineID',
   `customerid` varchar(32) COLLATE utf8_bin DEFAULT NULL COMMENT '追蹤資訊',

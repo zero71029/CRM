@@ -151,6 +151,9 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
       where c.createtime BETWEEN ?1 AND ?2 group by changeid) as a) and (stage = '失敗結案' OR stage = '成功結案')
    """, nativeQuery = true)
     List<MarketBean> findAaaXXXXXXX(String startDay, String endDay);
+
+
+    List<MarketBean> findByStageAndUserAndAaaLessThan(String stage, String user, String day);
 //   Strin a = """
 //    select * from market m
 //    where  marketid = ANY( select marketid from

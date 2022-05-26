@@ -21,6 +21,8 @@ import java.util.List;
 public class AccountApplicationController {
 
     @Autowired
+    ZeroTools zTools;
+    @Autowired
     ApplicationService as;
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //儲存帳號申請表
@@ -29,6 +31,14 @@ public class AccountApplicationController {
         System.out.println("*****儲存帳號申請表*****");
         if(aBean.getApplicationid() == null){
             aBean.setCreatetime(ZeroTools.getTime(new Date()));
+            String text = "到職⽇:  "+aBean.getArrivetime()+"<br><br>" +
+                    "申請⼈:  "+aBean.getAdmin()+"<br><br>" +
+                    "護照英⽂名:  "+aBean.getEnglish()+"<br><br>" +
+                    "部⾨職位:  "+aBean.getDepartment()+"<br><br>" +
+                    "私⼈Email:  "+aBean.getPrivateemail()+"<br><br>" +
+                    "ID名稱:  "+aBean.getPrivateid()+"<br><br>" +
+                    "公司Email帳號:  "+aBean.getEmail();
+            zTools.mail("ychen@jetec.com.tw" ,text ,"新進⼈員E-Mail/NAS帳號申請表" ,"jeter.tony56@gmail.com,zero@mail-jetec.com.tw,ychen@mail-jetec.com.tw");
         }
 
         return "redirect:/AccountApplication/detail/"+as.save(aBean).getApplicationid()+"?mess=save ok";
