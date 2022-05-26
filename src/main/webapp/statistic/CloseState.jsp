@@ -224,20 +224,24 @@
                     },
                     OtherPie() {
                         let 內部詢價中 = 0;
+                        let 潛在客戶轉 = 0;
                         let 尚未處理 = 0;
                         let 已報價 = 0;
                         let 提交主管 = 0;
                         this.other.forEach(e => {
                             if (e.stage == "內部詢價中") 內部詢價中++
+                            if (e.stage == "潛在客戶轉") 潛在客戶轉++
                             if (e.stage == "尚未處理") 尚未處理++
                             if (e.stage == "已報價") 已報價++
                             if (e.stage == "提交主管") 提交主管++
                         });
                         var obj = [];
+                        
                         obj.push({ value: 已報價, name: "已報價" + 已報價, url: "已報價" });
                         obj.push({ value: 內部詢價中, name: "內部詢價中" + 內部詢價中, url: "內部詢價中" });
                         obj.push({ value: 尚未處理, name: "尚未處理" + 尚未處理, url: "尚未處理" });
                         obj.push({ value: 提交主管, name: "提交主管" + 提交主管, url: "提交主管" });
+                        obj.push({ value: 潛在客戶轉, name: "潛在客戶轉" + 潛在客戶轉, url: "潛在客戶轉" });
                         var chartDom = document.getElementById('other');
                         var myChart = echarts.init(chartDom);
                         var option;

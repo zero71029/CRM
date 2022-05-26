@@ -73,7 +73,7 @@ public class MarketService {
         if (marketBean.getAaa() == "") {
             marketBean.setAaa(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()));
         }
-        marketBean.setBbb(ZeroTools.getTime(new Date()));
+        marketBean.setBbb(LocalDateTime.now().toString());
         return mr.save(marketBean);
     }
 
@@ -580,6 +580,10 @@ public class MarketService {
         String day = LocalDate.now().minusDays(3).toString();
 
         return mr.findByStageAndUserAndAaaLessThan(stage,user,day);
+    }
+
+    public boolean existMarketById(String marketid) {
+        return mr.existsById(marketid);
     }
 
 

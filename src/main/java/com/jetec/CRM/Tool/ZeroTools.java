@@ -338,7 +338,7 @@ public class ZeroTools {
                         new javax.mail.Authenticator() {
                             protected PasswordAuthentication getPasswordAuthentication() {
                                 return new PasswordAuthentication(
-                                        "zero", "");
+                                        "zero", "Tp6u04xup6");
                             }
                         });
                 // 開啟Session的debug模式，這樣就可以查看到程序發送Email的運行狀態
@@ -349,7 +349,7 @@ public class ZeroTools {
                     ts = session.getTransport();
                     // 3、使用郵箱的用戶名和密碼連接郵件服務器
                     // 發送郵件時，發件人需要提交郵箱的用戶名和密碼給smtp服務器，用戶名和密碼都通過驗證之後才能夠正常發送郵件給收件人。
-                    ts.connect("192.168.11.118", "zero", "");
+                    ts.connect("192.168.11.118", "zero", "Tp6u04xup6");
                     // 4、創建郵件
 //	            Message message = createComplexMail(session);
                     MimeMessage message = new MimeMessage(session);

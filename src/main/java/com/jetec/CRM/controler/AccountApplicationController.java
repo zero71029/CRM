@@ -38,7 +38,8 @@ public class AccountApplicationController {
                     "私⼈Email:  "+aBean.getPrivateemail()+"<br><br>" +
                     "ID名稱:  "+aBean.getPrivateid()+"<br><br>" +
                     "公司Email帳號:  "+aBean.getEmail();
-            zTools.mail("ychen@jetec.com.tw" ,text ,"新進⼈員E-Mail/NAS帳號申請表" ,"jeter.tony56@gmail.com,zero@mail-jetec.com.tw,ychen@mail-jetec.com.tw");
+            zTools.SynologyMail("ychen@jetec.com.tw" ,text ,"新進⼈員E-Mail/NAS帳號申請表" ,"jeter.tony56@gmail.com,zero@mail-jetec.com.tw,ychen@mail-jetec.com.tw");
+
         }
 
         return "redirect:/AccountApplication/detail/"+as.save(aBean).getApplicationid()+"?mess=save ok";

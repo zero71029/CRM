@@ -157,6 +157,7 @@
                                     <input type="hidden" name="aaa" value="${bean.aaa}">
                                     <input type="hidden" name="clicks" value="${bean.clicks}">
                                     <input type="hidden" name="marketid" value="${bean.marketid}">
+                                    <input type="hidden" name="opentime" value="${bean.opentime}">
                                     <input type="hidden" name="fileforeignid" v-model="bean.fileforeignid">
                                     <input type="hidden" name="callbos" v-model="bean.callbos">
                                     <input type="hidden" name="founder" v-model="bean.founder">
@@ -398,7 +399,8 @@
                                             </div>
                                             <div class="row">
 
-                                                <div class="col-md-2 cellz">案件類型 <span style="color: red;">*</span></div>
+                                                <div class="col-md-2 cellz">案件類型 <span style="color: red;">*</span>
+                                                </div>
                                                 <div class="col-md-4 FormPadding">
                                                     <select name="createtime" id="createtime" v-model="bean.createtime"
                                                         @change="changeCreateTime" class=" form-select cellzFrom">
@@ -569,7 +571,8 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="row" v-show="(bean.stage == '失敗結案' || bean.stage == '提交主管') && bean.closereason == '其他' ">
+                                            <div class="row"
+                                                v-show="(bean.stage == '失敗結案' || bean.stage == '提交主管') && bean.closereason == '其他' ">
                                                 <div class="col-md-1 ">
                                                 </div>
                                                 <div class="col-md-2 cellz">
@@ -1091,7 +1094,7 @@
                             customerid: "",
                             important: "無",
                             endtime: myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate(),
-                            aaa: formatDay(new Date()),
+                            aaa: new Date(),
                             contacttitle: "",
                             source: "",
                         },
@@ -1290,9 +1293,11 @@
                         }
 
                         if (isok) {//通過驗證
-
+                            console.log("response1");
+                            // ${pageContext.request.contextPath}/Market/SaveMarket
                             if ("${bean.marketid}" == "") {//如果是新資料 就 提交表單
-                                $('.basefrom').submit();
+
+                                this.formSubmit();
                             } else {//如果不是新資料 就 紀錄修改
                                 var keys = Object.keys(this.bean);
                                 var data = {};
@@ -1305,14 +1310,44 @@
                                     }
 
                                 }
+                                console.log("response2");
                                 axios
                                     .post('${pageContext.request.contextPath}/changeMessage/${bean.marketid}', data)
                                     .then(
                                         response => (
-                                            $('.basefrom').submit()
+                                            console.log("response3"),
+                                            vm.formSubmit()
                                         ))
+
                             }
                         }
+                    },
+                    formSubmit() {
+                        console.log("response");
+                        var formData = new FormData($(".basefrom")[0]);
+                        $.ajax({
+                            url: '${pageContext.request.contextPath}/Market/SaveMarket',
+                            type: 'POST',
+                            data: formData,
+                            async: false,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            success: function (response) {
+                                console.log(response);
+                                if (response.state) {
+                                    location.href = "${pageContext.request.contextPath}/Market/Market/" + response.id;
+                                } else {
+                                    vm.$message({
+                                        message: response.mess,
+                                        type: 'error'
+                                    });
+                                }
+                            },
+                            error: function (returndata) {
+                                console.log(returndata);
+                            }
+                        });
                     },
                     open(s) {//修改追蹤資訊
                         this.$alert('<form action="${pageContext.request.contextPath}/Market/changeTrackByMarket/${bean.marketid}" method = "post" >\
@@ -1741,13 +1776,13 @@
 
 
 
-function formatDay(day) {
-    let a = day.getMonth() + 1;
-    let mon = a + "";
-    let b = day.getDate();
-    let d = (b + "").padStart(2, "0");
-    return day.getFullYear() + "-" + mon.padStart(2, "0") + "-" + d;
-}
+            function formatDay(day) {
+                let a = day.getMonth() + 1;
+                let mon = a + "";
+                let b = day.getDate();
+                let d = (b + "").padStart(2, "0");
+                return day.getFullYear() + "-" + mon.padStart(2, "0") + "-" + d;
+            }
         </script>
 
         <style>

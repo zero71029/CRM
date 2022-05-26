@@ -36,6 +36,7 @@ public class MarketBean implements Serializable {
     private String extension;//電話分機
     private String aaa;// 創建時間 字串
     private String bbb;//最後修改時間
+    private String opentime;//打開時間
     private String important;//重要性
     private String line;
     private String customerid;//追蹤資訊
@@ -93,6 +94,14 @@ public class MarketBean implements Serializable {
 //	@OneToMany(targetEntity = WorkBean.class, mappedBy = "marketid", cascade = CascadeType.ALL)
 //	private List<WorkBean> work;
 
+
+    public String getOpentime() {
+        return opentime;
+    }
+
+    public void setOpentime(String opentime) {
+        this.opentime = opentime;
+    }
 
     public String getBbb() {
         return bbb;

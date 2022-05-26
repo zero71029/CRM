@@ -144,6 +144,7 @@
                             class="basefrom g-3 needs-validation AAA" novalidate>
                             <input type="hidden" name="customerid" value="${bean.customerid}">
                             <input type="hidden" name="aaa" value="${bean.aaa}">
+                            <input type="hidden" name="opentime" value="${bean.opentime}">
                             <input type="hidden" name="fromactivity" value="${bean.fromactivity}">
                             <input type="hidden" name="fileforeignid" v-model="customer.fileforeignid">
                             <input type="hidden" name="founder" v-model="customer.founder">
@@ -324,8 +325,7 @@
                                         <div class="col-md-2 cellz">其他來源 </div>
                                         <div class="col-md-3 cellz FormPadding ">
                                             <input type="text" class=" form-control cellFrom" name="othersource"
-                                                v-model.trim="customer.othersource"
-                                                maxlength="20">
+                                                v-model.trim="customer.othersource" maxlength="20">
                                         </div>
                                     </div>
 
@@ -438,12 +438,12 @@
                                         </c:if>
                                     </div>
 
-<a href="" ></a>
+                                    <a href=""></a>
 
 
 
 
-                                    <div class="row"  v-show="customer.status == '不合格' || customer.status == '提交主管'">
+                                    <div class="row" v-show="customer.status == '不合格' || customer.status == '提交主管'">
 
                                         <div class="col-md-3 cellz">
                                             結案理由
@@ -464,7 +464,8 @@
                                         </div>
                                     </div>
 
-                                    <div class="row" v-show="(customer.status == '不合格' || customer.status == '提交主管') && customer.closereason == '其他'">
+                                    <div class="row"
+                                        v-show="(customer.status == '不合格' || customer.status == '提交主管') && customer.closereason == '其他'">
 
                                         <div class="col-md-3 cellz">
                                             其他結案理由 </div>
@@ -756,6 +757,10 @@
         </body>
         <script>
 
+            console.log("opentime", '${bean.opentime}');
+
+
+
             $('.act').hide();
             $(function () {
                 $("#draggable").draggable();
@@ -988,13 +993,10 @@
                         }
                     });
                 }, 900);
-
-
             }
 
             //檢查有無銷售機會
             function NotExistMarket() {
-
                 var formData = new FormData($(".AAA")[0]);
                 $.ajax({
                     url: '${pageContext.request.contextPath}/Market/existMarket/${bean.customerid}',
@@ -1006,14 +1008,11 @@
                         } else {
                             goMarket()
                         }
-
                     },
                     error: function (returndata) {
                         console.log(returndata);
                     }
-
                 });
-
             }
 
 
@@ -1126,7 +1125,6 @@
                         this.customer.industry = '尚未分類';
                         this.oldCustomer.industry = '尚未分類';
                     }
-
                     if (this.customer.status == undefined || this.customer.status == "") {
                         this.customer.status = '未處理';
                         this.oldCustomer.status = '未處理';
@@ -1199,12 +1197,17 @@
                                     cache: false,
                                     contentType: false,
                                     processData: false,
-                                    success: function (url) {
-                                        vm.$message({
-                                            message: "儲存成功",
-                                            type: 'success'
-                                        });
-                                        location.href = "${pageContext.request.contextPath}/Market/potentialcustomer/" + url;
+                                    success: function (response) {
+                                        console.log(response);
+                                        if (response.state) {
+
+                                            location.href = "${pageContext.request.contextPath}/Market/potentialcustomer/" + response.id;
+                                        } else {
+                                            vm.$message({
+                                                message: response.mess,
+                                                type: 'error'
+                                            });
+                                        }
                                     },
                                     error: function (returndata) {
                                         console.log(returndata);
@@ -1233,11 +1236,16 @@
                                                 cache: false,
                                                 contentType: false,
                                                 processData: false,
-                                                success: function (url) {
-                                                    vm.$message({
-                                                        message: "儲存成功",
-                                                        type: 'success'
-                                                    });
+                                                success: function (response) {
+                                                    console.log(response);
+                                                    if (response.state) {
+                                                        location.href = "${pageContext.request.contextPath}/Market/potentialcustomer/" + response.id;
+                                                    } else {
+                                                        vm.$message({
+                                                            message: response.mess,
+                                                            type: 'error'
+                                                        });
+                                                    }
                                                 },
                                                 error: function (returndata) {
                                                     console.log(returndata);

@@ -222,11 +222,11 @@ public class StatisticController {
         } else {
             startDay = startDay + " 00:00";
         }
-        List<MarketBean> l = ss.getMarketByState("私敗結案",startDay,endDay);
+
         result.put("success",ss.getMarketByState("成功結案",startDay,endDay));
         result.put("fail",ss.getMarketByState("失敗結案",startDay,endDay));
         result.put("other",ss.getMarketByCloseNot(startDay,endDay));
-        l.forEach(System.out::println);
+
 
         return result;
     }

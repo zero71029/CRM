@@ -45,6 +45,8 @@ public class PotentialCustomerBean implements Serializable {
     private String line;
     private String extension;//電話分機
     private String aaa;//創建時間
+    private String bbb;//最後回覆時間
+    private String opentime;//打開時間
     private String serialnumber;//編號
     private String callhelp;//求助
     private String fileforeignid;//附件id
@@ -92,6 +94,14 @@ public class PotentialCustomerBean implements Serializable {
     public void setCloseextend(String closeextend) {
         this.closeextend = closeextend;
     }
+
+    public String getBbb() { return bbb; }
+
+    public void setBbb(String bbb) {this.bbb = bbb; }
+
+    public String getOpentime() { return opentime; }
+
+    public void setOpentime(String opentime) {this.opentime = opentime;}
 
     public String getClosereason() {
         return closereason;
