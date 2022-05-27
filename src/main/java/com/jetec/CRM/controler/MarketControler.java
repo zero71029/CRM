@@ -516,7 +516,7 @@ public class MarketControler {
         bean.setOthersource(pBean.getOthersource());
         bean.setOpentime(LocalDateTime.now().toString());
         bean.setAaa(ZeroTools.getTime(new Date()));
-
+        bean.setQuote("");
 
         Map<String, Object> result = new HashMap<>();
         result.put("bean", bean);

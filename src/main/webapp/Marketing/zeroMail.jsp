@@ -10,13 +10,9 @@
             <link rel="preconnect" href="https://fonts.gstatic.com">
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
 
-
             <!-- <%-- 主要的CSS、JS放在這裡--%> -->
             <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
-            <title>CRM客戶管理系統</title>
-
-
-
+            <title>ZeroMail</title>
         </head>
 
 
@@ -70,8 +66,6 @@
                                                         name="Subject">
                                                 </div>
                                             </div>
-
-
                                             <input type="hidden" name="fileName" v-model="fileName">
                                             <textarea id="content"></textarea>
                                         </form>
@@ -80,7 +74,6 @@
                                 </div>
                                 <div class="row ">
                                     <div class="col-md-12 ">
-
                                     </div>
                                 </div>
 

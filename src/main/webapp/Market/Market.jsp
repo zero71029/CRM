@@ -1172,6 +1172,7 @@
                     //取 報價內容 高度用
                     this.quoteHeight = this.bean.quote.replace(/\r\n/g, '<br />');
                     this.messageheight = this.bean.message.replace(/\r\n/g, '<br />');
+                   
                 },
                 mounted() {
                     $('title').html(this.bean.name);
@@ -1517,6 +1518,7 @@
                     changeCreateTime: function () {
 
                         console.log(this.bean.aaa);
+                     
                         if (this.bean.aaa == null) {
                             var day = new Date();
                         } else {
@@ -1524,15 +1526,13 @@
                         }
 
 
-
-
-
+                        var day = new Date(this.bean.aaa);
                         if (this.bean.createtime == "轉賣") day.setDate(day.getDate() + 7);
                         if (this.bean.createtime == "自用") day.setDate(day.getDate() + 7);
                         if (this.bean.createtime == "設計/預算規劃") day.setDate(day.getDate() + 14);
                         if (this.bean.createtime == "工程標案") day.setDate(day.getDate() + 30);
                         this.bean.endtime = formatDay(day);
-                        this.chageToSave('endtime', formatDay(day));
+                       
 
 
                     },
@@ -1676,24 +1676,24 @@
                             var oldstage = this.oldBean.stage
 
                             //儲存改變
-                            if (this.oldBean[field] != val) {
-                                var data = new FormData();
-                                data.append("marketid", this.bean.marketid);
-                                data.append("field", field);
-                                data.append("val", val);
-                                this.saveChage(data);
-                            }
+                            // if (this.oldBean[field] != val) {
+                            //     var data = new FormData();
+                            //     data.append("marketid", this.bean.marketid);
+                            //     data.append("field", field);
+                            //     data.append("val", val);
+                            //     this.saveChage(data);
+                            // }
 
 
 
-                            if (field == "stage" && this.bean.stage == "成功結案") {
-                                this.bean.closereason = "成功結案";
-                                var data = new FormData();
-                                data.append("marketid", this.bean.marketid);
-                                data.append("field", "closereason");
-                                data.append("val", "成功結案");
-                                this.saveChage(data);
-                            }
+                            // if (field == "stage" && this.bean.stage == "成功結案") {
+                            //     this.bean.closereason = "成功結案";
+                                // var data = new FormData();
+                                // data.append("marketid", this.bean.marketid);
+                                // data.append("field", "closereason");
+                                // data.append("val", "成功結案");
+                                // this.saveChage(data);
+                            // }
 
 
 
@@ -1701,25 +1701,25 @@
                             //如果是復活
                             if (field == "stage" && oldstage == "失敗結案") {
                                 this.bean.closereason = "失敗復活";
-                                var data = new FormData();
-                                data.append("marketid", this.bean.marketid);
-                                data.append("field", "closereason");
-                                data.append("val", "失敗復活");
-                                this.saveChage(data);
+                                // var data = new FormData();
+                                // data.append("marketid", this.bean.marketid);
+                                // data.append("field", "closereason");
+                                // data.append("val", "失敗復活");
+                                // this.saveChage(data);
 
                             }
                             //如果私敗
                             if (field == "stage" && this.bean.stage == "失敗結案") {
                                 this.bean.closereason = "其他";
-                                var data = new FormData();
-                                data.append("marketid", this.bean.marketid);
-                                data.append("field", "closereason");
-                                data.append("val", "其他");
-                                this.saveChage(data);
+                                // var data = new FormData();
+                                // data.append("marketid", this.bean.marketid);
+                                // data.append("field", "closereason");
+                                // data.append("val", "其他");
+                                // this.saveChage(data);
 
                             }
 
-
+                            console.log(this.bean.closereason)
                         }
                     }, saveChage(data) {
                         $.ajax({

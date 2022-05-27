@@ -37,6 +37,17 @@
         </style>
 
         <body>
+            <!-- <%--上傳 彈窗--%> -->
+            <div class="app">
+                <el-dialog title="上傳" :visible.sync="imgVisible" width="30%">
+                    <el-upload class="upload-demo" drag action="${pageContext.request.contextPath}/upfile" multiple
+                        :on-success="upSuccess" :before-upload="beforeAvatarUpload">
+                        <i class="el-icon-upload"></i>
+                        <div class="el-upload__text">將文件拖到此處，或<em>點擊上傳</em></div>
+                        <div class="el-upload__tip" slot="tip">只能上傳jpg/png文件，且不超過2MB</div>
+                    </el-upload>
+                </el-dialog>
+            </div>
             <div class="container-fluid">
                 <div class="row">
                     <!-- <%-- 插入側邊欄--%> -->
@@ -210,9 +221,6 @@
                                         text-decoration: none;
                                     }
 
-                                    .replyImg img {
-                                        width: 100px;
-                                    }
                                 </style>
                                 <div class="row replyImg">
                                     <div class="col-md-1"></div>
@@ -1009,9 +1017,10 @@
                 tinymce.init({
                     selector: 'textarea',  // change this value according to your HTML
                     plugins: ["autosave preview code link media hr charmap "],
-                    toolbar: 'undo redo | styles | bold italic | alignleft aligncenter alignright alignjustify | outdent indent|hr charmap | link unlink selectiveDateButton media |   preview code',
+                    toolbar1: 'undo redo restoredraft | fontsizeselect | styles | bold italic | alignleft aligncenter alignright alignjustify | outdent indent|hr charmap | link unlink selectiveDateButton media |   preview code',
                     language: 'zh_TW',
-                    height: '300',
+                    height: '400',
+
                     //自訂義按鈕
                     setup: (editor) => {
                         //定義新icon
@@ -1028,7 +1037,43 @@
                 });
             </script>
 
+            <script>
+                var vm = new Vue({
+                el: ".app",
+                data() {
+                    return {
+                        imgVisible: false,
+                    }
+                },
+                created() {
 
+                },
+                methods: {
+                    //上傳檢查
+                    beforeAvatarUpload(file) {
+                        const isJPG = file.type === 'image/jpeg';
+                        const isLt2M = file.size / 1024 / 1024 < 2;
+                        if (!(file.type == 'image/jpeg' || file.type == 'image/png')) {
+                            this.$message.error('上傳圖片只能是 JPG/PNG 格式!');
+                            return false;
+                        }
+                        if (!isLt2M) {
+                            this.$message.error('上傳圖片大小不能超過 2MB!');
+                            return false;
+                        }
+                        return true;
+                    },
+                    //上傳成功
+                    upSuccess(response, file, fileList) {
+                        console.log(response);
+                        const img = `<p><img src="${pageContext.request.contextPath}/file/` + response + `"  style="max-width: 90%; height: auto;"></p><p>&nbsp;</p>`;
+                        console.log(img);
+                        this.imgVisible = false;
+                        tinymce.activeEditor.execCommand('mceInsertContent', false, img);
+                    },
+                },
+            })
+            </script>
 
 
 

@@ -31,7 +31,7 @@
                         "insertdatetime media nonbreaking save table contextmenu directionality",
                         "emoticons template paste textcolor colorpicker textpattern imagetools"
                     ],
-                    toolbar1: "insertfile undo redo restoredraft| formatselect fontselect fontsizeselect lineheight| alignleft aligncenter alignright alignjustify | bullist numlist outdent indent  " +
+                    toolbar1: "insertfile undo redo restoredraft | formatselect fontselect fontsizeselect lineheight| alignleft aligncenter alignright alignjustify | bullist numlist outdent indent  " +
                         "bold italic underline strikethrough subscript superscript | forecolor backcolor charmap emoticons | link unlink selectiveDateButton media | cut copy paste | insertdatetime fullscreen code|table hr pagebreak blockquote |" +
                         "print preview ",
 

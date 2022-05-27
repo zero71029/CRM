@@ -137,7 +137,7 @@
                         行銷部
                     </button>
                     <button class="marketing zeroMail"
-                        onclick="javascript:window.open('${pageContext.request.contextPath}/zeroMail.jsp')">
+                        onclick="javascript:window.open('${pageContext.request.contextPath}/Marketing/zeroMail.jsp')">
                         郵件
                     </button>
 

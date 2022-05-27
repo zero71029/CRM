@@ -33,8 +33,8 @@
                         "emoticons template paste textcolor colorpicker textpattern imagetools "
                     ],
                     toolbar1: "insertfile undo redo restoredraft| formatselect fontselect fontsizeselect lineheight| alignleft aligncenter alignright alignjustify | bullist numlist outdent indent  " +
-                        "bold italic underline strikethrough subscript superscript | forecolor backcolor charmap emoticons | link unlink image media | cut copy paste | insertdatetime fullscreen code|table hr pagebreak blockquote |" +
-                        "lineheight print preview selectiveDateButton",
+                        "bold italic underline strikethrough subscript superscript | forecolor backcolor charmap emoticons | link unlink selectiveDateButton media | cut copy paste | insertdatetime fullscreen code|table hr pagebreak blockquote |" +
+                        "lineheight print preview ",
                     menubar: false,
                     image_advtab: true,
                     autosave_ask_before_unload: false,//關閉 嘗試關閉當前窗口時提示他們有未保存的更改

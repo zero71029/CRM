@@ -250,8 +250,15 @@
                                             <div class="col-lg-4 cell FormPadding ">
                                                 <select name="industry" class=" form-select cellFrom" v-model="industry"
                                                     v-model="industry">
-                                                    <option v-for="(item, index) in industryList" :key="index">{{item}}
-                                                    </option>
+
+                                                    <c:forEach varStatus="loop" begin="0" end="${library.size()-1}"
+                                                        items="${library}" var="s">
+                                                        <c:if test='${s.librarygroup == "MarketType"}'>
+                                                            <option value="${s.libraryoption}">${s.libraryoption}
+                                                            </option>
+                                                        </c:if>
+                                                    </c:forEach>
+
                                                 </select>
                                             </div>
                                         </div>
@@ -904,27 +911,7 @@
                         newTag: "",//新增標籤
                         tags: [],//標籤列表
                         industry: "${bean.industry}",//產業
-                        industryList: ["尚未分類",
-                            "農、林、漁、牧業",
-                            "礦業及土石採取業",
-                            "製造業",
-                            "電子及半導體生產", "機械設備製造業",
-                            "電力及燃氣供應業",
-                            "用水供應及污染整治業",
-                            "營建工程業",
-                            "批發及零售業",
-                            "運輸及倉儲業",
-                            "住宿及餐飲業",
-                            "出版影音及資通訊業",
-                            "金融及保險業",
-                            "不動產業",
-                            "專業、科學及技術服務業",
-                            "支援服務業",
-                            "公共行政及國防；強制性社會安全",
-                            "教育業",
-                            "醫療保健及社會工作服務業",
-                            "藝術、娛樂及休閒服務業",
-                            "其他服務業"],//產業列表
+                        
                     };
                 },
                 created() {
