@@ -163,16 +163,12 @@ public class MarketControler {
     public Map<String, Object> SaveMarket(MarketBean marketBean, HttpSession session) {
         System.out.println("*****存銷售機會****");
         Map<String, Object> result = new HashMap<>();
-        System.out.println(marketBean.getMarketid());
         AdminBean admin = (AdminBean) session.getAttribute("user");
         if (admin != null && (marketBean.getMarketid() == null || marketBean.getMarketid().isEmpty())) {
             marketBean.setFounder(admin.getName());
         }else if (ms.existMarketById(marketBean.getMarketid())) {
             //避免同時開同一頁面
             MarketBean oldBean = ms.getById(marketBean.getMarketid());
-            System.out.println("資料庫資料 : "+oldBean.getBbb());
-            System.out.println("瀏覽器資料 : "+marketBean.getOpentime());
-            System.out.println("--------------------------");
             if(oldBean.getBbb() != null  ){
                 if ( oldBean.getBbb().compareTo(marketBean.getOpentime()) > 0) {
                     result.put("state",false);

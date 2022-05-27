@@ -378,6 +378,7 @@
 
                                                 <el-checkbox-group v-model="inStateList">
                                                     <el-checkbox label="尚未處理"></el-checkbox>
+                                                    <el-checkbox label="潛在客戶轉"></el-checkbox>
                                                     <el-checkbox label="內部詢價中"></el-checkbox>
                                                     <el-checkbox label="已報價"></el-checkbox>
                                                     <el-checkbox label="提交主管"></el-checkbox>
@@ -626,8 +627,6 @@
                                                     <el-button type="primary" size="mini" plain
                                                         @click="AddState('admin','${s.name}','user')"
                                                         icon="el-icon-user-solid">${s.name}</el-button>
-
-
                                                 </div>
                                             </c:if>
                                         </c:forEach>
@@ -638,6 +637,11 @@
                                         <div style="float: left;margin: 3px;">
                                             <el-button type="info" size="mini" plain
                                                 @click="AddState('state','尚未處理','info')" icon="el-icon-s-goods">尚未處理
+                                            </el-button>
+                                        </div>
+                                        <div style="float: left;margin: 3px;">
+                                            <el-button type="info" size="mini" plain
+                                                @click="AddState('state','潛在客戶轉','info')" icon="el-icon-s-goods">潛在客戶轉
                                             </el-button>
                                         </div>
 
