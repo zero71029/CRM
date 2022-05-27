@@ -1,6 +1,7 @@
 package com.jetec.CRM.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -13,7 +14,8 @@ public class BillboardBean {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer billboardid;
 	private String user; //發表人	
-	private String theme; //主題	
+	private String theme; //主題
+	@Type(type = "text")
 	private String content; //內容	
 	private String state; //狀態
 	private String replytime; //最後回覆時間	

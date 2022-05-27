@@ -154,7 +154,7 @@
                                     class="basefrom g-3 ">
                                     <input type="hidden" name="clientid" v-model="bean.clientid">
                                     <input type="hidden" name="customerid" v-model="bean.customerid">
-                                    <input type="hidden" name="aaa" value="${bean.aaa}">
+                                    <input type="hidden" name="aaa" v-model="bean.aaa">
                                     <input type="hidden" name="clicks" value="${bean.clicks}">
                                     <input type="hidden" name="marketid" value="${bean.marketid}">
                                     <input type="hidden" name="opentime" value="${bean.opentime}">
@@ -175,8 +175,8 @@
                                                 </div>
                                                 <div class="col-md-10 FormPadding">
                                                     <input type="text" class="form-control cellzFrom" name="name"
-                                                        @blur="chageToSave('name',bean.name)" v-model.trim="bean.name"
-                                                        style="width: 100%;" maxlength="20" required>
+                                                        v-model.trim="bean.name" style="width: 100%;" maxlength="20"
+                                                        required>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -195,7 +195,6 @@
 
                                                 <div class="col-md-4 FormPadding">
                                                     <input type="text" class="form-control" placeholder="編號"
-                                                        @blur="chageToSave('serialnumber',bean.serialnumber)"
                                                         name="serialnumber" v-model.trim="bean.serialnumber">
                                                 </div>
                                             </div>
@@ -206,9 +205,7 @@
 
                                                 <div class="col-md-2 FormPadding">
                                                     <select name="contacttitle" class="form-select cellzFrom"
-                                                        @blur="chageToSave('contacttitle',bean.contacttitle)"
-                                                        v-model="bean.contacttitle"
-                                                        @blur="chageToSave('contacttitle',bean.contacttitle)">
+                                                        v-model="bean.contacttitle">
                                                         <option value="">稱謂</option>
                                                         <option value="Mr">Mr</option>
                                                         <option value="Ms">Ms</option>
@@ -226,8 +223,7 @@
                                                 </div>
                                                 <div class="col-md-4 FormPadding">
                                                     <input type="text" class="form-control" placeholder="職稱"
-                                                        @blur="chageToSave('jobtitle',bean.jobtitle)" name="jobtitle"
-                                                        v-model.trim="bean.jobtitle" maxlength="20">
+                                                        name="jobtitle" v-model.trim="bean.jobtitle" maxlength="20">
                                                 </div>
 
                                             </div>
@@ -235,22 +231,18 @@
                                                 <div class="col-md-2 cellz">聯絡人電話</div>
                                                 <div class="col-md-4 FormPadding">
                                                     <input type="text" class="form-control ppp" name="contactphone"
-                                                        @blur="chageToSave('contactphone',bean.contactphone)"
                                                         v-model="bean.contactphone" maxlength="20">
 
                                                     <input type="text" class="form-control" name="contactextension"
-                                                        @blur="chageToSave('contactextension',bean.contactextension)"
                                                         v-model="bean.contactextension" maxlength="10" placeholder="分機">
                                                 </div>
 
                                                 <div class="col-md-2 cellz">公司電話</div>
                                                 <div class="col-md-4 FormPadding">
                                                     <input type="text" class="form-control ppp" name="phone"
-                                                        @blur="chageToSave('phone',bean.phone)" v-model="bean.phone"
-                                                        maxlength="20">
+                                                        v-model="bean.phone" maxlength="20">
 
                                                     <input type="text" class="form-control" name="extension"
-                                                        @blur="chageToSave('extension',bean.extension)"
                                                         v-model="bean.extension" maxlength="10" placeholder="分機">
                                                 </div>
 
@@ -259,14 +251,13 @@
                                                 <div class="col-md-2 cellz">聯絡人手機</div>
                                                 <div class="col-md-4 FormPadding">
                                                     <input type="text" class=" form-control cellzFrom"
-                                                        @blur="chageToSave('contactmoblie',bean.contactmoblie)"
                                                         v-model.trim="bean.contactmoblie" maxlength="20"
                                                         name="contactmoblie">
                                                 </div>
                                                 <div class="col-md-2 cellz">產業</div>
                                                 <div class="col-md-4 FormPadding">
                                                     <select name="type" class=" form-select cellzFrom"
-                                                        @blur="chageToSave('type',bean.type)" v-model.trim="bean.type">
+                                                        v-model.trim="bean.type">
                                                         <option value="尚未分類">尚未分類</option>
 
                                                         <c:forEach varStatus="loop" begin="0" end="${library.size()-1}"
@@ -287,7 +278,6 @@
                                                 <div class="col-md-2 cellz">聯絡人Email</div>
                                                 <div class="col-md-4 FormPadding">
                                                     <input type="text" class="col-md- form-control cellzFrom"
-                                                        @blur="chageToSave('contactemail',bean.contactemail)"
                                                         v-model.trim="bean.contactemail" name="contactemail"
                                                         maxlength="50">
                                                 </div>
@@ -295,7 +285,7 @@
                                                 <div class="col-md-4 FormPadding">
                                                     <select type="text" class="form-control" placeholder="" id="source"
                                                         maxlength="90" name="source" v-model.trim="bean.source"
-                                                        @blur="chageToSave('source',bean.source)" list="sourceList">
+                                                        list="sourceList">
                                                         <option value="其他">其他</option>
                                                         <c:forEach varStatus="loop" begin="0" end="${library.size()-1}"
                                                             items="${library}" var="s">
@@ -311,8 +301,7 @@
                                                 <div class="col-md-2 cellz">Line</div>
                                                 <div class="col-md-4 FormPadding">
                                                     <input type="text" class="form-control cellzFrom" name="line"
-                                                        @blur="chageToSave('line',bean.line)" v-model.trim="bean.line"
-                                                        maxlength="200">
+                                                        v-model.trim="bean.line" maxlength="200">
                                                 </div>
                                                 <div class="col-md-2 cellz"><span
                                                         v-show="bean.source == '其他'">其他來源</span></div>
@@ -326,13 +315,11 @@
                                                 <div class="col-md-2 cellz">傳真</div>
                                                 <div class="col-md-4 FormPadding">
                                                     <input type="text" class="form-control cellzFrom" name="fax"
-                                                        @blur="chageToSave('fax',bean.fax)" v-model.trim="bean.fax"
-                                                        maxlength="20">
+                                                        v-model.trim="bean.fax" maxlength="20">
                                                 </div>
                                                 <div class="col-md-2 cellz">聯絡方式</div>
                                                 <div class="col-md-4 FormPadding">
                                                     <input type="text" class="form-control cellzFrom"
-                                                        @blur="chageToSave('contactmethod',bean.contactmethod)"
                                                         name="contactmethod" v-model.trim="bean.contactmethod"
                                                         maxlength="20" list="contactmethod">
                                                     <datalist id="contactmethod">
@@ -358,9 +345,7 @@
                                                 <div class="col-md-2 cellz">產品類別<span style="color: red;">*</span></div>
                                                 <div class="col-md-4 FormPadding">
                                                     <select name="producttype" id="Product_Type"
-                                                        v-model="bean.producttype"
-                                                        @blur="chageToSave('producttype',bean.producttype)"
-                                                        class=" form-select cellzFrom">
+                                                        v-model="bean.producttype" class=" form-select cellzFrom">
                                                         <option ${bean.producttype=="尚未分類" ?"selected":null}
                                                             value="尚未分類" selected="selected">請選擇...
                                                         </option>
@@ -376,7 +361,6 @@
                                                 <div class="col-md-2 cellz">產品名稱</div>
                                                 <div class="col-md-4 FormPadding">
                                                     <input type="text" class=" form-control cellzFrom" name="product"
-                                                        @blur="chageToSave('product',bean.product)"
                                                         v-model.trim="bean.product" maxlength="20">
                                                 </div>
                                             </div>
@@ -385,8 +369,7 @@
                                                 <div class="col-md-2 cellz">預算</div>
                                                 <div class="col-md-4 FormPadding">
                                                     <input type="number" class=" form-control cellzFrom" name="cost"
-                                                        @blur="chageToSave('cost',bean.cost)" v-model.trim="bean.cost"
-                                                        maxlength="30">
+                                                        v-model.trim="bean.cost" maxlength="30">
                                                 </div>
                                                 <div class="col-md-2 cellz">成交機率</div>
 
@@ -417,14 +400,12 @@
                                                 <div class="col-md-4 FormPadding">
                                                     <c:if test="${user.position != '職員' }">
                                                         <el-date-picker v-model="bean.endtime" align="right" type="date"
-                                                            @blur="chageToSave('endtime',bean.endtime)" name="endtime"
-                                                            placeholder="選擇日期" :picker-options="pickerOptions"
-                                                            value-format="yyyy-MM-dd">
+                                                            name="endtime" placeholder="選擇日期"
+                                                            :picker-options="pickerOptions" value-format="yyyy-MM-dd">
                                                         </el-date-picker>
                                                     </c:if>
                                                     <c:if test="${user.position == '職員' }">
                                                         <input type="text" :class="CallBosCss" name="endtime"
-                                                            @blur="chageToSave('endtime',bean.endtime)"
                                                             v-model.trim="bean.endtime" readonly>
                                                     </c:if>
                                                 </div>
@@ -436,9 +417,8 @@
                                                     <div v-html="messageheight" id="messageheight"
                                                         style="position: absolute;width: 541px;z-index: -1;"></div>
                                                     <el-input type="textarea" v-model="bean.message" rows="5"
-                                                        id="message" @blur="chageToSave('message',bean.message)"
-                                                        maxlength="950" show-word-limit name="message"
-                                                        @input="changeTextarea('message')">
+                                                        id="message" maxlength="950" show-word-limit name="message"
+                                                        @input="changeTextarea('message')"></el-input>
                                                 </div>
                                                 <br><br>
                                             </div>
@@ -464,7 +444,6 @@
                                                 <div class="col-md-4 FormPadding">
                                                     <c:if test="${user.position != '職員' }">
                                                         <select name="user" class="form-select cellzFrom"
-                                                            @blur="chageToSave('user',bean.user)"
                                                             v-model.trim="bean.user"
                                                             aria-label="Default select example">
                                                             <option value="無">
@@ -486,8 +465,7 @@
                                                         </select>
                                                     </c:if>
                                                     <c:if test="${user.position == '職員' }">
-                                                        <input type="hidden" name="user" v-model.trim="bean.user"
-                                                            @blur="chageToSave('user',bean.user)">
+                                                        <input type="hidden" name="user" v-model.trim="bean.user">
                                                         {{bean.user}}
                                                     </c:if>
                                                 </div>
@@ -550,7 +528,6 @@
                                                 <div class="col-md-4 FormPadding" id="closereason"
                                                     style="border: red 1px solid;">
                                                     <select class="form-select cellzFrom" name="closereason"
-                                                        @blur="chageToSave('closereason',bean.closereason)"
                                                         v-model.trim="bean.closereason">
                                                         <c:forEach varStatus="loop" begin="0" end="${library.size()-1}"
                                                             items="${library}" var="s">
@@ -591,7 +568,6 @@
                                                 </div>
                                                 <div class="col-md-4 FormPadding" id="important">
                                                     <select class="form-select cellzFrom" name="important"
-                                                        @blur="chageToSave('important',bean.important)"
                                                         v-model.trim="bean.important">
                                                         <option value="高">
                                                             高
@@ -628,8 +604,8 @@
                                                     </div>
 
                                                     <el-input type="textarea" v-model="bean.quote" rows="5" id="quote"
-                                                        @blur="chageToSave('quote',bean.quote)" maxlength="990"
-                                                        show-word-limit name="quote" @input="changeTextarea('quote')">
+                                                        maxlength="990" show-word-limit name="quote"
+                                                        @input="changeTextarea('quote')"></el-input>
                                                 </div>
                                             </div>
 
@@ -759,7 +735,7 @@
                                     </div>
                                 </div>
                                 <!-- 留言的控制 -->
-                                <div class="row replyA" style="font-size: 12;">
+                                <div class="row replyA" style="font-size: 12px;">
                                     <div class="col-md-1"></div>
                                     <div class="col-md-6 "
                                         style="position: relative; word-wrap:break-word;color: #8e8e8e; ">
@@ -840,7 +816,7 @@
                             </div>
                             <hr>
                             <br>
-                            <span>&nbsp;&nbsp;&nbsp; 輸入聯絡人</p>
+                            <span>&nbsp;&nbsp;&nbsp; 輸入聯絡人</span>
                                 <div class="row">
                                     <div class="col-md-1"></div>
                                     <div class="col-md-10">
@@ -910,7 +886,7 @@
                                                     <td style="width: 100px;">{{s.name}}</td>
                                                     <td style="width: 400px;">{{s.message}}</td>
                                                     <td><i class="el-icon-delete" style="cursor: pointer;"
-                                                            @click="reomveBosMessage(s.bosmessageid)"></td>
+                                                           @click="reomveBosMessage(s.bosmessageid)"></i></td>
                                                 </tr>
                                             </table>
                                         </el-card>
@@ -1000,10 +976,7 @@
                 vm.bean.jobtitle = jobtitle;
                 vm.outerVisible = false;
 
-                vm.chageToSave('contactphone', phone);
-                vm.chageToSave('contactmoblie', moblie);
-                vm.chageToSave('contactname', name);
-                vm.chageToSave('jobtitle', jobtitle);
+
 
 
 
@@ -1015,9 +988,7 @@
                 vm.bean.contactmoblie = "";
                 vm.outerVisible = false;
 
-                vm.chageToSave('contactname', $("input[name='catin']").val());
-                vm.chageToSave('contactphone', "");
-                vm.chageToSave('contactmoblie', "");
+
 
 
             }
@@ -1511,13 +1482,7 @@
                         this.bean.type = s.industry;
                         this.dialogVisible = false;
                         this.bean.clientid = s.clientid;
-                        this.chageToSave('serialnumber', s.serialnumber);
-                        this.chageToSave('client', s.name);
-                        this.chageToSave('phone', s.phone);
-                        this.chageToSave('extension', s.extension);
-                        this.chageToSave('fax', s.fax);
-                        this.chageToSave('type', s.industry);
-                        this.chageToSave('clientid', s.clientid);
+
 
 
 
@@ -1550,8 +1515,18 @@
                     },
                     //切換案件類型
                     changeCreateTime: function () {
-                        this.chageToSave('createtime', this.bean.createtime);
-                        var day = new Date(this.bean.aaa);
+
+                        console.log(this.bean.aaa);
+                        if (this.bean.aaa == null) {
+                            var day = new Date();
+                        } else {
+                            var day = new Date(this.bean.aaa);
+                        }
+
+
+
+
+
                         if (this.bean.createtime == "轉賣") day.setDate(day.getDate() + 7);
                         if (this.bean.createtime == "自用") day.setDate(day.getDate() + 7);
                         if (this.bean.createtime == "設計/預算規劃") day.setDate(day.getDate() + 14);

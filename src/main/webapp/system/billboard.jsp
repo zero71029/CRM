@@ -10,7 +10,7 @@
 
             <link rel="preconnect" href="https://fonts.gstatic.com">
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
-
+            <link rel="stylesheet" href="${pageContext.request.contextPath}\icons\bootstrap-icons.css">
 
             <!-- <%-- 主要的CSS、JS放在這裡--%> -->
             <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
@@ -32,8 +32,8 @@
                         "emoticons template paste textcolor colorpicker textpattern imagetools"
                     ],
                     toolbar1: "insertfile undo redo restoredraft| formatselect fontselect fontsizeselect lineheight| alignleft aligncenter alignright alignjustify | bullist numlist outdent indent  " +
-                        "bold italic underline strikethrough subscript superscript | forecolor backcolor charmap emoticons | link unlink image media | cut copy paste | insertdatetime fullscreen code|table hr pagebreak blockquote |" +
-                        "print preview",
+                        "bold italic underline strikethrough subscript superscript | forecolor backcolor charmap emoticons | link unlink selectiveDateButton media | cut copy paste | insertdatetime fullscreen code|table hr pagebreak blockquote |" +
+                        "print preview ",
 
                     menubar: false,
                     image_advtab: true,
@@ -41,6 +41,19 @@
                     ax_wordlimit_num: 990,
                     ax_wordlimit_callback: function (editor, txt, num) {
                         alert('当前字数：' + txt.length + '，限制字数：' + num);
+                    },
+                    //自訂義按鈕
+                    setup: (editor) => {
+                        //定義新icon
+                        editor.ui.registry.addIcon('triangleUp', `<i class="bi bi-image"></i>`);
+                        //設定功能
+                        editor.ui.registry.addButton('selectiveDateButton', {
+                            icon: 'triangleUp',
+                            tooltip: 'Insert Image',
+                            onAction: (_) => {
+                                vm.imgVisible = true;
+                            },
+                        });
                     }
                 });
             </script>
@@ -69,6 +82,24 @@
         </style>
 
         <body>
+            <!-- <%--上傳 彈窗--%> -->
+            <div class="app">
+                <el-dialog title="上傳" :visible.sync="imgVisible" width="30%">
+                    <el-upload class="upload-demo" drag action="${pageContext.request.contextPath}/upfile" multiple
+                        :on-success="upSuccess" :before-upload="beforeAvatarUpload">
+                        <i class="el-icon-upload"></i>
+                        <div class="el-upload__text">將文件拖到此處，或<em>點擊上傳</em></div>
+                        <div class="el-upload__tip" slot="tip">只能上傳jpg/png文件，且不超過2MB</div>
+                    </el-upload>
+                </el-dialog>
+            </div>
+
+
+
+
+
+
+
             <!-- <%-- 彈窗--%> -->
             <div class="hazy"></div>
             <div class="cat">
@@ -814,7 +845,41 @@
             }
             $(".advice").hide();
 
+            var vm = new Vue({
+                el: ".app",
+                data() {
+                    return {
+                        imgVisible: false,
+                    }
+                },
+                created() {
 
+                },
+                methods: {
+                    //上傳檢查
+                    beforeAvatarUpload(file) {
+                        const isJPG = file.type === 'image/jpeg';
+                        const isLt2M = file.size / 1024 / 1024 < 2;
+                        if (!(file.type == 'image/jpeg' || file.type == 'image/png')) {
+                            this.$message.error('上傳圖片只能是 JPG/PNG 格式!');
+                            return false;
+                        }
+                        if (!isLt2M) {
+                            this.$message.error('上傳圖片大小不能超過 2MB!');
+                            return false;
+                        }
+                        return true;
+                    },
+                    //上傳成功
+                    upSuccess(response, file, fileList) {
+                        console.log(response);
+                        const img = `<p><img src="${pageContext.request.contextPath}/file/` + response + `"  style="max-width: 90%; height: auto;"></p><p>&nbsp;</p>`;
+                        console.log(img);
+                        this.imgVisible = false;
+                        tinymce.activeEditor.execCommand('mceInsertContent', false, img);
+                    },
+                },
+            })
 
 
 
@@ -828,5 +893,19 @@
 
             </p>
         </div>
+        <style>
+            .el-upload {
+                width: 100%;
+            }
+
+            .el-upload-dragger {
+                width: auto;
+            }
+
+            .img-fluid {
+                max-width: 100px;
+                height: auto;
+            }
+        </style>
 
         </html>

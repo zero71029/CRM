@@ -63,7 +63,7 @@
                                         class="bi bi-wrench"></i>狀態設定</label>
                             </div>
                         </div>
-                        <!-- <%-- 中間主體--%> -->                     
+                        <!-- <%-- 中間主體--%> -->
                         <div class="row" style="border-bottom: #0a53be 1px solid">
                             <div class="col-lg-12">
                                 <el-tag style="margin: 5px" v-for="tag in MarketStateList" key="tag.marketstateid"
@@ -901,7 +901,7 @@
                                     this.total = response.total,
                                     this.markeCreateTime = response.markeCreateTime,
                                     this.pcc = response.pcc;
-                                    this.pccVisible = this.pcc.length > 0;
+                                this.pccVisible = this.pcc.length > 0;
                             },
                             error: function (returndata) {
                                 console.log(returndata);

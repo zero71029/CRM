@@ -1,12 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
     <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+        <!DOCTYPE HTML>
         <html lang="zh-TW">
 
         <head>
             <meta charset="UTF-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+            <link rel="stylesheet" href="${pageContext.request.contextPath}\icons\bootstrap-icons.css">
             <link rel="preconnect" href="https://fonts.gstatic.com">
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
             <title>CRM客戶管理系統</title>
@@ -1003,17 +1004,39 @@
             </div>
             </div>
             <!-- tiny 所見即所得-->
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.7.6/tinymce.min.js"></script>
-            <!-- <script src="${pageContext.request.contextPath}/tinymce/js/tinymce/tinymce.min.js"></script> -->
+            <script src="${pageContext.request.contextPath}/tinymce/js/tinymce/tinymce.min.js"></script>
             <script>
                 tinymce.init({
+                    selector: 'textarea',  // change this value according to your HTML
+                    plugins: ["autosave preview code link media hr charmap "],
+                    toolbar: 'undo redo | styles | bold italic | alignleft aligncenter alignright alignjustify | outdent indent|hr charmap | link unlink selectiveDateButton media |   preview code',
                     language: 'zh_TW',
-                    language_url: '${pageContext.request.contextPath}/tinymce/langs/zh_TW.js',
-                    selector: '#replycontent',
-                    height: '200',
-                    menubar: false,
+                    height: '300',
+                    //自訂義按鈕
+                    setup: (editor) => {
+                        //定義新icon
+                        editor.ui.registry.addIcon('triangleUp', `<i class="bi bi-image"></i>`);
+                        //設定功能
+                        editor.ui.registry.addButton('selectiveDateButton', {
+                            icon: 'triangleUp',
+                            tooltip: 'Insert Image',
+                            onAction: (_) => {
+                                vm.imgVisible = true;
+                            },
+                        });
+                    }
                 });
             </script>
+
+
+
+
+
+
+
+
+
+
 
         </body>
 
