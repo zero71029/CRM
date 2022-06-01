@@ -59,9 +59,9 @@ public class MarketControler {
     //儲存潛在客戶
     @RequestMapping("/SavePotentialCustomer")
     @ResponseBody
-    public Map<String , Object> SavePotentialCustomer(PotentialCustomerBean pcb, HttpSession session) {
+    public Map<String, Object> SavePotentialCustomer(PotentialCustomerBean pcb, HttpSession session) {
         System.out.println("*****儲存潛在客戶*****");
-        Map<String , Object> result  = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
         AdminBean admin = (AdminBean) session.getAttribute("user");
         //判斷是否是新案件
         if (pcb.getCustomerid() == null || pcb.getCustomerid().isEmpty()) {
@@ -70,19 +70,19 @@ public class MarketControler {
             //避免同時開同一頁面
             PotentialCustomerBean oldBean = PCS.getById(pcb.getCustomerid());
 
-            if(oldBean.getBbb() != null  ){
-                if ( oldBean.getBbb().compareTo(pcb.getOpentime()) > 0) {
-                    result.put("state",false);
-                    result.put("mess","錯誤,資料已被其他人更新,不能儲存");
+            if (oldBean.getBbb() != null) {
+                if (oldBean.getBbb().compareTo(pcb.getOpentime()) > 0) {
+                    result.put("state", false);
+                    result.put("mess", "錯誤,資料已被其他人更新,不能儲存");
                     return result;
                 }
             }
         }
         pcb.setBbb(LocalDateTime.now().toString());
         PotentialCustomerBean save = PCS.SavePotentialCustomer(pcb);
-        result.put("state",true);
-        result.put("mess","儲存成功");
-        result.put("id",save.getCustomerid());
+        result.put("state", true);
+        result.put("mess", "儲存成功");
+        result.put("id", save.getCustomerid());
         return result;
     }
 
@@ -95,7 +95,7 @@ public class MarketControler {
         PotentialCustomerBean bean = PCS.getById(id);
         bean.setOpentime(LocalDateTime.now().toString());
         model.addAttribute("bean", bean);
-        return "/Market/potentialcustomer" ;
+        return "/Market/potentialcustomer";
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -153,7 +153,7 @@ public class MarketControler {
     @RequestMapping("/CloseMarket")
     public String CloseMarket(Model model) {
         model.addAttribute("list", ms.CloseMarket());
-        return "/Market/MarketList" ;
+        return "/Market/MarketList";
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -166,22 +166,22 @@ public class MarketControler {
         AdminBean admin = (AdminBean) session.getAttribute("user");
         if (admin != null && (marketBean.getMarketid() == null || marketBean.getMarketid().isEmpty())) {
             marketBean.setFounder(admin.getName());
-        }else if (ms.existMarketById(marketBean.getMarketid())) {
+        } else if (ms.existMarketById(marketBean.getMarketid())) {
             //避免同時開同一頁面
             MarketBean oldBean = ms.getById(marketBean.getMarketid());
-            if(oldBean.getBbb() != null  ){
-                if ( oldBean.getBbb().compareTo(marketBean.getOpentime()) > 0) {
-                    result.put("state",false);
-                    result.put("mess","錯誤,資料已被其他人更新,不能儲存");
+            if (oldBean.getBbb() != null) {
+                if (oldBean.getBbb().compareTo(marketBean.getOpentime()) > 0) {
+                    result.put("state", false);
+                    result.put("mess", "錯誤,資料已被其他人更新,不能儲存");
                     return result;
                 }
             }
         }
         System.out.println(marketBean.getBbb());
         MarketBean save = ms.save(marketBean);
-        result.put("state",true);
-        result.put("id",save.getMarketid());
-        result.put("mess","儲存成功");
+        result.put("state", true);
+        result.put("id", save.getMarketid());
+        result.put("mess", "儲存成功");
         return result;
     }
 
@@ -192,7 +192,7 @@ public class MarketControler {
         MarketBean mBean = ms.getById(id);
         mBean.setOpentime(LocalDateTime.now().toString());
         model.addAttribute("bean", mBean);
-        return "/Market/Market" ;
+        return "/Market/Market";
     }
 
 
@@ -203,7 +203,7 @@ public class MarketControler {
     public String delMarket(@RequestParam("id") List<String> id) {
         System.out.println("*****刪除銷售機會*****");
         ms.delMarket(id);
-        return "刪除成功" ;
+        return "刪除成功";
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -216,14 +216,14 @@ public class MarketControler {
 //            startDay = zTools.getTime(new Date());
 //            startDay = startDay.substring(0, 10);
 //            startDay = startDay + " 00:00";
-            startDay = "2022-02-01 00:00" ;
+            startDay = "2022-02-01 00:00";
         } else {
-            startDay = startDay + " 00:00" ;
+            startDay = startDay + " 00:00";
         }
         if (endDay.equals("")) {
             endDay = zTools.getTime(new Date());
         } else {
-            endDay = endDay + " 24:00" ;
+            endDay = endDay + " 24:00";
         }
         System.out.println(startDay);
         System.out.println(endDay);
@@ -260,7 +260,7 @@ public class MarketControler {
     public String delPotentialCustomer(@RequestParam("id") List<String> id) {
         System.out.println("*****刪除潛在客戶*****");
         PCS.delPotentialCustomer(id);
-        return "刪除成功" ;
+        return "刪除成功";
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -269,7 +269,7 @@ public class MarketControler {
     public String selectPotentialCustomer(Model model, @RequestParam("name") String name) {
         System.out.println("搜索潛在客戶");
         model.addAttribute("list", PCS.selectPotentialCustomer(name));
-        return "/Market/potentialcustomerList" ;
+        return "/Market/potentialcustomerList";
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -284,7 +284,7 @@ public class MarketControler {
         qBean.setRemark(marketBean.getMessage());
         qBean.setUser(marketBean.getUser());
         model.addAttribute("bean", qBean);
-        return "/Market/Quotation" ;
+        return "/Market/Quotation";
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -311,7 +311,7 @@ public class MarketControler {
         }
 //model.addAttribute("admin", ar.findAll());
 
-        return "/Market/Quotation" ;
+        return "/Market/Quotation";
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -319,7 +319,7 @@ public class MarketControler {
     @RequestMapping("/QuotationList")
     public String QuotationList(Model model) {
         model.addAttribute("list", ms.getQuotationList());
-        return "/Market/QuotationList" ;
+        return "/Market/QuotationList";
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -328,7 +328,7 @@ public class MarketControler {
     public String SaveAgreement(AgreementBean aBean) {
         System.out.println("存合約");
         ms.SaveAgreement(aBean);
-        return "redirect:/Market/Agreement/1" ;
+        return "redirect:/Market/Agreement/1";
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -344,7 +344,7 @@ public class MarketControler {
         }
 //model.addAttribute("admin", ar.findAll());
 
-        return "/Market/agreement" ;
+        return "/Market/agreement";
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -354,10 +354,10 @@ public class MarketControler {
     public String existsClient(PotentialCustomerBean Bean) {
         System.out.println("*****判斷客戶存在****");
         if (!cs.existsByName(Bean.getCompany())) {
-            return "不存在" ;
+            return "不存在";
         }
         System.out.println("*****判斷聯絡人存在****");
-        return "客戶已存在" ;
+        return "客戶已存在";
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -387,7 +387,7 @@ public class MarketControler {
 
 
         cs.SaveAdmin(clientBean);
-        return "新增客戶" ;
+        return "新增客戶";
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -398,13 +398,13 @@ public class MarketControler {
         System.out.println("*****判斷聯絡人存在****");
         if (cs.existsContactByName(Bean.getName(), Bean.getCompany())) {
             System.out.println("*****聯絡人已存在****");
-            return "聯絡人已存在" ;
+            return "聯絡人已存在";
         } else if (!cs.existsContactByCompany(Bean.getCompany())) {
             System.out.println("*****公司不存在****");
-            return "公司不存在" ;
+            return "公司不存在";
         }
         System.out.println("*****不存在****");
-        return "不存在" ;
+        return "不存在";
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -427,7 +427,7 @@ public class MarketControler {
 //		contactBean.setUser(Bean.getUser());
 
         cs.SaveContact(contactBean);
-        return "新增聯絡人" ;
+        return "新增聯絡人";
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -449,7 +449,7 @@ public class MarketControler {
         bean.setTrack(potentialCustomerBean.getCustomerid());
         bean.setCustomername(potentialCustomerBean.getCompany());
         model.addAttribute("bean", bean);
-        return "/Market/work" ;
+        return "/Market/work";
     }
 
     // 銷售機會 轉工作項目
@@ -462,7 +462,7 @@ public class MarketControler {
         bean.setMarketname(mBean.getName());
 
         model.addAttribute("bean", bean);
-        return "/Market/work" ;
+        return "/Market/work";
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -472,7 +472,7 @@ public class MarketControler {
         System.out.println("潛在各戶轉銷售機會");
         model.addAttribute("changeMarket", "changeMarket");
         model.addAttribute("changeid", pBean.getCustomerid());
-        return "/Market/Market" ;
+        return "/Market/Market";
     }
 
     @RequestMapping("/getchange/{id}")
@@ -543,14 +543,14 @@ public class MarketControler {
 //            startDay = zTools.getTime(new Date());
 //            startDay = startDay.substring(0, 10);
 //            startDay = startDay + " 00:00";
-            startDay = "2022-02-01 00:00" ;
+            startDay = "2022-02-01 00:00";
         } else {
-            startDay = startDay + " 00:00" ;
+            startDay = startDay + " 00:00";
         }
         if (endDay.equals("")) {
             endDay = zTools.getTime(new Date());
         } else {
-            endDay = endDay + " 24:00" ;
+            endDay = endDay + " 24:00";
         }
         System.out.println(startDay);
         System.out.println(endDay);
@@ -670,7 +670,7 @@ public class MarketControler {
         mBean.setClicks(clicks);
 
         ms.save(mBean);
-        return "嘿嘿" ;
+        return "嘿嘿";
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -692,11 +692,11 @@ public class MarketControler {
         if (mbean.getCallbos() == null || !mbean.getCallbos().equals("1")) {
             mbean.setCallbos("1");
             ms.save(mbean);
-            return "通知主管" ;
+            return "通知主管";
         } else {
             mbean.setCallbos("0");
             ms.save(mbean);
-            return "取消通知" ;
+            return "取消通知";
         }
     }
 
@@ -710,11 +710,11 @@ public class MarketControler {
         if (mbean.getCallhelp() == null || !mbean.getCallhelp().equals("1")) {
             mbean.setCallhelp("1");
             ms.save(mbean);
-            return "求助" ;
+            return "求助";
         } else {
             mbean.setCallhelp("0");
             ms.save(mbean);
-            return "取消" ;
+            return "取消";
         }
     }
 
@@ -724,7 +724,7 @@ public class MarketControler {
     @ResponseBody
     public List<MarketStateBean> AddState(@PathVariable("filed") String field, @PathVariable("state") String state, HttpSession session, @PathVariable("type") String type) {
         System.out.println("添加使用者狀態");
-        if (type.equals("user")) type = "" ;
+        if (type.equals("user")) type = "";
 
 
         AdminBean aBean = (AdminBean) session.getAttribute("user");
@@ -793,7 +793,7 @@ public class MarketControler {
             //存修改
 //            MarketBean marketBean = ms.getById(marketid);
 //            System.out.println(marketBean.get(field));
-            String sql1 = "select " + field + " from market where marketid = '" + marketid + "'" ;
+            String sql1 = "select " + field + " from market where marketid = '" + marketid + "'";
             rs = stmt.executeQuery(sql1);
             rs.next();
 
@@ -821,12 +821,12 @@ public class MarketControler {
             }
             //updata
 //        ms.updata(marketid,field,val);
-            String sql = "update market set " + field + " = '" + val + "' where marketid ='" + marketid + "'" ;
+            String sql = "update market set " + field + " = '" + val + "' where marketid ='" + marketid + "'";
             System.out.println(sql);
             stmt.executeUpdate(sql);
 
 
-            sql = "update market set  bbb = '" + ZeroTools.getTime(new Date()) + "' where marketid ='" + marketid + "'" ;
+            sql = "update market set  bbb = '" + ZeroTools.getTime(new Date()) + "' where marketid ='" + marketid + "'";
             System.out.println(sql);
             stmt.executeUpdate(sql);
 
@@ -875,7 +875,7 @@ public class MarketControler {
         }
 
         System.out.println("修改結束");
-        return "修改結束" ;
+        return "修改結束";
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -885,7 +885,7 @@ public class MarketControler {
     public String AutoCloseCase() {
         ms.AutoCloseCase("轉賣/自用");
         ms.AutoCloseCase("轉賣");
-        return "" ;
+        return "";
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -895,5 +895,9 @@ public class MarketControler {
     public Map<String, Object> getAutoClose() {
         return ms.getAutoClose();
     }
+
+
+
+
 
 }

@@ -39,7 +39,7 @@
                                     <div class="col-md-12">
                                         <div class="row ">
                                             <div class="col-md-12">
-                                                <el-button type="primary"  @click="search">搜索</el-button>
+                                                <el-button type="primary" @click="search">搜索</el-button>
                                             </div>
                                         </div>
                                     </div>
@@ -81,6 +81,14 @@
 
         </body>
         <script>
+            // for (var a = 0; a < $zx.length; a++) {
+            //     parm += "id=" + $($zx[a]).val();
+            //     if (a < $zx.length - 1) parm += "&";
+            // }
+
+
+
+
             const cityOptions = [
                 <c:forEach varStatus="loop" begin="0" end="${library.size()-1}" items="${library}" var="s">
                     <c:if test='${s.librarygroup == "MarketType"}'>
@@ -96,7 +104,7 @@
                         industry: [],
                         cities: cityOptions,
                         isIndeterminate: true,
-                        list:[],
+                        list: [],
 
                     }
                 },
@@ -113,24 +121,23 @@
                         this.checkAll = checkedCount === this.cities.length;
                         this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
                     },
-                    search(){
-
-                        const data = {"industry":"this.industry盅盅盅"};
-                        $.ajax({
-                            url: "${pageContext.request.contextPath}/Marketing/search",
-                            dataType: 'json',
-                            type: 'POST',
-                            contentType: "application/x-www-form-urlencoded;charset=utf-8",
-                            data:data,
-                            async: false,//同步請求
-                            cache: false,//不快取頁面
-                            success: (response => (
-                                console.log(response, "response")
-                            )),
-                            error: function (returndata) {
-                                console.log(returndata);
-                            }
-                        });
+                    search() {
+const data =JSON.stringify( { "industry": this.industry });
+$.ajax({
+    url: "${pageContext.request.contextPath}/Marketing/search",
+    dataType: 'json',
+    type: 'POST',
+    contentType: "application/json; charset=UTF-8",
+    data: data,
+    async: false,//同步請求
+    cache: false,//不快取頁面
+    success: (response => (
+        console.log(response, "response")
+    )),
+    error: function (returndata) {
+        console.log(returndata);
+    }
+});
                     }
                 },
             })

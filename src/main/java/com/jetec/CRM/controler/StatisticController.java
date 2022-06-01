@@ -95,7 +95,7 @@ public class StatisticController {
 
 
 
-        result.put("CompanyNumList", CompanyNumList);//每天公司數量
+        result.put("CompanyNumList", CompanyNumList);//每天案件數量
         result.put("companyNum", ss.selectCompany(startDay, endDay));//公司名稱列表
         result.put("AdminCastNum", AdminCastNum(startDay, endDay));//取得個業務案件數量
         result.put("producttype", producttype(startDay, endDay, libraryList));//商品類別
@@ -117,6 +117,7 @@ public class StatisticController {
         for (AdminBean abean : adminList) {
             result.put(abean.getName(), ss.getAminCastNum(startDay, endDay, abean.getName()));
         }
+
         return result;
     }
 
@@ -199,6 +200,7 @@ public class StatisticController {
             sta.add(ss.getAminStateNum(abean.getName(), "失敗結案", startDay, endDay));
             result.put(abean.getName(), sta);
         }
+
         return result;
     }
     //////////////////////////////////////////////////////////////////////////////
@@ -254,8 +256,9 @@ public class StatisticController {
         }
 
 
-
-        List<MarketBean> l = ss.getMarketByAaa( startDay,endDay);
+        List<MarketBean> l = ss.getMarketBYBbb(startDay,endDay);
+        System.out.println("活耀案件:"+l.size()+"筆");
+//        List<MarketBean> l = ss.getMarketByAaa( startDay,endDay);
         List<Map<String ,String>> success = new ArrayList<>();
         l.stream().filter(e->e.getStage().equals("成功結案")).forEach(e->{
             Map<String ,String> x = new HashMap<>();
@@ -274,16 +277,9 @@ public class StatisticController {
             x.put("marketid",e.getMarketid());
             fail.add(x);
         });
-
-
-
-        System.out.println(l.size());
-
         result.put("success",success);
         result.put("fail",fail);
         result.put("other",ss.getMarketByCloseNot(startDay,endDay));
-
-
         return result;
     }
 

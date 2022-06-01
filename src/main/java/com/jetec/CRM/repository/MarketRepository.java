@@ -68,6 +68,7 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
             "SELECT client as name FROM `market` WHERE `aaa` BETWEEN ?1 AND ?2", nativeQuery = true)
     List<String> selectCompany(String startDay, String endDay);
 
+
     @Query(value = "SELECT  *  from market WHERE user = ?1 AND ?2 >= endtime AND stage != '失敗結案' AND stage != '成功結案' AND stage != '提交主管'", nativeQuery = true)
     List<MarketBean> getEndCast(String name,String day);
     @Query(value = "SELECT  *  from market WHERE  stage = '提交主管'", nativeQuery = true)
@@ -78,7 +79,7 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
     @Query(value = "SELECT  *  from market WHERE user = ?1  AND stage != '失敗結案' AND stage != '成功結案' ORDER BY aaa DESC", nativeQuery = true)
     List<MarketBean> findUser(String name);
 
-    @Query(value = "select count(name) from(        SELECT company as name FROM `potentialcustomer` WHERE `aaa` BETWEEN ?1 AND ?2 AND user =?3 \n" +
+    @Query(value = "select count(name) from(SELECT company as name FROM `potentialcustomer` WHERE `aaa` BETWEEN ?1 AND ?2 AND user =?3 \n" +
             "UNION\n" +
             "SELECT client as name FROM `market` WHERE `aaa` BETWEEN ?1 AND ?2 AND  user =?3) AS c", nativeQuery = true)
     Integer getAminCastNum(String startDay, String endDay, String name);
@@ -125,7 +126,7 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
 
     @Query(value = "SELECT  COUNT(*)  from market WHERE  producttype = ?1 AND   aaa BETWEEN ?2 AND ?3 ", nativeQuery = true)
     Integer getProductTypeNum(String name, String startDay, String endDay);
-    @Query(value = "SELECT  COUNT(*)  from market WHERE user = ?1 AND stage = ?2 AND   aaa BETWEEN ?3 AND ?4 ", nativeQuery = true)
+    @Query(value = "SELECT  COUNT(*)  from market WHERE user = ?1 AND stage = ?2 AND   bbb BETWEEN ?3 AND ?4 ", nativeQuery = true)
     Integer getAminStateNum(String admin,String state, String startDay, String endDay);
 
     List<MarketBean> findByClientid(Integer clientid);
@@ -154,6 +155,11 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
 
 
     List<MarketBean> findByStageAndUserAndAaaLessThan(String stage, String user, String day);
+
+
+    List<MarketBean> findByBbbBetween(String startDay, String endDay);
+
+
 //   Strin a = """
 //    select * from market m
 //    where  marketid = ANY( select marketid from

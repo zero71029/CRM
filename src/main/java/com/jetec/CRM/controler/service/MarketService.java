@@ -23,6 +23,8 @@ import java.util.stream.Collectors;
 public class MarketService {
     @Autowired
     MarketRepository mr;
+    @Autowired
+    ChangeMessageRepository cmr;
 
     @Autowired
     TrackRepository tr;
@@ -70,7 +72,8 @@ public class MarketService {
             }
         }
         //插入日期
-        if (marketBean.getAaa() == "") {
+        System.out.println(marketBean.getAaa());
+        if (marketBean.getAaa().equals("") ) {
             marketBean.setAaa(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()));
         }
         marketBean.setBbb(LocalDateTime.now().toString());
@@ -585,6 +588,10 @@ public class MarketService {
     public boolean existMarketById(String marketid) {
         return mr.existsById(marketid);
     }
+
+
+
+
 
 
 //    public void updata(String marketid, String field, String val) {

@@ -1,7 +1,9 @@
 package com.jetec.CRM.repository;
 
+import java.util.Collection;
 import java.util.List;
 
+import com.jetec.CRM.model.MarketBean;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -28,4 +30,5 @@ public interface ClientRepository extends JpaRepository<ClientBean, Integer>{
 	ClientBean findByName(String name);
 
 
+	List<ClientBean> findByIndustry(String industry);
 }

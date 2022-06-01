@@ -183,7 +183,7 @@
                         PotentialSubmitBos: [],//提交主管by淺在顧客
                         CallBos: [],//延長通知
                         CallBosVisible: false,//延長通知彈窗
-                        CompanyNumList: [],//每天公司數量
+                        CompanyNumList: [],//每天案件數量
                         producttype: [],//商品種類
                         AdminCastNum: [],//業務案件數量
                         list: [],

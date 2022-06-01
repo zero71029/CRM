@@ -474,13 +474,12 @@ public class MarketBean implements Serializable {
     @Override
     public String toString() {
         return "MarketBean{" +
-                "marketid='" + marketid + '\'' +
-                ", name='" + name + '\'' +
-                ", createtime='" + createtime + '\'' +
-                ", endtime='" + endtime + '\'' +
-                "stage = " + stage +
+                "name='" + name + '\'' +
+                ", stage='" + stage + '\'' +
+                ", bbb='" + bbb + '\'' +
                 '}';
     }
+
     public Object get(String name) {
         switch (name) {
             case "name":

@@ -22,8 +22,6 @@ public class StatisticService {
     /////////////////////////////////////////////////////////////////////////////////////////
     //搜索公司數量
     public List<String> selectCompany(String startDay, String endDay) {
-
-
         return mr.selectCompany(startDay, endDay);
     }
 
@@ -99,7 +97,7 @@ public class StatisticService {
         try {
             conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/crm", "root", "root");
             stmt = conn.createStatement();
-            String sql = "select client ,clientid, count(*) count from market m where  stage = '成功結案'   AND  aaa BETWEEN '"+startDay+"' AND '"+endDay+"' group by client,clientid order  by count desc  limit 5";
+            String sql = "select client ,clientid, count(*) count from market m where  stage = '成功結案'   AND  bbb BETWEEN '"+startDay+"' AND '"+endDay+"' group by client,clientid order  by count desc  limit 5";
             rs = stmt.executeQuery(sql);
 
             while (rs.next()){
@@ -139,7 +137,7 @@ public class StatisticService {
         try {
             conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/crm", "root", "root");
             stmt = conn.createStatement();
-            String sql = "select client ,clientid, count(*) count from market m where  stage = '失敗結案'  AND  aaa BETWEEN '"+startDay+"' AND '"+endDay+"' group by client,clientid order  by count desc  limit 5";
+            String sql = "select client ,clientid, count(*) count from market m where  stage = '失敗結案'  AND  bbb BETWEEN '"+startDay+"' AND '"+endDay+"' group by client,clientid order  by count desc  limit 5";
             rs = stmt.executeQuery(sql);
 
             while (rs.next()){
@@ -182,8 +180,7 @@ public class StatisticService {
     }
 
 
-
-
-
-
+    public List<MarketBean> getMarketBYBbb(String startDay, String endDay) {
+        return mr.findByBbbBetween(startDay,endDay);
+    }
 }

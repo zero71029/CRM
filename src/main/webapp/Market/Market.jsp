@@ -154,7 +154,7 @@
                                     class="basefrom g-3 ">
                                     <input type="hidden" name="clientid" v-model="bean.clientid">
                                     <input type="hidden" name="customerid" v-model="bean.customerid">
-                                    <input type="hidden" name="aaa" v-model="bean.aaa">
+                                    <input type="hidden" name="aaa" value="${bean.aaa}">
                                     <input type="hidden" name="clicks" value="${bean.clicks}">
                                     <input type="hidden" name="marketid" value="${bean.marketid}">
                                     <input type="hidden" name="opentime" value="${bean.opentime}">
@@ -432,7 +432,7 @@
                                                     創建時間
                                                 </div>
                                                 <div class="col-md-4 FormPadding">
-                                                    {{bean.aaa}}
+                                                   ${bean.aaa}
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -817,20 +817,20 @@
                             <hr>
                             <br>
                             <span>&nbsp;&nbsp;&nbsp; 輸入聯絡人</span>
-                                <div class="row">
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-10">
-                                        <div class="input-group input-group-sm mb-3">
-                                            <span class="input-group-text" id="inputGroup-sizing-sm">名稱</span>
-                                            <input type="text" class="form-control" name="catin">
-                                        </div>
+                            <div class="row">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-10">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <span class="input-group-text" id="inputGroup-sizing-sm">名稱</span>
+                                        <input type="text" class="form-control" name="catin">
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-1"></div>
-                                    <button class="col-md-10 catbtn" onclick="catbtn()">提交</button>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-1"></div>
+                                <button class="col-md-10 catbtn" onclick="catbtn()">提交</button>
 
-                                </div>
+                            </div>
                         </el-dialog>
                         <!-- <%-- 彈窗結束/////////////////////////////////////--%> -->
                         <!-- <%-- 公司彈窗--%> -->
@@ -886,7 +886,7 @@
                                                     <td style="width: 100px;">{{s.name}}</td>
                                                     <td style="width: 400px;">{{s.message}}</td>
                                                     <td><i class="el-icon-delete" style="cursor: pointer;"
-                                                           @click="reomveBosMessage(s.bosmessageid)"></i></td>
+                                                            @click="reomveBosMessage(s.bosmessageid)"></i></td>
                                                 </tr>
                                             </table>
                                         </el-card>
@@ -1172,7 +1172,7 @@
                     //取 報價內容 高度用
                     this.quoteHeight = this.bean.quote.replace(/\r\n/g, '<br />');
                     this.messageheight = this.bean.message.replace(/\r\n/g, '<br />');
-                   
+
                 },
                 mounted() {
                     $('title').html(this.bean.name);
@@ -1197,7 +1197,8 @@
                     submitForm() {//送出表單
                         //表單驗證
                         var isok = true;
-
+                 
+                      
 
                         if (this.bean.marketid != "" && this.bean.source == "其他" && this.bean.othersource.length < 2) {
                             isok = false;
@@ -1265,7 +1266,7 @@
                         }
 
                         if (isok) {//通過驗證
-                            console.log("response1");
+                        
                             // ${pageContext.request.contextPath}/Market/SaveMarket
                             if ("${bean.marketid}" == "") {//如果是新資料 就 提交表單
 
@@ -1282,7 +1283,7 @@
                                     }
 
                                 }
-                                console.log("response2");
+                              
                                 axios
                                     .post('${pageContext.request.contextPath}/changeMessage/${bean.marketid}', data)
                                     .then(
@@ -1293,9 +1294,15 @@
 
                             }
                         }
+
+
+
+
+
+
+
                     },
-                    formSubmit() {
-                        console.log("response");
+                    formSubmit() {                     
                         var formData = new FormData($(".basefrom")[0]);
                         $.ajax({
                             url: '${pageContext.request.contextPath}/Market/SaveMarket',
@@ -1305,8 +1312,7 @@
                             cache: false,
                             contentType: false,
                             processData: false,
-                            success: function (response) {
-                                console.log(response);
+                            success: function (response) {                              
                                 if (response.state) {
                                     location.href = "${pageContext.request.contextPath}/Market/Market/" + response.id;
                                 } else {
@@ -1518,7 +1524,7 @@
                     changeCreateTime: function () {
 
                         console.log(this.bean.aaa);
-                     
+
                         if (this.bean.aaa == null) {
                             var day = new Date();
                         } else {
@@ -1532,7 +1538,7 @@
                         if (this.bean.createtime == "設計/預算規劃") day.setDate(day.getDate() + 14);
                         if (this.bean.createtime == "工程標案") day.setDate(day.getDate() + 30);
                         this.bean.endtime = formatDay(day);
-                       
+
 
 
                     },
@@ -1688,11 +1694,11 @@
 
                             // if (field == "stage" && this.bean.stage == "成功結案") {
                             //     this.bean.closereason = "成功結案";
-                                // var data = new FormData();
-                                // data.append("marketid", this.bean.marketid);
-                                // data.append("field", "closereason");
-                                // data.append("val", "成功結案");
-                                // this.saveChage(data);
+                            // var data = new FormData();
+                            // data.append("marketid", this.bean.marketid);
+                            // data.append("field", "closereason");
+                            // data.append("val", "成功結案");
+                            // this.saveChage(data);
                             // }
 
 

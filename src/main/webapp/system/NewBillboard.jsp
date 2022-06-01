@@ -956,9 +956,11 @@
             .el-upload {
                 width: 100%;
             }
+
             .el-upload-dragger {
                 width: auto;
             }
+
             .img-fluid {
                 max-width: 100px;
                 height: auto;
