@@ -432,7 +432,7 @@
                                                     創建時間
                                                 </div>
                                                 <div class="col-md-4 FormPadding">
-                                                   ${bean.aaa}
+                                                    ${bean.aaa}
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -828,8 +828,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-1"></div>
-                                <button class="col-md-10 catbtn" onclick="catbtn()">提交</button>
-
+                                <button class="col-md-10 catbtn" onclick="catbtn()" id="catbtn">提交</button>
                             </div>
                         </el-dialog>
                         <!-- <%-- 彈窗結束/////////////////////////////////////--%> -->
@@ -1197,8 +1196,8 @@
                     submitForm() {//送出表單
                         //表單驗證
                         var isok = true;
-                 
-                      
+
+
 
                         if (this.bean.marketid != "" && this.bean.source == "其他" && this.bean.othersource.length < 2) {
                             isok = false;
@@ -1266,7 +1265,7 @@
                         }
 
                         if (isok) {//通過驗證
-                        
+
                             // ${pageContext.request.contextPath}/Market/SaveMarket
                             if ("${bean.marketid}" == "") {//如果是新資料 就 提交表單
 
@@ -1283,7 +1282,7 @@
                                     }
 
                                 }
-                              
+
                                 axios
                                     .post('${pageContext.request.contextPath}/changeMessage/${bean.marketid}', data)
                                     .then(
@@ -1302,7 +1301,7 @@
 
 
                     },
-                    formSubmit() {                     
+                    formSubmit() {
                         var formData = new FormData($(".basefrom")[0]);
                         $.ajax({
                             url: '${pageContext.request.contextPath}/Market/SaveMarket',
@@ -1312,7 +1311,7 @@
                             cache: false,
                             contentType: false,
                             processData: false,
-                            success: function (response) {                              
+                            success: function (response) {
                                 if (response.state) {
                                     location.href = "${pageContext.request.contextPath}/Market/Market/" + response.id;
                                 } else {

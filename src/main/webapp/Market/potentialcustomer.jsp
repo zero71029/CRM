@@ -703,7 +703,7 @@
                                             <a class="col-md-3" href="#" onclick="goWork()">新增工作項目</a>
                                         </div>
                                         <div class="dockbar row shadow  ">
-                                            <div class="col-md-2 offset-md-1" style="border-left: black 1px solid;"
+                                            <div class="col-md-2 offset-md-1" style="border-left: black 1px solid;" id="act"
                                                 onclick="javascript:$('.act').toggle();$('.bosMessagediv').hide();">
                                                 行動
                                             </div>

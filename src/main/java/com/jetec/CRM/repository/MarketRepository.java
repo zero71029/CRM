@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -158,6 +159,8 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
 
 
     List<MarketBean> findByBbbBetween(String startDay, String endDay);
+
+    List<MarketBean> findByProducttype(String s);
 
 
 //   Strin a = """

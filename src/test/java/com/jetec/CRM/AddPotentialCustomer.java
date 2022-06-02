@@ -23,7 +23,7 @@ public class AddPotentialCustomer {
         System.setProperty("webdriver.chrome.driver", "src\\main\\resources\\chromedriver.exe");
         ChromeDriver driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-        driver.get("http://localhost:8080/CRM/");
+        driver.get("http://localhost:8081/CRM/");
         WebDriver.Options op = driver.manage();
         op.window().maximize();//全屏
 
@@ -82,7 +82,9 @@ public class AddPotentialCustomer {
         new Select(driver.findElementByName("contacttitle")).selectByIndex(1);
 
         driver.findElementById("saveButton").click();
-        driver.findElementByXPath("//*[@id=\"draggable\"]/div[3]/div[1]").click();
+        Thread.sleep(500);
+        driver.findElementById("act").click();
+        Thread.sleep(500);
         driver.findElementByXPath("//*[@id=\"draggable\"]/div[2]/a[1]").click();
         Thread.sleep(500);
         driver.findElementByXPath("//*[@id=\"draggable\"]/div[2]/a[2]").click();

@@ -21,7 +21,7 @@ public class AddMarket {
         System.setProperty("webdriver.chrome.driver", "src\\main\\resources\\chromedriver.exe");
         ChromeDriver driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-        driver.get("http://localhost:8080/CRM/");
+        driver.get("http://localhost:8081/CRM/");
         WebDriver.Options op = driver.manage();
         op.window().maximize();//全屏
 
@@ -49,7 +49,7 @@ public class AddMarket {
         driver.findElementByXPath("/html/body/div[1]/div/div[3]/div[6]/div/div[2]/table/tbody/tr[3]/td").click();
         driver.findElementByName("contactname").click();
         driver.findElementByName("catin").sendKeys("XXXXX");
-        driver.findElementByXPath("/html/body/div[1]/div/div[3]/div[5]/div/div[2]/span[2]/div[2]/button").click();
+        driver.findElementById("catbtn").click();
         driver.findElementByName("serialnumber").sendKeys("serialnumber");
         driver.findElementByName("name").sendKeys("name");
         driver.findElementByName("jobtitle").sendKeys("jobtitle");
@@ -64,21 +64,17 @@ public class AddMarket {
         driver.findElementByName("quote").sendKeys("quote");
         driver.findElementByName("product").sendKeys("product");
         driver.findElementByName("cost").sendKeys("3333");
-        driver.findElementByName("message").sendKeys("messagemessagemessage");
+        driver.findElementByName("message").sendKeys("selenium 測試");
         new Select(driver.findElementByName("type")).selectByIndex(1);
         new Select(driver.findElementByName("source")).selectByIndex(2);
         new Select(driver.findElementByName("stage")).selectByIndex(2);
         new Select(driver.findElementByName("important")).selectByIndex(1);
         new Select(driver.findElementByName("producttype")).selectByIndex(5);
-        new Select(driver.findElementByName("producttype")).selectByIndex(5);
+        new Select(driver.findElementByName("createtimee")).selectByIndex(3);
 
-        File file = new File("C:\\CRMfile\\page404.png");
 
-        driver.findElementByName("file").sendKeys(file.getPath());
 
-        System.out.println(file.getPath());
-
-//        driver.findElementById("saveMarket").click();
+        driver.findElementById("saveMarket").click();
 
 
     }

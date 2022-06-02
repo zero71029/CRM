@@ -85,7 +85,7 @@
                                 <td>
                                     {{s.clientid}}</td>
                                 <td>
-                                    {{s.name}}</td>
+                                   <a :href="'${pageContext.request.contextPath}/CRM/client/' +s.clientid" target="_blank">{{s.name}}</a> </td>
                                 <td>
                                     {{s.uniformnumber}}</td>
                                 <td>
