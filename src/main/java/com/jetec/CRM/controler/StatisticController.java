@@ -245,14 +245,14 @@ public class StatisticController {
         if (Objects.equals(endDay, "")) {
             endDay = zTools.getTime(new Date());
         } else {
-            endDay = endDay + " 24:00";
+            endDay = endDay + "T24:00";
         }
         if (startDay == null || startDay.equals("")) {
             startDay = zTools.addDay(endDay,-7);
             startDay = startDay.substring(0, 10);
-            startDay = startDay + " 00:00";
+            startDay = startDay + "T00:00";
         } else {
-            startDay = startDay + " 00:00";
+            startDay = startDay + "T00:00";
         }
 
 

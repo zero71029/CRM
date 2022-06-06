@@ -281,4 +281,5 @@ public class ClientBean {
 				", sort='" + sort + '\'' +
 				'}';
 	}
+
 }

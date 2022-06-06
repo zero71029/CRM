@@ -44,7 +44,7 @@
                                     </div>
                                 </div>
 
-                                
+
 
 
                                 <div class="row ">
@@ -62,8 +62,7 @@
                                             <div class="mb-3 row">
                                                 <label for="inputPassword" class="col-sm-1 col-form-label"> 主題:</label>
                                                 <div class="col-sm-11">
-                                                    <input type="text" class="form-control" id="Subject"
-                                                        name="Subject">
+                                                    <input type="text" class="form-control" id="Subject" name="Subject">
                                                 </div>
                                             </div>
                                             <input type="hidden" name="fileName" v-model="fileName">
@@ -155,36 +154,36 @@
                             });
                         } else {
                             var testData = new FormData();
-                            testData.append("fileName","zero.csv");
+                            testData.append("fileName", "zero.csv");
                             testData.append("content", tinyMCE.editors[0].getContent());
                             testData.append("Subject", $("#Subject").val());
                             $.ajax({
-                                    url: '${pageContext.request.contextPath}/sendMail',//接受請求的Servlet地址
-                                    type: 'POST',
-                                    data: testData,
-                                    async: false,//同步請求
-                                    cache: false,//不快取頁面
-                                    contentType: false,//當form以multipart/form-data方式上傳檔案時，需要設定為false
-                                    processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
-                                    success: function (url) {
-                                        console.log(url);
+                                url: '${pageContext.request.contextPath}/sendMail',//接受請求的Servlet地址
+                                type: 'POST',
+                                data: testData,
+                                async: false,//同步請求
+                                cache: false,//不快取頁面
+                                contentType: false,//當form以multipart/form-data方式上傳檔案時，需要設定為false
+                                processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
+                                success: function (url) {
+                                    console.log(url);
 
-                                    },
-                                    error: function (returndata) {
-                                        console.log(returndata);
-                                    }
-                                });
-                            this.$confirm("<p>已寄預覽信給 jeter.tony56@gmail.com  jetecmarketing03@gmail.com  ychen@jetec.com.tw 請確認再行動</p>"+                             
-                            "<p>&nbsp;</p>" + tinyMCE.editors[0].getContent() + "<p>&nbsp;</p>", '預覽內容', {
+                                },
+                                error: function (returndata) {
+                                    console.log(returndata);
+                                }
+                            });
+                            this.$confirm("<p>已寄預覽信給 jeter.tony56@gmail.com  jetecmarketing03@gmail.com  ychen@jetec.com.tw 請確認再行動</p>" +
+                                "<p>&nbsp;</p>" + tinyMCE.editors[0].getContent() + "<p>&nbsp;</p>", '預覽內容', {
                                 dangerouslyUseHTMLString: true,
                                 confirmButtonText: '确定',
                                 cancelButtonText: '取消'
                             }).then(() => {
 
-                               
-                            var formData = new FormData($("#sendForm")[0]);
-                            formData.append("content", tinyMCE.editors[0].getContent());
-                               
+
+                                var formData = new FormData($("#sendForm")[0]);
+                                formData.append("content", tinyMCE.editors[0].getContent());
+
 
 
 
@@ -224,9 +223,9 @@
             }
 
             .zeroMail {
-                    /* 按鈕顏色 */
-                    background-color: #afe3d5;
-                }
+                /* 按鈕顏色 */
+                background-color: #afe3d5;
+            }
         </style>
 
         </html>

@@ -39,12 +39,14 @@
             .contentTextarea {
                 border: 0px;
             }
+
             .app {
-                    background-color: #e4f3ef;
-                }
-                table{
-                    background-color: white;
-                }
+                background-color: #e4f3ef;
+            }
+
+            table {
+                background-color: white;
+            }
         </style>
 
         <body>
@@ -53,7 +55,7 @@
                     <!-- <%-- 插入側邊欄--%> -->
                     <jsp:include page="/Sidebar.jsp"></jsp:include>
                     <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
-                    <div class="col-md-10 app" v-cloak>
+                    <div class="col-md-11 app" v-cloak>
                         <!-- <%-- 中間主體--%> -->
                         <div class="row ">
                             <div class="col-lg-12 text-center">
@@ -143,8 +145,8 @@
                                                 <td colspan="6"> 備註:
                                                     <div class="">
                                                         <el-input type="textarea" placeholder="本人專填" maxlength="500"
-                                                            show-word-limit v-model="bean.remark" name="remark" @input="changeTextarea('remark')"
-                                                            id="remark" >
+                                                            show-word-limit v-model="bean.remark" name="remark"
+                                                            @input="changeTextarea('remark')" id="remark">
                                                         </el-input>
                                                     </div>
                                                 </td>
@@ -166,8 +168,8 @@
                                                         </div>
                                                         <div class="col-lg-11">
                                                             <el-input type="textarea" placeholder="主管專填:評語"
-                                                                maxlength="200" show-word-limit id="assessment" @input="changeTextarea('assessment')"
-                                                               
+                                                                maxlength="200" show-word-limit id="assessment"
+                                                                @input="changeTextarea('assessment')"
                                                                 v-model="bean.assessment" name="assessment">
                                                             </el-input>
                                                         </div>
@@ -300,10 +302,10 @@
                     printTable: function () {
                         location.href = "${pageContext.request.contextPath}/task/print/${bean.evaluateid}";
                     },//改變textarea高度
-                    changeTextarea:function(id){                      
+                    changeTextarea: function (id) {
                         var textarea = document.getElementById(id);
-                        if(textarea.style.height < (textarea.scrollHeight+"px"))
-                        textarea.style.height = (textarea.scrollHeight+10)  + 'px';
+                        if (textarea.style.height < (textarea.scrollHeight + "px"))
+                            textarea.style.height = (textarea.scrollHeight + 10) + 'px';
                     },
 
                 },

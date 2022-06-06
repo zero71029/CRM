@@ -1273,24 +1273,30 @@
                             } else {//如果不是新資料 就 紀錄修改
                                 var keys = Object.keys(this.bean);
                                 var data = {};
+                                var hasSave = false;
 
                                 for (const iterator of keys) {
-                                    if (this.bean[iterator] == this.oldBean[iterator]) {
+                                    if (this.bean[iterator] == this.oldBean[iterator]) {  
+
 
                                     } else {
                                         data[iterator] = [this.bean[iterator], this.oldBean[iterator]];
+                                        hasSave = true;
                                     }
 
                                 }
 
-                                axios
-                                    .post('${pageContext.request.contextPath}/changeMessage/${bean.marketid}', data)
-                                    .then(
-                                        response => (
-                                            console.log("response3"),
-                                            vm.formSubmit()
-                                        ))
-
+                                if (hasSave) {
+                                    axios
+                                        .post('${pageContext.request.contextPath}/changeMessage/${bean.marketid}', data)
+                                        .then(
+                                            response => (
+                                                console.log("response3"),
+                                                vm.formSubmit()
+                                            ))
+                                }else{
+                                    this.$message.error('沒有任何改變');
+                                }
                             }
                         }
 

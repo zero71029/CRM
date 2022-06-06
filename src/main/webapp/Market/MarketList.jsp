@@ -124,8 +124,9 @@
                                         </td>
                                         <!-- <td v-on:click="market(s.marketid)" style="cursor: pointer;">
                             {{s.message}}</td> -->
-                                        <td v-if="s.message.length <100 " style="width: 500px;"
-                                           ><a :href="'${pageContext.request.contextPath}/Market/Market/'+s.marketid" target="_blank"> {{s.message}}</a>   
+                                        <td v-if="s.message.length <100 " style="width: 500px;"><a
+                                                :href="'${pageContext.request.contextPath}/Market/Market/'+s.marketid"
+                                                target="_blank"> {{s.message}}</a>
                                         </td>
                                         <td v-on:click="market(s.marketid)" v-if="s.message.length >=100 ">
                                             <el-popover placement="top-start" width="300" trigger="hover"
@@ -755,8 +756,8 @@
                             value: '內部詢價中',
                             label: '內部詢價中'
                         }, {
-                            value: '報價處理中',
-                            label: '報價處理中'
+                            value: '潛在客戶轉',
+                            label: '潛在客戶轉'
                         }, {
                             value: '已報價',
                             label: '已報價'
@@ -1445,7 +1446,8 @@
                 transform: translateY(200%);
                 opacity: 0;
             }
-            tr td a{
+
+            tr td a {
                 color: #000;
             }
         </style>

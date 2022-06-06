@@ -70,7 +70,8 @@
                         </div>
                         <!-- 滑塊 -->
                         <el-drawer title="搜索" :visible.sync="searchBox" direction="rtl" size="30%">
-                            <el-button type="primary" v-for="(s, index) in userList" :key="index" @click="search(s)" size="small">
+                            <el-button type="primary" v-for="(s, index) in userList" :key="index" @click="search(s)"
+                                size="small">
                                 {{s}}</el-button>
                         </el-drawer>
 

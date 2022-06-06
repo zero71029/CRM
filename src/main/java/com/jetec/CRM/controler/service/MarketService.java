@@ -73,7 +73,7 @@ public class MarketService {
         }
         //插入日期
         System.out.println(marketBean.getAaa());
-        if (marketBean.getAaa().equals("") ) {
+        if (marketBean.getAaa().equals("")) {
             marketBean.setAaa(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()));
         }
         marketBean.setBbb(LocalDateTime.now().toString());
@@ -405,7 +405,7 @@ public class MarketService {
                 result.addAll(mr.findByQuoteLikeIgnoreCaseAndAaaBetween("%" + val.get(0) + "%", startDay, endDay, sort));
                 break;
             case "closereason":
-                result.addAll(mr.findByClosereasonAndAaaBetween( val.get(0) , startDay, endDay, sort));
+                result.addAll(mr.findByClosereasonAndAaaBetween(val.get(0), startDay, endDay, sort));
                 break;
         }
 
@@ -491,7 +491,6 @@ public class MarketService {
         list = list.stream().sorted(Comparator.comparing(MarketBean::getAaa).reversed()).collect(Collectors.toList());
 
 
-
         //pag 手寫分頁
         int total = list.size();
         for (int i = pag * 40; i < pag * 40 + 40; i++) {
@@ -557,7 +556,8 @@ public class MarketService {
             System.out.println(e);
             e.setClosereason("自動結案");
             e.setStage("失敗結案");
-            e.setBbb(ZeroTools.getTime(new Date()));
+            e.setBbb(LocalDateTime.now().toString());
+//            e.setBbb(ZeroTools.getTime(new Date()));
             mr.save(e);
         });
         System.out.println(list.size());
@@ -577,21 +577,18 @@ public class MarketService {
         result.put("list", mr.findByClosereason("自動結案", Sort.by(Direction.DESC, "aaa")));
         return result;
     }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //market BY 階段 和 業務
-    public List<MarketBean> getMarketByStageAndUser(String stage,String user) {
+    public List<MarketBean> getMarketByStageAndUser(String stage, String user) {
         String day = LocalDate.now().minusDays(3).toString();
 
-        return mr.findByStageAndUserAndAaaLessThan(stage,user,day);
+        return mr.findByStageAndUserAndAaaLessThan(stage, user, day);
     }
 
     public boolean existMarketById(String marketid) {
         return mr.existsById(marketid);
     }
-
-
-
-
 
 
 //    public void updata(String marketid, String field, String val) {

@@ -1063,6 +1063,7 @@
                             fileforeignid: Math.random() * 1000,
                             contacttitle: "",
                             source: "其他",
+                     
                         },//bean
                         bosMassage: "",//主管留言欄位
                         bosMassageList: [],//組長留言資料
@@ -1100,7 +1101,7 @@
                     }
                 },
                 created() {
-                    if (this.important == "") this.important = '低';
+                    if (this.important == "") this.important = '無';
                     //潛在客戶初始化
                     $.ajax({
                         url: '${pageContext.request.contextPath}/Potential/init/${bean.customerid}',

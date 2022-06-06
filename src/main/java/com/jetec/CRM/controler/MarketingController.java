@@ -3,8 +3,10 @@ package com.jetec.CRM.controler;
 import com.jetec.CRM.model.ClientBean;
 import com.jetec.CRM.model.MarketBean;
 import com.jetec.CRM.repository.ClientRepository;
+import com.jetec.CRM.repository.ContactRepository;
 import com.jetec.CRM.repository.MarketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,9 +28,14 @@ public class MarketingController {
     ClientRepository cr;
     @Autowired
     MarketRepository mr;
+    @Autowired
+    ContactRepository contactRepository;
+    @Autowired
+    JdbcTemplate jdbcTemplate;
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
+    //
     @RequestMapping("/search")
     @ResponseBody
     public String search(@RequestBody Map<String, Object> body) {
@@ -40,7 +47,7 @@ public class MarketingController {
         if (industryList != null) {
             System.out.println("industryList");
             industryList.forEach(industry ->
-                clientList.addAll(cr.findByIndustry(industry))
+                    clientList.addAll(cr.findByIndustry(industry))
             );
 
         }
@@ -49,7 +56,7 @@ public class MarketingController {
             System.out.println("producttypeList");
             List<MarketBean> list = new ArrayList<>();
             producttypeList.forEach(s ->
-                list.addAll(mr.findByProducttype(s))
+                    list.addAll(mr.findByProducttype(s))
             );
 
             //去重複
@@ -58,7 +65,7 @@ public class MarketingController {
                             Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(MarketBean::getClient))),
                             ArrayList::new));
             l.forEach(m -> {
-                        if (cr.existsByName(m.getClient()))  clientList.add(cr.findByName(m.getClient()));
+                        if (cr.existsByName(m.getClient())) clientList.add(cr.findByName(m.getClient()));
                     }
             );
         }
@@ -71,16 +78,11 @@ public class MarketingController {
                 .collect(Collectors.toList());
 
 
-
         //去重複
-        outClient = outClient .stream().collect(Collectors
+        outClient = outClient.stream().collect(Collectors
                 .collectingAndThen(
                         Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(ClientBean::getEmail))),
                         ArrayList::new));
-
-
-
-
 
 
 //        clientList.forEach(clientBean -> {
@@ -90,14 +92,11 @@ public class MarketingController {
 //        });
 
 
-
-
-
-
         //輸出
         try {
             OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("c://CRMfile//file_output.csv"), "UTF-8");
-            osw.write(new String(new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF}));
+//            osw.write(new String(new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF}));
+            osw.write('\ufeff');
             BufferedWriter bw = new BufferedWriter(osw);//檔案輸出路徑
             outClient.forEach(clientBean -> {
                 try {
@@ -117,8 +116,146 @@ public class MarketingController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Duration duration = Duration.between(old,LocalDateTime.now());
-        System.out.println("耗時 : "+duration.toMillis());
+        Duration duration = Duration.between(old, LocalDateTime.now());
+        System.out.println("耗時 : " + duration.toMillis());
         return "file_output.csv";
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //jdbcTemplate實驗
+    @RequestMapping("/search2")
+    @ResponseBody
+    public String search2(@RequestBody Map<String, Object> body) {
+        System.out.println(body);
+        System.out.println();
+        LocalDateTime old = LocalDateTime.now();
+        List<String> industryList = (List<String>) body.get("industry");
+        List<ClientBean> clientList = new ArrayList<>();
+//        List<ClientBean> outClient = new ArrayList<>();
+
+        StringBuffer sql = new StringBuffer("select distinct client from market where ");
+        List<String> producttypeList = (List<String>) body.get("producttype");
+        if (producttypeList != null && producttypeList.size() > 0) {
+            sql.append("( ");
+            for (int i = 0; i < producttypeList.size(); i++) {
+                sql.append("producttype = '" + producttypeList.get(i) + "'");
+                if (i < producttypeList.size() - 1) {
+                    sql.append(" or ");
+                }
+            }
+            sql.append(") ");
+        }
+
+        List<String> SourceList = (List<String>) body.get("Source");
+        System.out.println(SourceList);
+        if (SourceList.size() > 0) {
+            if (producttypeList.size() > 0) sql.append("and");
+            sql.append("( ");
+            for (int i = 0; i < SourceList.size(); i++) {
+                sql.append("source = '" + SourceList.get(i) + "'");
+                if (i < SourceList.size() - 1) {
+                    sql.append(" or ");
+                }
+            }
+            sql.append(") ");
+        }
+
+
+        System.out.println("======================================================");
+        System.out.println(sql);
+        System.out.println("=====================================================");
+        List<Map<String, Object>> ClientName = new ArrayList<>();
+        if(producttypeList.size() ==0 &&  SourceList.size() == 0){
+
+        }else {
+            ClientName = jdbcTemplate.queryForList(sql.toString());
+        }
+
+
+
+        System.out.println("抓到  " + ClientName.size() + "筆資料");
+
+        if (ClientName.size() > 0) {
+            ClientName.forEach(e -> {
+                clientList.add(cr.findByName((String) e.get("client")));
+            });
+        }
+
+
+        if(producttypeList.size() ==0  &&  SourceList.size() == 0){
+            if (industryList != null && industryList.size() > 0) {
+                industryList.forEach(s -> {
+                    clientList.addAll(cr.findByIndustry(s));
+                });
+            }
+        }else {
+            //過濾產業
+            if (industryList != null && industryList.size() > 0) {
+                industryList.forEach(s -> {
+                    clientList.stream().filter(clientBean -> {
+                        if(clientBean != null) return clientBean.getIndustry() == s;
+                        return false;
+                    }).collect(Collectors.toList());
+                });
+            }
+        }
+
+
+        //刪除 沒有email
+        List<ClientBean> out = new ArrayList<>();
+        clientList.stream().forEach(clientBean -> {
+            if(clientBean != null && clientBean.getEmail().indexOf("@") > 0)out.add(clientBean );
+
+        });
+        List<ClientBean> outClient = new ArrayList<>();
+        outClient.addAll(out);
+//                .filter(clientBean -> clientBean.getEmail() != null)
+//                .filter(clientBean -> clientBean.getEmail().indexOf("@") > 0)
+//                .collect(Collectors.toList());
+
+
+        //去重複
+        outClient = outClient.stream().collect(Collectors
+                .collectingAndThen(
+                        Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(ClientBean::getEmail))),
+                        ArrayList::new));
+        System.out.println("輸出  " + outClient.size() + "筆資料");
+
+
+
+
+
+
+
+
+
+        //輸出
+        try {
+            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("c://CRMfile//file_output.csv"), "UTF-8");
+//            osw.write(new String(new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF}));
+            osw.write('\ufeff');
+            BufferedWriter bw = new BufferedWriter(osw);//檔案輸出路徑
+            outClient.forEach(clientBean -> {
+                try {
+                    bw.newLine();//新起一行
+                    if (clientBean.getContact().size() > 0) {
+                        bw.write(clientBean.getEmail() + "," + clientBean.getName() + "," + clientBean.getContact().get(0).getName() + "," + clientBean.getIndustry());//寫到新檔案中
+                    } else {
+                        bw.write(clientBean.getEmail() + "," + clientBean.getName() + ",  ," + clientBean.getIndustry());//寫到新檔案中
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            });
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Duration duration = Duration.between(old, LocalDateTime.now());
+        System.out.println("耗時 : " + duration.toMillis());
+        return "file_output.csv";
+    }
+
+
 }

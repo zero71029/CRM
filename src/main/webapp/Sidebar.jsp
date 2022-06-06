@@ -114,14 +114,11 @@
                 </button>
 
 
-
-
-
-                <button class="employee"
+                <button class="employee taskbar"
                     onclick="javascript:location.href='${pageContext.request.contextPath}/Task/TaskList.jsp'">
                     每日任務
                 </button>
-                <button class="employee"
+                <button class="employee JobDescriptionList"
                     onclick="javascript:location.href='${pageContext.request.contextPath}/JobDescription/JobDescriptionList.jsp'">
                     ⼯作職掌說明
                 </button>
@@ -137,10 +134,13 @@
                         行銷部
                     </button>
                     <button class="marketing zeroMail"
-                        onclick="javascript:window.open('${pageContext.request.contextPath}/Marketing/zeroMail.jsp')">
+                        onclick="javascript:location.href='${pageContext.request.contextPath}/Marketing/zeroMail.jsp'">
                         郵件
                     </button>
-
+                    <button class="marketing output"
+                        onclick="javascript:location.href='${pageContext.request.contextPath}/Marketing/output.jsp'">
+                        輸出
+                    </button>
                 </c:if>
 
 
@@ -157,7 +157,7 @@
                             onclick="javascript:window.open('${pageContext.request.contextPath}/task/sql')">
                             資料庫備份
                         </button>
-                        <button class="system"
+                        <button class="system "
                             onclick="javascript:location.href='${pageContext.request.contextPath}/system/adminList/adminid'">
                             員工管理
                         </button>
@@ -255,8 +255,6 @@
                 $(".system").hide();
                 $(".marketing").hide();
             }
-
-
 
             function marketing() {//行銷部
                 $(".marketing").toggle();

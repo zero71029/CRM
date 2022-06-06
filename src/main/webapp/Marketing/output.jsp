@@ -22,6 +22,11 @@
                 .app {
                     background-color: #e4f3ef;
                 }
+
+                .output {
+                    /* 按鈕顏色 */
+                    background-color: #afe3d5;
+                }
             </style>
         </head>
 
@@ -38,11 +43,16 @@
                                 <div class="row ">
                                     <div class="col-md-12">
                                         <div class="row ">
-                                            <div class="col-md-12">
+                                            <div class="col-md-2">
                                                 <el-button type="primary" @click="search">搜索</el-button>
+
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="outfile"> xxxxxxxx</div>
                                             </div>
                                         </div>
                                     </div>
+                                    <br><br>
                                     <div class="row ">
                                         <!--  -->
                                         <div class="col-md-2">
@@ -72,6 +82,19 @@
                                                 </div>
                                             </el-checkbox-group>
                                         </div>
+                                        <div class="col-md-2">
+                                            來源 <br>
+                                            <el-checkbox v-model="SourceAll" @change="SourceCheckAllChange">全选
+                                            </el-checkbox>
+                                            <div style="margin: 15px 0;"></div>
+                                            <el-checkbox-group v-model="Source" @change="SourceChange">
+                                                <div class="row " v-for="p in SourceOptions" :key="p">
+                                                    <el-checkbox :label="p">
+                                                        {{p}}
+                                                    </el-checkbox>
+                                                </div>
+                                            </el-checkbox-group>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -88,24 +111,13 @@
                 </div>
             </div>
 
-
-
-
-
-
-
-
-
-
         </body>
         <script>
             // for (var a = 0; a < $zx.length; a++) {
             //     parm += "id=" + $($zx[a]).val();
             //     if (a < $zx.length - 1) parm += "&";
             // }
-
-
-
+            $(".marketing").show();
 
             const cityOptions = ['尚未分類',
                 <c:forEach varStatus="loop" begin="0" end="${library.size()-1}" items="${library}" var="s">
@@ -117,6 +129,13 @@
             const productOptions = [
                 <c:forEach varStatus="loop" begin="0" end="${library.size()-1}" items="${library}" var="s">
                     <c:if test='${s.librarygroup == "producttype"}'>
+                        '${s.libraryoption}',
+                    </c:if>
+                </c:forEach>
+            ];
+            const SourceOptions = ['其他',
+                <c:forEach varStatus="loop" begin="0" end="${library.size()-1}" items="${library}" var="s">
+                    <c:if test='${s.librarygroup == "MarketSource"}'>
                         '${s.libraryoption}',
                     </c:if>
                 </c:forEach>
@@ -134,7 +153,9 @@
                         producttypeAll: false,
                         producttype: [],
                         products: productOptions,
-
+                        SourceAll: false,
+                        Source: [],
+                        SourceOptions: SourceOptions,
                     }
                 },
                 created() {
@@ -157,10 +178,17 @@
                         let checkedCount = value.length;
                         this.producttypeAll = checkedCount === this.products.length;
                     },
+                    SourceCheckAllChange(val) {
+                        this.Source = val ? SourceOptions : [];
+                    },
+                    SourceChange(value) {
+                        let checkedCount = value.length;
+                        this.SourceAll = checkedCount === this.SourceOptions.length;
+                    },
                     search() {
-                        const data = JSON.stringify({ "industry": this.industry, "producttype": this.producttype });
+                        const data = JSON.stringify({ "industry": this.industry, "producttype": this.producttype,"Source":this.Source });
                         $.ajax({
-                            url: "${pageContext.request.contextPath}/Marketing/search",
+                            url: "${pageContext.request.contextPath}/Marketing/search2",
                             // dataType: 'json',
                             type: 'POST',
                             contentType: "application/json; charset=UTF-8",
@@ -180,7 +208,7 @@
                                 console.log("錯誤");
                                 console.log(returndata);
                             }
-                    });
+                        });
                     }
                 },
             })
