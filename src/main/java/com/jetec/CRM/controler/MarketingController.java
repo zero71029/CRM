@@ -129,9 +129,8 @@ public class MarketingController {
         System.out.println(body);
         System.out.println();
         LocalDateTime old = LocalDateTime.now();
-        List<String> industryList = (List<String>) body.get("industry");
         List<ClientBean> clientList = new ArrayList<>();
-//        List<ClientBean> outClient = new ArrayList<>();
+
 
         StringBuffer sql = new StringBuffer("select distinct client from market where ");
         List<String> producttypeList = (List<String>) body.get("producttype");
@@ -165,69 +164,49 @@ public class MarketingController {
         System.out.println(sql);
         System.out.println("=====================================================");
         List<Map<String, Object>> ClientName = new ArrayList<>();
-        if(producttypeList.size() ==0 &&  SourceList.size() == 0){
+        if (producttypeList.size() == 0 && SourceList.size() == 0) {
 
-        }else {
+        } else {
             ClientName = jdbcTemplate.queryForList(sql.toString());
         }
-
-
-
         System.out.println("抓到  " + ClientName.size() + "筆資料");
 
+        List<String> industryList = (List<String>) body.get("industry");
         if (ClientName.size() > 0) {
             ClientName.forEach(e -> {
                 clientList.add(cr.findByName((String) e.get("client")));
             });
-        }
-
-
-        if(producttypeList.size() ==0  &&  SourceList.size() == 0){
-            if (industryList != null && industryList.size() > 0) {
+        } else {
+            if (producttypeList.size() == 0) {
                 industryList.forEach(s -> {
                     clientList.addAll(cr.findByIndustry(s));
                 });
             }
-        }else {
-            //過濾產業
-            if (industryList != null && industryList.size() > 0) {
-                industryList.forEach(s -> {
-                    clientList.stream().filter(clientBean -> {
-                        if(clientBean != null) return clientBean.getIndustry() == s;
-                        return false;
-                    }).collect(Collectors.toList());
-                });
-            }
         }
 
 
-        //刪除 沒有email
         List<ClientBean> out = new ArrayList<>();
-        clientList.stream().forEach(clientBean -> {
-            if(clientBean != null && clientBean.getEmail().indexOf("@") > 0)out.add(clientBean );
+        //過濾產業
+        if (industryList != null && industryList.size() > 0) {
+            industryList.forEach(s -> {
+                clientList.forEach(clientBean -> {
+                    if (clientBean != null && clientBean.getIndustry() != null && clientBean.getIndustry().equals(s)) out.add(clientBean);
+                });
+            });
+        }
 
+        //刪除 沒有email
+        List<ClientBean> result = new ArrayList<>();
+        out.stream().forEach(clientBean -> {
+            if (clientBean != null && clientBean.getEmail().indexOf("@") > 0) result.add(clientBean);
         });
-        List<ClientBean> outClient = new ArrayList<>();
-        outClient.addAll(out);
-//                .filter(clientBean -> clientBean.getEmail() != null)
-//                .filter(clientBean -> clientBean.getEmail().indexOf("@") > 0)
-//                .collect(Collectors.toList());
-
-
+        List<ClientBean> outClient;
         //去重複
-        outClient = outClient.stream().collect(Collectors
+        outClient = result.stream().collect(Collectors
                 .collectingAndThen(
                         Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(ClientBean::getEmail))),
                         ArrayList::new));
         System.out.println("輸出  " + outClient.size() + "筆資料");
-
-
-
-
-
-
-
-
 
         //輸出
         try {
@@ -256,6 +235,4 @@ public class MarketingController {
         System.out.println("耗時 : " + duration.toMillis());
         return "file_output.csv";
     }
-
-
 }

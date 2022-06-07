@@ -77,7 +77,7 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-9"
+                                            <div class="col-md-11"
                                                 style="background-color: #569b92; border: solid 1px #569b92; position: relative; color: white;font-size: 14px;">
                                                 討論區
                                                 <!-- 有登入才顯示 -->
@@ -163,7 +163,7 @@
                                             <div class="col-md-1 cell position-relative cellbackgroud"
                                                 style="font-size: 14px;">
                                                 發佈者</div>
-                                            <div class="col-md-8 cell">${bean.user}${bean.remark}</div>
+                                            <div class="col-md-10 cell">${bean.user}${bean.remark}</div>
                                         </div>
 
 
@@ -172,7 +172,7 @@
                                             <div class="col-md-1 cell position-relative cellbackgroud"
                                                 style="font-size: 14px;">
                                                 主題</div>
-                                            <div class="col-md-8 cell" style="position: relative;">
+                                            <div class="col-md-10 cell" style="position: relative;">
                                                 ${bean.theme}
                                                 <span
                                                     style="color: #8e8e8e; position: absolute ;right: 0%;">${bean.lastmodified}</span>
@@ -185,7 +185,7 @@
                                             <div class="col-md-1 cell position-relative cellbackgroud"
                                                 style="font-size: 14px;">
                                                 內容</div>
-                                            <div class="col-md-8 cell content" style="word-wrap:break-word;">
+                                            <div class="col-md-10 cell content" style="word-wrap:break-word;">
                                                 ${bean.content}
                                             </div>
                                         </div>
@@ -194,7 +194,7 @@
                                             <div class="col-md-1 cell position-relative cellbackgroud"
                                                 style="font-size: 14px;">
                                                 標記</div>
-                                            <div class="col-md-8 cell content" style="word-wrap:break-word;">&nbsp;
+                                            <div class="col-md-10 cell content" style="word-wrap:break-word;">&nbsp;
                                                 <c:if test="${not empty bean.advice}">
                                                     <c:forEach varStatus="loop" begin="0" end="${bean.advice.size()-1}"
                                                         items="${bean.advice}" var="ad">

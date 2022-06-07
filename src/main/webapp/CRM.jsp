@@ -257,7 +257,7 @@
                                             <c:forEach varStatus="loop" begin="0" end="${list.size()-1}" items="${list}"
                                                 var="s">
                                                 <tr style="Cursor: pointer ;vertical-align: middle;"
-                                                    onclick="location.href='${pageContext.request.contextPath}/billboardReply/${s.billboardid}'">
+                                                    onclick="location.href='${pageContext.request.contextPath}/billboard/Reply/${s.billboardid}'">
                                                     <!-- //////////////////////////////////////////////////// -->
                                                     <td>
                                                         <!--置頂圖片  -->
@@ -564,7 +564,7 @@
                             }
                         },
                         gobillboard: function (billboardid) {
-                            window.open("${pageContext.request.contextPath}/billboardReply/" + billboardid);
+                            window.open("${pageContext.request.contextPath}/billboard/Reply/" + billboardid);
                             var old = this.unread;
                             this.unread = [];
                             for (const s of old) {

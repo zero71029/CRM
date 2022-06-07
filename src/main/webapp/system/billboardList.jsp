@@ -34,7 +34,7 @@
                                 <div class="row">
                                     <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                                         <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off"
-                                            onclick="javascript:location.href='${pageContext.request.contextPath}/system/billboard'">
+                                            onclick="javascript:location.href='${pageContext.request.contextPath}/system/billboard/new'">
                                         <label class="btn btn-outline-primary state1" for="btncheck1">新增</label>
 
                                         <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">

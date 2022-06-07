@@ -79,11 +79,9 @@ public class PublicControl {
     // 主頁面
     @RequestMapping(path = {"billboard"})
     public String billboard(Model model, HttpSession session, @RequestParam("pag") Integer pag,
-                            @RequestParam("sort") String sortString ) {
+                            @RequestParam("sort") String sortString) {
         System.out.println("*****主頁面*****");
-
-
-        if(sortString.equals("createtime"))sortString ="lastmodified";
+        if (sortString.equals("createtime")) sortString = "lastmodified";
 
 
         // 分頁
@@ -91,8 +89,8 @@ public class PublicControl {
             pag = 1;
         pag--;
         Sort sort = Sort.by(Direction.DESC, sortString);
-        Pageable p =  PageRequest.of(pag, 40, sort);
-        Page<BillboardBean> page =  br.getByStateAndTop("公開", "", p);
+        Pageable p = PageRequest.of(pag, 40, sort);
+        Page<BillboardBean> page = br.getByStateAndTop("公開", "", p);
 //		全部有幾頁
         model.addAttribute("TotalPages", page.getTotalPages());
 
@@ -227,7 +225,7 @@ public class PublicControl {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //進入公佈欄留言頁面
-    @RequestMapping("/billboardReply/{id}")
+    @RequestMapping("/billboard/Reply/{id}")
     public String billboardReply(Model model, @PathVariable("id") Integer id, HttpSession session) {
         System.out.println("*****讀取公佈欄細節****");
         // 上傳檔案用
@@ -305,7 +303,7 @@ public class PublicControl {
         } else {
             String save = ss.SaveAdmin(abean);
             ServletContext sce = req.getServletContext();
-            sce.setAttribute("admin", ar.findByStateOrState("在職","新"));
+            sce.setAttribute("admin", ar.findByStateOrState("在職", "新"));
             AdminBean user = (AdminBean) session.getAttribute("user");
             if (user != null)
                 if (user.getPosition().equals("系統") || user.getPosition().equals("主管"))
@@ -353,7 +351,7 @@ public class PublicControl {
                     fileMap.get("file" + i).transferTo(new File(path2));
                     System.out.println("輸出成功");
                     // 檔案複製
-                    String pic_path ;
+                    String pic_path;
                     try {
                         // 判斷最後一個檔案目錄是否為bin目錄
                         if (("bin").equals(bin_path)) {
@@ -722,7 +720,7 @@ public class PublicControl {
             result = String.valueOf(adminBean.getMail().size());
         } catch (Exception e) {
             System.out.println("沒有登入");
-            result ="沒有登入";
+            result = "沒有登入";
         }
 
 
@@ -736,7 +734,7 @@ public class PublicControl {
     public List<BosMessageBean> SaveMessage(@RequestBody Map<String, String> body) {
         System.out.println("*****儲存主管留言*****");
         System.out.println(body);
-        BosMessageBean bmBean = new BosMessageBean(zTools.getUUID(), body.get("bosmessage"), body.get("admin"), body.get("message"),ZeroTools.getTime(new Date()));
+        BosMessageBean bmBean = new BosMessageBean(zTools.getUUID(), body.get("bosmessage"), body.get("admin"), body.get("message"), ZeroTools.getTime(new Date()));
         ds.save(bmBean);
         System.out.println(ds.getBosMessageList(body.get("bosmessage")));
         return ds.getBosMessageList(body.get("bosmessage"));

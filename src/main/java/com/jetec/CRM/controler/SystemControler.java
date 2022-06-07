@@ -378,7 +378,7 @@ public class SystemControler {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //進入新增頁面
-	@RequestMapping("/billboard")
+	@RequestMapping("/billboard/new")
 	public String billboard(Model model) {
 		System.out.println("*****進入新增頁面*****");
 		model.addAttribute("uuid", zTools.getUUID());
