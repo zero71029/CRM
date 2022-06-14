@@ -372,7 +372,7 @@
                                         <div class="col-md-3 cellz">潛在客戶負責人</div>
                                         <div class="col-md-4 cellz FormPadding">
                                             <c:set var="salary"
-                                                value="${user.position != '職員' || user.name == '江緯哲'|| user.name == '謝姍妤'|| user.name == '林冠樺'|| user.name == '莊文菊'|| user.name == '陳彥霖'}">
+                                                value="${user.position != '職員' || user.department == '業務'}">
                                             </c:set>
 
                                             <c:if test="${salary}">

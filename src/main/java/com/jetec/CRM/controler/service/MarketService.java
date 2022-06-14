@@ -82,8 +82,8 @@ public class MarketService {
 
     /////////////////////////////////////////////////////////////////////////////////////
     // 銷售機會列表
-    public List<MarketBean> getList(Integer pag) {
-        Pageable p = PageRequest.of(pag, 40, Direction.DESC, "aaa");
+    public List<MarketBean> getList(Integer pag ,Integer size) {
+        Pageable p = PageRequest.of(pag, size, Direction.DESC, "aaa");
         Page<MarketBean> page = mr.findStage(p);
         List<MarketBean> result = new ArrayList<>();
         if (pag == 0)
@@ -437,7 +437,7 @@ public class MarketService {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //使用者狀態  主程式
-    public Map<String, Object> getStateList(List<MarketStateBean> stateList, Integer pag) {
+    public Map<String, Object> getStateList(List<MarketStateBean> stateList, Integer pag,Integer size) {
         Sort sort = Sort.by(Direction.DESC, "aaa");
         //準備
         Map<String, Object> resoult = new HashMap<>();
@@ -493,7 +493,7 @@ public class MarketService {
 
         //pag 手寫分頁
         int total = list.size();
-        for (int i = pag * 40; i < pag * 40 + 40; i++) {
+        for (int i = pag * size; i < pag * size + size; i++) {
             if (i + 1 > total) break;
             Marketlist.add(list.get(i));
         }

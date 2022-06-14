@@ -164,10 +164,22 @@
                             </table>
                             <!-- 分頁 -->
                             <div class="block text-center" key="2" v-if="show">
-                                <el-pagination @current-change="handleCurrentChange" :current-page.sync="currentPage1"
-                                    :page-size="40" layout="  prev, pager, next" :total="total">
-                                </el-pagination>
+                                <p class="text-center">
+                                    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                                        :current-page="currentPage" :page-sizes="[10, 20, 30, 40,50,75,100]"
+                                        :page-size=pageSize layout="total, sizes, prev, pager, next, jumper"
+                                        :total="total">
+                                    </el-pagination>
+                                </p>
                             </div>
+
+
+
+
+
+
+
+                            <!--  -->
                             <div key="3">今天筆數 : {{todayTotal}}</div>
                             <div key="4">
                                 <el-button type="text" @click="SubmitBosVisible=true">提交主管
@@ -178,6 +190,31 @@
                                 <el-button type="text" @click="CreateVisible = true">轉賣 - 今天到期
                                     {{markeCreateTime.length}}</el-button>
                             </div>
+
+                            <!--  -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                         </transition-group>
 
 
@@ -776,7 +813,8 @@
                     inSortState: "",//排序用
                     btncheck3: false,//個人頁面按鈕
                     todayTotal: "",//
-                    currentPage1: 1,//當前分頁
+                    pageSize: 40,//一頁幾筆
+                    currentPage: 1,//當前分頁
                     total: 1,//所有筆數
                     oldtotal: 0,
                     list: [],
@@ -884,7 +922,7 @@
 
                     if (this.admin != "") {
                         $.ajax({
-                            url: '${pageContext.request.contextPath}/Market/MarketList?pag=1',
+                            url: '${pageContext.request.contextPath}/Market/MarketList?pag=1&pageSize=40',
                             type: 'POST',
                             async: false,
                             cache: false,
@@ -949,10 +987,29 @@
                     clickPotential: function (row, column, event) {
                         window.open('${pageContext.request.contextPath}/Market/potentialcustomer/' + row.customerid);
                     },
-                    handleCurrentChange(val) {//點擊分頁
-                        // this.inSortState =[];
+                    handleSizeChange(val) {//修改一頁幾條
+                        this.pageSize = val;
                         $.ajax({
-                            url: '${pageContext.request.contextPath}/Market/MarketList?pag=' + val,
+                            url: '${pageContext.request.contextPath}/Market/MarketList?pag=' + this.currentPage + '&pageSize=' + val,
+                            type: 'POST',
+                            async: false,
+                            cache: false,
+                            success: response => {
+                                this.list = response.list,
+                                    this.oldList = response.list
+                            },
+                            error: function (returndata) {
+                                console.log(returndata);
+                            }
+
+                        });
+                        this.sortState();
+                    },
+                    handleCurrentChange(val) {//點擊分頁
+
+                        this.currentPage = val;
+                        $.ajax({
+                            url: '${pageContext.request.contextPath}/Market/MarketList?pag=' + val + '&pageSize=' + this.pageSize,
                             type: 'POST',
                             async: false,
                             cache: false,

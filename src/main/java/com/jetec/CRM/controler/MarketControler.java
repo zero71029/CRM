@@ -102,7 +102,7 @@ public class MarketControler {
 //銷售機會列表
     @ResponseBody
     @RequestMapping("/MarketList")
-    public Map<String, Object> Market(@RequestParam("pag") Integer pag, HttpSession session) {
+    public Map<String, Object> Market(@RequestParam("pag") Integer pag, @RequestParam("pageSize")Integer size,HttpSession session) {
         System.out.println("*****讀取銷售機會列表****");
         pag--;
         Map<String, Object> result = new HashMap<>();
@@ -111,9 +111,9 @@ public class MarketControler {
         List<MarketBean> list;
         //
         if (stateList.size() > 0) {
-            result = ms.getStateList(stateList, pag);
+            result = ms.getStateList(stateList, pag,size);
         } else {
-            list = ms.getList(pag);
+            list = ms.getList(pag,size);
             result.put("list", list);
             result.put("total", ms.getTotal());
 
