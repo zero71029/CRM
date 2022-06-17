@@ -1081,10 +1081,13 @@
                     selectList: function () {//搜索
                         this.inSortState = [];
                         this.btncheck3 = false;
+                        console.log(this.inDay)
                         if (this.inDay == "") {//沒輸入日期
                             this.inDay[0] = "";
                             this.inDay[1] = "";
                         }
+                        console.log(this.inDay[0])
+                        console.log(this.inDay[1])
                         var url = '${pageContext.request.contextPath}/Market/selectDate?from=' + this.inDay[0] + "&to=" + this.inDay[1];
 
 

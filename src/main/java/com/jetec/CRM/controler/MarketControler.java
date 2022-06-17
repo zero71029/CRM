@@ -19,6 +19,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -384,7 +385,7 @@ public class MarketControler {
         clientBean.setState(1);
         clientBean.setExtension(Bean.getExtension());
         clientBean.setSerialnumber(Bean.getSerialnumber());
-
+        clientBean.setAaa(LocalDate.now().toString());
 
         cs.SaveAdmin(clientBean);
         return "新增客戶";

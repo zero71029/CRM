@@ -313,27 +313,15 @@
                                         </div>
                                     </div>
 
-
-
-
-
-
-
-
-
-
                                     <div class="row">&nbsp;</div>
                                     <div class="row">
                                         <div class="col-lg-1"></div>
                                         <div class="col-lg-10 FormPadding">
                                             <button type="submit"
                                                 style="width: 100%;background-color: #0d6efd; color: white;"
-                                                class="btn log">儲存</button>
+                                                class="btn log">儲存
+                                            </button>
                                         </div>
-
-
-
-
                                     </div>
                                 </form>
                                 <div class="row">
@@ -911,7 +899,7 @@
                         newTag: "",//新增標籤
                         tags: [],//標籤列表
                         industry: "${bean.industry}",//產業
-                        
+
                     };
                 },
                 created() {

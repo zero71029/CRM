@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -36,18 +37,16 @@ public class CustomerControler {
     public String SaveClient(ClientBean clientBean) {
         System.out.println("*****儲存客戶*****");
         System.out.println(clientBean);
-
-
-
-        clientBean.setState(1);
+        if(clientBean.getClientid() == null){
+            clientBean.setAaa(LocalDate.now().toString());
+            clientBean.setState(1);
+        }
         ClientBean save =  cs.SaveAdmin(clientBean);
 
 
         List<MarketBean>  marketList= cs.getMarketListByClientid(clientBean.getClientid());
         for (MarketBean marketBean:marketList ) {
             marketBean.setClient(clientBean.getName());
-
-
             if(clientBean.getSerialnumber() == null ||clientBean.getSerialnumber().equals("")){
                 System.out.println("沒有編號");
             }else {

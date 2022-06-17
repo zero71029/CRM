@@ -17,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -130,9 +131,12 @@ public class MarketingController {
         System.out.println();
         LocalDateTime old = LocalDateTime.now();
         List<ClientBean> clientList = new ArrayList<>();
+        String start = (String) body.get("start");
+        if(start.equals(""))start = "2022-02-02";
+        String end = (String) body.get("end");
+        if(end.equals(""))end= LocalDate.now().toString();
 
-
-        StringBuffer sql = new StringBuffer("select distinct client from market where ");
+        StringBuffer sql = new StringBuffer("select distinct client from market where aaa between "+start+" and "+end);
         List<String> producttypeList = (List<String>) body.get("producttype");
         if (producttypeList != null && producttypeList.size() > 0) {
             sql.append("( ");
@@ -235,4 +239,75 @@ public class MarketingController {
         System.out.println("耗時 : " + duration.toMillis());
         return "file_output.csv";
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    @RequestMapping("/search3")
+    @ResponseBody
+    public String search3(@RequestBody Map<String, Object> body) {
+        System.out.println(body);
+        System.out.println();
+        String start = (String) body.get("start");
+        if(start.equals(""))start = "2022-02-02";
+        String end = (String) body.get("end");
+        if(end.equals(""))end= LocalDate.now().toString();
+        LocalDateTime old = LocalDateTime.now();
+
+        List<String> industryList = (List<String>) body.get("industry");
+        List<ClientBean> outClient = new ArrayList<>();
+        if(industryList.size() > 0){
+            String finalStart = start;
+            String finalEnd = end;
+            industryList.forEach(e -> {
+                outClient.addAll(cr.findByIndustryAndAaaBetween(e , finalStart, finalEnd));
+            });
+
+
+
+
+        }
+        //輸出
+        try {
+            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("c://CRMfile//file_output.csv"), "UTF-8");
+//            osw.write(new String(new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF}));
+            osw.write('\ufeff');
+            BufferedWriter bw = new BufferedWriter(osw);//檔案輸出路徑
+            outClient.forEach(clientBean -> {
+                try {
+                    bw.newLine();//新起一行
+                    if (clientBean.getContact().size() > 0) {
+                        bw.write(clientBean.getEmail() + "," + clientBean.getName() + "," + clientBean.getContact().get(0).getName() + "," + clientBean.getIndustry());//寫到新檔案中
+                    } else {
+                        bw.write(clientBean.getEmail() + "," + clientBean.getName() + ",  ," + clientBean.getIndustry());//寫到新檔案中
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            });
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("輸出  " + outClient.size() + "筆資料");
+        Duration duration = Duration.between(old, LocalDateTime.now());
+        System.out.println("耗時 : " + duration.toMillis());
+        return "file_output.csv";
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

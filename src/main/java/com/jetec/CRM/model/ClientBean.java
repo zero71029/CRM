@@ -2,14 +2,7 @@ package com.jetec.CRM.model;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -42,7 +35,8 @@ public class ClientBean {
 	private Integer state;//狀態
 	private String serialnumber;//編號
 	private String department;
-	
+	@Column(columnDefinition="CHAR(10)")
+	private String aaa;
 	//聯繫人
 	@JsonIgnore
 	@OneToMany(targetEntity = ContactBean.class ,mappedBy = "clientid", cascade = CascadeType.ALL)
@@ -271,6 +265,14 @@ public class ClientBean {
 	}
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public String getAaa() {
+		return aaa;
+	}
+
+	public void setAaa(String aaa) {
+		this.aaa = aaa;
 	}
 
 	@Override

@@ -31,4 +31,6 @@ public interface ClientRepository extends JpaRepository<ClientBean, Integer>{
 
 
 	List<ClientBean> findByIndustry(String industry);
+
+    Collection<? extends ClientBean> findByIndustryAndAaaBetween(String e, String finalStart, String finalEnd);
 }

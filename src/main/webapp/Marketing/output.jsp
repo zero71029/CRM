@@ -57,6 +57,12 @@
                                         <!--  -->
                                         <div class="col-md-2">
                                             產業 <br>
+                                            <el-date-picker v-model="indate" type="daterange" align="right"
+                                                unlink-panels range-separator="到" start-placeholder="開始日期"
+                                                end-placeholder="結束日期" :picker-options="pickerOptions"
+                                                value-format="yyyy-MM-dd">
+                                            </el-date-picker>
+
                                             <el-checkbox v-model="checkAll" @change="industryCheckAllChange">全选
                                             </el-checkbox>
                                             <div style="margin: 15px 0;"></div>
@@ -70,6 +76,7 @@
                                             </el-checkbox-group>
                                         </div>
                                         <!--  -->
+                                        <!-- 
                                         <div class="col-md-2">
                                             詢問過 <br>
                                             <el-checkbox v-model="producttypeAll" @change="producttypeCheckAllChange">全选
@@ -95,6 +102,9 @@
                                                 </div>
                                             </el-checkbox-group>
                                         </div>
+ -->
+
+
                                     </div>
                                 </div>
                             </div>
@@ -156,6 +166,44 @@
                         SourceAll: false,
                         Source: [],
                         SourceOptions: SourceOptions,
+                        pickerOptions: {
+                            shortcuts: [
+                                {
+                                    text: '今天',
+                                    onClick(picker) {
+                                        const end = new Date();
+                                        const start = new Date();
+                                        start.setTime(start.getTime());
+                                        picker.$emit('pick', [start, end]);
+                                    }
+                                }, {
+                                    text: '最近一周',
+                                    onClick(picker) {
+                                        const end = new Date();
+                                        const start = new Date();
+                                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                                        picker.$emit('pick', [start, end]);
+                                    }
+                                }, {
+                                    text: '最近一個月',
+                                    onClick(picker) {
+                                        const end = new Date();
+                                        const start = new Date();
+                                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                                        picker.$emit('pick', [start, end]);
+                                    }
+                                }, {
+                                    text: '最近三個月',
+                                    onClick(picker) {
+                                        const end = new Date();
+                                        const start = new Date();
+                                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                                        picker.$emit('pick', [start, end]);
+                                    }
+                                }]
+                        },
+                        indate: [],
+
                     }
                 },
                 created() {
@@ -185,10 +233,20 @@
                         let checkedCount = value.length;
                         this.SourceAll = checkedCount === this.SourceOptions.length;
                     },
-                    search() {
-                        const data = JSON.stringify({ "industry": this.industry, "producttype": this.producttype,"Source":this.Source });
+                    search() {                     
+                        if (this.indate == "") {
+                            this.indate[0] = "";
+                            this.indate[1] = "";
+                        }
+                        const data = JSON.stringify({
+                            "industry": this.industry,
+                            "producttype": this.producttype,
+                            "Source": this.Source,
+                            "start": this.indate[0],
+                            "end": this.indate[1]
+                        });
                         $.ajax({
-                            url: "${pageContext.request.contextPath}/Marketing/search2",
+                            url: "${pageContext.request.contextPath}/Marketing/search3",
                             // dataType: 'json',
                             type: 'POST',
                             contentType: "application/json; charset=UTF-8",

@@ -443,7 +443,7 @@
                                 <!-- <c:if test="${not empty news}">
                             <c:forEach varStatus="loop" begin="0" end="${news.size()-1}" items="${news}" var="s">
                                 <a style="color: #08604f; opacity: 100%; text-decoration: none;"
-                                    href="${pageContext.request.contextPath}/billboardReply/${s.billboardid}">
+                                    href="${pageContext.request.contextPath}/billboard/Reply/${s.billboardid}">
                                     <div class="row">
 
                                         <div class="col-lg-5 "
@@ -814,7 +814,7 @@
                         // processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
                         success: function (json) {
                             alert(json);
-                            location.href = "${pageContext.request.contextPath}/billboardReply/${bean.billboardid}";
+                            location.href = "${pageContext.request.contextPath}/billboard/Reply/${bean.billboardid}";
                         },
                         error: function (returndata) {
                             console.log(returndata);
@@ -851,7 +851,7 @@
                         // processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
                         success: function (json) {
                             alert(json);
-                            location.href = "${pageContext.request.contextPath}/billboardReply/${bean.billboardid}";
+                            location.href = "${pageContext.request.contextPath}/billboard/Reply/${bean.billboardid}";
                         },
                         error: function (returndata) {
                             console.log(returndata);
@@ -872,7 +872,7 @@
                         // processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
                         success: function (json) {
                             alert(json);
-                            location.href = "${pageContext.request.contextPath}/billboardReply/" + billboardid;
+                            location.href = "${pageContext.request.contextPath}/billboard/Reply/" + billboardid;
                         },
                         error: function (returndata) {
                             console.log(returndata);
