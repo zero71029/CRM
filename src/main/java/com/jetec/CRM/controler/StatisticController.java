@@ -20,6 +20,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static java.util.stream.Collectors.toList;
@@ -247,7 +249,7 @@ public class StatisticController {
         } else {
             endDay = endDay + "T24:00";
         }
-        if (startDay == null || startDay.equals("")) {
+        if (startDay == null || "".equals(startDay)) {
             startDay = zTools.addDay(endDay,-7);
             startDay = startDay.substring(0, 10);
             startDay = startDay + "T00:00";
@@ -260,7 +262,7 @@ public class StatisticController {
         System.out.println("活耀案件:"+l.size()+"筆");
 //        List<MarketBean> l = ss.getMarketByAaa( startDay,endDay);
         List<Map<String ,String>> success = new ArrayList<>();
-        l.stream().filter(e->e.getStage().equals("成功結案")).forEach(e->{
+        l.stream().filter(e->"成功結案".equals(e.getStage())).forEach(e->{
             Map<String ,String> x = new HashMap<>();
             x.put("client",e.getClient());
             x.put("aaa",e.getAaa());
@@ -268,9 +270,8 @@ public class StatisticController {
             x.put("marketid",e.getMarketid());
             success.add(x);
         });
-
         List<Map<String ,String>> fail = new ArrayList<>();
-        l.stream().filter(e->e.getStage().equals("失敗結案")).forEach(e->{
+        l.stream().filter(e->"失敗結案".equals(e.getStage())).forEach(e->{
             Map<String ,String> x = new HashMap<>();
             x.put("client",e.getClient());
             x.put("closereason",e.getClosereason());

@@ -505,7 +505,6 @@
                                                     </select>
                                                 </div>
                                                 <c:if test="${user.position != '職員' }">
-
                                                     <div class="col-md-5" v-show="bean.stage  =='提交主管'">
                                                         <el-button size="mini" type="primary"
                                                             @click="BosOperate('已報價')">

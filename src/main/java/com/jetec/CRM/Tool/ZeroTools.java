@@ -90,7 +90,7 @@ public class ZeroTools {
      * @maillist 群發郵件
      *
      */
-    private final String STMP = "tlcfmczhhdahukbj";
+    private final String STMP = "";
     private final String secret = "";
 
     // 郵件
