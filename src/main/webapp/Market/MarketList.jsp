@@ -1373,7 +1373,7 @@
 
                         })
                         $.ajax({
-                            url: '${pageContext.request.contextPath}/Market/MarketList?pag=1',
+                            url: '${pageContext.request.contextPath}/Market/MarketList?pag=1&pageSize=40',
                             type: 'POST',
                             async: false,
                             cache: false,
@@ -1417,7 +1417,7 @@
                             }
                         })
                         $.ajax({
-                            url: '${pageContext.request.contextPath}/Market/MarketList?pag=1',
+                            url: '${pageContext.request.contextPath}/Market/MarketList?pag=1&pageSize=40',
                             type: 'POST',
                             async: false,
                             cache: false,
@@ -1511,6 +1511,8 @@
                 color: #000;
             }
         </style>
+
+
 
 
         </html>

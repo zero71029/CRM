@@ -108,7 +108,7 @@ public class SystemService {
             ar.deleteById(i);
         }
         ServletContext app = sce.getServletContext();
-        app.setAttribute("admin", ar.findAll());
+        app.setAttribute("admin", ar.findByStateOrState("在職", "新"));
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

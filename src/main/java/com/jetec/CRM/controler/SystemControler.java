@@ -419,7 +419,7 @@ public class SystemControler {
 		System.out.println("*****修改員工*****");
 		ar.save(abean);
 		ServletContext sce = req.getServletContext();
-		sce.setAttribute("admin", ar.findAll());
+		sce.setAttribute("admin", ar.findByStateOrState("在職", "新"));
 		return "redirect:/system/adminList/adminid";
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

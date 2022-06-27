@@ -215,7 +215,7 @@ public class StatisticController {
 
 
         if (Objects.equals(endDay, "")) {
-            endDay = zTools.getTime(new Date());
+            endDay = ZeroTools.getTime(new Date());
         } else {
             endDay = endDay + " 24:00";
         }
@@ -245,7 +245,7 @@ public class StatisticController {
 
 
         if (Objects.equals(endDay, "")) {
-            endDay = zTools.getTime(new Date());
+            endDay = ZeroTools.getTime(new Date());
         } else {
             endDay = endDay + "T24:00";
         }
@@ -263,6 +263,7 @@ public class StatisticController {
 //        List<MarketBean> l = ss.getMarketByAaa( startDay,endDay);
         List<Map<String ,String>> success = new ArrayList<>();
         l.stream().filter(e->"成功結案".equals(e.getStage())).forEach(e->{
+
             Map<String ,String> x = new HashMap<>();
             x.put("client",e.getClient());
             x.put("aaa",e.getAaa());
