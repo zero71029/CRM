@@ -1079,6 +1079,7 @@
 
                     },
                     selectList: function () {//搜索
+                        var star = new Date();
                         this.inSortState = [];
                         this.btncheck3 = false;
                         console.log(this.inDay)
@@ -1097,7 +1098,6 @@
                         } else if (this.name != "") {//機會民稱 客戶
                             url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=name&val=" + this.name;
                         }
-
                         else if (this.company != "") {//機會民稱 客戶
                             url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=name&val=" + this.company;
                         } else if (this.inStateList != "") {//狀態
@@ -1154,11 +1154,6 @@
                                     }
                                 }
                         }
-
-
-
-
-
                         if (this.name != "") {//機會民稱
                             this.oldList = this.list;
                             this.list = [];
@@ -1278,7 +1273,10 @@
 
 
                         this.total = 20;
-                        this.oldList = this.list
+                        this.oldList = this.list;
+
+                        var en = new Date();
+                        console.log(en - star);
                     },
                     selectBudget: function () {//select預算
                         axios
