@@ -34,13 +34,13 @@ public interface PotentialCustomerRepository extends JpaRepository<PotentialCust
 
 
 
-    @Query(value = "SELECT  *  from potentialcustomer where status = '未處理' OR status = '已聯繫' OR status = '提交主管'", nativeQuery = true)
+    @Query(value = "SELECT  *  from potentialcustomer where user is not null AND (status = '未處理' OR status = '已聯繫' OR status = '提交主管')", nativeQuery = true)
     Page<PotentialCustomerBean> findStatus(Pageable p);
 
 
     List<PotentialCustomerBean> findByRemarkLikeIgnoreCase(String remark);
 
-    @Query(value = "SELECT  COUNT(*)  from potentialcustomer where aaa BETWEEN ?1 AND ?2  ", nativeQuery = true)
+    @Query(value = "SELECT  COUNT(*)  from potentialcustomer where   aaa BETWEEN ?1 AND ?2  ", nativeQuery = true)
     Integer gettodayTotal(@Param("startTime") String startTime, @Param("endTime") String endTime);
 
     List<PotentialCustomerBean> findByUserAndAaaBetween(String user, String startDay, String endDay, Sort sort);
@@ -52,4 +52,6 @@ public interface PotentialCustomerRepository extends JpaRepository<PotentialCust
     List<PotentialCustomerBean> findByStatusAndAaaBetween(String state, String startDay, String endDay, Sort sort);
 
     List<PotentialCustomerBean> findByIndustryAndAaaBetween(String industry, String startDay, String endDay, Sort sort);
+
+    List<PotentialCustomerBean> findByUser(String user);
 }

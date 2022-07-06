@@ -21,6 +21,7 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Controller
@@ -103,7 +104,7 @@ public class MarketControler {
 //銷售機會列表
     @ResponseBody
     @RequestMapping("/MarketList")
-    public Map<String, Object> Market(@RequestParam("pag") Integer pag, @RequestParam("pageSize")Integer size,HttpSession session) {
+    public Map<String, Object> Market(@RequestParam("pag") Integer pag, @RequestParam("pageSize") Integer size, HttpSession session) {
         System.out.println("*****讀取銷售機會列表****");
         pag--;
         Map<String, Object> result = new HashMap<>();
@@ -112,9 +113,9 @@ public class MarketControler {
         List<MarketBean> list;
         //
         if (stateList.size() > 0) {
-            result = ms.getStateList(stateList, pag,size);
+            result = ms.getStateList(stateList, pag, size);
         } else {
-            list = ms.getList(pag,size);
+            list = ms.getList(pag, size);
             result.put("list", list);
             result.put("total", ms.getTotal());
 
@@ -800,15 +801,15 @@ public class MarketControler {
 
             ChangeMessageBean cmbean;
             if ("cost".equals(field)) {
-                cmbean = new ChangeMessageBean(zTools.getUUID(), marketid, field, String.valueOf(rs.getInt(1)), val, zTools.getTime(new Date()));
-                cmbean.setName(adminBean.getName());
+                cmbean = new ChangeMessageBean(zTools.getUUID(), marketid, adminBean.getName(), field, String.valueOf(rs.getInt(1)), val, zTools.getTime(new Date()));
+
                 if (String.valueOf(rs.getInt(1)).equals(val)) {
 
                 } else {
                     ss.saveChangeMesssage(cmbean);
                 }
             } else {
-                cmbean = new ChangeMessageBean(zTools.getUUID(), marketid, field, rs.getString(1), val, zTools.getTime(new Date()));
+                cmbean = new ChangeMessageBean(zTools.getUUID(), marketid, adminBean.getName(), field, rs.getString(1), val, zTools.getTime(new Date()));
                 cmbean.setName(adminBean.getName());
 
                 if (!(rs.getString(1) == null)) {
@@ -897,8 +898,44 @@ public class MarketControler {
         return ms.getAutoClose();
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //領取任務
+    @RequestMapping("/getReceive/{marketid}")
+    @ResponseBody
+    public Map<String, String> getReceive(HttpSession session, @PathVariable("marketid") String marketid) {
+        System.out.println("領取任務");
+        Map<String, String> result = new HashMap<>();
+        MarketBean mBean = ms.getById(marketid);
+        if (mBean != null) {
+            AdminBean aBean = (AdminBean) session.getAttribute("user");
+            if (mBean.getReceive() == null || mBean.getReceive().isEmpty() ) {
+                ChangeMessageBean cmBean = new ChangeMessageBean(ZeroTools.getUUID(), mBean.getMarketid(), aBean.getName(), "領取任務", mBean.getReceive(), aBean.getName(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                ss.saveChangeMesssage(cmBean);
+                cmBean = new ChangeMessageBean(ZeroTools.getUUID(), mBean.getMarketid(), aBean.getName(), "負責人", mBean.getUser(), aBean.getName(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                ss.saveChangeMesssage(cmBean);
+                mBean.setReceive(aBean.getName());
+                mBean.setUser(aBean.getName());
+                ms.save(mBean);
+                result.put("state", "領取成功");
+                result.put("user", aBean.getName());
+                return result;
+            }
+            ChangeMessageBean cmBean = new ChangeMessageBean(ZeroTools.getUUID(), mBean.getMarketid(), aBean.getName(), "領取任務", aBean.getName(), "null", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            ss.saveChangeMesssage(cmBean);
+            cmBean = new ChangeMessageBean(ZeroTools.getUUID(), mBean.getMarketid(), aBean.getName(), "負責人", aBean.getName(), "null", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            ss.saveChangeMesssage(cmBean);
+            mBean.setReceive(null);
+            mBean.setUser(null);
+            ms.save(mBean);
 
-
+            result.put("state", "取消成功");
+            result.put("user", null);
+            return result;
+        }
+        result.put("state", "請先建立任務");
+        result.put("user", null);
+        return result;
+    }
 
 
 }

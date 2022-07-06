@@ -23,8 +23,6 @@ import java.util.stream.Collectors;
 public class MarketService {
     @Autowired
     MarketRepository mr;
-    @Autowired
-    ChangeMessageRepository cmr;
 
     @Autowired
     TrackRepository tr;
@@ -72,7 +70,6 @@ public class MarketService {
             }
         }
         //插入日期
-        System.out.println(marketBean.getAaa());
         if (marketBean.getAaa().equals("")) {
             marketBean.setAaa(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()));
         }

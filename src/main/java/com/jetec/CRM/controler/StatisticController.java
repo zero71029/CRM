@@ -284,10 +284,4 @@ public class StatisticController {
         result.put("other",ss.getMarketByCloseNot(startDay,endDay));
         return result;
     }
-
-
-
-
-
-
 }

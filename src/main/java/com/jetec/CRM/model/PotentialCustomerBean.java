@@ -55,6 +55,8 @@ public class PotentialCustomerBean implements Serializable {
     private String othersource;//其他來源
     private String closereason;//結案理由
     private String closeextend;//結案理由延伸
+    private String receive;//領取人
+
     @Override
     public String toString() {
         return "PotentialCustomerBean{" +
@@ -450,5 +452,11 @@ public class PotentialCustomerBean implements Serializable {
         this.remark = remark;
     }
 
+    public String getReceive() {
+        return receive;
+    }
 
+    public void setReceive(String receive) {
+        this.receive = receive;
+    }
 }

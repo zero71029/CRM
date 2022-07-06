@@ -4,6 +4,7 @@ import com.jetec.CRM.Tool.ZeroTools;
 import com.jetec.CRM.controler.service.ClientService;
 import com.jetec.CRM.controler.service.DirectorService;
 import com.jetec.CRM.controler.service.PotentialCustomerService;
+import com.jetec.CRM.controler.service.SystemService;
 import com.jetec.CRM.model.*;
 import com.jetec.CRM.repository.TrackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Controller
@@ -32,6 +35,8 @@ public class PotentialController {
     DirectorService DS;
     @Autowired
     ZeroTools zTools;
+    @Autowired
+    SystemService ss;
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -283,5 +288,42 @@ public class PotentialController {
         return PCS.selectPotential(startDay, endDay, key, val);
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //領取任務
+    @RequestMapping("/getReceive/{customerid}")
+    @ResponseBody
+    public Map<String, String> getReceive(HttpSession session, @PathVariable("customerid") String customerid) {
+        System.out.println("領取任務");
+        Map<String, String> result = new HashMap<>();
+        PotentialCustomerBean pcBean = PCS.getById(customerid);
+        if (pcBean != null) {
+            AdminBean aBean = (AdminBean) session.getAttribute("user");
+            if (pcBean.getReceive() == null || pcBean.getReceive().isEmpty()                                          ) {
+                ChangeMessageBean cmBean = new ChangeMessageBean(ZeroTools.getUUID(), pcBean.getCustomerid(), aBean.getName(), "領取任務", pcBean.getReceive(), aBean.getName(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                ss.saveChangeMesssage(cmBean);
+                cmBean = new ChangeMessageBean(ZeroTools.getUUID(), pcBean.getCustomerid(), aBean.getName(), "負責人", pcBean.getUser(), aBean.getName(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                ss.saveChangeMesssage(cmBean);
+                pcBean.setReceive(aBean.getName());
+                pcBean.setUser(aBean.getName());
+                PCS.SavePotentialCustomer(pcBean);
+                result.put("state", "領取成功");
+                result.put("user", aBean.getName());
+                return result;
+            }
+            ChangeMessageBean cmBean = new ChangeMessageBean(ZeroTools.getUUID(), pcBean.getCustomerid(), aBean.getName(), "領取任務", aBean.getName(), "null", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            ss.saveChangeMesssage(cmBean);
+            cmBean = new ChangeMessageBean(ZeroTools.getUUID(), pcBean.getCustomerid(), aBean.getName(), "負責人", aBean.getName(), "null", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            ss.saveChangeMesssage(cmBean);
+            pcBean.setReceive(null);
+            pcBean.setUser(null);
+            PCS.SavePotentialCustomer(pcBean);
+            result.put("state", "取消成功");
+            result.put("user", null);
+            return result;
+        }
+        result.put("state", "請先建立任務");
+        result.put("user", null);
+        return result;
+    }
 
 }

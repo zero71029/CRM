@@ -366,18 +366,40 @@
                                     </div>
 
                                 </div>
-                                <!--  -->
+                                <!-- 右邊區塊 -->
                                 <div class="col-md-5  ASDFG">
                                     <div class="row">
-                                        <div class="col-md-3 cellz">潛在客戶負責人</div>
+                                        <div class="col-md-3 cellz" style="line-height: 30px;">潛在客戶負責人</div>
+                                        <div class="col-md-4  FormPadding ">
+                                            <div class="receive"
+                                                style="color: #0d6efd;cursor: pointer;line-height: 30px;"
+                                                @click="clickReceive">領取任務</div>
+
+                                        </div>
+                                    </div>
+
+
+
+
+
+                                    <div class="row">
+                                        <div class="col-md-3 cellz" style="line-height: 30px;">潛在客戶負責人</div>
                                         <div class="col-md-4 cellz FormPadding">
+
                                             <c:set var="salary"
-                                                value="${user.position != '職員' || user.department == '業務'}">
+                                                value="${user.position == '職員' || user.position == '新'}">
                                             </c:set>
 
                                             <c:if test="${salary}">
+                                                <input type="hidden" name="receive" v-model.trim="customer.user">
+                                                <input type="hidden" name="user" v-model.trim="customer.user">
+                                                {{customer.user}}
+                                            </c:if>
+
+                                            <c:if test="${!salary}">
+                                                <input type="hidden" name="receive" v-model='customer.receive'>
                                                 <select name="user" class="form-select cellFrom" v-model="customer.user"
-                                                    aria-label="Default select example">
+                                                    @change="changeUser">
                                                     <option value="無">無</option>
                                                     <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}"
                                                         items="${admin}" var="s">
@@ -389,10 +411,7 @@
                                                     <option value="系統管理"> 系統管理</option>
                                                 </select>
                                             </c:if>
-                                            <c:if test="${!salary}">
-                                                <input type="hidden" name="user" v-model.trim="customer.user">
-                                                {{customer.user}}
-                                            </c:if>
+
                                         </div>
                                     </div>
 
@@ -703,7 +722,8 @@
                                             <a class="col-md-3" href="#" onclick="goWork()">新增工作項目</a>
                                         </div>
                                         <div class="dockbar row shadow  ">
-                                            <div class="col-md-2 offset-md-1" style="border-left: black 1px solid;" id="act"
+                                            <div class="col-md-2 offset-md-1" style="border-left: black 1px solid;"
+                                                id="act"
                                                 onclick="javascript:$('.act').toggle();$('.bosMessagediv').hide();">
                                                 行動
                                             </div>
@@ -1063,7 +1083,7 @@
                             fileforeignid: Math.random() * 1000,
                             contacttitle: "",
                             source: "其他",
-                     
+
                         },//bean
                         bosMassage: "",//主管留言欄位
                         bosMassageList: [],//組長留言資料
@@ -1551,6 +1571,37 @@
                                 })
                             }
                         }
+                    },
+                    //領取任務
+                    clickReceive() {
+                        if ('${bean.customerid}' == '') {
+                            this.$message({
+                                message: '請先建立任務',
+                                type: 'error'
+                            });
+                        } else {
+                            $.ajax({
+                                url: '${pageContext.request.contextPath}/Potential/getReceive/${bean.customerid}',
+                                type: 'get',
+                                async: false,
+                                cache: false,
+                                success: (response => (
+                                    this.$message({
+                                        message: response.state,
+                                        type: 'success'
+                                    }),
+                                    this.customer.user = response.user
+                                )),
+                                error: function (returndata) {
+                                    console.log(returndata);
+                                }
+                            })
+                        }
+
+                    },
+                    //分配人員 (receive 設為null)
+                    changeUser() {
+                        this.customer.receive = null;
                     }
 
 

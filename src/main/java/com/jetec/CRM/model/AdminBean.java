@@ -7,6 +7,9 @@ import java.util.List;
 @Entity
 @Table(name = "admin")
 public class AdminBean  {
+	final  static  String SESSIONID = "user";
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer adminid;

@@ -26,17 +26,15 @@ public class ChangeMessageBean {
     public ChangeMessageBean() {
     }
 
-    public ChangeMessageBean(String changemessageid, String changeid, String filed, String source, String after, String createtime) {
+    public ChangeMessageBean(String changemessageid, String changeid, String name, String filed, String source, String after, String createtime) {
         this.changemessageid = changemessageid;
         this.changeid = changeid;
+        this.name = name;
         this.filed = filed;
         this.source = source;
         this.after = after;
         this.createtime = createtime;
     }
-
-
-
 
     public String getName() {
         return name;

@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.jetec.CRM.model.*;
+import com.jetec.CRM.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,11 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jetec.CRM.Tool.ZeroTools;
-import com.jetec.CRM.repository.AdminRepository;
-import com.jetec.CRM.repository.PotentialCustomerHelperRepository;
-import com.jetec.CRM.repository.PotentialCustomerRepository;
-import com.jetec.CRM.repository.TrackRemarkRepository;
-import com.jetec.CRM.repository.TrackRepository;
 
 @Service
 @Transactional
@@ -74,9 +70,11 @@ public class PotentialCustomerService {
 
         Pageable p = PageRequest.of(pag, 40, Direction.DESC, "aaa");
         Page<PotentialCustomerBean> page = PCR.findStatus(p);
-//		全部有幾頁
-//		page.getTotalPages();
-        List<PotentialCustomerBean> result = page.getContent();
+        List<PotentialCustomerBean> result = new ArrayList<>();
+            if(pag.equals(0)){
+                result.addAll(PCR.findByUser(null));
+            }
+         result.addAll(page.getContent());
         return result;
     }
 
@@ -313,4 +311,5 @@ public class PotentialCustomerService {
     public List<PotentialCustomerBean> getPotentialSubmitBos() {
         return  PCR.findByStatus("提交主管");
     }
+
 }

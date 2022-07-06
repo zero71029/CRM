@@ -8,6 +8,7 @@ import java.util.List;
 @Table(name = "market")
 public class MarketBean implements Serializable {
 
+
     @Id
     private String marketid;//
     private String name;//
@@ -53,7 +54,7 @@ public class MarketBean implements Serializable {
     private String othersource;//其他來源
     private String closereason;//結案理由
     private String closeextend;//結案理由延伸
-
+    private String receive;//領取人
 
 
 
@@ -471,6 +472,14 @@ public class MarketBean implements Serializable {
         this.othersource = othersource;
     }
 
+    public String getReceive() {
+        return receive;
+    }
+
+    public void setReceive(String receive) {
+        this.receive = receive;
+    }
+
     @Override
     public String toString() {
         return "MarketBean{" +
@@ -554,10 +563,11 @@ public class MarketBean implements Serializable {
                 return othersource;
             case "closereason":
                 return closereason;
+            case "receive":
+                return receive;
+            default:
+                return "輸入錯誤";
         }
-
-
-        return null;
 
     }
 }

@@ -21,6 +21,7 @@ import java.util.Map;
 public class CustomerControler {
     @Autowired
     ClientService cs;
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //客戶列表初始化
     @RequestMapping("/init")
@@ -31,30 +32,31 @@ public class CustomerControler {
         return cs.init(pag);
 
     }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //儲存客戶
     @RequestMapping("/SaveClient")
     public String SaveClient(ClientBean clientBean) {
         System.out.println("*****儲存客戶*****");
         System.out.println(clientBean);
-        if(clientBean.getClientid() == null){
+        if (clientBean.getClientid() == null) {
             clientBean.setAaa(LocalDate.now().toString());
             clientBean.setState(1);
         }
-        ClientBean save =  cs.SaveAdmin(clientBean);
+        ClientBean save = cs.SaveAdmin(clientBean);
 
 
-        List<MarketBean>  marketList= cs.getMarketListByClientid(clientBean.getClientid());
-        for (MarketBean marketBean:marketList ) {
+        List<MarketBean> marketList = cs.getMarketListByClientid(clientBean.getClientid());
+        for (MarketBean marketBean : marketList) {
             marketBean.setClient(clientBean.getName());
-            if(clientBean.getSerialnumber() == null ||clientBean.getSerialnumber().equals("")){
+            if (clientBean.getSerialnumber() == null || clientBean.getSerialnumber().equals("")) {
                 System.out.println("沒有編號");
-            }else {
+            } else {
                 marketBean.setSerialnumber(clientBean.getSerialnumber());
             }
             cs.saveMarket(marketBean);
         }
-        return "redirect:/CRM/client/"+save.getClientid();
+        return "redirect:/CRM/client/" + save.getClientid();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -139,7 +141,6 @@ public class CustomerControler {
         cs.SaveContact(contactBean);
         return "redirect:/client/contactList.jsp";
     }
-
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

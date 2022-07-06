@@ -435,6 +435,19 @@
                                                     ${bean.aaa}
                                                 </div>
                                             </div>
+
+                                            <div class="row">
+                                                <div class="col-md-1 ">
+                                                </div>
+                                                <div class="col-md-2 cellz" style="line-height: 30px;">負責人</div>
+                                                <div class="col-md-4  FormPadding ">
+                                                    <div class="receive"
+                                                        style="color: #0d6efd;cursor: pointer;line-height: 30px;"
+                                                        @click="clickReceive">領取任務</div>
+
+                                                </div>
+                                            </div>
+
                                             <div class="row">
                                                 <div class="col-md-1 ">
                                                 </div>
@@ -442,10 +455,13 @@
                                                     負責人
                                                 </div>
                                                 <div class="col-md-4 FormPadding">
-                                                    <c:if test="${user.position != '職員' }">
+
+
+
+                                                    <c:if test="${user.position != '職員' &&  user.position != '新'}">
+                                                        <input type="hidden" name="receive" v-model='bean.receive'>
                                                         <select name="user" class="form-select cellzFrom"
-                                                            v-model.trim="bean.user"
-                                                            aria-label="Default select example">
+                                                            v-model="bean.user" aria-label="Default select example">
                                                             <option value="無">
                                                                 無
                                                             </option>
@@ -464,7 +480,10 @@
                                                             </c:if>
                                                         </select>
                                                     </c:if>
-                                                    <c:if test="${user.position == '職員' }">
+
+
+                                                    <c:if test="${user.position == '職員' || user.position == '新'}">
+                                                        <input type="hidden" name="receive" v-model.trim="bean.user">
                                                         <input type="hidden" name="user" v-model.trim="bean.user">
                                                         {{bean.user}}
                                                     </c:if>
@@ -1275,7 +1294,7 @@
                                 var hasSave = false;
 
                                 for (const iterator of keys) {
-                                    if (this.bean[iterator] == this.oldBean[iterator]) {  
+                                    if (this.bean[iterator] == this.oldBean[iterator]) {
 
 
                                     } else {
@@ -1293,18 +1312,11 @@
                                                 console.log("response3"),
                                                 vm.formSubmit()
                                             ))
-                                }else{
+                                } else {
                                     this.$message.error('沒有任何改變');
                                 }
                             }
                         }
-
-
-
-
-
-
-
                     },
                     formSubmit() {
                         var formData = new FormData($(".basefrom")[0]);
@@ -1754,7 +1766,45 @@
                                 console.log(returndata);
                             }
                         })
-                    },
+                    },//領取任務
+                    clickReceive() {
+                        if ('${bean.marketid}' == '') {
+                            this.$message({
+                                message: '請先建立任務',
+                                type: 'error'
+                            });
+                        } else {
+
+
+                            this.$confirm('會刷新頁面,請先儲存?', '警告', {
+                                confirmButtonText: '確定',
+                                cancelButtonText: '取消',
+                                type: 'error'
+                            }).then(() => {
+                                $.ajax({
+                                    url: '${pageContext.request.contextPath}/Market/getReceive/${bean.marketid}',
+                                    type: 'get',
+                                    async: false,
+                                    cache: false,
+                                    success: (response => (
+
+                                        location.href = "${pageContext.request.contextPath}/Market/Market/${bean.marketid}"
+                                    )),
+                                    error: function (returndata) {
+                                        console.log(returndata);
+                                    }
+                                })
+                            }).catch(() => {
+                                this.$message({
+                                    type: 'info',
+                                    message: '已領取删除'
+                                });
+                            });
+
+
+
+                        }
+                    }
 
                 },
             })
