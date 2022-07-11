@@ -5,13 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -56,6 +50,8 @@ public class PotentialCustomerBean implements Serializable {
     private String closereason;//結案理由
     private String closeextend;//結案理由延伸
     private String receive;//領取人
+    @Column(columnDefinition = "TINYINT(1)")
+    private Integer receivestate;//領取狀態
 
     @Override
     public String toString() {
@@ -88,6 +84,13 @@ public class PotentialCustomerBean implements Serializable {
     @OneToMany(targetEntity = BosMessageBean.class, mappedBy = "bosid", cascade = CascadeType.ALL)
     private List<BosMessageBean> bm;
 
+    public Integer getReceivestate() {
+        return receivestate;
+    }
+
+    public void setReceivestate(Integer receivestate) {
+        this.receivestate = receivestate;
+    }
 
     public String getCloseextend() {
         return closeextend;

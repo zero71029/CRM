@@ -1,12 +1,16 @@
 package com.jetec.CRM.model;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 
 
 @Entity
 @Table(name = "admin")
-public class AdminBean  {
+public class AdminBean  implements UserDetails {
 	final  static  String SESSIONID = "user";
 
 
@@ -108,9 +112,10 @@ public class AdminBean  {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public String getPassword() {
-		return password;
-	}
+
+
+
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
@@ -139,6 +144,50 @@ public class AdminBean  {
 	public void setDirector(String director) {
 		this.director = director;
 	}
+
+
+	public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+		this.authorities = authorities;
+	}
+
+
+	@Transient
+	private Collection<? extends GrantedAuthority> authorities;
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return authorities;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	@Override
+	public String getUsername() {
+		return name;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
+
+
 
 	@Override
 	public String toString() {

@@ -162,6 +162,14 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
 
     List<MarketBean> findByProducttype(String s);
 
+    List<MarketBean> findByUserAndStageAndReceivestateAndAaaBetween(String user, String state, Integer receives, String startDay, String endDay);
+
+    List<MarketBean> findByUserAndStageAndAaaBetween(String user, String state, String startDay, String endDay);
+
+    List<MarketBean> findByUserAndReceivestateAndAaaBetween(String user, Integer receives, String startDay, String endDay);
+
+    List<MarketBean> findByReceivestateAndAaaBetween(Integer receicestate, String startday, String endday);
+
 
 //   Strin a = """
 //    select * from market m

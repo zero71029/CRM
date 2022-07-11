@@ -1,7 +1,11 @@
 package com.jetec.CRM.controler.service;
 
+import com.jetec.CRM.model.AdminBean;
 import com.jetec.CRM.model.MarketBean;
+import com.jetec.CRM.model.PotentialCustomerBean;
+import com.jetec.CRM.repository.AdminRepository;
 import com.jetec.CRM.repository.MarketRepository;
+import com.jetec.CRM.repository.PotentialCustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -18,6 +22,10 @@ import java.util.Map;
 public class StatisticService {
     @Autowired
     MarketRepository mr;
+    @Autowired
+    AdminRepository ar;
+    @Autowired
+    PotentialCustomerRepository pcr;
 
     /////////////////////////////////////////////////////////////////////////////////////////
     //搜索公司數量
@@ -183,4 +191,45 @@ public class StatisticService {
     public List<MarketBean> getMarketBYBbb(String startDay, String endDay) {
         return mr.findByBbbBetween(startDay,endDay);
     }
+
+    public List<AdminBean> getBusiness() {
+        List<AdminBean> result = ar.getByDepartmentAndState("業務","在職");
+        result.addAll(ar.getByDepartmentAndState("業務","新"));
+        return result;
+    }
+
+
+    public List<MarketBean> getMarketBYAaaAndUser(String startDay, String endDay, String name) {
+        return mr.findByUserAndAaaBetween(name,startDay,endDay,Sort.by(Sort.Direction.DESC,"bbb"));
+    }
+
+    public List<PotentialCustomerBean> getPotentialCustomerbyBYAaaAndUserNotinMarket(String startDay, String endDay, String name) {
+        return pcr.getPotentialCustomerbyBYAaaAndUserNotinMarket( startDay, endDay,  name);
+    }
+
+    public List<MarketBean> getMarketByAaaAndUserAndStateAndReceives(String user, String state, Integer receives, String startDay, String endDay) {
+
+        return mr.findByUserAndStageAndReceivestateAndAaaBetween(user,state,receives,startDay,endDay);
+    }
+
+    public List<PotentialCustomerBean> getPotentialCustomerByUserAndStateAndReceivesAndAaaAndNotinMarket(String user, String state, Integer receives, String startDay, String endDay) {
+        return pcr.getPotentialCustomerByUserAndStateAndReceivesAndAaaAndNotinMarket(user,state,receives,startDay,endDay);
+    }
+
+    public List<MarketBean> getMarketByAaaAndUserAndState(String user, String stage, String startDay, String endDay) {
+        return mr.findByUserAndStageAndAaaBetween(user,stage,startDay,endDay);
+    }
+
+    public List<PotentialCustomerBean> getPotentialCustomerByUserAndStateAndAaaAndNotinMarket(String user, String state, String startDay, String endDay) {
+        return pcr.getPotentialCustomerByUserAndStateAndAaaAndNotinMarket(user,state ,startDay,endDay);
+    }
+
+    public List<MarketBean> getMarketAndUserAndReceivesByAaa(String user, Integer receives, String startDay, String endDay) {
+        return mr.findByUserAndReceivestateAndAaaBetween(user,receives,startDay,endDay);
+    }
+
+    public List<PotentialCustomerBean> getPotentialCustomerAndUserAndReceivesByAaaAndNotinMarket(String user, Integer receives, String startDay, String endDay) {
+        return pcr.getPotentialCustomerAndUserAndReceivesByAaaAndNotinMarket(user,receives,startDay,endDay);
+    }
+
 }

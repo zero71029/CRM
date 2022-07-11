@@ -26,6 +26,10 @@ public class UserService implements UserDetailsService{
 		AdminBean adminBean= ar.findByEmail(username);		
 		if(adminBean != null) {
 		String password = encoder.encode(adminBean.getPassword());
+//		adminBean.setPassword(encoder.encode(adminBean.getPassword()));
+//		adminBean.setAuthorities(AuthorityUtils.commaSeparatedStringToAuthorityList(adminBean.getPosition()+","+adminBean.getDepartment()+","+adminBean.getName()));
+//		return adminBean;
+
 		return new User(username, password,AuthorityUtils.commaSeparatedStringToAuthorityList(adminBean.getPosition()+","+adminBean.getDepartment()+","+adminBean.getName()));
 		}
 		return null;

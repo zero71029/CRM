@@ -24,6 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.nio.file.Files;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Controller
@@ -678,8 +680,8 @@ public class PublicControl {
         if (map == null || map.isEmpty()) return false;
         AdminBean aBean = (AdminBean) session.getAttribute("user");
         while (it.hasNext()) {
-            cmbean.setChangemessageid(zTools.getUUID());
-            cmbean.setCreatetime(zTools.getTime(new Date()));
+            cmbean.setChangemessageid(ZeroTools.getUUID());
+            cmbean.setCreatetime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             cmbean.setChangeid(id);
             cmbean.setAfter("");
             cmbean.setSource("");

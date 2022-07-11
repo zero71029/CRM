@@ -79,7 +79,7 @@
                                 <tr>
                                     <td><input type="checkbox" id="activity" @change="changeActivity"></td>
                                     <td></td>
-                                    <td style="max-width: 180px;">
+                                    <td style="max-width: 150px;">
                                         <el-select v-model="inSortState" multiple placeholder="階段" @change="sortState"
                                             size="mini">
                                             <el-option v-for="item in options" :key="item.value" :label="item.label"
@@ -87,9 +87,11 @@
                                             </el-option>
                                         </el-select>
                                     </td>
+                                    <td>負責人</td>
+                                    <td>領取</td>
                                     <td style="width: 230px;">客戶</td>
                                     <td>描述</td>
-                                    <td>負責人</td>
+                                    
                                     <td>機率</td>
                                     <td @click="sortItem('important')"><a href="#">重要性</a></td>
                                     <td>追蹤次數</td>
@@ -119,6 +121,10 @@
                                                 0?"":s.bm.length}}</span>
 
                                         </td>
+                                        <td v-on:click="market(s.marketid)" style="cursor: pointer;">
+                                            {{s.user}}
+                                        </td>
+                                        <td>{{receives(s.receivestate)}}</td>
                                         <td>
                                             {{s.client}}
                                         </td>
@@ -136,9 +142,7 @@
                                                 </el-button>
                                             </el-popover>
                                         </td>
-                                        <td v-on:click="market(s.marketid)" style="cursor: pointer;">
-                                            {{s.user}}
-                                        </td>
+
                                         <td v-on:click="market(s.marketid)" style="cursor: pointer;">
                                             {{s.clinch}}
                                         </td>
@@ -714,6 +718,24 @@
                                     </div>
                                     <div style="clear:both;margin-bottom: 15px;"></div>
                                     <hr>
+                                    <div>
+                                        <div style="float: left;margin: 3px;">
+                                            <el-button type="danger" size="mini" plain
+                                                @click="AddState('receive','領取','danger')" icon="el-icon-s-goods">領取
+                                            </el-button>
+                                        </div>
+                                        <div style="float: left;margin: 3px;">
+                                            <el-button type="danger" size="mini" plain
+                                                @click="AddState('receive','分配','danger')" icon="el-icon-s-goods">分配
+                                            </el-button>
+                                        </div>
+
+
+                                    </div>
+                                    <div style="clear:both;margin-bottom: 15px;"></div>
+                        
+                                    <hr>
+
 
                                 </div>
                             </div>
@@ -1452,6 +1474,15 @@
                                 console.log(returndata);
                             }
                         })
+                    },
+                    //轉換 領取狀態
+                    receives(val){                        
+                        switch(val){
+                            case 1 :return"領取";
+                            case 2 :return"分配";
+                            case 3 :return"";
+                        }
+                     
                     },
                     // getAutoClose(){
                     //     $.ajax({

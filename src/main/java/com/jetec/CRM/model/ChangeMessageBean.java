@@ -3,6 +3,7 @@ package com.jetec.CRM.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.Date;
 
 @Entity
@@ -17,10 +18,6 @@ public class ChangeMessageBean {
     private String source;
     private String after;
     private String createtime;
-
-
-
-
 
 
     public ChangeMessageBean() {

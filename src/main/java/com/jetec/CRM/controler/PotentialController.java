@@ -60,6 +60,7 @@ public class PotentialController {
         Map<String, Object> result = new HashMap<>();
         result.put("list", PCS.getList(pag));
         result.put("todayTotal", PCS.gettodayTotal());
+        result.put("expired", PCS.expired());
         return result;
     }
 
@@ -298,13 +299,18 @@ public class PotentialController {
         PotentialCustomerBean pcBean = PCS.getById(customerid);
         if (pcBean != null) {
             AdminBean aBean = (AdminBean) session.getAttribute("user");
-            if (pcBean.getReceive() == null || pcBean.getReceive().isEmpty()                                          ) {
+            System.out.println(aBean.getName());
+            System.out.println(pcBean.getUser());
+            if (pcBean.getReceive() == null || pcBean.getReceive().isEmpty() || !Objects.equals(aBean.getName(), pcBean.getUser())      ) {
                 ChangeMessageBean cmBean = new ChangeMessageBean(ZeroTools.getUUID(), pcBean.getCustomerid(), aBean.getName(), "領取任務", pcBean.getReceive(), aBean.getName(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                 ss.saveChangeMesssage(cmBean);
                 cmBean = new ChangeMessageBean(ZeroTools.getUUID(), pcBean.getCustomerid(), aBean.getName(), "負責人", pcBean.getUser(), aBean.getName(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                 ss.saveChangeMesssage(cmBean);
+                cmBean = new ChangeMessageBean(ZeroTools.getUUID(), pcBean.getCustomerid(), aBean.getName(), "領取狀態", pcBean.getReceivestate()+"", "1", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                ss.saveChangeMesssage(cmBean);
                 pcBean.setReceive(aBean.getName());
                 pcBean.setUser(aBean.getName());
+                pcBean.setReceivestate(1);
                 PCS.SavePotentialCustomer(pcBean);
                 result.put("state", "領取成功");
                 result.put("user", aBean.getName());
@@ -314,8 +320,11 @@ public class PotentialController {
             ss.saveChangeMesssage(cmBean);
             cmBean = new ChangeMessageBean(ZeroTools.getUUID(), pcBean.getCustomerid(), aBean.getName(), "負責人", aBean.getName(), "null", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             ss.saveChangeMesssage(cmBean);
+            cmBean = new ChangeMessageBean(ZeroTools.getUUID(), pcBean.getCustomerid(), aBean.getName(), "領取狀態", pcBean.getReceivestate()+"", "3", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            ss.saveChangeMesssage(cmBean);
             pcBean.setReceive(null);
             pcBean.setUser(null);
+            pcBean.setReceivestate(3);
             PCS.SavePotentialCustomer(pcBean);
             result.put("state", "取消成功");
             result.put("user", null);

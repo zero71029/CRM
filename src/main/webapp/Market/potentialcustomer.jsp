@@ -369,12 +369,14 @@
                                 <!-- 右邊區塊 -->
                                 <div class="col-md-5  ASDFG">
                                     <div class="row">
-                                        <div class="col-md-3 cellz" style="line-height: 30px;">潛在客戶負責人</div>
+                                        <div class="col-md-3 " style="line-height: 30px;"></div>
                                         <div class="col-md-4  FormPadding ">
-                                            <div class="receive"
-                                                style="color: #0d6efd;cursor: pointer;line-height: 30px;"
-                                                @click="clickReceive">領取任務</div>
 
+                                        
+                                                <div class="receive"
+                                                    style="color: #0d6efd;cursor: pointer;line-height: 30px;"
+                                                    @click="clickReceive">領取任務</div>
+                                           
                                         </div>
                                     </div>
 
@@ -385,19 +387,21 @@
                                     <div class="row">
                                         <div class="col-md-3 cellz" style="line-height: 30px;">潛在客戶負責人</div>
                                         <div class="col-md-4 cellz FormPadding">
+                                            <input type="hidden" name="receive" v-model='customer.receive'>
+                                            <input type="hidden" name="receivestate" v-model="customer.receivestate">
+
 
                                             <c:set var="salary"
                                                 value="${user.position == '職員' || user.position == '新'}">
                                             </c:set>
 
                                             <c:if test="${salary}">
-                                                <input type="hidden" name="receive" v-model.trim="customer.user">
                                                 <input type="hidden" name="user" v-model.trim="customer.user">
                                                 {{customer.user}}
                                             </c:if>
 
                                             <c:if test="${!salary}">
-                                                <input type="hidden" name="receive" v-model='customer.receive'>
+
                                                 <select name="user" class="form-select cellFrom" v-model="customer.user"
                                                     @change="changeUser">
                                                     <option value="無">無</option>
@@ -422,7 +426,10 @@
 
                                         <div class="col-md-3 cellz" style="font-size: 14px;">建立時間</div>
                                         <div class="col-md-7  FormPadding">
-                                            ${bean.aaa}
+                                            ${bean.aaa}                                  
+                                                <el-tag v-show="customer.receivestate == 1">領取</el-tag>                     
+                                            
+                                                <el-tag type="danger" v-show="customer.receivestate == 2">分配</el-tag>                                          
                                         </div>
                                     </div>
                                     <div class="row">
@@ -1590,7 +1597,9 @@
                                         message: response.state,
                                         type: 'success'
                                     }),
-                                    this.customer.user = response.user
+                                    this.customer.user = response.user,
+                                    this.customer.receive = response.user,
+                                    this.customer.receivestate = 1 
                                 )),
                                 error: function (returndata) {
                                     console.log(returndata);
@@ -1602,6 +1611,13 @@
                     //分配人員 (receive 設為null)
                     changeUser() {
                         this.customer.receive = null;
+                        console.log(this.customer.user);
+                        if (this.customer.user != '無') {
+                            this.customer.receivestate = 2;
+                        }
+                        if (this.customer.user == '無'){
+                            this.customer.receivestate = 3;
+                        }
                     }
 
 

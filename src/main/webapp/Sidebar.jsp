@@ -93,11 +93,19 @@
                 <!-- <button class="client">流失客戶</button> -->
                 <!-- <button class="list-group-item" onclick="javascript:location.href=''"> 服務管理 </button> -->
                 <button class="list-group-item "
-                    onclick="javascript:location.href='${pageContext.request.contextPath}/statistic/statistic.jsp'">
-                    <!-- <i class="el-icon-pie-chart"></i>  -->
+                    onclick="statistic()"
+                    >                
                     數據管理
                 </button>
+                <button class="statistic"
+                onclick="javascript:location.href='${pageContext.request.contextPath}/statistic/BusinessCase.jsp'">
+                    業務接案
+                </button>
 
+                <button class="statistic"
+                onclick="javascript:location.href='${pageContext.request.contextPath}/statistic/statistic.jsp'">
+                    每日案件
+                </button>
                 <button class="statistic"
                     onclick="javascript:location.href='${pageContext.request.contextPath}/statistic/CloseState.jsp'">
                     結案狀態
@@ -175,26 +183,26 @@
                 </c:if>
             </ul>
             <!-- session 認證-->
-            <c:if test='${empty user}'>
-                <script>
-                    console.log("未登入");
-                    $.ajax({
-                        url: '${pageContext.request.contextPath}/UserAuthorize',
-                        type: 'POST',
-                        success: function (json) {
-                            if (json) {
-                                location.reload();
-                            } else {
+<%--            <c:if test='${empty user}'>--%>
+<%--                <script>--%>
+<%--                    console.log("未登入");--%>
+<%--                    $.ajax({--%>
+<%--                        url: '${pageContext.request.contextPath}/UserAuthorize',--%>
+<%--                        type: 'POST',--%>
+<%--                        success: function (json) {--%>
+<%--                            if (json) {--%>
+<%--                                location.reload();--%>
+<%--                            } else {--%>
 
-                                console.log("沒有認證");
-                            }
-                        },
-                        error: function (returndata) {
-                            console.log(returndata);
-                        }
-                    });
-                </script>
-            </c:if>
+<%--                                console.log("沒有認證");--%>
+<%--                            }--%>
+<%--                        },--%>
+<%--                        error: function (returndata) {--%>
+<%--                            console.log(returndata);--%>
+<%--                        }--%>
+<%--                    });--%>
+<%--                </script>--%>
+<%--            </c:if>--%>
             <!-- 工作項目彈窗 -->
             <div class="work" title="工作項目">
                 <table class="Table table-striped workTable">
@@ -245,6 +253,17 @@
             $(".client").hide();
             $(".system").hide();
             $(".marketing").hide();
+
+
+
+            function statistic(){
+                $(".statistic").toggle();
+                $(".employee").hide();          
+                $(".market").hide();
+                $(".client").hide();
+                $(".system").hide();
+                $(".marketing").hide();
+            }
 
 
             function employee() {//員工區

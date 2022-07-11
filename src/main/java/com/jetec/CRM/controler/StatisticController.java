@@ -8,6 +8,7 @@ import com.jetec.CRM.controler.service.SystemService;
 import com.jetec.CRM.model.AdminBean;
 import com.jetec.CRM.model.LibraryBean;
 import com.jetec.CRM.model.MarketBean;
+import com.jetec.CRM.model.PotentialCustomerBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -96,7 +99,6 @@ public class StatisticController {
         List<LibraryBean> libraryList = (List<LibraryBean>) app.getAttribute("library");
 
 
-
         result.put("CompanyNumList", CompanyNumList);//每天案件數量
         result.put("companyNum", ss.selectCompany(startDay, endDay));//公司名稱列表
         result.put("AdminCastNum", AdminCastNum(startDay, endDay));//取得個業務案件數量
@@ -133,7 +135,6 @@ public class StatisticController {
             startDay = addDay(startDay);
         }
         return result;
-
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
@@ -169,7 +170,7 @@ public class StatisticController {
 //            result.put(m.getKey(),m.getValue());
 //        }
 //
-//        System.out.println(result);
+//        
         return result;
     }
 
@@ -205,6 +206,7 @@ public class StatisticController {
 
         return result;
     }
+
     //////////////////////////////////////////////////////////////////////////////
     //結案狀態
     @ResponseBody
@@ -220,16 +222,16 @@ public class StatisticController {
             endDay = endDay + " 24:00";
         }
         if (startDay == null || startDay.equals("")) {
-            startDay = zTools.addDay(endDay,-7);
+            startDay = zTools.addDay(endDay, -7);
             startDay = startDay.substring(0, 10);
             startDay = startDay + " 00:00";
         } else {
             startDay = startDay + " 00:00";
         }
 
-        result.put("success",ss.getMarketByState("成功結案",startDay,endDay));
-        result.put("fail",ss.getMarketByState("失敗結案",startDay,endDay));
-        result.put("other",ss.getMarketByCloseNot(startDay,endDay));
+        result.put("success", ss.getMarketByState("成功結案", startDay, endDay));
+        result.put("fail", ss.getMarketByState("失敗結案", startDay, endDay));
+        result.put("other", ss.getMarketByCloseNot(startDay, endDay));
 
 
         return result;
@@ -250,7 +252,7 @@ public class StatisticController {
             endDay = endDay + "T24:00";
         }
         if (startDay == null || "".equals(startDay)) {
-            startDay = zTools.addDay(endDay,-7);
+            startDay = zTools.addDay(endDay, -7);
             startDay = startDay.substring(0, 10);
             startDay = startDay + "T00:00";
         } else {
@@ -258,30 +260,227 @@ public class StatisticController {
         }
 
 
-        List<MarketBean> l = ss.getMarketBYBbb(startDay,endDay);
-        System.out.println("活耀案件:"+l.size()+"筆");
+        List<MarketBean> l = ss.getMarketBYBbb(startDay, endDay);
+        System.out.println("活耀案件:" + l.size() + "筆");
 //        List<MarketBean> l = ss.getMarketByAaa( startDay,endDay);
-        List<Map<String ,String>> success = new ArrayList<>();
-        l.stream().filter(e->"成功結案".equals(e.getStage())).forEach(e->{
+        List<Map<String, String>> success = new ArrayList<>();
+        l.stream().filter(e -> "成功結案".equals(e.getStage())).forEach(e -> {
 
-            Map<String ,String> x = new HashMap<>();
-            x.put("client",e.getClient());
-            x.put("aaa",e.getAaa());
-            x.put("user",e.getUser());
-            x.put("marketid",e.getMarketid());
+            Map<String, String> x = new HashMap<>();
+            x.put("client", e.getClient());
+            x.put("aaa", e.getAaa());
+            x.put("user", e.getUser());
+            x.put("marketid", e.getMarketid());
             success.add(x);
         });
-        List<Map<String ,String>> fail = new ArrayList<>();
-        l.stream().filter(e->"失敗結案".equals(e.getStage())).forEach(e->{
-            Map<String ,String> x = new HashMap<>();
-            x.put("client",e.getClient());
-            x.put("closereason",e.getClosereason());
-            x.put("marketid",e.getMarketid());
+        List<Map<String, String>> fail = new ArrayList<>();
+        l.stream().filter(e -> "失敗結案".equals(e.getStage())).forEach(e -> {
+            Map<String, String> x = new HashMap<>();
+            x.put("client", e.getClient());
+            x.put("closereason", e.getClosereason());
+            x.put("marketid", e.getMarketid());
             fail.add(x);
         });
-        result.put("success",success);
-        result.put("fail",fail);
-        result.put("other",ss.getMarketByCloseNot(startDay,endDay));
+        result.put("success", success);
+        result.put("fail", fail);
+        result.put("other", ss.getMarketByCloseNot(startDay, endDay));
         return result;
     }
+
+    //////////////////////////////////////////////////////////////////////////////
+    //業務接案
+    @ResponseBody
+    @RequestMapping("/BusinessCase")
+    private Map<String, Object> BusinessCase(@RequestParam("startDay") String startDay, @RequestParam("endDay") String endDay) {
+        System.out.println("***業務接案***");
+        Map<String, Object> result = new HashMap<>();
+        //日期整理
+        if (Objects.equals(endDay, "")) {
+            endDay = ZeroTools.getTime(new Date());
+        } else {
+            endDay = endDay + " 24:00";
+        }
+        if (startDay == null || "".equals(startDay)) {
+            startDay = zTools.addDay(endDay, -7);
+            startDay = startDay.substring(0, 10);
+            startDay = startDay + " 00:00";
+        } else {
+            startDay = startDay + " 00:00";
+        }
+        List<AdminBean> Business = ss.getBusiness();
+        for (AdminBean a : Business) {
+            List<MarketBean> marketBeanList = ss.getMarketBYAaaAndUser(startDay, endDay, a.getName());
+            List<PotentialCustomerBean> pList = ss.getPotentialCustomerbyBYAaaAndUserNotinMarket(startDay, endDay, a.getName());
+            int 接案數 = marketBeanList.size() + pList.size();
+            if (接案數 > 0) {
+                int 成功數 = 0;
+                int 失敗數 = 0;
+                int 未結案 = 0;
+                int 領取數 = 0;
+                int 分配數 = 0;
+                int 領取成功 = 0;
+                int 領取失敗 = 0;
+                int 分配成功 = 0;
+                int 分配失敗 = 0;
+                int 領取未結案 = 0;
+                int 分配未結案 = 0;
+                Map<String, Object> o = new HashMap<>();
+                for (MarketBean m : marketBeanList) {
+                    if (Objects.equals("成功結案", m.getStage())) 成功數++;
+                    if (Objects.equals("失敗結案", m.getStage())) 失敗數++;
+                    if (!Objects.equals("失敗結案", m.getStage()) && !Objects.equals("成功結案", m.getStage())) 未結案++;
+                    if (Objects.equals(1, m.getReceivestate())) 領取數++;
+                    if (Objects.equals(2, m.getReceivestate())) 分配數++;
+                    if (Objects.equals(1, m.getReceivestate()) && Objects.equals("成功結案", m.getStage())) 領取成功++;
+                    if (Objects.equals(1, m.getReceivestate()) && Objects.equals("失敗結案", m.getStage())) 領取失敗++;
+                    if (Objects.equals(2, m.getReceivestate()) && Objects.equals("成功結案", m.getStage())) 分配成功++;
+                    if (Objects.equals(2, m.getReceivestate()) && Objects.equals("失敗結案", m.getStage())) 分配失敗++;
+                    if (Objects.equals(1, m.getReceivestate()) && (Objects.equals("尚未處理", m.getStage()) || Objects.equals("潛在客戶轉", m.getStage()) || Objects.equals("內部詢價中", m.getStage()) || Objects.equals("已報價", m.getStage()) || Objects.equals("提交主管", m.getStage())))
+                        領取未結案++;
+                    if (Objects.equals(2, m.getReceivestate()) && (Objects.equals("尚未處理", m.getStage()) || Objects.equals("潛在客戶轉", m.getStage()) || Objects.equals("內部詢價中", m.getStage()) || Objects.equals("已報價", m.getStage()) || Objects.equals("提交主管", m.getStage())))
+                        分配未結案++;
+                }
+                for (PotentialCustomerBean m : pList) {
+                    if (Objects.equals("合格", m.getStatus())) 成功數++;
+                    if (Objects.equals("不合格", m.getStatus())) 失敗數++;
+                    if (!Objects.equals("合格", m.getStatus()) && !Objects.equals("不合格", m.getStatus())) 未結案++;
+                    if (Objects.equals(1, m.getReceivestate())) 領取數++;
+                    if (Objects.equals(2, m.getReceivestate())) 分配數++;
+                    if (Objects.equals(1, m.getReceivestate()) && Objects.equals("合格", m.getStatus())) 領取成功++;
+                    if (Objects.equals(1, m.getReceivestate()) && Objects.equals("不合格", m.getStatus())) 領取失敗++;
+                    if (Objects.equals(2, m.getReceivestate()) && Objects.equals("合格", m.getStatus())) 分配成功++;
+                    if (Objects.equals(2, m.getReceivestate()) && Objects.equals("不合格", m.getStatus())) 分配失敗++;
+                    if (Objects.equals(1, m.getReceivestate()) && (!Objects.equals("合格", m.getStatus()) && !Objects.equals("不合格", m.getStatus())))
+                        領取未結案++;
+                    if (Objects.equals(2, m.getReceivestate()) && (!Objects.equals("合格", m.getStatus()) && !Objects.equals("不合格", m.getStatus())))
+                        分配未結案++;
+                }
+                o.put("name", a.getName());
+                o.put("接案數", 接案數);
+                o.put("成功數", 成功數);
+                o.put("失敗數", 失敗數);
+                o.put("未結案", 未結案);
+                o.put("領取數", 領取數);
+                o.put("分配數", 分配數);
+                o.put("領取成功", 領取成功);
+                o.put("領取失敗", 領取失敗);
+                o.put("分配成功", 分配成功);
+                o.put("分配失敗", 分配失敗);
+                o.put("領取未結案", 領取未結案);
+                o.put("分配未結案", 分配未結案);
+                result.put(a.getName(), o);
+            }
+        }
+        
+        return result;
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //業務接案 細節
+    //state 1 成功  2 失敗  3未結案 4全
+    //receives 1領取 2分配  3 全
+    @ResponseBody
+    @RequestMapping("/BusinessDetail")
+    public Map<String, Object> BusinessDetail(@RequestParam("state") String state, @RequestParam("receives") Integer receives, @RequestParam("startDay") String startDay, @RequestParam("endDay") String endDay, @RequestParam("user") String user) {
+        Map<String, Object> result = new HashMap<>();
+        List<MarketBean> mList = new ArrayList<>();
+        List<PotentialCustomerBean> pList = new ArrayList<>();
+        System.out.println("state "+state);
+        System.out.println("receives "+receives);
+        System.out.println(startDay);
+        System.out.println(endDay);
+        System.out.println("user " +user);
+
+        //日期整理
+        if (Objects.equals(endDay, "")) {
+            endDay = ZeroTools.getTime(new Date());
+        } else {
+            endDay = endDay + " 24:00";
+        }
+        if (startDay == null || "".equals(startDay)) {
+            startDay = zTools.addDay(endDay, -7);
+            startDay = startDay.substring(0, 10);
+            startDay = startDay + " 00:00";
+        } else {
+            startDay = startDay + " 00:00";
+        }
+
+
+        //
+        if (Objects.equals(3, receives)) {
+            if (Objects.equals("1", state)) {
+                mList = ss.getMarketByAaaAndUserAndState(user, "成功結案",  startDay, endDay);
+                pList = ss.getPotentialCustomerByUserAndStateAndAaaAndNotinMarket(user, "合格",  startDay, endDay);
+                result.put("Market", mList);
+                result.put("Customer", pList);
+                System.out.println(result);
+                return result;
+            }
+            if (Objects.equals("2", state)) {
+                mList = ss.getMarketByAaaAndUserAndState(user, "失敗結案", startDay, endDay);
+                pList = ss.getPotentialCustomerByUserAndStateAndAaaAndNotinMarket(user, "不合格", startDay, endDay);
+                result.put("Market", mList);
+                result.put("Customer", pList);
+                System.out.println("result");
+                return result;
+            }
+            if (Objects.equals("3", state)) {
+                mList = ss.getMarketByAaaAndUserAndState(user, "尚未處理", startDay, endDay);
+                mList.addAll(ss.getMarketByAaaAndUserAndState(user, "內部詢價中", startDay, endDay));
+                mList.addAll(ss.getMarketByAaaAndUserAndState(user, "已報價", startDay, endDay));
+                mList.addAll(ss.getMarketByAaaAndUserAndState(user, "提交主管", startDay, endDay));
+                mList.addAll(ss.getMarketByAaaAndUserAndState(user, "潛在客戶轉", startDay, endDay));
+                pList = ss.getPotentialCustomerByUserAndStateAndAaaAndNotinMarket(user, "未處理", startDay, endDay);
+                pList.addAll(ss.getPotentialCustomerByUserAndStateAndAaaAndNotinMarket(user, "已聯繫", startDay, endDay));
+                pList.addAll(ss.getPotentialCustomerByUserAndStateAndAaaAndNotinMarket(user, "提交主管", startDay, endDay));
+                result.put("Market", mList);
+                result.put("Customer", pList);
+                return result;
+            }
+            if (Objects.equals("4", state)) {
+                mList = ss.getMarketBYAaaAndUser(user, startDay, endDay);
+                pList = ss.getPotentialCustomerbyBYAaaAndUserNotinMarket(  startDay, endDay,user);
+                result.put("Market", mList);
+                result.put("Customer", pList);
+                return result;
+            }
+        }
+        if (Objects.equals("1", state)) {
+            mList = ss.getMarketByAaaAndUserAndStateAndReceives(user, "成功結案", receives, startDay, endDay);
+            pList = ss.getPotentialCustomerByUserAndStateAndReceivesAndAaaAndNotinMarket(user, "合格", receives, startDay, endDay);
+            result.put("Market", mList);
+            result.put("Customer", pList);
+            return result;
+        }
+        if (Objects.equals("2", state)) {
+            mList = ss.getMarketByAaaAndUserAndStateAndReceives(user, "失敗結案", receives, startDay, endDay);
+            pList = ss.getPotentialCustomerByUserAndStateAndReceivesAndAaaAndNotinMarket(user, "不合格", receives, startDay, endDay);
+            result.put("Market", mList);
+            result.put("Customer", pList);
+            return result;
+        }
+        if (Objects.equals("3", state)) {
+            mList = ss.getMarketByAaaAndUserAndStateAndReceives(user, "尚未處理", receives, startDay, endDay);
+            mList.addAll(ss.getMarketByAaaAndUserAndStateAndReceives(user, "內部詢價中", receives, startDay, endDay));
+            mList.addAll(ss.getMarketByAaaAndUserAndStateAndReceives(user, "已報價", receives, startDay, endDay));
+            mList.addAll(ss.getMarketByAaaAndUserAndStateAndReceives(user, "提交主管", receives, startDay, endDay));
+            mList.addAll(ss.getMarketByAaaAndUserAndStateAndReceives(user, "潛在客戶轉", receives, startDay, endDay));
+            pList = ss.getPotentialCustomerByUserAndStateAndReceivesAndAaaAndNotinMarket(user, "未處理", receives, startDay, endDay);
+            pList.addAll(ss.getPotentialCustomerByUserAndStateAndReceivesAndAaaAndNotinMarket(user, "已聯繫", receives, startDay, endDay));
+            pList.addAll(ss.getPotentialCustomerByUserAndStateAndReceivesAndAaaAndNotinMarket(user, "提交主管", receives, startDay, endDay));
+            result.put("Market", mList);
+            result.put("Customer", pList);
+            return result;
+        }
+        if (Objects.equals("4", state)) {
+            mList = ss.getMarketAndUserAndReceivesByAaa(user,  receives, startDay, endDay);
+            pList = ss.getPotentialCustomerAndUserAndReceivesByAaaAndNotinMarket(user,  receives, startDay, endDay);
+            result.put("Market", mList);
+            result.put("Customer", pList);
+            return result;
+        }
+        return result;
+    }
+
+
 }

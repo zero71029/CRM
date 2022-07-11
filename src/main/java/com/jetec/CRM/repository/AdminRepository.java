@@ -29,4 +29,6 @@ public interface AdminRepository extends JpaRepository<AdminBean, Integer>{
 	List<AdminBean> findByState(String state);
 
     List<AdminBean> findByStateOrState(String a, String b);
+
+	List<AdminBean> getByDepartmentAndState(String 業務, String 在職);
 }

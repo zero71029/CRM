@@ -318,12 +318,17 @@
                         </div>
 
 
+
+                        <div style="line-height: 30px;">
+                            <el-link type="primary">需分配 : {{expired}}</el-link>
+
+                        </div>
                         <!-- 分頁 -->
-                        <div class="block text-center">
+                        <!-- <div class="block text-center">
                             <el-pagination @current-change="handleCurrentChange" :current-page.sync="currentPage1"
                                 :page-size="20" layout="  prev, pager, next" :total="MaxPag">
                             </el-pagination>
-                        </div>
+                        </div> -->
                         <transition-group name="slide-fade" appear>
                             <!-- <%-- 中間主體--%> -->
                             <table class="Table table-striped orderTable" v-if="show" key="1">
@@ -332,7 +337,7 @@
                                     <td></td>
                                     <td style="width: 90px;" @click="sortState('state')"><a href="#">狀態</a></td>
                                     <td style="width: 90px;">負責人</td>
-
+                                    <td>領取</td>
                                     <td>客戶名稱</td>
 
                                     <td>詢問內容</td>
@@ -343,44 +348,52 @@
                                     <td @click="sortItem('important')"><a href="#">重要性</a></td>
                                 </tr>
                                 <tr class="item" v-for="(s, index) in list" :key="s.customerid">
-<%--                                    --%>
-                                    <td><input type="checkbox" :value="s.customerid" name="mak" @change="clickmak"
-                                            :id="s.customerid"></td>
-<%--    列表編號--%>
-                                    <td>{{index+1}} <span class="badge rounded-pill bg-danger"
-                                            v-show="s.bm.length > 0">{{s.bm.length ==
-                                            0?"":s.bm.length}}</span>
-                                        <i class="el-icon-help" style="color: red;" v-if="s.callhelp == 1"></i>
-                                    </td>
-                                    <td v-on:click="customer(s.customerid)" style="cursor: pointer;"
-                                        :class="'state'+index">
-                                        {{s.status}}</td>
-                                    <td v-on:click="customer(s.customerid)" style="cursor: pointer;">
-                                        {{s.user}}</td>
+                                    <%-- --%>
+                                        <td><input type="checkbox" :value="s.customerid" name="mak" @change="clickmak"
+                                                :id="s.customerid"></td>
+                                        <%-- 列表編號--%>
+                                            <td>{{index+1}} <span class="badge rounded-pill bg-danger"
+                                                    v-show="s.bm.length > 0">{{s.bm.length ==
+                                                    0?"":s.bm.length}}</span>
+                                                <i class="el-icon-help" style="color: red;" v-if="s.callhelp == 1"></i>
+                                            </td>
+                                            <!--  狀態-->
+                                            <td v-on:click="customer(s.customerid)" style="cursor: pointer;"
+                                                :class="'state'+index">
+                                                {{s.status}}</td>
 
-                                    <td>
-                                        {{s.company}}<i class="el-icon-paperclip" style="color: blue;"
-                                            v-if="isEmpty(s.marketfilelist)"></i></td>
-                                    <!-- 詢問內容 -->
-                                    <td v-if="s.remark.length <100 " style="width: 500px;cursor: pointer;"
-                                        v-on:click="customer(s.customerid)">{{s.remark}}</td>
-                                    <td v-on:click="customer(s.customerid)" v-if="s.remark.length >=100 ">
-                                        <el-popover placement="top-start" width="300" trigger="hover"
-                                            :content="s.remark">
-                                            <el-button slot="reference" class="text-truncate text-start"
-                                                style="width: 500px; color: #000;" type="text">{{s.remark}}</el-button>
-                                        </el-popover>
-                                    </td>
-                                    <!-- 建立時間 -->
-                                    <td v-on:click="customer(s.customerid)" style="cursor: pointer;">
-                                        {{s.aaa}}</td>
-                                    <td v-on:click="customer(s.customerid)" style="cursor: pointer;">
-                                        {{s.name}}</td>
-                                    <td v-on:click="customer(s.customerid)">
-                                        {{s.industry}}</td>
-                                    <td v-on:click="customer(s.customerid)" style="cursor: pointer;"
-                                        :class="'important'+index">
-                                        {{s.important}}</td>
+                                            <!-- 負責人 -->
+                                            <td v-on:click="customer(s.customerid)" style="cursor: pointer;"
+                                                v-html="s.user">
+                                            </td>
+                                            <!-- 領取 -->
+                                            <td v-html="s.receivestate"> <div></div></td>
+                                            <!-- 客戶名稱 -->
+                                            <td>
+                                                {{s.company}}<i class="el-icon-paperclip" style="color: blue;"
+                                                    v-if="isEmpty(s.marketfilelist)"></i></td>
+                                            <!-- 詢問內容 -->
+                                            <td v-if="s.remark.length <100 " style="width: 500px;cursor: pointer;"
+                                                v-on:click="customer(s.customerid)">{{s.remark}}</td>
+
+                                            <td v-on:click="customer(s.customerid)" v-if="s.remark.length >=100 ">
+                                                <el-popover placement="top-start" width="300" trigger="hover"
+                                                    :content="s.remark">
+                                                    <el-button slot="reference" class="text-truncate text-start"
+                                                        style="width: 500px; color: #000;" type="text">{{s.remark}}
+                                                    </el-button>
+                                                </el-popover>
+                                            </td>
+                                            <!-- 建立時間 -->
+                                            <td v-on:click="customer(s.customerid)" style="cursor: pointer;">
+                                                {{s.aaa}}</td>
+                                            <td v-on:click="customer(s.customerid)" style="cursor: pointer;">
+                                                {{s.name}}</td>
+                                            <td v-on:click="customer(s.customerid)">
+                                                {{s.industry}}</td>
+                                            <td v-on:click="customer(s.customerid)" style="cursor: pointer;"
+                                                :class="'important'+index">
+                                                {{s.important}}</td>
                                 </tr>
                             </table>
                         </transition-group>
@@ -512,6 +525,7 @@
                     inStateList: [],//狀態
                     source: [],//來源
                     industry: [],//產業
+                    expired: 0,
                 },
                 created: function () {
                     var url = new URL(location.href);
@@ -519,13 +533,32 @@
                     if (this.admin != "") {
                         //要求列表
                         $.ajax({
-                            url: '${pageContext.request.contextPath}/Potential/CustomerList?pag=' + this.currentPage1,
+                            url: '${pageContext.request.contextPath}/Potential/CustomerList?pag=1',
                             type: 'POST',
                             async: false,
                             cache: false,
                             success: response => {
-                                this.list = response.list,
-                                    this.todayTotal = response.todayTotal
+                                this.list = response.list;
+                                this.todayTotal = response.todayTotal;
+                                this.expired = response.expired;
+                                var now = new Date().getTime();
+                                this.list.forEach(e => {
+                                    var create = new Date(e.aaa).getTime();
+                                    if ((now - create) / 3600000 > 2 && (e.user == "" || e.user == null)) {
+                                        e.user = '<div class="el-tag">需分配</div>';
+                                    }
+                                    switch (e.receivestate) {
+                                        case 1: e.receivestate = '<el-tag>領取</el-tag>';break;
+                                        case 2: e.receivestate = '<el-tag>分配</el-tag>';break;
+                                        case 3: e.receivestate = '';break;
+                                    }
+
+
+
+
+
+
+                                });
                             },
                             error: function (returndata) {
                                 console.log(returndata);
@@ -737,6 +770,15 @@
                         } else { return marketfilelist.length > 0 }
 
                     },
+                    //轉換 領取狀態
+                    receives(val) {
+                        switch (val) {
+                            case 1: return "領取";
+                            case 2: return "分配";
+                            case 3: return "";
+                        }
+
+                    },
                 },
             })
         </script>
@@ -767,6 +809,21 @@
                 transform: translateY(200%);
                 opacity: 0;
             }
+
+            .el-tag {
+                background-color: red;
+                display: inline-block;
+                height: 32px;
+                padding: 0 10px;
+                line-height: 30px;
+                font-size: 12px;
+                color: #fff;
+                border: 1px solid #d9ecff;
+                border-radius: 4px;
+                box-sizing: border-box;
+                white-space: nowrap;
+            }
         </style>
+
 
         </html>

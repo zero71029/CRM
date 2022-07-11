@@ -55,7 +55,8 @@ public class MarketBean implements Serializable {
     private String closereason;//結案理由
     private String closeextend;//結案理由延伸
     private String receive;//領取人
-
+    @Column(columnDefinition = "TINYINT(1)")
+    private Integer receivestate;//領取狀態
 
 
     public String getContactmethod() {
@@ -478,6 +479,14 @@ public class MarketBean implements Serializable {
 
     public void setReceive(String receive) {
         this.receive = receive;
+    }
+
+    public Integer getReceivestate() {
+        return receivestate;
+    }
+
+    public void setReceivestate(Integer receivestate) {
+        this.receivestate = receivestate;
     }
 
     @Override

@@ -430,21 +430,28 @@
                                                 </div>
                                                 <div class="col-md-2 cellz">
                                                     創建時間
+
                                                 </div>
                                                 <div class="col-md-4 FormPadding">
                                                     ${bean.aaa}
+                                                    <c:if test="${bean.receivestate == 1}">
+                                                        <el-tag>領取</el-tag>
+                                                    </c:if>
+                                                    <c:if test="${bean.receivestate == 2}">
+                                                        <el-tag type="danger">分配</el-tag>
+                                                    </c:if>
+
                                                 </div>
                                             </div>
 
                                             <div class="row">
                                                 <div class="col-md-1 ">
                                                 </div>
-                                                <div class="col-md-2 cellz" style="line-height: 30px;">負責人</div>
+                                                <div class="col-md-2 cellz" style="line-height: 30px;"></div>
                                                 <div class="col-md-4  FormPadding ">
                                                     <div class="receive"
                                                         style="color: #0d6efd;cursor: pointer;line-height: 30px;"
-                                                        @click="clickReceive">領取任務</div>
-
+                                                        @click="clickReceive">領取任務 </div>
                                                 </div>
                                             </div>
 
@@ -455,16 +462,14 @@
                                                     負責人
                                                 </div>
                                                 <div class="col-md-4 FormPadding">
-
-
+                                                    <input type="hidden" name="receive" v-model="bean.receive">
+                                                    <input type="hidden" name="receivestate"
+                                                        v-model="bean.receivestate">
 
                                                     <c:if test="${user.position != '職員' &&  user.position != '新'}">
-                                                        <input type="hidden" name="receive" v-model='bean.receive'>
                                                         <select name="user" class="form-select cellzFrom"
-                                                            v-model="bean.user" aria-label="Default select example">
-                                                            <option value="無">
-                                                                無
-                                                            </option>
+                                                            @change="changeUser" v-model="bean.user">
+                                                            <option value="無">無</option>
                                                             <c:if test="${not empty admin}">
                                                                 <c:forEach varStatus="loop" begin="0"
                                                                     end="${admin.size()-1}" items="${admin}" var="s">
@@ -480,10 +485,7 @@
                                                             </c:if>
                                                         </select>
                                                     </c:if>
-
-
                                                     <c:if test="${user.position == '職員' || user.position == '新'}">
-                                                        <input type="hidden" name="receive" v-model.trim="bean.user">
                                                         <input type="hidden" name="user" v-model.trim="bean.user">
                                                         {{bean.user}}
                                                     </c:if>
@@ -1134,10 +1136,12 @@
                 created() {
                     this.show = true;
                     this.loading = false;
+                    //一般進入
                     if ('${bean.marketid}' != '') {
                         var url = '${pageContext.request.contextPath}/Market/init/${bean.marketid}';
 
                     }
+                    //淺在顧客轉銷售機會
                     if ("${changeMarket}" == "changeMarket") {
                         var url = "${pageContext.request.contextPath}/Market/getchange/${changeid}";
                     }
@@ -1773,39 +1777,53 @@
                                 message: '請先建立任務',
                                 type: 'error'
                             });
-                        } else {
-
-
-                            this.$confirm('會刷新頁面,請先儲存?', '警告', {
-                                confirmButtonText: '確定',
-                                cancelButtonText: '取消',
-                                type: 'error'
-                            }).then(() => {
-                                $.ajax({
-                                    url: '${pageContext.request.contextPath}/Market/getReceive/${bean.marketid}',
-                                    type: 'get',
-                                    async: false,
-                                    cache: false,
-                                    success: (response => (
-
-                                        location.href = "${pageContext.request.contextPath}/Market/Market/${bean.marketid}"
-                                    )),
-                                    error: function (returndata) {
-                                        console.log(returndata);
-                                    }
-                                })
-                            }).catch(() => {
-                                this.$message({
-                                    type: 'info',
-                                    message: '已領取删除'
-                                });
-                            });
-
-
-
+                            return;
                         }
-                    }
+                        if ('${bean.marketid}' == '') {
+                            this.$message({
+                                message: '請先建立任務',
+                                type: 'error'
+                            });
+                            return;
+                        } 
 
+                        this.$confirm('會刷新頁面,請先確認資料已儲存', '警告', {
+                            confirmButtonText: '確定',
+                            cancelButtonText: '取消',
+                            type: 'error'
+                        }).then(() => {
+                            $.ajax({
+                                url: '${pageContext.request.contextPath}/Market/getReceive/${bean.marketid}',
+                                type: 'get',
+                                async: false,
+                                cache: false,
+                                success: (response => (
+                                    location.href = "${pageContext.request.contextPath}/Market/Market/${bean.marketid}"
+                                )),
+                                error: function (returndata) {
+                                    console.log(returndata);
+                                }
+                            })
+                        }).catch(() => {
+                            this.$message({
+                                type: 'info',
+                                message: '已領取删除'
+                            });
+                        });
+
+
+
+                    },
+                    //分配人員 (receive 設為null)
+                    changeUser() {
+                        this.bean.receive = null;
+                        if (this.bean.user != '無') {
+                            this.bean.receivestate = 2;
+                        } else {
+                            this.bean.receivestate = 3;
+                        }
+
+                    }
                 },
             })
 

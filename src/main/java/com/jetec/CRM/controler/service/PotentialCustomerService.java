@@ -2,6 +2,8 @@ package com.jetec.CRM.controler.service;
 
 import java.sql.SQLOutput;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,6 +49,7 @@ public class PotentialCustomerService {
         }
         if (pcb.getCustomerid() == null || pcb.getCustomerid().isEmpty()) {
             pcb.setCustomerid(uuid);
+            pcb.setReceivestate(3);
             if (US.existsByFileforeignid(pcb.getFileforeignid())) {
                 List<MarketFileBean> list = US.getByfileForeignid(pcb.getFileforeignid());
                 for (MarketFileBean fileBean : list) {
@@ -67,14 +70,13 @@ public class PotentialCustomerService {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取潛在客戶列表
     public List<PotentialCustomerBean> getList(Integer pag) {
-
         Pageable p = PageRequest.of(pag, 40, Direction.DESC, "aaa");
-        Page<PotentialCustomerBean> page = PCR.findStatus(p);
         List<PotentialCustomerBean> result = new ArrayList<>();
-            if(pag.equals(0)){
-                result.addAll(PCR.findByUser(null));
-            }
-         result.addAll(page.getContent());
+        if (pag.equals(0)) {
+            result.addAll(PCR.findByUser(""));
+        }
+        Page<PotentialCustomerBean> page = PCR.findStatus(p);
+        result.addAll(page.getContent());
         return result;
     }
 
@@ -286,7 +288,7 @@ public class PotentialCustomerService {
                     result.addAll(PCR.findByUserAndAaaBetween(user, startDay, endDay, sort));
                 break;
             case "name"://聯絡人,公司名稱
-                result.addAll(PCR.findByNameLikeIgnoreCaseOrCompanyLikeIgnoreCaseAndAaaBetween("%" + val.get(0) + "%", "%" + val.get(0) + "%",startDay, endDay, sort));
+                result.addAll(PCR.findByNameLikeIgnoreCaseOrCompanyLikeIgnoreCaseAndAaaBetween("%" + val.get(0) + "%", "%" + val.get(0) + "%", startDay, endDay, sort));
                 break;
             case "content"://詢問內容
                 result.addAll(PCR.findByRemarkLikeIgnoreCaseAndAaaBetween("%" + val.get(0) + "%", startDay, endDay, sort));
@@ -297,7 +299,7 @@ public class PotentialCustomerService {
                 break;
             case "industry"://產業
                 for (String industry : val)
-                result.addAll(PCR.findByIndustryAndAaaBetween(industry, startDay, endDay, sort));
+                    result.addAll(PCR.findByIndustryAndAaaBetween(industry, startDay, endDay, sort));
                 break;
         }
 
@@ -309,7 +311,14 @@ public class PotentialCustomerService {
     //提交主管by淺在客戶
 
     public List<PotentialCustomerBean> getPotentialSubmitBos() {
-        return  PCR.findByStatus("提交主管");
+        return PCR.findByStatus("提交主管");
     }
 
+    public Integer expired() {
+        LocalDateTime start = LocalDateTime.now();
+        LocalDateTime end = start.minusHours(2);
+        System.out.println(start.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        System.out.println(end.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        return PCR.countByAaaLessThanAndUserIsNull( end.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+    }
 }

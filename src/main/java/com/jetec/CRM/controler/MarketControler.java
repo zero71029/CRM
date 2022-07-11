@@ -71,7 +71,6 @@ public class MarketControler {
         } else if (PCS.existsById(pcb.getCustomerid())) {
             //避免同時開同一頁面
             PotentialCustomerBean oldBean = PCS.getById(pcb.getCustomerid());
-
             if (oldBean.getBbb() != null) {
                 if (oldBean.getBbb().compareTo(pcb.getOpentime()) > 0) {
                     result.put("state", false);
@@ -81,6 +80,7 @@ public class MarketControler {
             }
         }
         pcb.setBbb(LocalDateTime.now().toString());
+        System.out.println(pcb.getReceivestate());
         PotentialCustomerBean save = PCS.SavePotentialCustomer(pcb);
         result.put("state", true);
         result.put("mess", "儲存成功");
@@ -519,6 +519,9 @@ public class MarketControler {
         bean.setOpentime(LocalDateTime.now().toString());
         bean.setAaa(ZeroTools.getTime(new Date()));
         bean.setQuote("");
+        bean.setReceivestate(pBean.getReceivestate());
+        bean.setReceive(pBean.getReceive());
+
 
         Map<String, Object> result = new HashMap<>();
         result.put("bean", bean);
@@ -801,7 +804,7 @@ public class MarketControler {
 
             ChangeMessageBean cmbean;
             if ("cost".equals(field)) {
-                cmbean = new ChangeMessageBean(zTools.getUUID(), marketid, adminBean.getName(), field, String.valueOf(rs.getInt(1)), val, zTools.getTime(new Date()));
+                cmbean = new ChangeMessageBean(zTools.getUUID(), marketid, adminBean.getName(), field, String.valueOf(rs.getInt(1)), val, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
                 if (String.valueOf(rs.getInt(1)).equals(val)) {
 
@@ -908,13 +911,14 @@ public class MarketControler {
         MarketBean mBean = ms.getById(marketid);
         if (mBean != null) {
             AdminBean aBean = (AdminBean) session.getAttribute("user");
-            if (mBean.getReceive() == null || mBean.getReceive().isEmpty() ) {
+            if (mBean.getReceive() == null || mBean.getReceive().isEmpty() || !Objects.equals(aBean.getName(), mBean.getUser())    ) {
                 ChangeMessageBean cmBean = new ChangeMessageBean(ZeroTools.getUUID(), mBean.getMarketid(), aBean.getName(), "領取任務", mBean.getReceive(), aBean.getName(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                 ss.saveChangeMesssage(cmBean);
                 cmBean = new ChangeMessageBean(ZeroTools.getUUID(), mBean.getMarketid(), aBean.getName(), "負責人", mBean.getUser(), aBean.getName(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                 ss.saveChangeMesssage(cmBean);
                 mBean.setReceive(aBean.getName());
                 mBean.setUser(aBean.getName());
+                mBean.setReceivestate(1);
                 ms.save(mBean);
                 result.put("state", "領取成功");
                 result.put("user", aBean.getName());
@@ -922,12 +926,12 @@ public class MarketControler {
             }
             ChangeMessageBean cmBean = new ChangeMessageBean(ZeroTools.getUUID(), mBean.getMarketid(), aBean.getName(), "領取任務", aBean.getName(), "null", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             ss.saveChangeMesssage(cmBean);
-            cmBean = new ChangeMessageBean(ZeroTools.getUUID(), mBean.getMarketid(), aBean.getName(), "負責人", aBean.getName(), "null", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            cmBean = new ChangeMessageBean(ZeroTools.getUUID(), mBean.getMarketid(), aBean.getName(), "負責人", aBean.getName(), "null", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))   );
             ss.saveChangeMesssage(cmBean);
             mBean.setReceive(null);
             mBean.setUser(null);
+            mBean.setReceivestate(3);
             ms.save(mBean);
-
             result.put("state", "取消成功");
             result.put("user", null);
             return result;

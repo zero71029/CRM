@@ -47,6 +47,10 @@ public class MarketService {
         }
 
 
+
+
+
+
         //如果沒有Fileforeignid
         if (marketBean.getFileforeignid() == null || marketBean.getFileforeignid().isEmpty() || marketBean.getFileforeignid().equals("")) {
             marketBean.setFileforeignid(uuid);
@@ -55,8 +59,6 @@ public class MarketService {
         if (marketBean.getMarketid() == null || marketBean.getMarketid().isEmpty()) {
             //如果新案件  資料庫內有Fileforeignid
             if (mr.existsByFileforeignid(marketBean.getFileforeignid())) return null;
-
-
             marketBean.setMarketid(uuid);
             //更換Fileforeignid
             if (US.existsByFileforeignid(marketBean.getFileforeignid()) && marketBean.getFileforeignid().length() != 32) {
@@ -140,6 +142,7 @@ public class MarketService {
             for (MarketBean bean : result) {
                 if (bean.getMarketid().equals(p.getMarketid())) {
                     boo = false;
+                    break;
                 }
             }
             if (boo)
@@ -241,7 +244,7 @@ public class MarketService {
         Boolean isBoolean = true;
         for (MarketBean bean : mr.findByContactmoblie(phone)) {
             for (MarketBean phonebeBean : result) {
-                if (bean.getMarketid() == phonebeBean.getMarketid()) {
+                if (bean.getMarketid().equals(phonebeBean.getMarketid())) {
                     isBoolean = false;
                 }
             }
@@ -442,6 +445,7 @@ public class MarketService {
         List<MarketBean> Marketlist = new ArrayList<>();
         List<String> admin = new ArrayList<>();
         List<String> state = new ArrayList<>();
+        List<Integer> receive = new ArrayList<>();
         String stateday = null;
         String startday = "2022-02-01 00:00";
         String endday = null;
@@ -449,6 +453,8 @@ public class MarketService {
             if (b.getField().equals("admin")) admin.add(b.getState());
             if (b.getField().equals("day")) stateday = b.getState();
             if (b.getField().equals("state")) state.add(b.getState());
+            if (b.getField().equals("receive") &&  Objects.equals(b.getState(),"領取")         ) receive.add(1);
+            if (b.getField().equals("receive") &&  Objects.equals(b.getState(),"分配")         ) receive.add(2);
         }
         //日期處理
         if (stateday == null) {
@@ -458,18 +464,26 @@ public class MarketService {
             startday = tokens[0] + " 00:00";
             endday = tokens[1] + " 23:59";
         }
-        //主搜索
+
+        //主搜索 選擇用哪一個搜索
         if (admin.size() > 0) {
             for (String name : admin) {
+                System.out.println(name);
                 list.addAll(mr.findByUserAndAaaBetween(name, startday, endday, sort));
             }
         } else if (state.size() > 0) {
             for (String name : state) {
                 list.addAll(mr.findByStageAndAaaBetween(name, startday, endday, sort));
             }
+        }else if (receive.size() > 0) {
+            for (Integer receicestate : receive) {
+                list.addAll(mr.findByReceivestateAndAaaBetween(receicestate, startday, endday));
+            }
         } else {
             list.addAll(mr.findAaa(startday, endday));
         }
+
+
 
 
         //再過濾
@@ -482,6 +496,23 @@ public class MarketService {
                 }
             }
         }
+        if (receive.size() > 0) {
+            List<MarketBean> s = new ArrayList<>(list);
+            list.clear();
+            for (Integer sta : receive) {
+                for (MarketBean marketBean : s) {
+                    if (sta.equals(marketBean.getReceivestate())) list.add(marketBean);
+                }
+            }
+        }
+
+
+
+
+
+
+
+
 
 
         //排序

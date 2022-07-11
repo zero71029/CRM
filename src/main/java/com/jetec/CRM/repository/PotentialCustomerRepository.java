@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface PotentialCustomerRepository extends JpaRepository<PotentialCustomerBean, String> {
@@ -34,7 +35,7 @@ public interface PotentialCustomerRepository extends JpaRepository<PotentialCust
 
 
 
-    @Query(value = "SELECT  *  from potentialcustomer where user is not null AND (status = '未處理' OR status = '已聯繫' OR status = '提交主管')", nativeQuery = true)
+    @Query(value = "SELECT  *  from potentialcustomer where user != '' AND (status = '未處理' OR status = '已聯繫' OR status = '提交主管')", nativeQuery = true)
     Page<PotentialCustomerBean> findStatus(Pageable p);
 
 
@@ -54,4 +55,26 @@ public interface PotentialCustomerRepository extends JpaRepository<PotentialCust
     List<PotentialCustomerBean> findByIndustryAndAaaBetween(String industry, String startDay, String endDay, Sort sort);
 
     List<PotentialCustomerBean> findByUser(String user);
+
+
+    Integer countByAaaLessThanAndUserIsNull(String format);
+
+
+
+
+    @Query(value = "select * from potentialcustomer p where  (aaa between ?1 and ?2) and user = ?3   \n" +
+            "and customerid not in  (select customerid from market m)", nativeQuery = true)
+    List<PotentialCustomerBean> getPotentialCustomerbyBYAaaAndUserNotinMarket(String startDay, String endDay, String name);
+
+    @Query(value = "select * from potentialcustomer p where user = ?1  and   status = ?2    and receivestate = ?3    and    (aaa between ?4 and ?5)    \n" +
+            "and customerid not in  (select customerid from market m)", nativeQuery = true)
+    List<PotentialCustomerBean> getPotentialCustomerByUserAndStateAndReceivesAndAaaAndNotinMarket(String user, String state, Integer receives, String startDay, String endDay);
+
+    @Query(value = "select * from potentialcustomer p where user = ?1  and   status = ?2    and  (aaa between ?3 and ?4)    \n" +
+            "and customerid not in  (select customerid from market m)", nativeQuery = true)
+    List<PotentialCustomerBean> getPotentialCustomerByUserAndStateAndAaaAndNotinMarket(String user, String state, String startDay, String endDay);
+
+    @Query(value = "select * from potentialcustomer p where user = ?1  and   receivestate = ?2    and  (aaa between ?3 and ?4)    \n" +
+            "and customerid not in  (select customerid from market m)", nativeQuery = true)
+    List<PotentialCustomerBean> getPotentialCustomerAndUserAndReceivesByAaaAndNotinMarket(String user, Integer receives, String startDay, String endDay);
 }
