@@ -1,4 +1,4 @@
-package com.jetec.CRM;
+package com.jetec.CRM.Selenium;
 
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Alert;
@@ -8,13 +8,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.sql.SQLOutput;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @SpringBootTest
-public class AddPotentialCustomer {
+public class AddPotentialCustomerSelenium {
     @Test
 //淺在客戶 新增測試
     void contextLoads() throws InterruptedException {

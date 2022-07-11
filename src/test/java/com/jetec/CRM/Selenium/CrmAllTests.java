@@ -1,13 +1,11 @@
-package com.jetec.CRM;
+package com.jetec.CRM.Selenium;
 
-import net.bytebuddy.implementation.bytecode.Throw;
+import com.jetec.CRM.Selenium.AddMarketSelenium;
+import com.jetec.CRM.Selenium.AddPotentialCustomerSelenium;
+import com.jetec.CRM.Selenium.SelectMarket;
+import com.jetec.CRM.Selenium.SelectPotentialCustomer;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.concurrent.TimeUnit;
 
 @SpringBootTest
 class CrmAllTests {
@@ -15,7 +13,7 @@ class CrmAllTests {
     @Test
     void AllTest() {
         try {
-            AddMarket addMarket = new AddMarket();
+            AddMarketSelenium addMarket = new AddMarketSelenium();
             addMarket.contextLoads();
         } catch (Exception e) {
             System.out.println("發生錯誤AddMarket");
@@ -42,7 +40,7 @@ class CrmAllTests {
 
 
         try {
-            AddPotentialCustomer a = new AddPotentialCustomer();
+            AddPotentialCustomerSelenium a = new AddPotentialCustomerSelenium();
             a.contextLoads();
         } catch (Exception e) {
             System.out.println("發生錯誤AddPotentialCustomer");

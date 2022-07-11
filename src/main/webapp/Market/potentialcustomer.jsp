@@ -372,11 +372,17 @@
                                         <div class="col-md-3 " style="line-height: 30px;"></div>
                                         <div class="col-md-4  FormPadding ">
 
-                                        
-                                                <div class="receive"
-                                                    style="color: #0d6efd;cursor: pointer;line-height: 30px;"
-                                                    @click="clickReceive">領取任務</div>
-                                           
+
+                                            <div class="receive" v-show="customer.receive == '${user.name}'"
+                                                style="color: #0d6efd;cursor: pointer;line-height: 30px;"
+                                                @click="clickReceive">取消任務</div>
+                                            <div class="receive" v-show="customer.receivestate == 3"
+                                                style="color: #0d6efd;cursor: pointer;line-height: 30px;"
+                                                @click="clickReceive">領取任務</div>
+
+
+
+
                                         </div>
                                     </div>
 
@@ -426,10 +432,10 @@
 
                                         <div class="col-md-3 cellz" style="font-size: 14px;">建立時間</div>
                                         <div class="col-md-7  FormPadding">
-                                            ${bean.aaa}                                  
-                                                <el-tag v-show="customer.receivestate == 1">領取</el-tag>                     
-                                            
-                                                <el-tag type="danger" v-show="customer.receivestate == 2">分配</el-tag>                                          
+                                            ${bean.aaa}
+                                            <el-tag v-show="customer.receivestate == 1">領取</el-tag>
+
+                                            <el-tag type="danger" v-show="customer.receivestate == 2">分配</el-tag>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -1599,7 +1605,7 @@
                                     }),
                                     this.customer.user = response.user,
                                     this.customer.receive = response.user,
-                                    this.customer.receivestate = 1 
+                                    this.customer.receivestate = 1
                                 )),
                                 error: function (returndata) {
                                     console.log(returndata);
@@ -1615,7 +1621,7 @@
                         if (this.customer.user != '無') {
                             this.customer.receivestate = 2;
                         }
-                        if (this.customer.user == '無'){
+                        if (this.customer.user == '無') {
                             this.customer.receivestate = 3;
                         }
                     }

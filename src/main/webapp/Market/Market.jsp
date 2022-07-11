@@ -449,9 +449,18 @@
                                                 </div>
                                                 <div class="col-md-2 cellz" style="line-height: 30px;"></div>
                                                 <div class="col-md-4  FormPadding ">
-                                                    <div class="receive"
+
+
+                                                        <div class="receive" v-show="bean.receive == '${user.name}'"
                                                         style="color: #0d6efd;cursor: pointer;line-height: 30px;"
-                                                        @click="clickReceive">領取任務 </div>
+                                                        @click="clickReceive">取消任務</div>
+                                                    <div class="receive" v-show="bean.receivestate == 3"
+                                                        style="color: #0d6efd;cursor: pointer;line-height: 30px;"
+                                                        @click="clickReceive">領取任務</div>
+
+
+
+
                                                 </div>
                                             </div>
 

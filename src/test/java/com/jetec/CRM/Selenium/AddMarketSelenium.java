@@ -1,4 +1,4 @@
-package com.jetec.CRM;
+package com.jetec.CRM.Selenium;
 
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -7,13 +7,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.io.File;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @SpringBootTest
-public class AddMarket {
+public class AddMarketSelenium {
     @Test
     void contextLoads() throws InterruptedException {
         ///////////////////////////////////////////////////////////////////////////////////////////////////

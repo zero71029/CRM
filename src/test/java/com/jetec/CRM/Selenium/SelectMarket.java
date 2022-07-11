@@ -1,4 +1,4 @@
-package com.jetec.CRM;
+package com.jetec.CRM.Selenium;
 
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;

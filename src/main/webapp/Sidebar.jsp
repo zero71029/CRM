@@ -97,7 +97,7 @@
                     >                
                     數據管理
                 </button>
-                <button class="statistic"
+                <button class="statistic BusinessCase"
                 onclick="javascript:location.href='${pageContext.request.contextPath}/statistic/BusinessCase.jsp'">
                     業務接案
                 </button>
@@ -106,7 +106,7 @@
                 onclick="javascript:location.href='${pageContext.request.contextPath}/statistic/statistic.jsp'">
                     每日案件
                 </button>
-                <button class="statistic"
+                <button class="statistic CloseState"
                     onclick="javascript:location.href='${pageContext.request.contextPath}/statistic/CloseState.jsp'">
                     結案狀態
                 </button>

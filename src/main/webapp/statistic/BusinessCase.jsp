@@ -22,6 +22,10 @@
                 [v-cloak] {
                     display: none;
                 }
+                .BusinessCase {
+                    /* 按鈕顏色 */
+                    background-color: #afe3d5;
+                }
             </style>
         </head>
 

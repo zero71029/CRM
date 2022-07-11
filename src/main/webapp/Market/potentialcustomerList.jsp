@@ -335,9 +335,9 @@
                                 <tr>
                                     <td><input type="checkbox" id="activity"></td>
                                     <td></td>
-                                    <td style="width: 90px;" @click="sortState('state')"><a href="#">狀態</a></td>
+                                    <td style="width: 90px;" @click="sortState()"><a href="#">狀態</a></td>
                                     <td style="width: 90px;">負責人</td>
-                                    <td>領取</td>
+                                    <td><a href="#" @click="sortReceive()">領取</a></td>
                                     <td>客戶名稱</td>
 
                                     <td>詢問內容</td>
@@ -345,7 +345,7 @@
                                     <td>聯絡人</td>
                                     <td>產業</td>
                                     <!-- 詢問產品種類		客戶來源	備註 -->
-                                    <td @click="sortItem('important')"><a href="#">重要性</a></td>
+                                    <td >重要性</td>
                                 </tr>
                                 <tr class="item" v-for="(s, index) in list" :key="s.customerid">
                                     <%-- --%>
@@ -361,13 +361,14 @@
                                             <td v-on:click="customer(s.customerid)" style="cursor: pointer;"
                                                 :class="'state'+index">
                                                 {{s.status}}</td>
-
                                             <!-- 負責人 -->
                                             <td v-on:click="customer(s.customerid)" style="cursor: pointer;"
                                                 v-html="s.user">
                                             </td>
                                             <!-- 領取 -->
-                                            <td v-html="s.receivestate"> <div></div></td>
+                                            <td v-html="s.receivestate">
+                                                <div></div>
+                                            </td>
                                             <!-- 客戶名稱 -->
                                             <td>
                                                 {{s.company}}<i class="el-icon-paperclip" style="color: blue;"
@@ -548,16 +549,10 @@
                                         e.user = '<div class="el-tag">需分配</div>';
                                     }
                                     switch (e.receivestate) {
-                                        case 1: e.receivestate = '<el-tag>領取</el-tag>';break;
-                                        case 2: e.receivestate = '<el-tag>分配</el-tag>';break;
-                                        case 3: e.receivestate = '';break;
+                                        case 1: e.receivestate = '<el-tag>領取</el-tag>'; break;
+                                        case 2: e.receivestate = '<el-tag>分配</el-tag>'; break;
+                                        case 3: e.receivestate = ''; break;
                                     }
-
-
-
-
-
-
                                 });
                             },
                             error: function (returndata) {
@@ -677,8 +672,18 @@
                                     }
                                 }
                         }
-                        this.total = 20;
+                        this.total = 40;
                         console.log(this.list.length, "this.list.length");
+
+
+                        //領取狀態翻譯
+                        this.list.forEach(e => {
+                                    switch (e.receivestate) {
+                                        case 1: e.receivestate = '<el-tag>領取</el-tag>'; break;
+                                        case 2: e.receivestate = '<el-tag>分配</el-tag>'; break;
+                                        case 3: e.receivestate = ''; break;
+                                    }
+                                });
                     },
                     handleCurrentChange(val) {//點擊分頁
                         axios
@@ -704,31 +709,6 @@
                             location.href = "${pageContext.request.contextPath}/Market/potentialcustomerList.jsp";
                         }
                     },
-                    //重要性 排序
-                    sortItem: function (direct) {
-                        console.log($('.' + direct + '0').text().trim())
-                        var d = $('.' + direct + '0').text().trim();
-                        var oldList = this.list;
-                        const imp = ["高", "中", "低"];//先輪替這列表
-                        var nimp = []
-                        this.list = [];
-                        var b = false;
-                        var i = imp.indexOf(d);//找到輸入第幾個
-                        for (let index = i + 1; index < 3; index++) {
-                            nimp.push(imp[index])
-                        }
-
-                        //根據列表抓數據
-                        for (let index = 0; index <= i; index++) {
-                            console.log(imp[index] + "index2");
-                            nimp.push(imp[index])
-                        }
-                        for (const iterator of nimp) {
-                            for (var o of oldList) {
-                                if (o.important == iterator) this.list.push(o)
-                            }
-                        }
-                    },
                     // 勾選單項 
                     clickmak: function () {
                         var $all = $("input[name=mak]");
@@ -736,8 +716,8 @@
                         $("#activity").prop("checked", $zx.length == $all.length);
                     },
                     //階段 排序  
-                    sortState: function (direct) {
-                        var d = $('.' + direct + '0').text().trim();
+                    sortState: function () {
+                        var d = $('.state0').text().trim();
                         var oldList = this.list;
                         const imp = ["未處理", "已聯繫", "提交主管", "不合格", "合格"];//先輪替這列表
                         var nimp = []
@@ -761,7 +741,6 @@
                                 if (o.status == iterator) this.list.push(o)
                             }
                         }
-
                     },
                     //判斷有沒有附件
                     isEmpty(marketfilelist) {
@@ -779,6 +758,42 @@
                         }
 
                     },
+                    //領取排序
+                    sortReceive() {
+                        const oldList = this.list;
+                        const direct = this.list[0].receivestate;
+
+
+
+                        //創建列表
+                        const imp = ["", "<el-tag>領取</el-tag>", "<el-tag>分配</el-tag>"];
+                        var nimp = []
+                        this.list = [];//清空
+                       
+                        var i = imp.indexOf(direct);//找到輸入第幾個
+
+                        //重整列表
+                        for (let index = i + 1; index < 5; index++) {
+                            nimp.push(imp[index])
+                        }
+                        for (let index = 0; index <= i; index++) {
+                            nimp.push(imp[index])
+                        }
+
+                        console.log(nimp);
+                        //根據列表抓數據
+                        for (const iterator of nimp) {
+                            for (var o of oldList) {
+                                if (o.receivestate == iterator) this.list.push(o)
+                            }
+                        }
+
+
+
+
+
+
+                    }
                 },
             })
         </script>

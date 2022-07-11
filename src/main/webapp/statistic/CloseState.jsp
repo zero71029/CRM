@@ -22,6 +22,11 @@
                 .app {
                     background-color: #e4f3ef;
                 }
+
+                .CloseState {
+                    /* 按鈕顏色 */
+                    background-color: #afe3d5;
+                }
             </style>
         </head>
 
@@ -236,7 +241,7 @@
                             if (e.stage == "提交主管") 提交主管++
                         });
                         var obj = [];
-                        
+
                         obj.push({ value: 已報價, name: "已報價" + 已報價, url: "已報價" });
                         obj.push({ value: 內部詢價中, name: "內部詢價中" + 內部詢價中, url: "內部詢價中" });
                         obj.push({ value: 尚未處理, name: "尚未處理" + 尚未處理, url: "尚未處理" });
