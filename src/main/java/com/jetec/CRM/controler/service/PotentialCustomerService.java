@@ -1,13 +1,6 @@
 package com.jetec.CRM.controler.service;
 
-import java.sql.SQLOutput;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
+import com.jetec.CRM.Tool.ZeroTools;
 import com.jetec.CRM.model.*;
 import com.jetec.CRM.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +12,12 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jetec.CRM.Tool.ZeroTools;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service
 @Transactional
@@ -70,7 +68,7 @@ public class PotentialCustomerService {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取潛在客戶列表
     public List<PotentialCustomerBean> getList(Integer pag) {
-        Pageable p = PageRequest.of(pag, 40, Direction.DESC, "aaa");
+        Pageable p = PageRequest.of(pag, 100, Direction.DESC, "aaa");
         List<PotentialCustomerBean> result = new ArrayList<>();
         if (pag.equals(0)) {
             result.addAll(PCR.findByUser(""));
@@ -81,17 +79,17 @@ public class PotentialCustomerService {
     }
 
     public PotentialCustomerBean getById(String id) {
-        return PCR.getById(id);
+        return PCR.findById(id).orElse(null);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //要求最大分頁數
-    public long getMaxPag() {
-        Pageable p = (Pageable) PageRequest.of(0, 20);
-        Page<PotentialCustomerBean> page = (Page<PotentialCustomerBean>) PCR.findStatus(p);
-//		全部有幾頁		
-        return page.getTotalElements();//全部幾筆
-    }
+//    public long getMaxPag() {
+//        Pageable p = (Pageable) PageRequest.of(0, 40);
+//        Page<PotentialCustomerBean> page = (Page<PotentialCustomerBean>) PCR.findStatus(p);
+////		全部有幾頁
+//        return page.getTotalElements();//全部幾筆
+//    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取潛在客戶列表(結案)
@@ -176,42 +174,39 @@ public class PotentialCustomerService {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //添加協助者
-    public List<PotentialCustomerHelperBean> addHelper(String customerid, String helper) {
-        PotentialCustomerBean pcBean = PCR.getById(customerid);
-        for (PotentialCustomerHelperBean helperBean : pcBean.getHelper()) {
-            if (helperBean.getName().equals(helper)) {
-                return pcBean.getHelper();
-            }
-        }
-        if (pcBean.getUser().equals(helper)) {
-            return pcBean.getHelper();
-        }
-        PotentialCustomerHelperBean newBean = new PotentialCustomerHelperBean();
-        newBean.setHelperid(zTools.getUUID());
-        newBean.setCustomerid(customerid);
-        newBean.setName(helper);
-        newBean.setAdminid(ar.findByName(helper).getAdminid());
-        pchr.save(newBean);
-        System.out.println(pchr.findByCustomerid(customerid));
-        return pchr.findByCustomerid(customerid);
-    }
+//    public List<PotentialCustomerHelperBean> addHelper(String customerid, String helper) {
+//        PotentialCustomerBean pcBean = PCR.getById(customerid);
+//        for (PotentialCustomerHelperBean helperBean : pcBean.getHelper()) {
+//            if (helperBean.getName().equals(helper)) {
+//                return pcBean.getHelper();
+//            }
+//        }
+//        if (pcBean.getUser().equals(helper)) {
+//            return pcBean.getHelper();
+//        }
+//        PotentialCustomerHelperBean newBean = new PotentialCustomerHelperBean();
+//        newBean.setHelperid(zTools.getUUID());
+//        newBean.setCustomerid(customerid);
+//        newBean.setName(helper);
+//        newBean.setAdminid(ar.findByName(helper).getAdminid());
+//        pchr.save(newBean);
+//        System.out.println(pchr.findByCustomerid(customerid));
+//        return pchr.findByCustomerid(customerid);
+//    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //刪除協助者
-    public List<PotentialCustomerHelperBean> delHelper(String customerid, String helperid) {
-        System.out.println(helperid);
-        pchr.deleteById(helperid);
-
-        System.out.println(pchr.findByCustomerid(customerid));
-        return pchr.findByCustomerid(customerid);
-    }
+//    public List<PotentialCustomerHelperBean> delHelper(String customerid, String helperid) {
+//        System.out.println(helperid);
+//        pchr.deleteById(helperid);
+//
+//        System.out.println(pchr.findByCustomerid(customerid));
+//        return pchr.findByCustomerid(customerid);
+//    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索潛在客戶by追蹤時間
     public List<PotentialCustomerBean> selectPotentialCustomerTrack(String from, String to) {
-
-//		Sort sort = Sort.by(Direction.DESC,"trackbean.tracktime");
-
         return PCR.findByTrackbeanTracktimeBetween(from, to);
     }
 
@@ -222,9 +217,8 @@ public class PotentialCustomerService {
         trbean.setName(name);
         trbean.setTrackid(trackid);
         trbean.setContent(content);
-        trbean.setTrackremarkid(zTools.getUUID());
-        Date date = new Date();
-        trbean.setCreatetime(zTools.getTime(date));
+        trbean.setTrackremarkid(ZeroTools.getUUID());
+        trbean.setCreatetime(ZeroTools.getTime(new Date()));
         trr.save(trbean);
         Sort sort = Sort.by(Direction.DESC, "tracktime");
         //trackid取得TrackBean , TrackBean取得Customerid ,Customerid取得 List<TrackBean>
@@ -302,10 +296,7 @@ public class PotentialCustomerService {
                     result.addAll(PCR.findByIndustryAndAaaBetween(industry, startDay, endDay, sort));
                 break;
         }
-
         return result;
-
-
     }
 
     //提交主管by淺在客戶

@@ -203,7 +203,6 @@ public class AdminBean  implements UserDetails {
 				", department='" + department + '\'' +
 				", director='" + director + '\'' +
 				", dutyDay='" + dutyDay + '\'' +
-				", mail=" + mail +
 
 				", top=" + top +
 				", marketstate=" + marketstate +

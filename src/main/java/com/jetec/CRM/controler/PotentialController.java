@@ -60,16 +60,17 @@ public class PotentialController {
         Map<String, Object> result = new HashMap<>();
         result.put("list", PCS.getList(pag));
         result.put("todayTotal", PCS.gettodayTotal());
+        //過期
         result.put("expired", PCS.expired());
         return result;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 所有筆數
-    @RequestMapping("/MaxPag")
-    public long MaxPag() {
-        return PCS.getMaxPag();
-    }
+//    @RequestMapping("/MaxPag")
+//    public long MaxPag() {
+//        return PCS.getMaxPag();
+//    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取潛在客戶列表(結案)
@@ -148,35 +149,35 @@ public class PotentialController {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 搜索潛在客戶by來源
     @SuppressWarnings("unchecked")
-    @RequestMapping("/selectSource")
-    public List<PotentialCustomerBean> selectSource(@RequestBody Map<String, Object> data) {
-        System.out.println("搜索潛在客戶by來源");
-        List<PotentialCustomerBean> result = new ArrayList<>();
-        for (String source : (List<String>) data.get("source")) {
-
-            result.addAll(PCS.selectSource(source));
-            result.addAll(PCS.selectIndustry(source));
-        }
-        return result;
-    }
+//    @RequestMapping("/selectSource")
+//    public List<PotentialCustomerBean> selectSource(@RequestBody Map<String, Object> data) {
+//        System.out.println("搜索潛在客戶by來源");
+//        List<PotentialCustomerBean> result = new ArrayList<>();
+//        for (String source : (List<String>) data.get("source")) {
+//
+//            result.addAll(PCS.selectSource(source));
+//            result.addAll(PCS.selectIndustry(source));
+//        }
+//        return result;
+//    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //添加協助者
-    @RequestMapping("/addHelper/{customerid}/{helper}")
-    public List<PotentialCustomerHelperBean> addHelper(@PathVariable("customerid") String customerid,
-                                                       @PathVariable("helper") String helper) {
-        System.out.println("添加協助者");
-        return PCS.addHelper(customerid, helper);
-    }
+//    @RequestMapping("/addHelper/{customerid}/{helper}")
+//    public List<PotentialCustomerHelperBean> addHelper(@PathVariable("customerid") String customerid,
+//                                                       @PathVariable("helper") String helper) {
+//        System.out.println("添加協助者");
+//        return PCS.addHelper(customerid, helper);
+//    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //刪除協助者
-    @RequestMapping("/delHelper/{customerid}/{helper}")
-    public List<PotentialCustomerHelperBean> delHelper(@PathVariable("customerid") String customerid,
-                                                       @PathVariable("helper") String helperid) {
-        System.out.println("刪除協助者");
-        return PCS.delHelper(customerid, helperid);
-    }
+//    @RequestMapping("/delHelper/{customerid}/{helper}")
+//    public List<PotentialCustomerHelperBean> delHelper(@PathVariable("customerid") String customerid,
+//                                                       @PathVariable("helper") String helperid) {
+//        System.out.println("刪除協助者");
+//        return PCS.delHelper(customerid, helperid);
+//    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索潛在客戶by追蹤時間
@@ -198,11 +199,11 @@ public class PotentialController {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//存回覆追蹤資訊
+//回覆 追蹤資訊
     @RequestMapping("/saveTrackRemark/{trackid}/{content}")
     public List<TrackBean> saveTrackRemark(@PathVariable("trackid") String trackid,
                                            @PathVariable("content") String content, HttpSession session) {
-        System.out.println("存回覆追蹤資訊");
+        System.out.println("回覆追蹤資訊");
         AdminBean aBean = (AdminBean) session.getAttribute("user");
         return PCS.saveTrackRemark(trackid, content, aBean.getName());
     }
@@ -245,8 +246,6 @@ public class PotentialController {
     @RequestMapping("/selectcontent")
     public List<PotentialCustomerBean> selectcontent(@RequestBody Map<String, String> data) {
         System.out.println("搜索詢問內容");
-        System.out.println(data.get("selectcontent"));
-        System.out.println(PCS.selectcontent(data.get("selectcontent")));
         return PCS.selectcontent(data.get("selectcontent"));
     }
 

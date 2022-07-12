@@ -345,7 +345,7 @@
                                     <td>聯絡人</td>
                                     <td>產業</td>
                                     <!-- 詢問產品種類		客戶來源	備註 -->
-                                    <td >重要性</td>
+                                    <td>重要性</td>
                                 </tr>
                                 <tr class="item" v-for="(s, index) in list" :key="s.customerid">
                                     <%-- --%>
@@ -560,14 +560,14 @@
                             }
                         });
                         //要求所有筆數
-                        axios
-                            .get('${pageContext.request.contextPath}/Potential/MaxPag')
-                            .then(response => (
-                                this.MaxPag = response.data
-                            ))
-                            .catch(function (error) {
-                                console.log(error);
-                            });
+                        // axios
+                        //     .get('${pageContext.request.contextPath}/Potential/MaxPag')
+                        //     .then(response => (
+                        //         this.MaxPag = response.data
+                        //     ))
+                        //     .catch(function (error) {
+                        //         console.log(error);
+                        //     });
                     } else {
                         alert("沒有權限");
                         location.href = "${pageContext.request.contextPath}/"
@@ -678,12 +678,12 @@
 
                         //領取狀態翻譯
                         this.list.forEach(e => {
-                                    switch (e.receivestate) {
-                                        case 1: e.receivestate = '<el-tag>領取</el-tag>'; break;
-                                        case 2: e.receivestate = '<el-tag>分配</el-tag>'; break;
-                                        case 3: e.receivestate = ''; break;
-                                    }
-                                });
+                            switch (e.receivestate) {
+                                case 1: e.receivestate = '<el-tag>領取</el-tag>'; break;
+                                case 2: e.receivestate = '<el-tag>分配</el-tag>'; break;
+                                case 3: e.receivestate = ''; break;
+                            }
+                        });
                     },
                     handleCurrentChange(val) {//點擊分頁
                         axios
@@ -769,7 +769,7 @@
                         const imp = ["", "<el-tag>領取</el-tag>", "<el-tag>分配</el-tag>"];
                         var nimp = []
                         this.list = [];//清空
-                       
+
                         var i = imp.indexOf(direct);//找到輸入第幾個
 
                         //重整列表
