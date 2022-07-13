@@ -95,7 +95,7 @@
                         <!-- 分頁 -->
                         <div class="block text-center" key="2">
                             <el-pagination @current-change="handleCurrentChange" :current-page.sync="currentPage"
-                                :page-size="20" layout="  prev, pager, next" :total="total">
+                                :page-size="40" layout="  prev, pager, next" :total="total">
                             </el-pagination>
                         </div>
 

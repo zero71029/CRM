@@ -568,8 +568,7 @@
                         //     .catch(function (error) {
                         //         console.log(error);
                         //     });
-                    } else {
-                        alert("沒有權限");
+                    } else {                        
                         location.href = "${pageContext.request.contextPath}/"
                     }
                     if (name != null) {
@@ -577,7 +576,14 @@
                         axios
                             .get('${pageContext.request.contextPath}/Potential/admin/' + name)
                             .then(response => (
-                                this.list = response.data
+                                this.list = response.data,
+                                this.list.forEach(e => {
+                                    switch (e.receivestate) {
+                                        case 1: e.receivestate = '<el-tag>領取</el-tag>'; break;
+                                        case 2: e.receivestate = '<el-tag>分配</el-tag>'; break;
+                                        case 3: e.receivestate = ''; break;
+                                    }
+                                })
                             ))
                             .catch(function (error) { // 请求失败处理
                                 console.log(error);
