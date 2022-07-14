@@ -1197,10 +1197,12 @@
 
                         if (this.companyName == null || this.companyName == "") {
                             $("input[name='company']").css("border", "red 1px solid");
+                            this.$message.error('公司,需要填');
                             isok = false;
                         }
                         if (this.customer.name == null || this.customer.name == "") {
                             $("input[name='name']").css("border", "red 1px solid");
+                            this.$message.error('聯絡人,需要填');
                             isok = false;
                         }
                         if (this.customer.email == null && this.customer.phone == null && this.customer.moblie == null) {
@@ -1208,16 +1210,19 @@
                             $("input[name='phone']").css("border", "red 1px solid");
                             $("input[name='moblie']").css("border", "red 1px solid");
                             isok = false;
-                            alert("手機 電話 Email 必填一項")
+                            this.$message.error('手機 電話 Email 必填一項');
+                           
                         }
                         if (this.customer.remark == null || this.customer.remark == "") {
                             $("#remark").css("border", "red 1px solid");
                             isok = false;
+                            this.$message.error('客人詢問,需要填');
                         }
 
                         if (this.customer.source == null || this.customer.source == "") {
                             $("#source").css("border", "red 1px solid");
                             isok = false;
+                            this.$message.error('來源 ,需要填');
                         }
                         if (isok) {//通過驗證
                             var formData = new FormData($(".AAA")[0]);

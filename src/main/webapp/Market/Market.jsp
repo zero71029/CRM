@@ -1227,74 +1227,70 @@
                     submitForm() {//送出表單
                         //表單驗證
                         var isok = true;
-
-
-
                         if (this.bean.marketid != "" && this.bean.source == "其他" && this.bean.othersource.length < 2) {
                             isok = false;
                             this.$message.error('其他來源,需要填');
                         }
-
-
-
                         if (this.bean.source == "其他" && (this.bean.othersource == null || this.bean.othersource == "" || this.bean.othersource == "其他")) {
                             isok = false;
                             this.$message.error('其他來源,需要填');
                         }
-
-
                         if (this.bean.name == null || this.bean.name == "") {
                             $("input[name='name']").css("border", "red 1px solid");
+                            this.$message.error('機會名稱,需要填');
                             isok = false;
                         } else {
                             $("input[name='name']").css("border", "black 1px solid");
                         }
                         if (this.bean.client == null || this.bean.client == "") {
                             $(".clientDiv").css("border", "red 1px solid");
+                            this.$message.error('公司名,需要填');
                             isok = false;
                         } else {
                             $(".clientDiv").css("border", "black 1px solid");
                         }
-
                         if (this.bean.contactname == null || this.bean.contactname == "") {
                             $("input[name='contactname']").css("border", "red 1px solid");
+                            this.$message.error('聯絡人,需要填');
                             isok = false;
                         } else {
                             $("input[name='contactname']").css("border", "black 1px solid");
                         }
                         if (this.bean.producttype == null || this.bean.producttype == "") {
                             $("select[name='producttype']").css("border", "red 1px solid");
+                            this.$message.error('產品類別,需要填');
                             isok = false;
                         } else {
                             $("select[name='producttype']").css("border", "black 1px solid");
                         }
-
-
                         if (this.bean.message == null || this.bean.message == "") {
                             $("#message").css("border", "red 1px solid");
+                            this.$message.error('描述,需要填');
                             isok = false;
                         } else {
                             $("#message").css("border", "black 1px solid");
                         }
                         if (this.bean.important == null || this.bean.important == "" || this.bean.important == "無") {
                             $("#important").css("border", "red 1px solid");
+                            this.$message.error('重要性,需要填');
                             isok = false;
                         } else {
                             $("#important").css("border", "black 1px solid");
                         }
                         if (this.bean.source == null || this.bean.source == "") {
                             $("#source").css("border", "red 1px solid");
+                            this.$message.error('來源,需要填');
                             isok = false;
                         } else {
                             $("#source").css("border", "black 1px solid");
                         }
                         if (this.bean.createtime == null || this.bean.createtime == "") {
                             $("#createtime").css("border", "red 1px solid");
+                            this.$message.error('案件類型 ,需要填');
                             isok = false;
                         } else {
                             $("#createtime").css("border", "black 1px solid");
                         }
-
                         if (isok) {//通過驗證
 
                             // ${pageContext.request.contextPath}/Market/SaveMarket

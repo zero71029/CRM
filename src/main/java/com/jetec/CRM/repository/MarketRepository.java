@@ -27,6 +27,7 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
 
     List<MarketBean> findByStage(String string, Sort sort);
 
+
     List<MarketBean> findByUserAndStage(String adminname, String stage);
 
 
@@ -169,6 +170,7 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
     List<MarketBean> findByUserAndReceivestateAndAaaBetween(String user, Integer receives, String startDay, String endDay);
 
     List<MarketBean> findByReceivestateAndAaaBetween(Integer receicestate, String startday, String endday);
+
 
 
 //   Strin a = """

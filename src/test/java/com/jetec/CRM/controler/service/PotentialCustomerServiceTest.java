@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+//dd
 @SpringBootTest
 class PotentialCustomerServiceTest {
     @Autowired
@@ -22,7 +22,7 @@ class PotentialCustomerServiceTest {
 
     @Test
     @Transactional
-    @Rollback
+    @Rollback 
     void savePotentialCustomer() {
         PotentialCustomerBean pcBean = new PotentialCustomerBean();
         String uuid = ZeroTools.getUUID();

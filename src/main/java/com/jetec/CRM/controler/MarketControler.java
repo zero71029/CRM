@@ -111,7 +111,7 @@ public class MarketControler {
         AdminBean aBean = (AdminBean) session.getAttribute("user");
         List<MarketStateBean> stateList = ms.getMarketStateList(aBean.getAdminid());
         List<MarketBean> list;
-        //
+        //判斷有沒有設定狀態
         if (stateList.size() > 0) {
             result = ms.getStateList(stateList, pag, size);
         } else {
