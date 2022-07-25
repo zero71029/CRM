@@ -95,6 +95,12 @@ public class MarketControler {
     public String potentialcustomer(Model model, @PathVariable("id") String id) {
         System.out.println("*****讀取潛在客戶細節****");
         PotentialCustomerBean bean = PCS.getById(id);
+
+        MarketBean mBean = ms.findByCustomerid(id);
+        if(mBean != null){
+            model.addAttribute("marketid", mBean.getMarketid());
+            System.out.println(mBean.getMarketid());
+        }
         bean.setOpentime(LocalDateTime.now().toString());
         model.addAttribute("bean", bean);
         return "/Market/potentialcustomer";

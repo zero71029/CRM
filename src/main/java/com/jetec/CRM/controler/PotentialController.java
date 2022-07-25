@@ -312,6 +312,7 @@ public class PotentialController {
                 pcBean.setReceivestate(1);
                 PCS.SavePotentialCustomer(pcBean);
                 result.put("state", "領取成功");
+                result.put("receivestate", "1");
                 result.put("user", aBean.getName());
                 return result;
             }
@@ -326,6 +327,7 @@ public class PotentialController {
             pcBean.setReceivestate(3);
             PCS.SavePotentialCustomer(pcBean);
             result.put("state", "取消成功");
+            result.put("receivestate", "3");
             result.put("user", null);
             return result;
         }

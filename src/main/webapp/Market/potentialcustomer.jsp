@@ -373,10 +373,10 @@
                                         <div class="col-md-4  FormPadding ">
 
 
-                                            <div class="receive" v-show="customer.receive == '${user.name}'"
+                                            <div class="receive" v-show="customer.receive == '${user.name}'  "
                                                 style="color: #0d6efd;cursor: pointer;line-height: 30px;"
                                                 @click="clickReceive">取消任務</div>
-                                            <div class="receive" v-show="customer.receivestate == 3"
+                                            <div class="receive" v-show="customer.receivestate == '3' "
                                                 style="color: #0d6efd;cursor: pointer;line-height: 30px;"
                                                 @click="clickReceive">領取任務</div>
 
@@ -530,6 +530,16 @@
                                             {{customer.founder}}
                                         </div>
                                     </div>
+                                    <br>
+                                    <c:if test='${not empty marketid}'>
+                                        <div class="row">
+                                            <div class="col-md-12 " v-if="customer.founder != null">
+                                                <a
+                                                    href="${pageContext.request.contextPath}/Market/Market/${marketid}">前往銷售機會</a>
+                                            </div>
+                                        </div>
+                                    </c:if>
+
 
                                     <br>
                                     <div class="row">
@@ -1211,7 +1221,7 @@
                             $("input[name='moblie']").css("border", "red 1px solid");
                             isok = false;
                             this.$message.error('手機 電話 Email 必填一項');
-                           
+
                         }
                         if (this.customer.remark == null || this.customer.remark == "") {
                             $("#remark").css("border", "red 1px solid");
@@ -1605,12 +1615,13 @@
                                 cache: false,
                                 success: (response => (
                                     this.$message({
-                                        message: response.state,
+                                        message: response.state + "  " + response.receivestate,
                                         type: 'success'
                                     }),
                                     this.customer.user = response.user,
                                     this.customer.receive = response.user,
-                                    this.customer.receivestate = 1
+                                    this.customer.receivestate = response.receivestate
+
                                 )),
                                 error: function (returndata) {
                                     console.log(returndata);

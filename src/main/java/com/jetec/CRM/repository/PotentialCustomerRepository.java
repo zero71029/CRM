@@ -77,4 +77,6 @@ public interface PotentialCustomerRepository extends JpaRepository<PotentialCust
     @Query(value = "select * from potentialcustomer p where user = ?1  and   receivestate = ?2    and  (aaa between ?3 and ?4)    \n" +
             "and customerid not in  (select customerid from market m)", nativeQuery = true)
     List<PotentialCustomerBean> getPotentialCustomerAndUserAndReceivesByAaaAndNotinMarket(String user, Integer receives, String startDay, String endDay);
+
+    List<PotentialCustomerBean> findByUserIsNull();
 }

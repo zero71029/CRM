@@ -618,6 +618,10 @@ public class MarketService {
         return mr.existsById(marketid);
     }
 
+    public MarketBean findByCustomerid(String id) {
+        return mr.findByCustomerid(id);
+    }
+
 
 //    public void updata(String marketid, String field, String val) {
 //        mr.updata(marketid,field,val);

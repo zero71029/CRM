@@ -72,6 +72,7 @@ public class PotentialCustomerService {
         List<PotentialCustomerBean> result = new ArrayList<>();
         if (pag.equals(0)) {
             result.addAll(PCR.findByUser(""));
+            result.addAll(PCR.findByUserIsNull());
         }
         Page<PotentialCustomerBean> page = PCR.findStatus(p);
         result.addAll(page.getContent());

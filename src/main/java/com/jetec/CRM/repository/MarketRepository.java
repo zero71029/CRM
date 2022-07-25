@@ -8,8 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -147,12 +145,10 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
     @Query(value = "SELECT  *  from market where stage != '失敗結案' AND stage != '成功結案'", nativeQuery = true)
     List<MarketBean> findCreatetime();
 
-    @Query(value = """
-      select * from market m 
-      where  marketid = ANY( select marketid from 
-      (select changeid marketid,max(createtime)   from changemessage c  
-      where c.createtime BETWEEN ?1 AND ?2 group by changeid) as a) and (stage = '失敗結案' OR stage = '成功結案')
-   """, nativeQuery = true)
+    @Query(value ="select * from market m \n" +
+            "      where  marketid = ANY( select marketid from \n" +
+            "      (select changeid marketid,max(createtime)   from changemessage c  \n" +
+            "      where c.createtime BETWEEN ?1 AND ?2 group by changeid) as a) and (stage = '失敗結案' OR stage = '成功結案')", nativeQuery = true)
     List<MarketBean> findAaaXXXXXXX(String startDay, String endDay);
 
 

@@ -132,11 +132,11 @@ public class MarketingController {
         LocalDateTime old = LocalDateTime.now();
         List<ClientBean> clientList = new ArrayList<>();
         String start = (String) body.get("start");
-        if(start.equals(""))start = "2022-02-02";
+        if (start.equals("")) start = "2022-02-02";
         String end = (String) body.get("end");
-        if(end.equals(""))end= LocalDate.now().toString();
+        if (end.equals("")) end = LocalDate.now().toString();
 
-        StringBuffer sql = new StringBuffer("select distinct client from market where aaa between "+start+" and "+end);
+        StringBuffer sql = new StringBuffer("select distinct client from market where aaa between " + start + " and " + end);
         List<String> producttypeList = (List<String>) body.get("producttype");
         if (producttypeList != null && producttypeList.size() > 0) {
             sql.append("( ");
@@ -194,7 +194,8 @@ public class MarketingController {
         if (industryList != null && industryList.size() > 0) {
             industryList.forEach(s -> {
                 clientList.forEach(clientBean -> {
-                    if (clientBean != null && clientBean.getIndustry() != null && clientBean.getIndustry().equals(s)) out.add(clientBean);
+                    if (clientBean != null && clientBean.getIndustry() != null && clientBean.getIndustry().equals(s))
+                        out.add(clientBean);
                 });
             });
         }
@@ -248,24 +249,24 @@ public class MarketingController {
         System.out.println(body);
         System.out.println();
         String start = (String) body.get("start");
-        if(start.equals(""))start = "2022-02-02";
+        if (start.equals("")) start = "2022-02-02";
         String end = (String) body.get("end");
-        if(end.equals(""))end= LocalDate.now().toString();
+        if (end.equals("")) end = LocalDate.now().toString();
         LocalDateTime old = LocalDateTime.now();
 
         List<String> industryList = (List<String>) body.get("industry");
         List<ClientBean> outClient = new ArrayList<>();
-        if(industryList.size() > 0){
+        if (industryList.size() > 0) {
             String finalStart = start;
             String finalEnd = end;
             industryList.forEach(e -> {
-                outClient.addAll(cr.findByIndustryAndAaaBetween(e , finalStart, finalEnd));
+                if (Objects.equals("尚未分類", e)){
+                    outClient.addAll(cr.findByIndustryIsNull( ));
+                }
+                outClient.addAll(cr.findByIndustryAndAaaBetween(e.trim(), finalStart, finalEnd));
             });
-
-
-
-
         }
+
         //輸出
         try {
             OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("c://CRMfile//file_output.csv"), "UTF-8");
@@ -283,7 +284,6 @@ public class MarketingController {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             });
             bw.close();
         } catch (IOException e) {
@@ -294,20 +294,6 @@ public class MarketingController {
         System.out.println("耗時 : " + duration.toMillis());
         return "file_output.csv";
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

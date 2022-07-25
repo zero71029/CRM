@@ -451,7 +451,7 @@
                                                 <div class="col-md-4  FormPadding ">
 
 
-                                                        <div class="receive" v-show="bean.receive == '${user.name}'"
+                                                    <div class="receive" v-show="bean.receive == '${user.name}'"
                                                         style="color: #0d6efd;cursor: pointer;line-height: 30px;"
                                                         @click="clickReceive">取消任務</div>
                                                     <div class="receive" v-show="bean.receivestate == 3"
@@ -1790,7 +1790,7 @@
                                 type: 'error'
                             });
                             return;
-                        } 
+                        }
 
                         this.$confirm('會刷新頁面,請先確認資料已儲存', '警告', {
                             confirmButtonText: '確定',
