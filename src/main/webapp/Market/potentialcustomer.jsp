@@ -1106,6 +1106,7 @@
                             fileforeignid: Math.random() * 1000,
                             contacttitle: "",
                             source: "其他",
+                            industry:"尚未分類",
 
                         },//bean
                         bosMassage: "",//主管留言欄位

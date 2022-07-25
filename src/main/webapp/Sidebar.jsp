@@ -92,18 +92,16 @@
                 </button>
                 <!-- <button class="client">流失客戶</button> -->
                 <!-- <button class="list-group-item" onclick="javascript:location.href=''"> 服務管理 </button> -->
-                <button class="list-group-item "
-                    onclick="statistic()"
-                    >                
+                <button class="list-group-item " onclick="statistic()">
                     數據管理
                 </button>
                 <button class="statistic BusinessCase"
-                onclick="javascript:location.href='${pageContext.request.contextPath}/statistic/BusinessCase.jsp'">
+                    onclick="javascript:location.href='${pageContext.request.contextPath}/statistic/BusinessCase.jsp'">
                     業務接案
                 </button>
 
                 <button class="statistic"
-                onclick="javascript:location.href='${pageContext.request.contextPath}/statistic/statistic.jsp'">
+                    onclick="javascript:location.href='${pageContext.request.contextPath}/statistic/statistic.jsp'">
                     每日案件
                 </button>
                 <button class="statistic CloseState"
@@ -147,7 +145,11 @@
                     </button>
                     <button class="marketing output"
                         onclick="javascript:location.href='${pageContext.request.contextPath}/Marketing/output.jsp'">
-                        輸出
+                        客戶輸出
+                    </button>
+                    <button class="marketing MarketOutput"
+                        onclick="javascript:location.href='${pageContext.request.contextPath}/Marketing/MarketOutput.jsp'">
+                        銷售機會輸出
                     </button>
                 </c:if>
 
@@ -183,36 +185,39 @@
                 </c:if>
             </ul>
             <!-- session 認證-->
-<%--            <c:if test='${empty user}'>--%>
-<%--                <script>--%>
-<%--                    console.log("未登入");--%>
-<%--                    $.ajax({--%>
-<%--                        url: '${pageContext.request.contextPath}/UserAuthorize',--%>
-<%--                        type: 'POST',--%>
-<%--                        success: function (json) {--%>
-<%--                            if (json) {--%>
-<%--                                location.reload();--%>
-<%--                            } else {--%>
+            <%-- <c:if test='${empty user}'>--%>
+                <%-- <script>--%>
+                    <%-- console.log("未登入");--%>
+                        <%-- $.ajax({--%>
+                            <%-- url: '${pageContext.request.contextPath}/UserAuthorize' ,--%>
+                                <%-- type: 'POST' ,--%>
+                                    <%-- success: function (json) {--%>
+                                        <%-- if (json) {--%>
+                                            <%-- location.reload();--%>
+                                                <%-- } else {--%>
 
-<%--                                console.log("沒有認證");--%>
-<%--                            }--%>
-<%--                        },--%>
-<%--                        error: function (returndata) {--%>
-<%--                            console.log(returndata);--%>
-<%--                        }--%>
-<%--                    });--%>
-<%--                </script>--%>
-<%--            </c:if>--%>
-            <!-- 工作項目彈窗 -->
-            <div class="work" title="工作項目">
-                <table class="Table table-striped workTable">
-                    <tr class=''>
-                        <td width='100'>種類</td>
-                        <td>主題</td>
-                        <td width='100'>狀態</td>
-                    </tr>
-                </table>
-            </div>
+                                                    <%-- console.log("沒有認證");--%>
+                                                        <%-- }--%>
+                                                            <%-- },--%>
+                                                                <%-- error: function (returndata) {--%>
+                                                                    <%-- console.log(returndata);--%>
+                                                                        <%-- }--%>
+                                                                            <%-- });--%>
+                                                                                <%-- </script>--%>
+                                                                                    <%-- </c:if>--%>
+                                                                                        <!-- 工作項目彈窗 -->
+                                                                                        <div class="work" title="工作項目">
+                                                                                            <table
+                                                                                                class="Table table-striped workTable">
+                                                                                                <tr class=''>
+                                                                                                    <td width='100'>種類
+                                                                                                    </td>
+                                                                                                    <td>主題</td>
+                                                                                                    <td width='100'>狀態
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </table>
+                                                                                        </div>
         </div>
 
         <script>
@@ -256,9 +261,9 @@
 
 
 
-            function statistic(){
+            function statistic() {
                 $(".statistic").toggle();
-                $(".employee").hide();          
+                $(".employee").hide();
                 $(".market").hide();
                 $(".client").hide();
                 $(".system").hide();

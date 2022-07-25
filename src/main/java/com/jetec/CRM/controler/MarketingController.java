@@ -5,7 +5,10 @@ import com.jetec.CRM.model.MarketBean;
 import com.jetec.CRM.repository.ClientRepository;
 import com.jetec.CRM.repository.ContactRepository;
 import com.jetec.CRM.repository.MarketRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +28,8 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/Marketing")
 public class MarketingController {
+
+    Logger logger = LoggerFactory.getLogger(MarketingController.class);
     @Autowired
     ClientRepository cr;
     @Autowired
@@ -260,8 +265,8 @@ public class MarketingController {
             String finalStart = start;
             String finalEnd = end;
             industryList.forEach(e -> {
-                if (Objects.equals("尚未分類", e)){
-                    outClient.addAll(cr.findByIndustryIsNull( ));
+                if (Objects.equals("尚未分類", e)) {
+                    outClient.addAll(cr.findByIndustryIsNull());
                 }
                 outClient.addAll(cr.findByIndustryAndAaaBetween(e.trim(), finalStart, finalEnd));
             });
@@ -295,5 +300,60 @@ public class MarketingController {
         return "file_output.csv";
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //
+    @RequestMapping("/SearchMarket")
+    @ResponseBody
+    public String SearchMarket(@RequestBody Map<String, Object> body) {
+        logger.info("銷售機會輸出");
+        logger.info(body.toString());
+        String start = (String) body.get("start");
+        if (start.equals("")) start = "2022-02-02";
+        String end = (String) body.get("end");
+
+        if (end.equals("")) end = LocalDate.now().toString();
+        LocalDateTime old = LocalDateTime.now();
+
+        List<String> industryList = (List<String>) body.get("industry");
+        List<MarketBean> outClient = new ArrayList<>();
+        start = start +" 00:00";
+        end = end + " 24:00";
+        if (industryList.size() > 0) {
+            String finalStart = start;
+            String finalEnd = end;
+            industryList.forEach(e -> {
+                if (Objects.equals("尚未分類", e)) {
+                    outClient.addAll(mr.findByTypeIsNull());
+                }
+                outClient.addAll(mr.findByTypeAndAaaBetween(e.trim(), finalStart, finalEnd, Sort.by(Sort.Direction.DESC, "aaa")));
+            });
+        }
+
+        //輸出
+        try {
+            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("c://CRMfile//file_output.csv"), "UTF-8");
+//            osw.write(new String(new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF}));
+            osw.write('\ufeff');
+            BufferedWriter bw = new BufferedWriter(osw);//檔案輸出路徑
+            outClient.forEach(clientBean -> {
+                try {
+                    bw.newLine();//新起一行
+                    bw.write(clientBean.getContactemail() + "," + clientBean.getClient() + "," + clientBean.getContactname() + "," + clientBean.getType());//寫到新檔案中
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        Duration duration = Duration.between(old, LocalDateTime.now());
+        logger.info("輸出 {} 筆資料",outClient.size());
+        logger.info("耗時 : {}",duration.toMillis());
+        return "file_output.csv";
+    }
 
 }

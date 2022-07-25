@@ -7,6 +7,8 @@ import com.jetec.CRM.controler.service.PotentialCustomerService;
 import com.jetec.CRM.controler.service.SystemService;
 import com.jetec.CRM.model.*;
 import com.jetec.CRM.repository.TrackRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -24,6 +26,8 @@ import java.util.*;
 @RequestMapping("/Potential")
 @PreAuthorize("hasAuthority('系統') OR hasAuthority('主管') OR hasAuthority('業務')OR hasAuthority('行銷')OR hasAuthority('國貿')")
 public class PotentialController {
+
+    Logger logger =  LoggerFactory.getLogger(PotentialController.class);
 
     @Autowired
     PotentialCustomerService PCS;
@@ -43,6 +47,7 @@ public class PotentialController {
 //初始化
     @RequestMapping("/init/{customerid}")
     public Map<String, Object> init(@PathVariable("customerid") String customerid) {
+
         Map<String, Object> result = new HashMap<>();
         result.put("customer", PCS.getById(customerid));
         result.put("track", PCS.getTrackByCustomerid(customerid));
@@ -55,7 +60,8 @@ public class PotentialController {
 //讀取潛在客戶列表
     @RequestMapping("/CustomerList")
     public Map<String, Object> clientList(@RequestParam("pag") Integer pag) {
-        System.out.println("*****讀取潛在客戶列表*****");
+        System.out.println("======================");
+        logger.info("*****讀取潛在客戶列表*****");
         pag--;
         Map<String, Object> result = new HashMap<>();
         result.put("list", PCS.getList(pag));

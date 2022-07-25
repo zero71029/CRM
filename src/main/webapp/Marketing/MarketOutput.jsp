@@ -7,6 +7,10 @@
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+            <link rel="preconnect" href="https://fonts.gstatic.com">
+            <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
+
+
             <!-- <%-- 主要的CSS、JS放在這裡--%> -->
             <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
             <title>CRM客戶管理系統</title>
@@ -19,7 +23,7 @@
                     background-color: #e4f3ef;
                 }
 
-                .output {
+                .MarketOutput {
                     /* 按鈕顏色 */
                     background-color: #afe3d5;
                 }
@@ -242,7 +246,7 @@
                             "end": this.indate[1]
                         });
                         $.ajax({
-                            url: "${pageContext.request.contextPath}/Marketing/search3",
+                            url: "${pageContext.request.contextPath}/Marketing/SearchMarket",
                             // dataType: 'json',
                             type: 'POST',
                             contentType: "application/json; charset=UTF-8",

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -167,6 +168,7 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
 
     List<MarketBean> findByReceivestateAndAaaBetween(Integer receicestate, String startday, String endday);
 
+    List<MarketBean> findByTypeIsNull();
 
 
 //   Strin a = """
