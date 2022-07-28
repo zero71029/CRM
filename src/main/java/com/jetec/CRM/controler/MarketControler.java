@@ -4,8 +4,12 @@ import com.jetec.CRM.Tool.ZeroTools;
 import com.jetec.CRM.controler.service.*;
 import com.jetec.CRM.model.*;
 import com.jetec.CRM.repository.AdminRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +32,7 @@ import java.util.*;
 @RequestMapping("/Market")
 @PreAuthorize("hasAuthority('系統') OR hasAuthority('主管') OR hasAuthority('業務')OR hasAuthority('行銷')OR hasAuthority('國貿')")
 public class MarketControler {
+    Logger logger = LoggerFactory.getLogger(MarketControler.class);
     @Autowired
     MarketService ms;
     @Autowired
@@ -62,6 +67,9 @@ public class MarketControler {
     @RequestMapping("/SavePotentialCustomer")
     @ResponseBody
     public Map<String, Object> SavePotentialCustomer(PotentialCustomerBean pcb, HttpSession session) {
+
+        System.out.println(pcb.getReceivestate());
+
         System.out.println("*****儲存潛在客戶*****");
         Map<String, Object> result = new HashMap<>();
         AdminBean admin = (AdminBean) session.getAttribute("user");
@@ -80,7 +88,7 @@ public class MarketControler {
             }
         }
         pcb.setBbb(LocalDateTime.now().toString());
-        System.out.println(pcb.getReceivestate());
+
         PotentialCustomerBean save = PCS.SavePotentialCustomer(pcb);
         result.put("state", true);
         result.put("mess", "儲存成功");
@@ -97,7 +105,7 @@ public class MarketControler {
         PotentialCustomerBean bean = PCS.getById(id);
 
         MarketBean mBean = ms.findByCustomerid(id);
-        if(mBean != null){
+        if (mBean != null) {
             model.addAttribute("marketid", mBean.getMarketid());
             System.out.println(mBean.getMarketid());
         }
@@ -373,7 +381,11 @@ public class MarketControler {
     @RequestMapping("/changeClient.action")
     @ResponseBody
     public String changeClient(PotentialCustomerBean Bean) {
-        System.out.println("*****潛在各戶轉成客戶****");
+        logger.info("潛在各戶轉成客戶 Customerid:{}", Bean.getCustomerid());
+        logger.info("admin : {}", ZeroTools.getAdmin().getName());
+        ChangeMessageBean cmBean = new ChangeMessageBean(ZeroTools.getUUID(), Bean.getCustomerid(), ZeroTools.getAdmin().getName(), "行動", "", "潛在各戶轉成客戶", ZeroTools.getTime(new Date()));
+        ss.saveChangeMesssage(cmBean);
+
         ClientBean clientBean = new ClientBean();
         clientBean.setName(Bean.getCompany());
         clientBean.setPhone(Bean.getPhone());
@@ -393,7 +405,6 @@ public class MarketControler {
         clientBean.setExtension(Bean.getExtension());
         clientBean.setSerialnumber(Bean.getSerialnumber());
         clientBean.setAaa(LocalDate.now().toString());
-
         cs.SaveAdmin(clientBean);
         return "新增客戶";
     }
@@ -419,21 +430,15 @@ public class MarketControler {
 //潛在各戶 轉 聯絡人
     @RequestMapping("/changeContact.action")
     @ResponseBody
-    public String changeContact(ContactBean contactBean) {
-        System.out.println("*****潛在各戶 轉 聯絡人****");
-//		ContactBean contactBean = new ContactBean();
-//		contactBean.setName(Bean.getName());
-//		contactBean.setPhone(Bean.getPhone());
-//		contactBean.setMoblie(Bean.getMoblie());
-//		contactBean.setEmail(Bean.getEmail());
-//		contactBean.setCompany(Bean.getCompany());
-//		contactBean.setUser(Bean.getUser());
-//		contactBean.setDepartment(Bean.getDepartment());
-//		contactBean.setDirector(Bean.getDirector());
-//		contactBean.setFax(Bean.getFax());
-        contactBean.setRemark("");
-//		contactBean.setUser(Bean.getUser());
+    public String changeContact(ContactBean contactBean, @RequestParam("customerid") String customerid) {
 
+        logger.info("潛在各戶轉聯絡人 Customerid:{}", customerid);
+        logger.info("admin : {}", ZeroTools.getAdmin().getName());
+        ChangeMessageBean cmBean = new ChangeMessageBean(ZeroTools.getUUID(), customerid, ZeroTools.getAdmin().getName(), "行動", "", "潛在各戶轉聯絡人", ZeroTools.getTime(new Date()));
+        ss.saveChangeMesssage(cmBean);
+
+
+        contactBean.setRemark("");
         cs.SaveContact(contactBean);
         return "新增聯絡人";
     }
@@ -476,8 +481,17 @@ public class MarketControler {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //潛在各戶轉銷售機會
     @RequestMapping("/changeMarket")
-    public String changeMarket(Model model, PotentialCustomerBean pBean) {
-        System.out.println("潛在各戶轉銷售機會");
+    public String changeMarket(Model model, PotentialCustomerBean pBean, HttpSession session) {
+        logger.info("潛在各戶轉銷售機會 Customerid:{}", pBean.getCustomerid());
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            AdminBean adminBean = (AdminBean) authentication.getPrincipal();
+            logger.info("admin : {}", adminBean.getName());
+            ChangeMessageBean cmBean = new ChangeMessageBean(ZeroTools.getUUID(), pBean.getCustomerid(), adminBean.getName(), "行動", "", "轉銷售機會", ZeroTools.getTime(new Date()));
+            ss.saveChangeMesssage(cmBean);
+        } catch (Exception e) {
+            logger.info("未登入 或 潛在各戶轉銷售機會發生錯誤錯誤");
+        }
         model.addAttribute("changeMarket", "changeMarket");
         model.addAttribute("changeid", pBean.getCustomerid());
         return "/Market/Market";
@@ -917,7 +931,7 @@ public class MarketControler {
         MarketBean mBean = ms.getById(marketid);
         if (mBean != null) {
             AdminBean aBean = (AdminBean) session.getAttribute("user");
-            if (mBean.getReceive() == null || mBean.getReceive().isEmpty() || !Objects.equals(aBean.getName(), mBean.getUser())    ) {
+            if (mBean.getReceive() == null || mBean.getReceive().isEmpty() || !Objects.equals(aBean.getName(), mBean.getUser())) {
                 ChangeMessageBean cmBean = new ChangeMessageBean(ZeroTools.getUUID(), mBean.getMarketid(), aBean.getName(), "領取任務", mBean.getReceive(), aBean.getName(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                 ss.saveChangeMesssage(cmBean);
                 cmBean = new ChangeMessageBean(ZeroTools.getUUID(), mBean.getMarketid(), aBean.getName(), "負責人", mBean.getUser(), aBean.getName(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
@@ -932,7 +946,7 @@ public class MarketControler {
             }
             ChangeMessageBean cmBean = new ChangeMessageBean(ZeroTools.getUUID(), mBean.getMarketid(), aBean.getName(), "領取任務", aBean.getName(), "null", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             ss.saveChangeMesssage(cmBean);
-            cmBean = new ChangeMessageBean(ZeroTools.getUUID(), mBean.getMarketid(), aBean.getName(), "負責人", aBean.getName(), "null", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))   );
+            cmBean = new ChangeMessageBean(ZeroTools.getUUID(), mBean.getMarketid(), aBean.getName(), "負責人", aBean.getName(), "null", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             ss.saveChangeMesssage(cmBean);
             mBean.setReceive(null);
             mBean.setUser(null);

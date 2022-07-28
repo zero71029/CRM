@@ -28,7 +28,6 @@ import java.util.*;
 public class PotentialController {
 
     Logger logger =  LoggerFactory.getLogger(PotentialController.class);
-
     @Autowired
     PotentialCustomerService PCS;
     @Autowired
@@ -47,7 +46,7 @@ public class PotentialController {
 //初始化
     @RequestMapping("/init/{customerid}")
     public Map<String, Object> init(@PathVariable("customerid") String customerid) {
-
+        logger.info("*****潛在客戶初始化*****");
         Map<String, Object> result = new HashMap<>();
         result.put("customer", PCS.getById(customerid));
         result.put("track", PCS.getTrackByCustomerid(customerid));
@@ -60,7 +59,6 @@ public class PotentialController {
 //讀取潛在客戶列表
     @RequestMapping("/CustomerList")
     public Map<String, Object> clientList(@RequestParam("pag") Integer pag) {
-        System.out.println("======================");
         logger.info("*****讀取潛在客戶列表*****");
         pag--;
         Map<String, Object> result = new HashMap<>();
@@ -83,7 +81,7 @@ public class PotentialController {
     @RequestMapping("/closed")
     @ResponseBody
     public List<PotentialCustomerBean> closed() {
-        System.out.println("*****讀取潛在客戶列表*****");
+        System.out.println("*****讀取潛在客戶列表(結案)*****");
         return PCS.closed();
     }
 

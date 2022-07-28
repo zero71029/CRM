@@ -47,7 +47,6 @@ public class PotentialCustomerService {
         }
         if (pcb.getCustomerid() == null || pcb.getCustomerid().isEmpty()) {
             pcb.setCustomerid(uuid);
-            pcb.setReceivestate(3);
             if (US.existsByFileforeignid(pcb.getFileforeignid())) {
                 List<MarketFileBean> list = US.getByfileForeignid(pcb.getFileforeignid());
                 for (MarketFileBean fileBean : list) {

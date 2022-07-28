@@ -786,7 +786,7 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <button style="width: 100%;"
-                                        @click="changeStatusVisible=false;customer.status='已聯繫';submitForm()">取消
+                                        @click="changeStatusVisible=false">取消
                                     </button>
                                 </div>
                             </div>
@@ -1107,6 +1107,7 @@
                             contacttitle: "",
                             source: "其他",
                             industry:"尚未分類",
+                            receivestate:3,
 
                         },//bean
                         bosMassage: "",//主管留言欄位

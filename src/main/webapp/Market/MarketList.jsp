@@ -32,7 +32,7 @@
         </head>
 
         <body>
-            
+
             <div class="container-fluid">
                 <div class="row">
                     <!-- <%-- 插入側邊欄--%> -->
@@ -93,7 +93,7 @@
                                     <td>領取</td>
                                     <td style="width: 230px;">客戶</td>
                                     <td>描述</td>
-                                    
+
                                     <td>機率</td>
                                     <td @click="sortItem('important')"><a href="#">重要性</a></td>
                                     <td>追蹤次數</td>
@@ -132,9 +132,10 @@
                                         </td>
                                         <!-- <td v-on:click="market(s.marketid)" style="cursor: pointer;">
                             {{s.message}}</td> -->
-                                        <td v-if="s.message.length <100 " style="width: 500px;"><a
-                                                :href="'${pageContext.request.contextPath}/Market/Market/'+s.marketid"
-                                                target="_blank"> {{s.message}}</a>
+                                        <td v-if="s.message.length <100 " style="width: 500px;">
+                                            <span class="description" v-on:click="market(s.marketid)" target="_blank">
+                                                {{s.message}}
+                                            </span>
                                         </td>
                                         <td v-on:click="market(s.marketid)" v-if="s.message.length >=100 ">
                                             <el-popover placement="top-start" width="300" trigger="hover"
@@ -735,7 +736,7 @@
 
                                     </div>
                                     <div style="clear:both;margin-bottom: 15px;"></div>
-                        
+
                                     <hr>
 
 
@@ -1478,13 +1479,13 @@
                         })
                     },
                     //轉換 領取狀態
-                    receives(val){                        
-                        switch(val){
-                            case 1 :return"領取";
-                            case 2 :return"分配";
-                            case 3 :return"";
+                    receives(val) {
+                        switch (val) {
+                            case 1: return "領取";
+                            case 2: return "分配";
+                            case 3: return "";
                         }
-                     
+
                     },
                     // getAutoClose(){
                     //     $.ajax({
@@ -1538,8 +1539,14 @@
                 opacity: 0;
             }
 
-            tr td a {
+            .description {
                 color: #000;
+                cursor: pointer;
+            }
+
+            .description:hover {
+                color: blue;
+
             }
         </style>
 

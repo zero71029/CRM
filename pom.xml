@@ -56,8 +56,7 @@
 			<artifactId>google-api-client</artifactId>
 			<version>1.31.2</version>
 		</dependency>
-		<!-- 日誌 -->
-		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
