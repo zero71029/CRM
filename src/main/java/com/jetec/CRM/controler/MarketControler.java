@@ -237,7 +237,7 @@ public class MarketControler {
             startDay = startDay + " 00:00";
         }
         if (endDay.equals("")) {
-            endDay = zTools.getTime(new Date());
+            endDay = ZeroTools.getTime(new Date());
         } else {
             endDay = endDay + " 24:00";
         }
@@ -263,8 +263,8 @@ public class MarketControler {
     public String SaveTrack(TrackBean trackBean) {
         System.out.println("存追蹤");
         if (trackBean.getTrackid() == null || trackBean.getTrackid().isEmpty())
-            trackBean.setTrackid(zTools.getUUID());
-        trackBean.setTracktime(zTools.getTime(new Date()));
+            trackBean.setTrackid(ZeroTools.getUUID());
+        trackBean.setTracktime(ZeroTools.getTime(new Date()));
         ms.SaveTrack(trackBean);
         return "redirect:/Market/potentialcustomer/" + trackBean.getCustomerid();
     }
@@ -481,7 +481,7 @@ public class MarketControler {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //潛在各戶轉銷售機會
     @RequestMapping("/changeMarket")
-    public String changeMarket(Model model, PotentialCustomerBean pBean, HttpSession session) {
+    public String changeMarket(Model model, PotentialCustomerBean pBean) {
         logger.info("潛在各戶轉銷售機會 Customerid:{}", pBean.getCustomerid());
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -573,7 +573,7 @@ public class MarketControler {
             startDay = startDay + " 00:00";
         }
         if (endDay.equals("")) {
-            endDay = zTools.getTime(new Date());
+            endDay = ZeroTools.getTime(new Date());
         } else {
             endDay = endDay + " 24:00";
         }
@@ -648,7 +648,7 @@ public class MarketControler {
     @ResponseBody
     public List<TrackBean> SaveTrackByMarket(TrackBean trackBean, @PathVariable("marketid") String marketid) {
         System.out.println("存追蹤by銷售機會");
-        String uuid = zTools.getUUID();
+        String uuid = ZeroTools.getUUID();
         if (trackBean.getTrackid() == null || trackBean.getTrackid().isEmpty())
             trackBean.setTrackid(uuid);
         // 插入Customerid
@@ -660,7 +660,7 @@ public class MarketControler {
             ms.save(marketBean);
         }
         // 插入日期
-        trackBean.setTracktime(zTools.getTime(new Date()));
+        trackBean.setTracktime(ZeroTools.getTime(new Date()));
         TrackBean save = ms.SaveTrack(trackBean);
 
         return PCS.getTrackByCustomerid(save.getCustomerid());
@@ -671,12 +671,12 @@ public class MarketControler {
     @RequestMapping("/changeTrackByMarket/{marketid}")
     public String changeTrackByMarket(TrackBean trackBean, @PathVariable("marketid") String marketid) {
         System.out.println("修改追蹤by銷售機會");
-        String uuid = zTools.getUUID();
+        String uuid = ZeroTools.getUUID();
         if (trackBean.getTrackid() == null || trackBean.getTrackid().isEmpty())
             trackBean.setTrackid(uuid);
 
 //插入日期
-        trackBean.setTracktime(zTools.getTime(new Date()));
+        trackBean.setTracktime(ZeroTools.getTime(new Date()));
         ms.SaveTrack(trackBean);
 
         return "redirect:/Market/Market/" + marketid;
@@ -824,7 +824,7 @@ public class MarketControler {
 
             ChangeMessageBean cmbean;
             if ("cost".equals(field)) {
-                cmbean = new ChangeMessageBean(zTools.getUUID(), marketid, adminBean.getName(), field, String.valueOf(rs.getInt(1)), val, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                cmbean = new ChangeMessageBean(ZeroTools.getUUID(), marketid, adminBean.getName(), field, String.valueOf(rs.getInt(1)), val, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
                 if (String.valueOf(rs.getInt(1)).equals(val)) {
 
@@ -832,7 +832,7 @@ public class MarketControler {
                     ss.saveChangeMesssage(cmbean);
                 }
             } else {
-                cmbean = new ChangeMessageBean(zTools.getUUID(), marketid, adminBean.getName(), field, rs.getString(1), val, zTools.getTime(new Date()));
+                cmbean = new ChangeMessageBean(ZeroTools.getUUID(), marketid, adminBean.getName(), field, rs.getString(1), val, ZeroTools.getTime(new Date()));
                 cmbean.setName(adminBean.getName());
 
                 if (!(rs.getString(1) == null)) {
@@ -887,7 +887,7 @@ public class MarketControler {
     public String check() {
         System.out.println("*****測試*****");
         //////
-        List<MarketBean> marketBeanList = new ArrayList<>();
+        List<MarketBean> marketBeanList;
         marketBeanList = ms.getAll();
         for (MarketBean mBean : marketBeanList) {
             ClientBean clientBean = cs.getById(mBean.getClientid());
@@ -929,6 +929,7 @@ public class MarketControler {
         System.out.println("領取任務");
         Map<String, String> result = new HashMap<>();
         MarketBean mBean = ms.getById(marketid);
+
         if (mBean != null) {
             AdminBean aBean = (AdminBean) session.getAttribute("user");
             if (mBean.getReceive() == null || mBean.getReceive().isEmpty() || !Objects.equals(aBean.getName(), mBean.getUser())) {

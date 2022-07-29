@@ -52,10 +52,10 @@ public class TaskController {
         System.out.println("*****儲存每⽇任務*****");
         System.out.println(bean);
 
-        String ddd = zTools.getTime(new Date());
+        String ddd = ZeroTools.getTime(new Date());
         if (bean.getEvaluatedate() == null || bean.getEvaluatedate().isEmpty())
-            bean.setEvaluatedate(zTools.getTime(new Date()));
-        if (bean.getEvaluateid() == null || bean.getEvaluateid().isEmpty()) bean.setEvaluateid(zTools.getUUID());
+            bean.setEvaluatedate(ZeroTools.getTime(new Date()));
+        if (bean.getEvaluateid() == null || bean.getEvaluateid().isEmpty()) bean.setEvaluateid(ZeroTools.getUUID());
         if (bean.getName() == null || bean.getName().isEmpty()) {
             AdminBean adminBean = (AdminBean) session.getAttribute("user");
             bean.setName(adminBean.getName());

@@ -40,7 +40,7 @@ public class UpfileController {
     public String upFileToReply(MultipartHttpServletRequest multipartRequest,
                                 @PathVariable("authorizeId") String authorizeId) {
         System.out.println("*****上傳型錄***** 留言" + authorizeId);
-        String uuid = zTools.getUUID();
+        String uuid = ZeroTools.getUUID();
 
         Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
         System.out.println("fileMap " + fileMap);
@@ -218,9 +218,9 @@ public class UpfileController {
                 fileMap.get("file").transferTo(new File(path2));
                 System.out.println("輸出成功");
 //3. 儲存檔案名稱到資料庫
-                MarketFileBean fileBean = new MarketFileBean(zTools.getUUID(), authorizeId, filename, authorizeId, filename);
-                MarketFileBean save = US.save(fileBean);
-                return save;
+                MarketFileBean fileBean = new MarketFileBean(ZeroTools.getUUID(), authorizeId, filename, authorizeId, filename);
+
+                return US.save(fileBean);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -288,7 +288,7 @@ public class UpfileController {
         //讀取檔案
         Integer i = US.getZeroMailnum();
         List<String> suCompany = new ArrayList<>();
-        BufferedReader reader = null;
+        BufferedReader reader;
         try {
             reader = new BufferedReader(new InputStreamReader(new FileInputStream("C:/CRMfile/" + fileName),"UTF-8"));
             String line = null;

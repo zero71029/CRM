@@ -231,7 +231,7 @@ public class PublicControl {
     public String billboardReply(Model model, @PathVariable("id") Integer id, HttpSession session) {
         System.out.println("*****讀取公佈欄細節****");
         // 上傳檔案用
-        model.addAttribute("uuid", zTools.getUUID());
+        model.addAttribute("uuid", ZeroTools.getUUID());
         AdminBean adminBean = (AdminBean) session.getAttribute("user");
         // 讀取公佈欄細節 如果有登入就已讀
         model.addAttribute("bean", ss.getBillboardById(id, adminBean));
@@ -323,7 +323,7 @@ public class PublicControl {
     public String upFile(MultipartHttpServletRequest multipartRequest,
                          @PathVariable("authorizeId") String authorizeId) {
         System.out.println("*****上傳型錄");
-        String uuid = zTools.getUUID();
+        String uuid = ZeroTools.getUUID();
         Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
         System.out.println("fileMap " + fileMap);
 //圖片儲存

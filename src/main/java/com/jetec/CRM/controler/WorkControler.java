@@ -35,8 +35,7 @@ public class WorkControler {
     PotentialCustomerService pcs;
     @Autowired
     MarketService ms;
-    @Autowired
-    ZeroTools zTools;
+
     @Autowired
     PotentialCustomerService PCS;
     @Autowired
@@ -60,9 +59,9 @@ public class WorkControler {
     public String SaveWork(WorkBean worKBean) {
         System.out.println("存工作項目");
         System.out.println(worKBean);
-        if (worKBean.getWorkid() == null || worKBean.getWorkid().isEmpty()) worKBean.setWorkid(zTools.getUUID());
+        if (worKBean.getWorkid() == null || worKBean.getWorkid().isEmpty()) worKBean.setWorkid(ZeroTools.getUUID());
         if (worKBean.getAaa() == null || worKBean.getAaa().isEmpty())
-            worKBean.setAaa(zTools.getTime(new Date()));
+            worKBean.setAaa(ZeroTools.getTime(new Date()));
         WorkBean save = ws.SaveWork(worKBean);
         return "redirect:/work/detail/" + save.getWorkid();
     }
@@ -169,7 +168,7 @@ public class WorkControler {
     @ResponseBody
     public List<TrackBean> SaveTrackByWork(TrackBean trackBean, @PathVariable("workid") String workid) {
         System.out.println("存追蹤by工作項目");
-        String uuid = zTools.getUUID();
+        String uuid = ZeroTools.getUUID();
         if (trackBean.getTrackid() == null || trackBean.getTrackid().isEmpty())
             trackBean.setTrackid(uuid);
 // 插入Customerid
@@ -182,7 +181,7 @@ public class WorkControler {
             ws.SaveWork(wBean);
         }
 // 插入日期
-        trackBean.setTracktime(zTools.getTime(new Date()));
+        trackBean.setTracktime(ZeroTools.getTime(new Date()));
         TrackBean save = ms.SaveTrack(trackBean);
 
         return PCS.getTrackByCustomerid(save.getCustomerid());
@@ -193,7 +192,7 @@ public class WorkControler {
     @RequestMapping("/changeTrackByMarket/{workid}")
     public String changeTrackByMarket(TrackBean trackBean, @PathVariable("workid") Integer workid) {
         System.out.println("修改追蹤by銷售機會");
-        String uuid = zTools.getUUID();
+        String uuid = ZeroTools.getUUID();
         if (trackBean.getTrackid() == null || trackBean.getTrackid().isEmpty())
             trackBean.setTrackid(uuid);
 //插入Customerid
@@ -204,7 +203,7 @@ public class WorkControler {
 //ms.save(marketBean);
 //}
 //插入日期
-        trackBean.setTracktime(zTools.getTime(new Date()));
+        trackBean.setTracktime(ZeroTools.getTime(new Date()));
         ms.SaveTrack(trackBean);
 
         return "redirect:/work/detail/" + workid;

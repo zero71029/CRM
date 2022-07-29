@@ -48,6 +48,8 @@ public class PotentialController {
     public Map<String, Object> init(@PathVariable("customerid") String customerid) {
         logger.info("*****潛在客戶初始化*****");
         Map<String, Object> result = new HashMap<>();
+        PotentialCustomerBean pcb =PCS.getById(customerid);
+        pcb.setOpentime(LocalDateTime.now().toString());
         result.put("customer", PCS.getById(customerid));
         result.put("track", PCS.getTrackByCustomerid(customerid));
         result.put("bosmessage", DS.getBosMessageList(customerid));
@@ -109,7 +111,7 @@ public class PotentialController {
             startDay = startDay + " 00:00";
         }
         if (endDay.equals("") ) {
-            endDay = zTools.getTime(new Date());
+            endDay = ZeroTools.getTime(new Date());
         } else {
             endDay = endDay + " 24:00";
         }
@@ -152,7 +154,7 @@ public class PotentialController {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 搜索潛在客戶by來源
-    @SuppressWarnings("unchecked")
+//    @SuppressWarnings("unchecked")
 //    @RequestMapping("/selectSource")
 //    public List<PotentialCustomerBean> selectSource(@RequestBody Map<String, Object> data) {
 //        System.out.println("搜索潛在客戶by來源");
@@ -283,7 +285,7 @@ public class PotentialController {
             startDay = startDay + " 00:00";
         }
         if (endDay.equals("")) {
-            endDay = zTools.getTime(new Date());
+            endDay = ZeroTools.getTime(new Date());
         } else {
             endDay = endDay + " 24:00";
         }
@@ -296,10 +298,34 @@ public class PotentialController {
     //領取任務
     @RequestMapping("/getReceive/{customerid}")
     @ResponseBody
-    public Map<String, String> getReceive(HttpSession session, @PathVariable("customerid") String customerid) {
+    public Map<String, String> getReceive(HttpSession session, @PathVariable("customerid") String customerid,@RequestParam("opentime") String opentime) {
         System.out.println("領取任務");
         Map<String, String> result = new HashMap<>();
         PotentialCustomerBean pcBean = PCS.getById(customerid);
+        System.out.println(pcBean.getBbb());
+        System.out.println(opentime);
+
+        //避免同時開同一頁面
+        if (pcBean.getBbb() != null) {
+            if (pcBean.getBbb().compareTo(opentime) > 0) {
+                result.put("state", "錯誤,資料已被其他人更新,不能儲存");
+                result.put("receivestate", "3");
+                result.put("user", null);
+                //存時間
+                pcBean.setBbb();
+
+
+
+
+
+
+
+
+                return result;
+            }
+        }
+
+        // 領取
         if (pcBean != null) {
             AdminBean aBean = (AdminBean) session.getAttribute("user");
             System.out.println(aBean.getName());

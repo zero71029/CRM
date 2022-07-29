@@ -785,8 +785,7 @@
                                     </button>
                                 </div>
                                 <div class="col-lg-12">
-                                    <button style="width: 100%;"
-                                        @click="changeStatusVisible=false">取消
+                                    <button style="width: 100%;" @click="changeStatusVisible=false">取消
                                     </button>
                                 </div>
                             </div>
@@ -799,8 +798,6 @@
             </div>
         </body>
         <script>
-
-            console.log("opentime", '${bean.opentime}');
 
 
 
@@ -977,7 +974,7 @@
                 goClient();
                 window.setTimeout(function () {
                     goContact();
-                }, 500);
+                }, 300);
                 window.setTimeout(function () {
                     //存潛在客戶
                     var formData = new FormData($(".AAA")[0]);
@@ -989,55 +986,61 @@
                         cache: false,
                         contentType: false,
                         processData: false,
-                        success: function (url) {
-                            vm.$message({
-                                message: "儲存成功",
-                                type: 'success'
-                            });
-                        },
-                        error: function (returndata) {
-                            console.log(returndata);
-                        }
-                    });
+                        success: function (response) {
+                            if (response.state) {
+                                vm.$message({
+                                    message: "儲存成功",
+                                    type: 'success'
+                                });
+                                //轉銷售機會
+                                $.ajax({
+                                    url: '${pageContext.request.contextPath}/Market/existsClient',
+                                    type: 'POST',
+                                    data: formData,
+                                    async: false,
+                                    cache: false,
+                                    contentType: false,
+                                    processData: false,
+                                    success: function (json) {
+                                        if (json == "客戶已存在") {
+                                            $(".AAA").attr("action", "${pageContext.request.contextPath}/Market/changeMarket");
+                                            $(".AAA")[0].submit();
+                                            return;
+                                        }
+                                        if (json == "不存在") {
+                                            vm.$message({
+                                                message: "需先新增客戶",
+                                                type: 'warning'
+                                            });
+                                            return;
+                                        }
+                                        if (json == "聯絡人不存在") {
+                                            vm.$message({
+                                                message: "需先新增聯絡人",
+                                                type: 'warning'
+                                            });
+                                            return;
+                                        }
+                                        alert("錯誤");
+                                    },
+                                    error: function (returndata) {
+                                        console.log(returndata);
+                                    }
+                                });
+                            } else {
+                                vm.$message({
+                                    message: response.mess,
+                                    type: 'error'
+                                });
+                            }
 
-                    //轉銷售機會
-                    $.ajax({
-                        url: '${pageContext.request.contextPath}/Market/existsClient',
-                        type: 'POST',
-                        data: formData,
-                        async: false,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        success: function (json) {
-                            if (json == "客戶已存在") {
-                                $(".AAA").attr("action", "${pageContext.request.contextPath}/Market/changeMarket");
-                                $(".AAA")[0].submit();
-                                return;
-                            }
-                            if (json == "不存在") {
-                                vm.$message({
-                                    message: "需先新增客戶",
-                                    type: 'warning'
-                                });
-                                return;
-                            }
-                            if (json == "聯絡人不存在") {
-                                vm.$message({
-                                    message: "需先新增聯絡人",
-                                    type: 'warning'
-                                });
-                                return;
-                            }
-                            alert("錯誤");
                         },
                         error: function (returndata) {
                             console.log(returndata);
                         }
                     });
-                }, 900);
+                }, 600);
             }
-
             //檢查有無銷售機會
             function NotExistMarket() {
                 var formData = new FormData($(".AAA")[0]);
@@ -1106,8 +1109,8 @@
                             fileforeignid: Math.random() * 1000,
                             contacttitle: "",
                             source: "其他",
-                            industry:"尚未分類",
-                            receivestate:3,
+                            industry: "尚未分類",
+                            receivestate: 3,
 
                         },//bean
                         bosMassage: "",//主管留言欄位
@@ -1610,11 +1613,17 @@
                                 type: 'error'
                             });
                         } else {
+                            let opentime = new FormData();
+                            opentime.append("opentime", '${bean.opentime}');
+
                             $.ajax({
                                 url: '${pageContext.request.contextPath}/Potential/getReceive/${bean.customerid}',
-                                type: 'get',
+                                type: 'post',
+                                data: opentime,
                                 async: false,
                                 cache: false,
+                                contentType: false,//當form以multipart/form-data方式上傳檔案時，需要設定為false
+                                processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
                                 success: (response => (
                                     this.$message({
                                         message: response.state + "  " + response.receivestate,

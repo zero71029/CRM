@@ -11,23 +11,15 @@ import com.jetec.CRM.model.MarketBean;
 import com.jetec.CRM.model.PotentialCustomerBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-
-import static java.util.stream.Collectors.toList;
 
 @Controller
 @RequestMapping("/statistic")
@@ -83,14 +75,14 @@ public class StatisticController {
         Map<String, Object> result = new HashMap<>();
 
         if (startDay == null || startDay.equals("")) {
-            startDay = zTools.getTime(new Date());
+            startDay = ZeroTools.getTime(new Date());
             startDay = startDay.substring(0, 10);
             startDay = startDay + " 00:00";
         } else {
             startDay = startDay + " 00:00";
         }
         if (Objects.equals(endDay, "")) {
-            endDay = zTools.getTime(new Date());
+            endDay = ZeroTools.getTime(new Date());
         } else {
             endDay = endDay + " 24:00";
         }
@@ -383,8 +375,8 @@ public class StatisticController {
     @RequestMapping("/BusinessDetail")
     public Map<String, Object> BusinessDetail(@RequestParam("state") String state, @RequestParam("receives") Integer receives, @RequestParam("startDay") String startDay, @RequestParam("endDay") String endDay, @RequestParam("user") String user) {
         Map<String, Object> result = new HashMap<>();
-        List<MarketBean> mList = new ArrayList<>();
-        List<PotentialCustomerBean> pList = new ArrayList<>();
+        List<MarketBean> mList;
+        List<PotentialCustomerBean> pList;
         System.out.println("state "+state);
         System.out.println("receives "+receives);
         System.out.println(startDay);
