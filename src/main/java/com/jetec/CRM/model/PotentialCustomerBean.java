@@ -56,7 +56,13 @@ public class PotentialCustomerBean implements Serializable {
     @Override
     public String toString() {
         return "PotentialCustomerBean{" +
-                "marketfilelist=" + marketfilelist +
+                "customerid='" + customerid + '\'' +
+                ", name='" + name + '\'' +
+                ", company='" + company + '\'' +
+                ", email='" + email + '\'' +
+                ", user='" + user + '\'' +
+                ", aaa='" + aaa + '\'' +
+                ", bbb='" + bbb + '\'' +
                 '}';
     }
 

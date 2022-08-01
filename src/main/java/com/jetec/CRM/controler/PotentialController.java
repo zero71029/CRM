@@ -27,7 +27,7 @@ import java.util.*;
 @PreAuthorize("hasAuthority('系統') OR hasAuthority('主管') OR hasAuthority('業務')OR hasAuthority('行銷')OR hasAuthority('國貿')")
 public class PotentialController {
 
-    Logger logger =  LoggerFactory.getLogger(PotentialController.class);
+    Logger logger =  LoggerFactory.getLogger("PotentialController");
     @Autowired
     PotentialCustomerService PCS;
     @Autowired
@@ -296,31 +296,19 @@ public class PotentialController {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //領取任務
-    @RequestMapping("/getReceive/{customerid}")
+    @RequestMapping("/getReceive")
     @ResponseBody
-    public Map<String, String> getReceive(HttpSession session, @PathVariable("customerid") String customerid,@RequestParam("opentime") String opentime) {
+    public Map<String, Object> getReceive(HttpSession session, PotentialCustomerBean newBean) {
         System.out.println("領取任務");
-        Map<String, String> result = new HashMap<>();
-        PotentialCustomerBean pcBean = PCS.getById(customerid);
-        System.out.println(pcBean.getBbb());
-        System.out.println(opentime);
-
+        Map<String, Object> result = new HashMap<>();
+        PotentialCustomerBean pcBean = PCS.getById(newBean.getCustomerid());
         //避免同時開同一頁面
         if (pcBean.getBbb() != null) {
-            if (pcBean.getBbb().compareTo(opentime) > 0) {
-                result.put("state", "錯誤,資料已被其他人更新,不能儲存");
+            if (pcBean.getBbb().compareTo(newBean.getOpentime()) > 0) {
+                logger.info("資料已被其他人更新,不能領取");
+                result.put("state", false);
                 result.put("receivestate", "3");
                 result.put("user", null);
-                //存時間
-                pcBean.setBbb();
-
-
-
-
-
-
-
-
                 return result;
             }
         }
@@ -337,11 +325,14 @@ public class PotentialController {
                 ss.saveChangeMesssage(cmBean);
                 cmBean = new ChangeMessageBean(ZeroTools.getUUID(), pcBean.getCustomerid(), aBean.getName(), "領取狀態", pcBean.getReceivestate()+"", "1", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                 ss.saveChangeMesssage(cmBean);
-                pcBean.setReceive(aBean.getName());
-                pcBean.setUser(aBean.getName());
-                pcBean.setReceivestate(1);
-                PCS.SavePotentialCustomer(pcBean);
-                result.put("state", "領取成功");
+                newBean.setReceive(aBean.getName());
+                newBean.setUser(aBean.getName());
+                newBean.setReceivestate(1);
+                //存時間
+                newBean.setBbb(LocalDateTime.now().toString());
+                logger.info("{} 領取任務 {}",aBean.getName(),newBean.getCustomerid());
+                PCS.SavePotentialCustomer(newBean);
+                result.put("state", true);
                 result.put("receivestate", "1");
                 result.put("user", aBean.getName());
                 return result;
@@ -352,11 +343,13 @@ public class PotentialController {
             ss.saveChangeMesssage(cmBean);
             cmBean = new ChangeMessageBean(ZeroTools.getUUID(), pcBean.getCustomerid(), aBean.getName(), "領取狀態", pcBean.getReceivestate()+"", "3", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             ss.saveChangeMesssage(cmBean);
-            pcBean.setReceive(null);
-            pcBean.setUser(null);
-            pcBean.setReceivestate(3);
-            PCS.SavePotentialCustomer(pcBean);
-            result.put("state", "取消成功");
+            newBean.setReceive(null);
+            newBean.setUser(null);
+            newBean.setReceivestate(3);
+            newBean.setBbb(LocalDateTime.now().toString());
+            logger.info("{} 取消任務 {}",aBean.getName(),newBean.getCustomerid());
+            PCS.SavePotentialCustomer(newBean);
+            result.put("state", true);
             result.put("receivestate", "3");
             result.put("user", null);
             return result;
