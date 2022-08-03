@@ -222,6 +222,12 @@ public class MarketBean implements Serializable {
     }
 
     public void setFax(String fax) {
+        if(fax != null){
+            fax = fax.replace("-", "");
+            fax = fax.replace("(", "");
+            fax = fax.replace(")", "");
+        }
+
         this.fax = fax;
     }
 
@@ -327,9 +333,12 @@ public class MarketBean implements Serializable {
     }
 
     public void setContactphone(String contactphone) {
-        contactphone = contactphone.replace("-", "");
-        contactphone = contactphone.replace("(", "");
-        contactphone = contactphone.replace(")", "");
+        if(contactphone != null){
+            contactphone = contactphone.replace("-", "");
+            contactphone = contactphone.replace("(", "");
+            contactphone = contactphone.replace(")", "");
+        }
+
         this.contactphone = contactphone;
     }
 
@@ -338,6 +347,13 @@ public class MarketBean implements Serializable {
     }
 
     public void setContactmoblie(String contactmoblie) {
+        if(contactmoblie != null){
+            contactmoblie = contactmoblie.replace("-", "");
+            contactmoblie = contactmoblie.replace("(", "");
+            contactmoblie = contactmoblie.replace(")", "");
+        }
+
+
         this.contactmoblie = contactmoblie;
     }
 

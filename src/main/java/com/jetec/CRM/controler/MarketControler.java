@@ -237,7 +237,8 @@ public class MarketControler {
             startDay = startDay + " 00:00";
         }
         if (endDay.equals("")) {
-            endDay = ZeroTools.getTime(new Date());
+            endDay ="2022-08-25 00:00";
+//            endDay = ZeroTools.getTime(new Date());
         } else {
             endDay = endDay + " 24:00";
         }
@@ -960,6 +961,15 @@ public class MarketControler {
         result.put("state", "請先建立任務");
         result.put("user", null);
         return result;
+    }
+
+    //格式化電話
+    @RequestMapping("/formatphone")
+    @ResponseBody
+    public String formatPhone() {
+        System.out.println("格式化電話");
+        ms.formatPhone();
+        return "格式化結束";
     }
 
 

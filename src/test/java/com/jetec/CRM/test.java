@@ -1,7 +1,9 @@
 package com.jetec.CRM;
 
 import com.jetec.CRM.controler.PotentialController;
+import com.jetec.CRM.model.MarketBean;
 import com.jetec.CRM.model.TrackBean;
+import com.jetec.CRM.repository.MarketRepository;
 import com.jetec.CRM.repository.TrackRepository;
 import org.junit.jupiter.api.Test;
 
@@ -20,6 +22,8 @@ import java.util.List;
 public class test {
     @Autowired
     TrackRepository tr;
+    @Autowired
+    MarketRepository mr;
 
     @Test
     public void XXX() throws Exception {
@@ -51,11 +55,15 @@ public class test {
     }
 
     @Test
-    public void logtest() {
-        Logger logger = LoggerFactory.getLogger(test.class);
-        logger.info("*****讀取潛在客戶列表*****");
-        logger.error("logback 成功了");
-        logger.debug("logback 成功了");
+    public void XXXX() {
+            List<MarketBean> list = mr.findAll();
+            list.forEach(
+                    e->{
+                        e.setContactmoblie(e.getContactmoblie());
+                        e.setFax(e.getFax());
+                        mr.save(e);
+                    }
+            );
     }
 }
 

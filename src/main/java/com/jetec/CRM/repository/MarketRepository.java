@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -94,8 +93,6 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
 
     List<MarketBean> findByNameLikeIgnoreCaseAndAaaBetween(String s, String startDay, String endDay,Sort sort);
 
-    List<MarketBean> findByContactphoneLikeIgnoreCaseAndAaaBetween(String s, String startDay, String endDay,Sort sort);
-
     List<MarketBean> findByStageAndAaaBetween(String Stage, String startDay, String endDay,Sort sort);
 
     List<MarketBean> findByContactnameLikeIgnoreCaseAndAaaBetween(String s, String startDay, String endDay,Sort sort);
@@ -169,6 +166,13 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
     List<MarketBean> findByReceivestateAndAaaBetween(Integer receicestate, String startday, String endday);
 
     List<MarketBean> findByTypeIsNull();
+
+
+    List<MarketBean> findByContactmoblieLikeAndAaaBetween(String s, String startDay, String endDay, Sort sort);
+
+    List<MarketBean> findByContactphoneLikeAndAaaBetween(String s, String startDay, String endDay, Sort sort);
+
+    List<MarketBean> findByFaxLikeAndAaaBetween(String s, String startDay, String endDay, Sort sort);
 
 
 //   Strin a = """

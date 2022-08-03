@@ -47,6 +47,10 @@
             table {
                 background-color: white;
             }
+            .taskbar {
+                    /* 按鈕顏色 */
+                    background-color: #afe3d5;
+                }
         </style>
 
         <body>
@@ -208,6 +212,7 @@
             </div>
         </body>
         <script>
+            $(".employee").show();
             const vm = new Vue({
                 el: ".app",
                 data() {

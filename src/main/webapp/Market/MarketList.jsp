@@ -453,12 +453,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!--  聯絡人電話-->
+                                    <!--  電話-->
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
                                             <button class="accordion-button collapsed" type="button"
                                                 data-bs-toggle="collapse" data-bs-target="#i7">
-                                                聯絡人電話
+                                                電話/傳真
                                             </button>
                                         </h2>
                                         <div id="i7" class="accordion-collapse collapse"
@@ -1107,7 +1107,7 @@
                         var star = new Date();
                         this.inSortState = [];
                         this.btncheck3 = false;
-                        console.log(this.inDay)
+                        console.log("輸入時間",this.inDay)
                         if (this.inDay == "") {//沒輸入日期
                             this.inDay[0] = "";
                             this.inDay[1] = "";
@@ -1130,7 +1130,8 @@
 
                         } else if (this.inContact != "") {//聯絡人
                             url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=inContact&val=" + this.inContact;
-                        } else if (this.ContantPhone != "") {//聯絡人電話
+                        } else if (this.ContantPhone != "") {//電話/傳真
+                            this.ContantPhone = this.ContantPhone.replaceAll("-","");
                             url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=ContantPhone&val=" + this.ContantPhone;
                         } else if (this.source != "") {//產業
                             url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=source&val=" + this.source;
@@ -1163,7 +1164,7 @@
                                 this.list = response,
                                 this.total = this.list.length,
                                 this.oldList = this.list,
-                                console.log(response, "response")
+                                console.log( "response",response)
                             )),
                             error: function (returndata) {
                                 console.log(returndata);
@@ -1218,12 +1219,19 @@
                             }
                         }
                         if (this.ContantPhone != "") {//聯絡人電話
+                            
                             this.oldList = this.list;
                             this.list = [];
                             for (var bean of this.oldList) {
                                 if (bean.contactphone.indexOf(this.ContantPhone) >= 0) {
                                     this.list.push(bean);
-                                }
+                                }else
+                                if (bean.contactmoblie.indexOf(this.ContantPhone) >= 0) {
+                                    this.list.push(bean);
+                                }else
+                                if (bean.fax.indexOf(this.ContantPhone) >= 0) {
+                                    this.list.push(bean);
+                                }                                
                             }
                         }
                         if (this.source != "") {//產業
@@ -1301,7 +1309,7 @@
                         this.oldList = this.list;
 
                         var en = new Date();
-                        console.log(en - star);
+                        console.log( "花費時間" ,en - star);
                     },
                     selectBudget: function () {//select預算
                         axios

@@ -374,7 +374,12 @@ public class MarketService {
                 result.addAll(mr.findByNameLikeIgnoreCaseOrClientLikeIgnoreCaseAndAaaBetween("%" + val.get(0) + "%", "%" + val.get(0) + "%", startDay, endDay, sort));
                 break;
             case "ContantPhone":
-                result.addAll(mr.findByContactphoneLikeIgnoreCaseAndAaaBetween("%" + val.get(0) + "%", startDay, endDay, sort));
+                String phone = val.get(0).replaceAll("-","");
+                System.out.println(phone);
+                result.addAll(mr.findByContactphoneLikeAndAaaBetween("%" + phone + "%", startDay, endDay, sort));
+                result.addAll(mr.findByContactmoblieLikeAndAaaBetween("%" + phone + "%", startDay, endDay, sort));
+                result.addAll(mr.findByFaxLikeAndAaaBetween("%" + phone + "%", startDay, endDay, sort));
+
                 break;
             case "inStateList":
                 for (String state : val)
@@ -620,6 +625,17 @@ public class MarketService {
 
     public MarketBean findByCustomerid(String id) {
         return mr.findByCustomerid(id);
+    }
+
+    public void formatPhone() {
+        List<MarketBean> list = mr.findAll();
+        list.forEach(
+                e->{
+                    e.setContactmoblie(e.getContactmoblie());
+                    e.setFax(e.getFax());
+                    mr.save(e);
+                }
+        );
     }
 
 

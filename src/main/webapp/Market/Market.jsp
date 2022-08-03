@@ -1167,7 +1167,9 @@
                                 this.changeMessageList = response.changeMessageList,
                                 this.bean.phone = formatPhone(this.bean.phone),
                                 this.bean.contactphone = formatPhone(this.bean.contactphone),
-                                this.bean.contactmoblie = formatPhone(this.bean.contactmoblie),
+                                this.bean.contactmoblie= this.bean.contactmoblie.insert(4, "-"),
+                                this.bean.contactmoblie =this.bean.contactmoblie.insert(8, "-"),
+                              
                                 this.oldBean = Object.assign({}, this.bean),
                                 this.bosMassageList = response.bean.bm
 

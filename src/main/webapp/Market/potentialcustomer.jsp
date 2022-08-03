@@ -141,7 +141,7 @@
                         </div>
                         <br>
                         <form action="${pageContext.request.contextPath}/Market/SavePotentialCustomer" method="post"
-                            class="basefrom g-3 needs-validation AAA" novalidate>
+                            class="basefrom g-3 needs-validation AAA" novalidate id="basefrom">
                             <input type="hidden" name="customerid" value="${bean.customerid}">
                             <input type="hidden" name="aaa" value="${bean.aaa}">
                             <input type="hidden" name="opentime" value="${bean.opentime}">
@@ -1613,33 +1613,28 @@
                                 type: 'error'
                             });
                         } else {
-                            let opentime = new FormData();
-                            opentime.append("opentime", '${bean.opentime}');
-
+                            var basefrom = new FormData(document.getElementById("basefrom"));
+                            console.log(basefrom);
                             $.ajax({
-                                url: '${pageContext.request.contextPath}/Potential/getReceive/${bean.customerid}',
+                                url: '${pageContext.request.contextPath}/Potential/getReceive',
                                 type: 'post',
-                                data: opentime,
+                                data: basefrom,
                                 async: false,
                                 cache: false,
                                 contentType: false,//當form以multipart/form-data方式上傳檔案時，需要設定為false
                                 processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
-                                success: (response => (
-                                    this.$message({
-                                        message: response.state + "  " + response.receivestate,
-                                        type: 'success'
-                                    }),
-                                    this.customer.user = response.user,
-                                    this.customer.receive = response.user,
-                                    this.customer.receivestate = response.receivestate
-
-                                )),
+                                success: response => {
+                                    if (response.state) {
+                                        location.href = "${pageContext.request.contextPath}/Market/potentialcustomer/${bean.customerid}"
+                                    }else{
+                                        this.$message.error(" 資料已被其他人更新, 不能領取");
+                                    }
+                                },
                                 error: function (returndata) {
                                     console.log(returndata);
                                 }
                             })
                         }
-
                     },
                     //分配人員 (receive 設為null)
                     changeUser() {

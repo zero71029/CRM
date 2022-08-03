@@ -305,11 +305,5 @@ public class PotentialCustomerService {
         return PCR.findByStatus("提交主管");
     }
 
-    public Integer expired() {
-        LocalDateTime start = LocalDateTime.now();
-        LocalDateTime end = start.minusHours(2);
-        System.out.println(start.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-        System.out.println(end.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-        return PCR.countByAaaLessThanAndUserIsNull( end.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-    }
+
 }

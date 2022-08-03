@@ -66,8 +66,6 @@ public class PotentialController {
         Map<String, Object> result = new HashMap<>();
         result.put("list", PCS.getList(pag));
         result.put("todayTotal", PCS.gettodayTotal());
-        //過期
-        result.put("expired", PCS.expired());
         return result;
     }
 

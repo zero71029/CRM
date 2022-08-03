@@ -2,8 +2,10 @@ package com.jetec.CRM.controler.service;
 
 import com.jetec.CRM.model.EvaluateBean;
 import com.jetec.CRM.model.EvaluateTaskBean;
+import com.jetec.CRM.model.LeaveBean;
 import com.jetec.CRM.repository.EvaluateRepository;
 import com.jetec.CRM.repository.EvaluateTaskRepository;
+import com.jetec.CRM.repository.LeaveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +27,8 @@ public class TaskService {
     EvaluateRepository er;
     @Autowired
     EvaluateTaskRepository etr;
+    @Autowired
+    LeaveRepository lr;
 
     //讀取每⽇任務
     public EvaluateBean getById(String id) {
@@ -80,5 +86,19 @@ public class TaskService {
         Pageable p =   PageRequest.of(pag, 40,Sort.Direction.DESC,"evaluatedate");
         Page<EvaluateBean> page = er.findByName(name,p);
         return page.getContent();
+    }
+    //儲存請假單
+    public void saveLeave(LeaveBean leaveBean) {
+        lr.save(leaveBean);
+    }
+    //請假單列表
+    public List<LeaveBean> getLeaveList(String mon) {
+        LocalDate d = LocalDate.parse(mon+"-01");
+        //本月的第一天
+        LocalDate firstday = LocalDate.of(d.getYear(),d.getMonth(),1);
+        //本月的最后一天
+        LocalDate lastDay =d.with(TemporalAdjusters.lastDayOfMonth());
+        List<LeaveBean> list = lr.findByLeavedayBetween(firstday.toString() ,lastDay.toString(),Sort.by(Sort.Direction.DESC,"leaveday"));
+        return list;
     }
 }

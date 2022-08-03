@@ -318,11 +318,6 @@
                         </div>
 
 
-
-                        <div style="line-height: 30px;">
-                            <el-link type="primary">需分配 : {{expired}}</el-link>
-
-                        </div>
                         <!-- 分頁 -->
                         <!-- <div class="block text-center">
                             <el-pagination @current-change="handleCurrentChange" :current-page.sync="currentPage1"
@@ -526,7 +521,7 @@
                     inStateList: [],//狀態
                     source: [],//來源
                     industry: [],//產業
-                    expired: 0,
+       
                 },
                 created: function () {
                     var url = new URL(location.href);
@@ -541,7 +536,7 @@
                             success: response => {
                                 this.list = response.list;
                                 this.todayTotal = response.todayTotal;
-                                this.expired = response.expired;
+
                                 var now = new Date().getTime();
                                 this.list.forEach(e => {
                                     var create = new Date(e.aaa).getTime();

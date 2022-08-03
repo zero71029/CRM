@@ -1,8 +1,12 @@
 package com.jetec.CRM.controler;
 
+import com.jetec.CRM.Tool.ResultBean;
+import com.jetec.CRM.Tool.ZeroFactory;
 import com.jetec.CRM.Tool.ZeroTools;
 import com.jetec.CRM.controler.service.TaskService;
 import com.jetec.CRM.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +20,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Controller
@@ -25,6 +32,8 @@ public class TaskController {
     TaskService TS;
     @Autowired
     ZeroTools zTools;
+
+    Logger logger = LoggerFactory.getLogger("TaskController");
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @RequestMapping("/init/{id}")
@@ -170,13 +179,14 @@ public class TaskController {
                 System.out.println(line);
             }
 
-            return "成功 已經輸出到NAS <br>" ;
+            return "成功 已經輸出到NAS <br>";
         } catch (IOException e) {
             e.printStackTrace();
             return "輸出失敗,請聯絡管理員";
         }
 
     }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索每日任務
     @RequestMapping("/selecttask")
@@ -184,9 +194,53 @@ public class TaskController {
     public List<EvaluateBean> selecttask(@RequestParam("pag") Integer pag, @RequestParam("name") String name) {
         System.out.println("*****搜索每日任務*****");
         pag--;
-        return TS.selecttask(name,pag);
+        return TS.selecttask(name, pag);
     }
 
+    //儲存請假單
+    @RequestMapping("/saveLeave")
+    @ResponseBody
+    public ResultBean saveLeave(LeaveBean leaveBean) {
+        System.out.println(leaveBean);
+        LocalDate start = LocalDateTime.parse(leaveBean.getStartday()).toLocalDate();
+        LocalDate end = LocalDateTime.parse(leaveBean.getEndday()).toLocalDate();
+
+
+        LeaveBean newBean = new LeaveBean(leaveBean);
+        newBean.setLeaveday(start.toString());
+        newBean.setRemark(leaveBean.getStartday() + " ~ " + leaveBean.getEndday());
+        TS.saveLeave(newBean);
+
+
+
+        start = start.minusDays(-1);
+        while (start.isBefore(end)) {
+            newBean = new LeaveBean(leaveBean);
+            newBean.setLeaveday(start.toString());
+            TS.saveLeave(newBean);
+            start = start.minusDays(-1);
+        }
+        start = LocalDateTime.parse(leaveBean.getStartday()).toLocalDate();
+        //start  end 一樣表示只有一天
+        if (!start.equals(end)) {
+            newBean = new LeaveBean(leaveBean);
+            newBean.setLeaveday(end.toString());
+            TS.saveLeave(newBean);
+        }
+
+
+        logger.info("{} 請假成功", leaveBean.getUser());
+        return ZeroFactory.buildResultBean(200, "假單成功", "");
+    }
+
+    //請假單列表
+    @RequestMapping("/getLeave/{mon}")
+    @ResponseBody
+    public ResultBean getLeave(@PathVariable("mon") String mon) {
+        logger.info("請假單列表");
+        List<LeaveBean> list = TS.getLeaveList(mon);
+        return ZeroFactory.buildResultBean(200, "假單成功", list);
+    }
 
 
 }

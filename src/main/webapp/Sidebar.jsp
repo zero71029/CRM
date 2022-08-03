@@ -132,7 +132,10 @@
                     onclick="javascript:window.open('${pageContext.request.contextPath}/system/AccountApplication.jsp')">
                     E-Mail/NAS帳號申請表
                 </button>
-
+                <button class="employee leave"
+                    onclick="javascript:location.href='${pageContext.request.contextPath}/Task/leaveList.jsp'">
+                    請假申請
+                </button>
 
                 <!--  -->
                 <c:if test='${ user.position == "系統" ||user.position == "總經理" ||user.department == "行銷"}'>
