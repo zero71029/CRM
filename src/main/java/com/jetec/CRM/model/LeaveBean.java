@@ -9,6 +9,8 @@ public class LeaveBean {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer leaveid;
+    @Column(columnDefinition="CHAR(32)")
+    private String uuid;//申請人
     private String user;//申請人
     private String department;//部門
     private String leaveName;//假別
@@ -26,6 +28,7 @@ public class LeaveBean {
 
     public LeaveBean(LeaveBean leaveBean) {
         user = leaveBean.getUser();
+        uuid = leaveBean.getUuid();
         department = leaveBean.getDepartment();
         leaveName =leaveBean.getLeaveName();
         agent = leaveBean.getAgent();
@@ -36,6 +39,14 @@ public class LeaveBean {
         leaveday = leaveBean.getLeaveday();
         applyday = leaveBean.getApplyday();
         remark = leaveBean.getRemark();
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getRemark() {

@@ -1,15 +1,10 @@
 package com.jetec.CRM;
 
-import com.jetec.CRM.controler.PotentialController;
-import com.jetec.CRM.model.MarketBean;
+import com.github.f4b6a3.uuid.UuidCreator;
 import com.jetec.CRM.model.TrackBean;
 import com.jetec.CRM.repository.MarketRepository;
 import com.jetec.CRM.repository.TrackRepository;
 import org.junit.jupiter.api.Test;
-
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
@@ -18,7 +13,7 @@ import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
-@SpringBootTest
+//@SpringBootTest
 public class test {
     @Autowired
     TrackRepository tr;
@@ -55,15 +50,13 @@ public class test {
     }
 
     @Test
-    public void XXXX() {
-            List<MarketBean> list = mr.findAll();
-            list.forEach(
-                    e->{
-                        e.setContactmoblie(e.getContactmoblie());
-                        e.setFax(e.getFax());
-                        mr.save(e);
-                    }
-            );
+    public void XXXX() throws InterruptedException {
+
+
+        for (int i = 0; i < 10; i++) {
+            Thread.sleep(1000);
+            System.out.println(UuidCreator.getTimeOrderedWithRandom());
+        }
     }
 }
 

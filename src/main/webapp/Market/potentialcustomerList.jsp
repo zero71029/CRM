@@ -150,6 +150,38 @@
                                             </div>
                                         </div>
                                     </div>
+
+
+
+
+
+                                    <!-- 電話-->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="flush-headingThree">
+                                            <button class="accordion-button collapsed" type="button" id="company"
+                                                data-bs-toggle="collapse" data-bs-target="#phone">
+                                                <i class="bi bi-telephone-fill"></i>&nbsp; 電話
+                                            </button>
+                                        </h2>
+                                        <div id="phone" class="accordion-collapse collapse">
+                                            <div class="accordion-body">
+                                                <div class="input-group mb-3">
+                                                    <input type="text" class="form-control" v-model="phone">
+                                                    <button class="btn btn-outline-secondary" type="submit"
+                                                        id="selectCompany" v-on:click="selectList">搜索</button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+
+
                                     <!-- 狀態-->
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingThree">
@@ -521,7 +553,8 @@
                     inStateList: [],//狀態
                     source: [],//來源
                     industry: [],//產業
-       
+                    phone: "",//電話
+
                 },
                 created: function () {
                     var url = new URL(location.href);
@@ -563,7 +596,7 @@
                         //     .catch(function (error) {
                         //         console.log(error);
                         //     });
-                    } else {                        
+                    } else {
                         location.href = "${pageContext.request.contextPath}/"
                     }
                     if (name != null) {
@@ -606,6 +639,9 @@
                             url = '${pageContext.request.contextPath}/Potential/selectPotential?startDay=' + this.inDay[0] + "&endDay=" + this.inDay[1] + "&key=inStateList&val=" + this.inStateList;
                         } else if (this.industry != "") {//產業
                             url = '${pageContext.request.contextPath}/Potential/selectPotential?startDay=' + this.inDay[0] + "&endDay=" + this.inDay[1] + "&key=industry&val=" + this.industry;
+                        } else if (this.phone != "") {
+                            url = '${pageContext.request.contextPath}/Potential/selectPotential?startDay=' + this.inDay[0] + "&endDay=" + this.inDay[1] + "&key=phone&val=" + this.phone;
+
                         }
 
                         $.ajax({

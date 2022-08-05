@@ -204,8 +204,7 @@ public class TaskController {
         System.out.println(leaveBean);
         LocalDate start = LocalDateTime.parse(leaveBean.getStartday()).toLocalDate();
         LocalDate end = LocalDateTime.parse(leaveBean.getEndday()).toLocalDate();
-
-
+        leaveBean.setUuid(ZeroTools.getUUID());
         LeaveBean newBean = new LeaveBean(leaveBean);
         newBean.setLeaveday(start.toString());
         newBean.setRemark(leaveBean.getStartday() + " ~ " + leaveBean.getEndday());
@@ -239,7 +238,7 @@ public class TaskController {
     public ResultBean getLeave(@PathVariable("mon") String mon) {
         logger.info("請假單列表");
         List<LeaveBean> list = TS.getLeaveList(mon);
-        return ZeroFactory.buildResultBean(200, "假單成功", list);
+        return ZeroFactory.buildResultBean(200, "請假單列表", list);
     }
 
 

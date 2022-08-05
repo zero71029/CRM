@@ -18,11 +18,13 @@
                 [v-cloak] {
                     display: none;
                 }
+
                 .app {
                     background-color: #e4f3ef;
                 }
-                tr{
-                    background-color:#FFFFAA;
+
+                tr {
+                    background-color: #FFFFAA;
                 }
             </style>
         </head>
@@ -38,20 +40,21 @@
                             <div class="col-md-12">
                                 <!-- <%-- 中間主體--%> -->
                                 <div class="row ">
-
                                     <div class="col-md-12 text-center">
                                         <p>&nbsp;</p>
-                                        <a href="">
-                                            << </a>
-                                                &nbsp;&nbsp;
-                                                <el-date-picker v-model="inday" type="month" @change="changeTime">
-                                                    &nbsp;&nbsp;
-                                                </el-date-picker>
-                                                <a href="">>></a>
+                                        <el-button type="text" @click="changeMon(-1)"> ❮❮</el-button>
+                                        &nbsp;&nbsp;
+                                        <el-date-picker v-model="inday" type="month" @change="changeTime">
+                                        </el-date-picker>
+                                        &nbsp;&nbsp;
+                                        <el-button type="text" @click="changeMon(1)">❯❯</el-button>
+
                                     </div>
                                 </div>
                                 <div class="row ">
-                                    <div class="col-md-2"></div>
+                                    <div class="col-md-2">
+                                        <a href="${pageContext.request.contextPath}/Task/leave.jsp">請假申請</a>
+                                    </div>
                                     <div class="col-md-8">
                                         <p>&nbsp;</p>
                                         <table class="table table-bordered border border-dark border-2">
@@ -63,7 +66,7 @@
                                                 <td>備註</td>
 
                                             </tr>
-                                            <tr v-for="(s, index) in list" :key="index" >
+                                            <tr v-for="(s, index) in list" :key="index">
                                                 <td>{{s.leaveday}}</td>
                                                 <td> {{s.department}}</td>
                                                 <td> {{s.user}}</td>
@@ -75,7 +78,7 @@
                                     </div>
                                 </div>
                                 <div class="row ">
-                                    <div class="col-md-12">xxxxxxxx</div>
+                                    <div class="col-md-12"></div>
                                 </div>
                             </div>
                         </div>
@@ -93,33 +96,41 @@
                     }
                 },
                 created() {
-                    const date = new Date();
-                    let mon = (date.getMonth() + 1) + "";
-                    this.inday = date.getFullYear() + "-" + mon.padStart(2, "0");
-                    console.log(this.inday);
-                    $.ajax({
-                        url: "${pageContext.request.contextPath}/task/getLeave/" + this.inday,//接受請求的Servlet地址
-                        type: 'get',
-                        async: false,//同步請求
-                        cache: false,//不快取頁面
-                        success: response => {
-                            if (response.code == 200) {                            
-                                this.list = response.data;
-                            }
-                        },
-                        error: function (returndata) {
-                            console.log(returndata);
-                        }
-                    });
+                    this.inday = this.formatMon(new Date());
+                    this.getLeave(this.inday);
                 },
                 methods: {
-                    changeTime(){
-                        console.log(this.inday);
-                        let mon = (this.inday.getMonth() + 1) + "";
-                        console.log(this.inday.getFullYear()+"-"+mon.padStart(2, "0"));
-                        let d = new Date(this.inday)
-                    }
+                    changeTime() {
+                        this.getLeave(this.formatMon(this.inday));
+                    },
+                    getLeave(mon) {
+                        $.ajax({
+                            url: "${pageContext.request.contextPath}/task/getLeave/" + mon,//接受請求的Servlet地址
+                            type: 'get',
+                            async: false,//同步請求
+                            cache: false,//不快取頁面
+                            success: response => {
+                                if (response.code == 200) {
+                                    this.list = response.data;
+                                }
+                            },
+                            error: function (returndata) {
+                                console.log(returndata);
+                            }
+                        });
+                    },
+                    formatMon(myDate) {
+                        let mon = (myDate.getMonth() + 1) + "";
+                        return myDate.getFullYear() + "-" + mon.padStart(2, "0");
+                    },
+                    changeMon(i) {
+                        let myDate = new Date(this.inday)
+                        myDate.setMonth(myDate.getMonth() + i);
+                        this.inday = this.formatMon(myDate);
+                        this.getLeave(this.inday);
+                    },
                 },
+
             })
         </script>
 

@@ -79,4 +79,12 @@ public interface PotentialCustomerRepository extends JpaRepository<PotentialCust
     List<PotentialCustomerBean> getPotentialCustomerAndUserAndReceivesByAaaAndNotinMarket(String user, Integer receives, String startDay, String endDay);
 
     List<PotentialCustomerBean> findByUserIsNull();
+
+
+
+    List<PotentialCustomerBean> findByPhoneLikeAndAaaBetween(String s, String startDay, String endDay, Sort sort);
+
+    List<PotentialCustomerBean> findByMoblieLikeAndAaaBetween(String s, String startDay, String endDay, Sort sort);
+
+    List<PotentialCustomerBean> findByFaxLikeAndAaaBetween(String s, String startDay, String endDay, Sort sort);
 }

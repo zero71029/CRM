@@ -1751,7 +1751,6 @@
                                 // this.saveChage(data);
 
                             }
-
                             console.log(this.bean.closereason)
                         }
                     }, saveChage(data) {
@@ -1817,9 +1816,6 @@
                                 message: '已領取删除'
                             });
                         });
-
-
-
                     },
                     //分配人員 (receive 設為null)
                     changeUser() {

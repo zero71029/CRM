@@ -300,10 +300,6 @@
                             this.$message.error("請假時間為空");
                             $("#leaveTime").css("border", "1px solid red");
                         }
-
-
-
-
                         console.log("this.applyday", this.applyDay);
                         if (isok) {
                             this.startDay += this.startTime;
@@ -341,8 +337,8 @@
                             });
 
                         }
-
-                    }
+                    },
+                
                 },
             })
         </script>

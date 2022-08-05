@@ -106,7 +106,6 @@ public class PotentialCustomerService {
             tr.deleteByCustomerid(i);
             PCR.deleteById(i);
         }
-
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -142,9 +141,7 @@ public class PotentialCustomerService {
                 result.add(p);
             boo = true;
         }
-
         return result;
-
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -295,6 +292,16 @@ public class PotentialCustomerService {
                 for (String industry : val)
                     result.addAll(PCR.findByIndustryAndAaaBetween(industry, startDay, endDay, sort));
                 break;
+            case "phone"://產業
+                for (String phone : val) {
+                    phone = phone.replace("-", "");
+                    phone = phone.replace("(", "");
+                    phone = phone.replace(")", "");
+                    result.addAll(PCR.findByPhoneLikeAndAaaBetween("%" + phone + "%", startDay, endDay, sort));
+                    result.addAll(PCR.findByMoblieLikeAndAaaBetween("%" + phone + "%", startDay, endDay, sort));
+                    result.addAll(PCR.findByFaxLikeAndAaaBetween("%" + phone + "%", startDay, endDay, sort));
+                }
+                break;
         }
         return result;
     }
@@ -304,6 +311,4 @@ public class PotentialCustomerService {
     public List<PotentialCustomerBean> getPotentialSubmitBos() {
         return PCR.findByStatus("提交主管");
     }
-
-
 }

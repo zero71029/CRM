@@ -68,28 +68,32 @@ class TaskControllerTest {
     }
 
     @Test
-
+    @Transactional
+    @Rollback
     void saveLeave() throws Exception {
-        mockMvc
-                .perform(post("/task/saveLeave")
+        mockMvc .perform(post("/task/saveLeave")
                         .param("user", "系統管理")
                         .param("department", "系統管理")
                         .param("leaveName", "系統管理")
                         .param("agent", "系統管理")
                         .param("reason", "系統管理")
-                        .param("startday", "2022-08-19T08:00")
-                        .param("endday", "2022-08-25T16:00")
+                        .param("startday", "2022-07-19T08:00")
+                        .param("endday", "2022-08-05T16:00")
                         .param("director", "系統管理")
                         .param("applyday", "2022-08-02")
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("code").value(200))
                 .andExpect(jsonPath("message").value("假單成功"))
-                .andExpect(jsonPath("data").value(""))
-                .andDo(print());
+                .andExpect(jsonPath("data").value(""));
     }
 
     @Test
-    void getLeave() {
+    void getLeave() throws Exception {
+        mockMvc .perform(post("/task/getLeave/2022-08"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("code").value(200))
+                .andExpect(jsonPath("message").value("請假單列表"))
+                .andExpect(jsonPath("data").isArray());
     }
 }

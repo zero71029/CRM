@@ -19,6 +19,19 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+
+
+
+
+		<!-- 順序UUID   https://github.com/f4b6a3/uuid-creator -->
+		<!-- https://mvnrepository.com/artifact/com.github.f4b6a3/uuid-creator -->
+		<dependency>
+			<groupId>com.github.f4b6a3</groupId>
+			<artifactId>uuid-creator</artifactId>
+			<version>5.1.0</version>
+		</dependency>
+
+
 		<!-- mail -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
