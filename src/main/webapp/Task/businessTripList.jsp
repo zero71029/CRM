@@ -42,12 +42,12 @@
                                 <div class="row ">
                                     <div class="col-md-12 text-center">
                                         <p>&nbsp;</p>
-                                        <el-button type="text" @click="changeMon(-1)"> ❮❮</el-button>
-                                        &nbsp;&nbsp;
-                                        <el-date-picker v-model="inday" type="month" @change="changeTime">
-                                        </el-date-picker>
-                                        &nbsp;&nbsp;
-                                        <el-button type="text" @click="changeMon(1)">❯❯</el-button>
+
+
+                                        <el-button type="text" @click="changeTrip(-1)"> 已決定行程</el-button>
+                                        <el-button type="text" @click="changeTrip(-1)"> 已完成</el-button>
+                      
+
 
                                     </div>
                                 </div>
@@ -124,11 +124,8 @@
                         let mon = (myDate.getMonth() + 1) + "";
                         return myDate.getFullYear() + "-" + mon.padStart(2, "0");
                     },
-                    changeMon(i) {
-                        let myDate = new Date(this.inday)
-                        myDate.setMonth(myDate.getMonth() + i);
-                        this.inday = this.formatMon(myDate);
-                        this.getLeave(this.inday);
+                    changeTrip(i) {
+
                     },
                 },
 

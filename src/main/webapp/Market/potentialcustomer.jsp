@@ -328,15 +328,6 @@
                                                 v-model.trim="customer.othersource" maxlength="20">
                                         </div>
                                     </div>
-
-
-
-
-
-
-
-
-
                                     <div class="row">
                                         <div class="col-md-1"></div>
                                         <div class="col-md-2 cellz">縣市</div>
@@ -601,12 +592,18 @@
                                     <div class="col-md-1"></div>
                                     <div class="col-md-4 FormPadding">
 
-                                        <textarea class="form-control" name="trackdescribe" rows="2" maxlength="950"
-                                            @input="changeTextarea('trackdescribe')" id="trackdescribe"></textarea>
+
+
+
+                                        
+                                        <el-input type="textarea" :autosize="{ minRows: 2}" v-model="trackdescribe"
+                                            name="trackdescribe" maxlength="950" id="trackdescribe">
+                                        </el-input>
                                     </div>
                                     <div class="col-md-4 FormPadding">
-                                        <textarea class="form-control" name="result" rows="2"
-                                            @input="changeTextarea('result')" id="result" maxlength="950"></textarea>
+                                        <el-input type="textarea" :autosize="{ minRows: 2}" v-model="result"
+                                            name="result" maxlength="950" id="result">
+                                        </el-input>
                                     </div>
                                     <div class="col-md-1" style="padding: 0%;">
                                         <button style="width: 100%; background-color: #569b92;"
@@ -629,17 +626,9 @@
                                         <div class="row">
                                             <div class="col-md-4" style="position: relative; word-wrap:break-word;"
                                                 v-html="s.trackdescribe">
-
-                                                <!-- <el-input type="textarea" v-model="s.trackdescribe" class="aaaa"
-                                        :id="'Tracktrackdescribe'+index"
-                                        @input="changeTextarea('Tracktrackdescribe'+index)"></el-input> -->
                                             </div>
                                             <div class="col-md-4" style="position: relative; word-wrap:break-word;"
                                                 v-html="s.result">
-                                                <!-- <el-input type="textarea" v-model="s.result" class="aaaa"
-                                        :id="'Trackresult'+index"
-                                        @input="changeTextarea('Trackresult'+index)"></el-input> -->
-
                                             </div>
                                             <div class="col-md-3" style="color: #569b92;">
                                                 {{s.remark}} {{s.tracktime}}
@@ -1098,6 +1087,8 @@
                 el: '.app',
                 data() {
                     return {
+                        result: "",
+                        trackdescribe: "",
                         changeStatusVisible: false,//合格彈窗
                         fileList: [],
                         CallHelpCSS: "col-md-2",//求助CSS
@@ -1626,7 +1617,7 @@
                                 success: response => {
                                     if (response.state) {
                                         location.href = "${pageContext.request.contextPath}/Market/potentialcustomer/${bean.customerid}"
-                                    }else{
+                                    } else {
                                         this.$message.error(" 資料已被其他人更新, 不能領取");
                                     }
                                 },

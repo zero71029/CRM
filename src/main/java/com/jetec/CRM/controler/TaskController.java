@@ -3,6 +3,7 @@ package com.jetec.CRM.controler;
 import com.jetec.CRM.Tool.ResultBean;
 import com.jetec.CRM.Tool.ZeroFactory;
 import com.jetec.CRM.Tool.ZeroTools;
+import com.jetec.CRM.controler.service.BusinessTripService;
 import com.jetec.CRM.controler.service.TaskService;
 import com.jetec.CRM.model.*;
 import org.slf4j.Logger;
@@ -30,6 +31,8 @@ import java.util.*;
 public class TaskController {
     @Autowired
     TaskService TS;
+    @Autowired
+    BusinessTripService bts;
     @Autowired
     ZeroTools zTools;
 
@@ -240,6 +243,26 @@ public class TaskController {
         List<LeaveBean> list = TS.getLeaveList(mon);
         return ZeroFactory.buildResultBean(200, "請假單列表", list);
     }
+
+    //出差申請
+    @RequestMapping("/saveBusinessTrip")
+    @ResponseBody
+    public ResultBean saveBusinessTrip(BusinessTripBean btBean) {
+        logger.info("{} 出差申請",btBean.getSchedule());
+        System.out.println(btBean);
+        bts.save(btBean);
+        return ZeroFactory.buildResultBean(200, "出差申請成功");
+    }
+
+    @RequestMapping("/getBusinessTrip")
+    @ResponseBody
+    public ResultBean getBusinessTrip() {
+        System.out.println("讀取出差申請");
+        return ZeroFactory.buildResultBean(200, "讀取出差申請",bts.getById(28));
+    }
+
+
+
 
 
 }

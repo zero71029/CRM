@@ -32,6 +32,14 @@
                     <jsp:include page="/Sidebar.jsp"></jsp:include>
                     <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
                     <div class="col-md-11 app" v-cloak>
+                        <br>
+                        <c:if test="${user.position== '主管' || user.position== '系統'}">
+                            <el-tag v-for="(s, index) in userList" :key="index" @click="search(s)"
+                            style="cursor: pointer; margin-right: 10px;">{{s}}</el-tag>      
+                            <hr>
+                        </c:if>
+
+                        
                         <!-- <%-- 抬頭按鈕--%> -->
                         <div class="row">
                             <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">

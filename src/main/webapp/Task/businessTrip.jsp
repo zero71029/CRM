@@ -6,11 +6,6 @@
             <meta charset="UTF-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-            <link rel="preconnect" href="https://fonts.gstatic.com">
-            <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
-
-
             <!-- <%-- 主要的CSS、JS放在這裡--%> -->
             <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
             <title>CRM客戶管理系統</title>
@@ -68,27 +63,34 @@
                                     </div>
                                 </div>
                                 <div class="row ">
-
                                     <div class="col-md-8 ">
                                         <form action="" method="post" id="leaveForm">
-                                            <input type="hidden" name="schedule" value="${user.name}"
+                                          
+                                      
+                                            <input type="hidden" name="schedule" value="${user.name}" id="schedule"
                                                 placeholder="排程人員">
-                                            <span style="color: red;font-size: 20px;">新增行程 </span> 排程人員： ${user.name}
+                                            <span style="color: red;font-size: 20px;line-height: 40px;">新增行程 </span>
+                                            排程人員： ${user.name}
 
                                             <span style="float: right;">
                                                 行程日期：
-                                                <el-date-picker v-model="tripDay" type="date" placeholder="行程日期">
+                                                <el-date-picker name="tripDay" v-model="tripDay" type="date"
+                                                    placeholder="行程日期" id="tripDay">
                                                 </el-date-picker>
                                                 預估時間:
-                                                <el-input v-model="expected" maxlength="100" style="width: auto;">
+                                                <el-input v-model="expected" name="expected" maxlength="100"
+                                                    style="width: auto;" id="expected">
                                                 </el-input>
                                             </span>
                                             <br><br>
-                                            負責人員1<el-input v-model="expected" maxlength="100" style="width: auto;">
+                                            負責人員1<el-input v-model="responsible1" name="responsible1" maxlength="100"
+                                                style="width: auto;">
                                             </el-input>
-                                            負責人員2<el-input v-model="expected" maxlength="100" style="width: auto;">
+                                            &nbsp;&nbsp;&nbsp;負責人員2<el-input v-model="responsible2" name="responsible2"
+                                                maxlength="100" style="width: auto;">
                                             </el-input>
-                                            負責人員3<el-input v-model="expected" maxlength="100" style="width: auto;">
+                                            &nbsp;&nbsp;&nbsp;負責人員3<el-input v-model="responsible3" name="responsible3"
+                                                maxlength="100" style="width: auto;">
                                             </el-input>
 
 
@@ -99,8 +101,8 @@
                                                         行程目的
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" id="inputDepartment"
-                                                            name="department" maxlength="10">
+                                                        <input type="text" class="form-control" v-model="tripName"
+                                                            id="tripName" name="tripName" maxlength="10">
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -108,11 +110,11 @@
                                                         行程類型
                                                     </td>
                                                     <td>
-                                                        <select name="" id="">
-                                                            <option value="">北上</option>
-                                                            <option value="">中部</option>
-                                                            <option value="">南下</option>
-                                                            <option value="">其他</option>
+                                                        <select name="type">
+                                                            <option value="北上">北上</option>
+                                                            <option value="中部">中部</option>
+                                                            <option value="南下">南下</option>
+                                                            <option value="其他">其他</option>
                                                         </select>
                                                     </td>
                                                 </tr>
@@ -121,8 +123,10 @@
                                                         行程內容
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" id="inputDepartment"
-                                                            name="department" maxlength="10">
+                                                        <el-input name="content" id="content" type="textarea"
+                                                            placeholder="請输入内容" v-model="content" maxlength="900"
+                                                            :autosize="{ minRows: 4}" show-word-limit>
+                                                        </el-input>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -145,83 +149,48 @@
                 el: ".app",
                 data() {
                     return {
+                        tripidL:"",
                         tripDay: "",//行程日期
                         expected: "",//預計時間
-
-
-
-
-
-
-
+                        content: "",//行程內容
+                        type: "",//行程類型
+                        tripName: "",//行程目的
+                        responsible1: "",//負責人員
+                        responsible2: "",//負責人員
+                        responsible3: "",//負責人員
+                        schedule: "${user.name}",
                     }
                 },
                 created() {
-                    let day = new Date();
-                    this.applyDay = day.getFullYear() + "-" + (day.getMonth() + 1) + "-" + day.getDay();
+
                 },
                 methods: {
-                    changeLeaveOther() {
-                        this.leaveName = this.leaveOther;
-                    },
-                    changeLeaveName() {
-                        this.leaveOther = "";
-                    },
-                    changeTime() {
-                        if (this.startDay == "") return;
-                        if (this.endDay == "") return;
-                        const day1 = new Date(this.startDay + this.startTime);
-                        const day2 = new Date(this.endDay + this.endTime);
-                        const difference = day2.getTime() - day1.getTime();
-                        const days = parseInt(difference / (1000 * 3600 * 24));
-                        const h = difference - (days * 1000 * 3600 * 24);
-                        const hours = h / (1000 * 3600);
-                        this.totalTime = days + " 天 " + hours + " 時";
-                    },
                     sumbitForm() {
                         let isok = true;
-                        if (this.user == "") {
+                        if (this.tripDay == "") {
                             isok = false;
-                            this.$message.error("申請人為空");
-                            $("#inputUser").css("border", "1px solid red");
+                            this.$message.error("行程日期為空");
+                            $("#tripDay").css("border", "1px solid red");
                         }
-                        if (this.department == "") {
+                        if (this.expected == "") {
                             isok = false;
-                            this.$message.error("部門為空");
-                            $("#inputDepartment").css("border", "1px solid red");
+                            this.$message.error("預計時間為空");
+                            $("#expected").css("border", "1px solid red");
                         }
-                        if (!(this.leaveName != "" || this.leaveOther != "")) {
+                        if (!(this.content != "")) {
                             isok = false;
-                            this.$message.error("假別為空");
-                            $("#inLeave").css("border", "1px solid red");
+                            this.$message.error("行程內容為空");
+                            $("#content").css("border", "1px solid red");
                         }
-                        if (this.agent == "") {
+                        if (this.tripName == "") {
                             isok = false;
-                            this.$message.error("職務代理人為空");
-                            $("#inputAgent").css("border", "1px solid red");
+                            this.$message.error("行程目的為空");
+                            $("#tripName").css("border", "1px solid red");
                         }
-                        if (this.reason == "") {
-                            isok = false;
-                            this.$message.error("事由為空");
-                            $("#inReason").css("border", "1px solid red");
-                        }
-                        if (this.startDay == "" || this.endDay == "") {
-                            isok = false;
-                            this.$message.error("請假時間為空");
-                            $("#leaveTime").css("border", "1px solid red");
-                        }
-                        console.log("this.applyday", this.applyDay);
                         if (isok) {
-                            this.startDay += this.startTime;
-                            this.endDay += this.endTime;
                             var data = new FormData(document.getElementById("leaveForm"));
-                            data.append("startday", this.startDay);
-                            data.append("endday", this.endDay);
-                            data.append("leaveName", this.leaveName);
-                            data.append("applyday", this.applyDay);
-                            data.append("totalTime", this.totalTime);
                             $.ajax({
-                                url: "${pageContext.request.contextPath}/task/saveLeave",//接受請求的Servlet地址
+                                url: "${pageContext.request.contextPath}/task/saveBusinessTrip",//接受請求的Servlet地址
                                 type: 'POST',
                                 data: data,
                                 async: false,//同步請求
@@ -245,10 +214,8 @@
                                     console.log(returndata);
                                 }
                             });
-
                         }
                     },
-
                 },
             })
         </script>

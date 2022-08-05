@@ -1,10 +1,7 @@
 package com.jetec.CRM.controler;
 
 import com.jetec.CRM.Tool.ZeroTools;
-import com.jetec.CRM.controler.service.ClientService;
-import com.jetec.CRM.controler.service.DirectorService;
-import com.jetec.CRM.controler.service.PotentialCustomerService;
-import com.jetec.CRM.controler.service.SystemService;
+import com.jetec.CRM.controler.service.*;
 import com.jetec.CRM.model.*;
 import com.jetec.CRM.repository.TrackRepository;
 import org.slf4j.Logger;

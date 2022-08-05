@@ -137,8 +137,8 @@
                     請假申請
                 </button>
                 <button class="employee businessTrip"
-                    onclick="javascript:location.href='${pageContext.request.contextPath}/Task/businessTrip.jsp'">
-                    技術人員行程佈告欄
+                    onclick="javascript:location.href='${pageContext.request.contextPath}/Task/businessTripList.jsp'">
+                    行程佈告欄
                 </button>
                 <!--  -->
                 <c:if test='${ user.position == "系統" ||user.position == "總經理" ||user.department == "行銷"}'>

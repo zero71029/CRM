@@ -715,13 +715,18 @@
                             <div class="row">
                                 <div class="col-md-1"></div>
                                 <div class="col-md-4 FormPadding">
-                                    <textarea class="form-control" name="trackdescribe" rows="2"
-                                        @input="changeTextarea('trackdescribe')" id="trackdescribe"
-                                        maxlength="950"></textarea>
+
+                                    <el-input type="textarea" :autosize="{ minRows: 2}" v-model="trackdescribe"
+                                        name="trackdescribe" maxlength="950" id="trackdescribe">
+                                    </el-input>
+
                                 </div>
                                 <div class="col-md-4 FormPadding">
-                                    <textarea class="form-control" name="result" rows="2" maxlength="950"
-                                        @input="changeTextarea('result')" id="result"></textarea>
+                                    <el-input type="textarea" :autosize="{ minRows: 2}" v-model="result" name="result"
+                                        maxlength="950" id="result">
+                                    </el-input>
+
+
                                 </div>
                                 <div class="col-md-1" style="padding: 0%;">
                                     <button style="width: 100%; background-color: #569b92;" type="button"
@@ -1071,6 +1076,8 @@
                 el: '.app',
                 data() {
                     return {
+                        trackdescribe:"",
+                        result:"",
                         bosMassageList: [],//留言LIST
                         bosMassage: "",//留言
                         stateNum: 1,//麵包屑顯示用
@@ -1167,9 +1174,9 @@
                                 this.changeMessageList = response.changeMessageList,
                                 this.bean.phone = formatPhone(this.bean.phone),
                                 this.bean.contactphone = formatPhone(this.bean.contactphone),
-                                this.bean.contactmoblie= this.bean.contactmoblie.insert(4, "-"),
-                                this.bean.contactmoblie =this.bean.contactmoblie.insert(8, "-"),
-                              
+                                this.bean.fax = formatPhone(this.bean.fax),
+                                this.bean.contactmoblie = this.bean.contactmoblie.insert(4, "-"),
+                                this.bean.contactmoblie = this.bean.contactmoblie.insert(8, "-"),
                                 this.oldBean = Object.assign({}, this.bean),
                                 this.bosMassageList = response.bean.bm
 

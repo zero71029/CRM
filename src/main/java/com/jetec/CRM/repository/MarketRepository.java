@@ -13,6 +13,9 @@ import java.util.List;
 
 public interface MarketRepository extends JpaRepository<MarketBean, String> {
 
+
+
+
     List<MarketBean> findByNameLikeIgnoreCase(String string, Sort sort);
 
     List<MarketBean> findByUserLikeIgnoreCase(String string, Sort sort);
