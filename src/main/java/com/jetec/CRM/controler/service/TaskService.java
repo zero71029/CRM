@@ -87,18 +87,5 @@ public class TaskService {
         Page<EvaluateBean> page = er.findByName(name,p);
         return page.getContent();
     }
-    //儲存請假單
-    public void saveLeave(LeaveBean leaveBean) {
-        lr.save(leaveBean);
-    }
-    //請假單列表
-    public List<LeaveBean> getLeaveList(String mon) {
-        LocalDate d = LocalDate.parse(mon+"-01");
-        //本月的第一天
-        LocalDate firstday = LocalDate.of(d.getYear(),d.getMonth(),1);
-        //本月的最后一天
-        LocalDate lastDay =d.with(TemporalAdjusters.lastDayOfMonth());
-        List<LeaveBean> list = lr.findByLeavedayBetween(firstday.toString() ,lastDay.toString(),Sort.by(Sort.Direction.DESC,"leaveday"));
-        return list;
-    }
+
 }

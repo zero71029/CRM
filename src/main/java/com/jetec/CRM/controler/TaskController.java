@@ -4,6 +4,7 @@ import com.jetec.CRM.Tool.ResultBean;
 import com.jetec.CRM.Tool.ZeroFactory;
 import com.jetec.CRM.Tool.ZeroTools;
 import com.jetec.CRM.controler.service.BusinessTripService;
+import com.jetec.CRM.controler.service.LeaveService;
 import com.jetec.CRM.controler.service.TaskService;
 import com.jetec.CRM.model.*;
 import org.slf4j.Logger;
@@ -23,8 +24,10 @@ import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/task")
@@ -33,6 +36,8 @@ public class TaskController {
     TaskService TS;
     @Autowired
     BusinessTripService bts;
+    @Autowired
+    LeaveService ls;
     @Autowired
     ZeroTools zTools;
 
@@ -211,7 +216,7 @@ public class TaskController {
         LeaveBean newBean = new LeaveBean(leaveBean);
         newBean.setLeaveday(start.toString());
         newBean.setRemark(leaveBean.getStartday() + " ~ " + leaveBean.getEndday());
-        TS.saveLeave(newBean);
+        ls.saveLeave(newBean);
 
 
 
@@ -219,7 +224,7 @@ public class TaskController {
         while (start.isBefore(end)) {
             newBean = new LeaveBean(leaveBean);
             newBean.setLeaveday(start.toString());
-            TS.saveLeave(newBean);
+            ls.saveLeave(newBean);
             start = start.minusDays(-1);
         }
         start = LocalDateTime.parse(leaveBean.getStartday()).toLocalDate();
@@ -227,10 +232,8 @@ public class TaskController {
         if (!start.equals(end)) {
             newBean = new LeaveBean(leaveBean);
             newBean.setLeaveday(end.toString());
-            TS.saveLeave(newBean);
+            ls.saveLeave(newBean);
         }
-
-
         logger.info("{} 請假成功", leaveBean.getUser());
         return ZeroFactory.buildResultBean(200, "假單成功", "");
     }
@@ -240,8 +243,16 @@ public class TaskController {
     @ResponseBody
     public ResultBean getLeave(@PathVariable("mon") String mon) {
         logger.info("請假單列表");
-        List<LeaveBean> list = TS.getLeaveList(mon);
-        return ZeroFactory.buildResultBean(200, "請假單列表", list);
+
+        return ZeroFactory.buildResultBean(200, "請假單列表", ls.getLeaveList(mon));
+    }
+
+    //讀取請假單
+    @RequestMapping("/leave/{uuid}")
+    @ResponseBody
+    public ResultBean leave(@PathVariable("uuid") Integer uuid) {
+        System.out.println("讀取請假單");
+        return ZeroFactory.buildResultBean(200, "讀取請假單",ls.getById(uuid));
     }
 
     //出差申請
@@ -262,7 +273,19 @@ public class TaskController {
     }
 
 
-
-
+    //出差列表
+    @RequestMapping("/BusinessTripList/{mon}")
+    @ResponseBody
+    public ResultBean BusinessTripList(@PathVariable("mon") String mon) {
+        System.out.println("讀取出差申請列表");
+        return ZeroFactory.buildResultBean(200, "讀取出差申請",bts.getBusinessTripList(mon));
+    }
+    //讀取出差資料
+    @RequestMapping("/BusinessTrip/{tripid}")
+    @ResponseBody
+    public ResultBean BusinessTrip(@PathVariable("tripid") Integer tripid) {
+        System.out.println("讀取出差資料");
+        return ZeroFactory.buildResultBean(200, "讀取出差申請",bts.getBusinessTrip(tripid));
+    }
 
 }

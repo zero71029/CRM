@@ -13,11 +13,11 @@ public class BusinessTripBean {
     private String responsible1;//負責人員1
     private String responsible2;//負責人員2
     private String responsible3;//負責人員3
-    private String tripName;//行程目的
+    private String tripname;//行程目的
     private String type;//行程類型
     private String content;//行程內容
     private String schedule;//排程人員
-    private String tripDay;//行程日期
+    private String tripday;//行程日期
     private String expected;//預估時間
 
 
@@ -54,13 +54,7 @@ public class BusinessTripBean {
         this.responsible3 = responsible3;
     }
 
-    public String getTripName() {
-        return tripName;
-    }
 
-    public void setTripName(String tripName) {
-        this.tripName = tripName;
-    }
 
     public String getType() {
         return type;
@@ -86,13 +80,7 @@ public class BusinessTripBean {
         this.schedule = schedule;
     }
 
-    public String getTripDay() {
-        return tripDay;
-    }
 
-    public void setTripDay(String tripDay) {
-        this.tripDay = tripDay;
-    }
 
     public String getExpected() {
         return expected;
@@ -102,6 +90,21 @@ public class BusinessTripBean {
         this.expected = expected;
     }
 
+    public String getTripname() {
+        return tripname;
+    }
+
+    public void setTripname(String tripname) {
+        this.tripname = tripname;
+    }
+
+    public String getTripday() {
+        return tripday;
+    }
+
+    public void setTripday(String tripday) {
+        this.tripday = tripday;
+    }
 
     @Override
     public String toString() {
@@ -110,11 +113,11 @@ public class BusinessTripBean {
                 ", responsible1='" + responsible1 + '\'' +
                 ", responsible2='" + responsible2 + '\'' +
                 ", responsible3='" + responsible3 + '\'' +
-                ", tripName='" + tripName + '\'' +
+                ", tripname='" + tripname + '\'' +
                 ", type='" + type + '\'' +
                 ", content='" + content + '\'' +
                 ", schedule='" + schedule + '\'' +
-                ", tripDay='" + tripDay + '\'' +
+                ", tripday='" + tripday + '\'' +
                 ", expected='" + expected + '\'' +
                 '}';
     }

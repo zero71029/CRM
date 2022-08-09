@@ -59,3 +59,6 @@ body {
 div.FormPadding {
     padding: 0%;
 }
+[v-cloak] {
+    display: none;
+}

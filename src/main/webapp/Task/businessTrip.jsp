@@ -65,32 +65,36 @@
                                 <div class="row ">
                                     <div class="col-md-8 ">
                                         <form action="" method="post" id="leaveForm">
-                                          
-                                      
                                             <input type="hidden" name="schedule" value="${user.name}" id="schedule"
                                                 placeholder="排程人員">
                                             <span style="color: red;font-size: 20px;line-height: 40px;">新增行程 </span>
-                                            排程人員： ${user.name}
+                                            排程人員：
+                                            <c:if test="${empty param.id}">
+                                                ${user.name}
+                                            </c:if>
+                                            <c:if test="${not empty param.id}">
+                                                {{bean.schedule}}
+                                            </c:if>
 
                                             <span style="float: right;">
                                                 行程日期：
-                                                <el-date-picker name="tripDay" v-model="tripDay" type="date"
-                                                    placeholder="行程日期" id="tripDay">
+                                                <el-date-picker name="tripday" v-model="bean.tripday" type="date"
+                                                    placeholder="行程日期" id="tripday">
                                                 </el-date-picker>
                                                 預估時間:
-                                                <el-input v-model="expected" name="expected" maxlength="100"
+                                                <el-input v-model="bean.expected" name="expected" maxlength="100"
                                                     style="width: auto;" id="expected">
                                                 </el-input>
                                             </span>
                                             <br><br>
-                                            負責人員1<el-input v-model="responsible1" name="responsible1" maxlength="100"
-                                                style="width: auto;">
-                                            </el-input>
-                                            &nbsp;&nbsp;&nbsp;負責人員2<el-input v-model="responsible2" name="responsible2"
+                                            負責人員1<el-input v-model="bean.responsible1" name="responsible1"
                                                 maxlength="100" style="width: auto;">
                                             </el-input>
-                                            &nbsp;&nbsp;&nbsp;負責人員3<el-input v-model="responsible3" name="responsible3"
-                                                maxlength="100" style="width: auto;">
+                                            &nbsp;&nbsp;&nbsp;負責人員2<el-input v-model="bean.responsible2"
+                                                name="responsible2" maxlength="100" style="width: auto;">
+                                            </el-input>
+                                            &nbsp;&nbsp;&nbsp;負責人員3<el-input v-model="bean.responsible3"
+                                                name="responsible3" maxlength="100" style="width: auto;">
                                             </el-input>
 
 
@@ -101,8 +105,8 @@
                                                         行程目的
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control" v-model="tripName"
-                                                            id="tripName" name="tripName" maxlength="10">
+                                                        <input type="text" class="form-control" v-model="bean.tripname"
+                                                            id="tripname" name="tripname" maxlength="10">
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -110,7 +114,7 @@
                                                         行程類型
                                                     </td>
                                                     <td>
-                                                        <select name="type">
+                                                        <select name="type" v-model="bean.type">
                                                             <option value="北上">北上</option>
                                                             <option value="中部">中部</option>
                                                             <option value="南下">南下</option>
@@ -124,7 +128,7 @@
                                                     </td>
                                                     <td>
                                                         <el-input name="content" id="content" type="textarea"
-                                                            placeholder="請输入内容" v-model="content" maxlength="900"
+                                                            placeholder="請输入内容" v-model="bean.content" maxlength="900"
                                                             :autosize="{ minRows: 4}" show-word-limit>
                                                         </el-input>
                                                     </td>
@@ -132,7 +136,9 @@
                                             </table>
                                         </form>
                                         <p style="text-align: center;">
-                                            <el-button type="primary" @click="sumbitForm">送出請假單</el-button>
+                                            <c:if test="${empty param.id}">
+                                                <el-button type="primary" @click="sumbitForm">送出出差單</el-button>
+                                            </c:if>
                                         </p>
                                     </div>
                                 </div>
@@ -149,43 +155,56 @@
                 el: ".app",
                 data() {
                     return {
-                        tripidL:"",
-                        tripDay: "",//行程日期
-                        expected: "",//預計時間
-                        content: "",//行程內容
-                        type: "",//行程類型
-                        tripName: "",//行程目的
-                        responsible1: "",//負責人員
-                        responsible2: "",//負責人員
-                        responsible3: "",//負責人員
                         schedule: "${user.name}",
+                        bean: {
+                            type: "北上",
+                            tripday:"",
+                            expected:"",
+                            content:"",
+                            tripname:""
+                        },
                     }
                 },
                 created() {
-
+                    const url = new URL(location.href);
+                    const id = url.searchParams.get("id");
+                    if (id != "" && id != null) {
+                        $.ajax({
+                            url: "${pageContext.request.contextPath}/task/BusinessTrip/" + id,
+                            type: 'POST',
+                            success: response => {
+                                if (response.code == 200) {
+                                    this.bean = response.data;
+                                }
+                            },
+                            error: function (returndata) {
+                                console.log(returndata);
+                            }
+                        });
+                    }
                 },
                 methods: {
                     sumbitForm() {
                         let isok = true;
-                        if (this.tripDay == "") {
+                        if (this.bean.tripday == "") {
                             isok = false;
                             this.$message.error("行程日期為空");
-                            $("#tripDay").css("border", "1px solid red");
+                            $("#tripday").css("border", "1px solid red");
                         }
-                        if (this.expected == "") {
+                        if (this.bean.expected == "") {
                             isok = false;
                             this.$message.error("預計時間為空");
                             $("#expected").css("border", "1px solid red");
                         }
-                        if (!(this.content != "")) {
+                        if (!(this.bean.content != "")) {
                             isok = false;
                             this.$message.error("行程內容為空");
                             $("#content").css("border", "1px solid red");
                         }
-                        if (this.tripName == "") {
+                        if (this.bean.tripname == "") {
                             isok = false;
                             this.$message.error("行程目的為空");
-                            $("#tripName").css("border", "1px solid red");
+                            $("#tripname").css("border", "1px solid red");
                         }
                         if (isok) {
                             var data = new FormData(document.getElementById("leaveForm"));
@@ -202,10 +221,7 @@
                                         this.$alert(response.message, '申請成功', {
                                             confirmButtonText: '確定',
                                             callback: action => {
-                                                this.$message({
-                                                    type: 'info',
-                                                    message: `action: ${action}`
-                                                });
+                                                location.href = "${pageContext.request.contextPath}/Task/businessTripList.jsp";
                                             }
                                         });
                                     }

@@ -96,4 +96,29 @@ class TaskControllerTest {
                 .andExpect(jsonPath("message").value("請假單列表"))
                 .andExpect(jsonPath("data").isArray());
     }
+
+    @Test
+    void leave() throws Exception {
+        mockMvc .perform(post("/task/leave/43"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("code").value(200))
+                .andExpect(jsonPath("message").value("讀取請假單"))
+                .andExpect(jsonPath("data").exists());
+    }
+    @Test
+    void saveBusinessTrip() throws Exception {
+
+    }
+    @Test
+    void getBusinessTrip() throws Exception {
+
+    }
+    @Test
+    void BusinessTripList() throws Exception {
+
+    }
+    @Test
+    void BusinessTrip() throws Exception {
+
+    }
 }

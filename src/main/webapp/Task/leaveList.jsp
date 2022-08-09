@@ -71,7 +71,7 @@
                                                 <td> {{s.department}}</td>
                                                 <td> {{s.user}}</td>
                                                 <td> {{s.leaveName}}</td>
-                                                <td> {{s.remark}}</td>
+                                                <td><a :href="'${pageContext.request.contextPath}/Task/leave.jsp?id='+s.leaveid">{{s.remark}}</a> </td>
                                             </tr>
 
                                         </table>
@@ -101,9 +101,11 @@
                     this.getLeave(this.inday);
                 },
                 methods: {
+                    //切換月份 日期選擇器
                     changeTime() {
                         this.getLeave(this.formatMon(this.inday));
                     },
+                    //讀取資料
                     getLeave(mon) {
                         $.ajax({
                             url: "${pageContext.request.contextPath}/task/getLeave/" + mon,//接受請求的Servlet地址
@@ -120,10 +122,12 @@
                             }
                         });
                     },
+                    //格式化日期
                     formatMon(myDate) {
                         let mon = (myDate.getMonth() + 1) + "";
                         return myDate.getFullYear() + "-" + mon.padStart(2, "0");
                     },
+                    //切換上下月份
                     changeMon(i) {
                         let myDate = new Date(this.inday)
                         myDate.setMonth(myDate.getMonth() + i);

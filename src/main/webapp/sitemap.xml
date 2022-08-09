@@ -1,159 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xmlns:xhtml="http://www.w3.org/1999/xhtml"
-      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
-		
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
-		
-		xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"	
-		
-		>
-	
-<url>
-  <loc>https://www.jetec.com.tw/news/20220425</loc>
-  <lastmod>2022-04-25T15:18:47+00:00</lastmod>
-  <priority>0.64</priority>
-	<changefreq>daily</changefreq>
-</url>
-<url>
-  <loc>https://www.jetec.com.tw/news/20220428</loc>
-  <lastmod>2022-04-29T15:18:47+00:00</lastmod>
-  <priority>0.64</priority>
-  <changefreq>daily</changefreq>
-</url>
-<url>
-  <loc>https://www.jetec.com.tw/news/20220505</loc>
-  <lastmod>2022-05-10T15:18:47+00:00</lastmod>
-  <priority>0.64</priority>
-  <changefreq>daily</changefreq>
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+  xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
 
-</url>	
-<url>
-  <loc>https://www.jetec.com.tw/product/ExTempMini</loc>
-  <lastmod>2022-04-29T15:18:47+00:00</lastmod>
-  <priority>0.64</priority>
-  <changefreq>daily</changefreq>
-  <image:image>
-      <image:loc>https://www.jetec.com.tw/sites/default/files/2022-04/ExTempMini-72.png</image:loc>
-      <image:caption>ExTempMini 是一種本質安全的高溫計。它可以在不接觸的情況下測量危險區域的表面溫度，並提供 4-20 mA 的直接輸出</image:caption>      
-      <image:title>ExTempMini 防爆型－紅外線測溫儀</image:title>
-  </image:image>
-</url>		
-<url>
-  <loc>https://www.jetec.com.tw/product/DLI</loc>
-  <lastmod>2022-05-03T15:18:47+00:00</lastmod>
-  <priority>0.64</priority>
-  <changefreq>daily</changefreq>
-  <image:image>
-      <image:loc>https://www.jetec.com.tw/sites/default/files/2022-03/DLI-400-72_0.png</image:loc>
-      <image:caption>DLI Series是一款便攜式的光量子感測器，可即時偵測PAR、ePAR強度、每日光照與光週期等數值，支援全光譜範圍，搭載螢幕顯示</image:caption>      
-      <image:title>DLI Series 便攜式-光量子感測器</image:title>
-  </image:image>
-
-</url>	
-<url>
-  <loc>https://www.jetec.com.tw/product/MQ-210X_MQ-510</loc>
-  <lastmod>2022-05-03T15:18:47+00:00</lastmod>
-  <priority>0.64</priority>
-  <changefreq>daily</changefreq>
-  <image:image>
-      <image:loc>https://www.jetec.com.tw/sites/default/files/2022-04/MQ-210%20-72.png</image:loc>
-      <image:caption>MQ-210X/510 水下光量子計是一款專為水下標準測量的水產測量與適用於水下的光量計，MQ-5100傳感器採用防水測量儀進行全密封式設計，可潛入水中30米測量</image:caption>      
-      <image:title>MQ-210X/510 水下光量子計</image:title>
-  </image:image>
-</url>
-<url>
-  <loc>https://www.jetec.com.tw/Application/SmartAgriculture</loc>
-  <lastmod>2022-05-03T15:18:47+00:00</lastmod>
-  <priority>0.64</priority>
-  <changefreq>daily</changefreq>
-  <image:image>
-      <image:loc>https://www.jetec.com.tw/sites/default/files/2022-05/20220429_GH-01.png</image:loc>
-      <image:caption>智慧農業是一以現行產業生產模式為基礎，因應消費市場需求進行產銷規劃，生產管理上以節省人力與成本等新型態種植概念</image:caption>      
-      <image:title>智慧農業時代</image:title>
-  </image:image>
-</url>
-<url>
-  <loc>https://www.jetec.com.tw/news/20220505_1</loc>
-  <lastmod>2022-05-06T15:18:47+00:00</lastmod>
-  <priority>0.64</priority>
-  <changefreq>daily</changefreq>
-  <image:image>
-      <image:loc>https://www.jetec.com.tw/sites/default/files/2022-05/JPT-81-EDM_01.png</image:loc>
-      <image:caption>JPT-81全新改款經濟型壓力傳送器，5種壓力範圍，通用牙規，適用於各式氣液體，體積輕巧，安裝便利</image:caption>      
-      <image:title>JPT-81壓力傳送器</image:title>
-  </image:image>
-
-</url>
-<url>
-  <loc>https://www.jetec.com.tw/product/JPT-81</loc>
-  <lastmod>2022-05-06T15:18:47+00:00</lastmod>
-  <priority>0.64</priority>
-  <changefreq>daily</changefreq>
-  <image:image>
-      <image:loc>https://www.jetec.com.tw/sites/default/files/2022-04/JPT-81-72.png</image:loc>
-      <image:caption>JPT-81是一款結構精巧的壓力傳送器，其可量測氣液體的連成壓、絕對壓、表壓、密封壓等多種壓力數值</image:caption>      
-      <image:title>JPT-81 直接出線式-壓力傳送器</image:title>
-  </image:image>
-</url>
-	
-	
-<url>
-  <loc>https://www.jetec.com.tw/product/Etemp%20Keeper-IUT</loc>
-  <lastmod>2022-05-06T15:18:47+00:00</lastmod>
-  <priority>0.64</priority>
-  <changefreq>daily</changefreq>
-  <image:image>
-      <image:loc>https://www.jetec.com.tw/sites/default/files/2022-05/Etemp%20Keeper-IUT-72_0.png</image:loc>
-      <image:caption>Etemp Keeper-IUT是一款USB PDF一次性乾冰溫度資料記錄儀，具有大溫度顯示功能以及寬範圍溫度數據記錄</image:caption>      
-      <image:title>Etemp Keeper-IUT 乾冰級-超低溫溫度記錄器</image:title>
-  </image:image>
-</url>
-<url>
-  <loc>https://www.jetec.com.tw/product/CUL-UEX</loc>
-  <lastmod>2022-05-06T15:18:47+00:00</lastmod>
-  <priority>0.64</priority>
-  <changefreq>daily</changefreq>
-  <image:image>
-      <image:loc>https://www.jetec.com.tw/sites/default/files/2022-05/CUL-UEX-72_1.png</image:loc>
-      <image:caption>CUL-UEX是一款可重複使用、電池可充電、高精度的超低溫和濕度資料記錄器，能測量極端溫濕度，不僅提供偵測記錄，還能將數值生成PDF/CSV檔</image:caption>      
-      <image:title>CUL-UEX 超低溫濕度資料記錄器</image:title>
-  </image:image>
-</url>
-<url>
-  <loc>https://www.jetec.com.tw/product/CLD-AlertTag</loc>
-  <lastmod>2022-05-06T15:18:47+00:00</lastmod>
-  <priority>0.64</priority>
-  <changefreq>daily</changefreq>
-  <image:image>
-      <image:loc>https://www.jetec.com.tw/sites/default/files/2022-05/CLD-AlertTag%20T20-72_0.png</image:loc>
-      <image:caption>CLD-AlertTag是緊湊型一次性使用量測溫度電子指示器，帶有LCD顯示。能在整個監控時間內，每 10 秒進行一次溫度測量</image:caption>      
-      <image:title>CLD-AlertTag 溫度監控器</image:title>
-  </image:image>
-</url>
-<url>
-  <loc>https://www.jetec.com.tw/product/Etemp%20ThermisTag</loc>
-  <lastmod>2022-05-06T15:18:47+00:00</lastmod>
-  <priority>0.64</priority>
-  <changefreq>daily</changefreq>
-  <image:image>
-      <image:loc>https://www.jetec.com.tw/sites/default/files/2022-05/Etemp%20ThermisTag-72_1.png</image:loc>
-      <image:caption>Etemp ThermisTag帶LED的時間溫度指示標籤用於醫療用途是冷標記溫度標籤。能貼於物品的包裝表面上，在冷鏈物流運送過程中，以便於偵測並儲存物品的溫度記錄資料</image:caption>      
-      <image:title>Etemp ThermisTag LED溫度時間記錄標籤</image:title>
-  </image:image>
-</url>
-<url>
-  <loc>https://www.jetec.com.tw/product/Etemp%20BlueTag</loc>
-  <lastmod>2022-05-06T15:18:47+00:00</lastmod>
-  <priority>0.64</priority>
-  <changefreq>daily</changefreq>
-  <image:image>
-      <image:loc>https://www.jetec.com.tw/sites/default/files/2022-05/Etemp%20BlueTag-72_7.png</image:loc>
-      <image:caption>Etemp BlueTag藍牙溫度記錄標籤是一款具有藍牙無線傳輸功能小型緊湊的無線HACCP（危害分析關鍵控制點）溫度感測器溫度計</image:caption>      
-      <image:title>Etemp BlueTag 藍牙溫度記錄標籤</image:title>
-  </image:image>
-</url>
+  <url>
+    <loc>https://forum.jetec.com.tw/Forum/</loc>
+    <lastmod>2022-08-05T15:18:47+00:00</lastmod>
+    <priority>1</priority>   
+  </url>
+  <url>
+    <loc>https://forum.jetec.com.tw/Forum/topiclist.jsp?nav=sensor</loc>
+    <lastmod>2022-08-05T15:18:47+00:00</lastmod>
+    <priority>1</priority>    
+  </url>
+  <url>
+    <loc>https://forum.jetec.com.tw/Forum/topiclist.jsp?nav=apparatus</loc>
+    <lastmod>2022-08-05T15:18:47+00:00</lastmod>
+    <priority>0.8</priority>
+   
+  </url>
+  <url>
+    <loc>https://forum.jetec.com.tw/Forum/topiclist.jsp?nav=Netcom</loc>
+    <lastmod>2022-08-05T15:18:47+00:00</lastmod>
+    <priority>0.8</priority>
+   
+  </url>
+  <url>
+    <loc>https://forum.jetec.com.tw/Forum/topiclist.jsp?nav=software</loc>
+    <lastmod>2022-08-05T15:18:47+00:00</lastmod>
+    <priority>0.8</priority>
+   
+  </url>
+  <url>
+    <loc>https://forum.jetec.com.tw/Forum/topiclist.jsp?nav=application</loc>
+    <lastmod>2022-08-05T15:18:47+00:00</lastmod>
+    <priority>0.8</priority>
+   
+  </url>
+  <url>
+    <loc>https://forum.jetec.com.tw/Forum/topiclist.jsp?nav=controlbox</loc>
+    <lastmod>2022-08-05T15:18:47+00:00</lastmod>
+    <priority>0.8</priority>
+   
+  </url>
 </urlset>
