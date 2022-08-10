@@ -7,6 +7,7 @@ import com.jetec.CRM.repository.AdminRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,6 +48,8 @@ public class MarketControler {
     DirectorService DS;
     @Autowired
     SystemService ss;
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @RequestMapping("/init/{id}")
@@ -67,9 +70,7 @@ public class MarketControler {
     @RequestMapping("/SavePotentialCustomer")
     @ResponseBody
     public Map<String, Object> SavePotentialCustomer(PotentialCustomerBean pcb, HttpSession session) {
-
         System.out.println(pcb.getReceivestate());
-
         System.out.println("*****儲存潛在客戶*****");
         Map<String, Object> result = new HashMap<>();
         AdminBean admin = (AdminBean) session.getAttribute("user");
@@ -88,7 +89,6 @@ public class MarketControler {
             }
         }
         pcb.setBbb(LocalDateTime.now().toString());
-
         PotentialCustomerBean save = PCS.SavePotentialCustomer(pcb);
         result.put("state", true);
         result.put("mess", "儲存成功");
@@ -103,12 +103,17 @@ public class MarketControler {
     public String potentialcustomer(Model model, @PathVariable("id") String id) {
         System.out.println("*****讀取潛在客戶細節****");
         PotentialCustomerBean bean = PCS.getById(id);
+        model.addAttribute("message","此id找不到資料");
+        if(bean == null)return "/error/500";
 
+
+        //判斷有沒有轉過銷售機會
         MarketBean mBean = ms.findByCustomerid(id);
         if (mBean != null) {
             model.addAttribute("marketid", mBean.getMarketid());
             System.out.println(mBean.getMarketid());
         }
+        //添加開啟時間
         bean.setOpentime(LocalDateTime.now().toString());
         model.addAttribute("bean", bean);
         return "/Market/potentialcustomer";

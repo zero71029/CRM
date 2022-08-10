@@ -32,8 +32,7 @@ public class TaskService {
 
     //讀取每⽇任務
     public EvaluateBean getById(String id) {
-//        System.out.println(er.getById(id));
-        return  er.getById(id);
+        return  er.findById(id).orElse(null);
     }
 
     //儲存每⽇任務

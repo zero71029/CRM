@@ -22,10 +22,6 @@ public class BusinessTripService {
         btr.save(btBean);
     }
 
-    public BusinessTripBean getById(Integer i) {
-        return btr.findById(i).orElse(null);
-    }
-
     public List<BusinessTripBean> getBusinessTripList(String mon) {
         LocalDate d = LocalDate.parse(mon+"-01");
         //本月的第一天
@@ -36,7 +32,6 @@ public class BusinessTripService {
     }
     //讀取出差資料
     public BusinessTripBean getBusinessTrip(Integer tripid) {
-
         return btr.findById(tripid).orElse(null);
     }
 }

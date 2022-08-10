@@ -6,11 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.MultiValueMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -32,7 +34,14 @@ class PotentialControllerTest {
     @BeforeEach
     void setUp() throws Exception {
         System.out.println("session");
-        session = mockMvc.perform(post("/login").param("username", "AAA@AAA.com").param("password", "AAA")).andDo(print()).andExpect(status().isOk()).andReturn().getRequest().getSession();
+        session = mockMvc.perform(post("/login")
+                        .param("username", "AAA@AAA.com")
+                        .param("password", "AAA")
+                )
+                .andExpect(status().isOk())
+                .andReturn()
+                .getRequest()
+                .getSession();
         SecurityContextImpl sci = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
         AdminBean adminBean = (AdminBean) sci.getAuthentication().getPrincipal();
         session.setAttribute("user", adminBean);
@@ -85,7 +94,11 @@ class PotentialControllerTest {
     @Test
     void closed() throws Exception {
         System.out.println("======================================");
-        mockMvc.perform(post("/Potential/closed").param("pag", "1").session((MockHttpSession) session)).andExpect(status().isOk()).andExpect(jsonPath("$").isArray());
+        mockMvc.perform(post("/Potential/closed")
+                        .param("pag", "1")
+                        .session((MockHttpSession) session))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray());
 
     }
 
@@ -98,13 +111,20 @@ class PotentialControllerTest {
     @Test
     void selectDate() throws Exception {
         System.out.println("======================================");
-        mockMvc.perform(post("/Potential/closed").param("startDay", "2022-07-10 00:00").param("endDay", "2022-07-15 23:59").session((MockHttpSession) session)).andExpect(status().isOk()).andExpect(jsonPath("$").isArray());
+        mockMvc.perform(post("/Potential/closed")
+                        .param("startDay", "2022-07-10 00:00")
+                        .param("endDay", "2022-07-15 23:59")
+                        .session((MockHttpSession) session)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray());
     }
 
     @Test
     void selectStatus() throws Exception {
         System.out.println("======================================");
-        mockMvc.perform(post("/Potential/status/潛在客戶轉").session((MockHttpSession) session)).andExpect(status().isOk()).andExpect(jsonPath("$").isArray());
+        mockMvc.perform(post("/Potential/status/潛在客戶轉")
+                .session((MockHttpSession) session)).andExpect(status().isOk()).andExpect(jsonPath("$").isArray());
     }
 
 
@@ -112,25 +132,31 @@ class PotentialControllerTest {
     @Test
     void selectTrackDate() throws Exception {
         System.out.println("=======================================================================================");
-        mockMvc.perform(post("/Potential/selectTrackDate").param("from", "2022-07-10 00:00").param("to", "2022-07-16 00:00").session((MockHttpSession) session)).andExpect(status().isOk()).andExpect(jsonPath("$").isArray());
+        mockMvc.perform(post("/Potential/selectTrackDate")
+                .param("from", "2022-07-10 00:00")
+                .param("to", "2022-07-16 00:00")
+                .session((MockHttpSession) session)).andExpect(status().isOk()).andExpect(jsonPath("$").isArray());
     }
 
     @Test
     void client() throws Exception {
         System.out.println("=======================================================================================");
-        mockMvc.perform(post("/Potential/client/7dc9c36f99224ad3b298a985068450b3").session((MockHttpSession) session)).andExpect(status().isOk()).andExpect(jsonPath("$").isArray()).andDo(print());
-
+        mockMvc.perform(post("/Potential/client/7dc9c36f99224ad3b298a985068450b3")
+                        .session((MockHttpSession) session)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray());
     }
 
     @Test
     @Transactional
     @Rollback
     void saveTrackRemark() throws Exception {
-
-
         System.out.println("=======================================================================================");
-
-        mockMvc.perform(post("/Potential/saveTrackRemark/00401237cac544b29436362969eaab34/網管測試").session((MockHttpSession) session)).andExpect(status().isOk()).andExpect(jsonPath("$").isArray());
+        mockMvc.perform(post("/Potential/saveTrackRemark/00401237cac544b29436362969eaab34/網管測試")
+                        .session((MockHttpSession) session))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray());
     }
 
     @Test
@@ -153,23 +179,33 @@ class PotentialControllerTest {
 
     @Test
     void getCompanyByName() throws Exception {
-        mockMvc.perform(post("/Potential/getCompany/榮福股份有限公司").session((MockHttpSession) session)).andExpect(status().isOk()).andDo(print());
+        mockMvc.perform(post("/Potential/getCompany/榮福股份有限公司")
+                        .session((MockHttpSession) session)
+                )
+                .andExpect(status().isOk());
     }
 
     @Test
     void selectcontent() throws Exception {
         System.out.println("=======================================================================================");
         mockMvc.perform(post("/Potential/selectcontent")
-                .session((MockHttpSession) session)
-                .param("selectcontent", "耐高溫型液位"))
+                        .session((MockHttpSession) session)
+                        .content("{\"selectcontent\":\"耐高溫型液位\"}")
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
                 .andExpect(status().isOk())
-                .andDo(print());
+                .andExpect(jsonPath("[0].customerid").value("7dc9c36f99224ad3b298a985068450b3"))
+                .andExpect(jsonPath("[0].name").value("謝詠婕"));
     }
 
     @Test
     void callHelp() throws Exception {
         System.out.println("=======================================================================================");
-        mockMvc.perform(post("/Potential/CallHelp/7dc9c36f99224ad3b298a985068450b3").session((MockHttpSession) session)).andExpect(status().isOk()).andExpect(jsonPath("$").value("求助")).andDo(print());
+        mockMvc.perform(post("/Potential/CallHelp/7dc9c36f99224ad3b298a985068450b3")
+                .session((MockHttpSession) session))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").value("求助"))
+                .andDo(print());
         mockMvc.perform(post("/Potential/CallHelp/7dc9c36f99224ad3b298a985068450b3").session((MockHttpSession) session)).andExpect(status().isOk()).andExpect(jsonPath("$").value("取消")).andDo(print());
     }
 
@@ -190,9 +226,13 @@ class PotentialControllerTest {
     @Rollback
     void getReceive() throws Exception {
         System.out.println("=======================================================================================");
+
+
         mockMvc
                 .perform(post("/Potential/getReceive/7dc9c36f99224ad3b298a985068450b3")
-                        .session((MockHttpSession) session))
+                        .session((MockHttpSession) session)
+
+                )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.state").value("領取成功"))
                 .andExpect(jsonPath("$.user").value("陳彥霖"))

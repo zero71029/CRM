@@ -1,5 +1,8 @@
 package com.jetec.CRM.Tool;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+
 public class note {
     // 筆記
     ///////////////////////////////////////////
@@ -54,4 +57,40 @@ public class note {
 //            console.log(returndata);
 //        }
 //    });
+    ////////////////////////////////////////////////////
+
+
+
+//<dependency>
+//        <groupId>org.springframework.boot</groupId>
+//        <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
+//</dependency>
+
+
+//            # Redis資料庫索引（預設為0）
+//    spring.redis.database=0
+//            # Redis伺服器地址
+//    spring.redis.host=localhost
+//            # Redis伺服器連接端口
+//    spring.redis.port=6379
+//            # Redis伺服器連接密碼（預設為空）
+//    spring.redis.password=
+//            # 連接池最大連接數（使用負值表示沒有限制）
+//    spring.redis.jedis.pool.max-active=8
+//            # 連接池最大阻塞等待時間（使用負值表示沒有限制）
+//    spring.redis.jedis.pool.max-wait=-1
+//            # 連接池中的最大空閒連接
+//    spring.redis.jedis.pool.max-idle=8
+//            # 連接池中的最小空閒連接
+//    spring.redis.jedis.pool.min-idle=0
+//            # 連接超時時間（毫秒）
+//    spring.redis.timeout=1000
+
+    // 注入StringRedisTemplate類別，用來操作Redis
+//    @Autowired
+//    StringRedisTemplate stringRedisTemplate;
+
+
+
+
 }

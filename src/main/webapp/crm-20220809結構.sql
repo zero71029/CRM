@@ -36,7 +36,7 @@ CREATE TABLE `admin` (
   `director` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '主管',
   `dutyDay` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '到職日',
   PRIMARY KEY (`adminid`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -111,6 +111,32 @@ CREATE TABLE `application` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `askleave`
+--
+
+DROP TABLE IF EXISTS `askleave`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `askleave` (
+  `leaveid` int unsigned NOT NULL AUTO_INCREMENT,
+  `uuid` char(32) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `user` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '申請人',
+  `department` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '部門',
+  `leaveName` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '假別',
+  `agent` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '職務代理人',
+  `reason` varchar(500) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '事由',
+  `startday` varchar(40) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `endday` varchar(40) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `director` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '主管',
+  `applyday` varchar(40) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '申請日期',
+  `leaveday` varchar(40) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '請假日',
+  `remark` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '備註',
+  `createtime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`leaveid`)
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `authorize`
 --
 
@@ -148,7 +174,7 @@ CREATE TABLE `billboard` (
   `remark` varchar(10) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '註釋',
   `lastmodified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最後修改時間',
   PRIMARY KEY (`billboardid`)
-) ENGINE=InnoDB AUTO_INCREMENT=550 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=587 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -270,6 +296,29 @@ CREATE TABLE `bosmessage` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `businesstrip`
+--
+
+DROP TABLE IF EXISTS `businesstrip`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `businesstrip` (
+  `tripid` int NOT NULL AUTO_INCREMENT,
+  `responsible1` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '負責人員',
+  `responsible2` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '負責人員',
+  `responsible3` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '負責人員',
+  `tripname` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '行程目的',
+  `type` varchar(10) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '行程類型',
+  `content` varchar(1000) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '行程內容',
+  `schedule` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '排程人員',
+  `tripday` varchar(40) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '行程日期',
+  `expected` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '預估時間',
+  `createtime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`tripid`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin COMMENT='出差申請';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `changemessage`
 --
 
@@ -324,7 +373,7 @@ CREATE TABLE `client` (
   `department` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '部門',
   `aaa` char(10) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '創造時間',
   PRIMARY KEY (`clientid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2475 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=2838 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -390,7 +439,7 @@ CREATE TABLE `contact` (
   `extension` varchar(10) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `contacttitle` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '稱謂',
   PRIMARY KEY (`contactid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2857 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=3355 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -431,7 +480,7 @@ CREATE TABLE `evaluatetask` (
   `costtime` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '耗時',
   `taskdate` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '創建時間',
   PRIMARY KEY (`taskid`)
-) ENGINE=InnoDB AUTO_INCREMENT=26882 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=32086 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -560,7 +609,8 @@ CREATE TABLE `market` (
   `receivestate` tinyint unsigned DEFAULT NULL COMMENT '領取狀態',
   PRIMARY KEY (`marketid`),
   KEY `market_customerid_IDX` (`customerid`) USING BTREE,
-  KEY `market_bbb_IDX` (`bbb`) USING BTREE
+  KEY `market_bbb_IDX` (`bbb`) USING BTREE,
+  KEY `market_stage_IDX` (`stage`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -577,7 +627,8 @@ CREATE TABLE `marketfile` (
   `url` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '路徑',
   `authorize` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '認證',
   `name` varchar(200) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '名稱',
-  PRIMARY KEY (`fileid`)
+  PRIMARY KEY (`fileid`),
+  KEY `marketfile_fileforeignid_IDX` (`fileforeignid`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -676,7 +727,8 @@ CREATE TABLE `potentialcustomer` (
   `closeextend` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '結案理由延伸',
   `receive` varchar(20) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '領取',
   `receivestate` tinyint unsigned DEFAULT NULL COMMENT '領取狀態',
-  PRIMARY KEY (`customerid`)
+  PRIMARY KEY (`customerid`),
+  KEY `potentialcustomer_status_IDX` (`status`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -894,4 +946,4 @@ CREATE TABLE `zeromail` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-07-13  8:42:53
+-- Dump completed on 2022-08-09  8:21:15

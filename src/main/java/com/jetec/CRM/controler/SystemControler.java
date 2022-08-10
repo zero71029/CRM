@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,9 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/system")   
@@ -48,6 +47,9 @@ public class SystemControler {
 	ZeroTools zTools;
 	@Autowired
 	LibraryRepository lr;
+
+	@Autowired
+	StringRedisTemplate stringRedisTemplate;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取員工列表
@@ -474,4 +476,28 @@ public class SystemControler {
 		System.out.println("*****查詢圖書館紀錄*****");
 		return ss.SetectLibraryRecord(librarygroup);
 	}
+	/* ******************************************清理全部缓存开始************************************************** */
+	@RequestMapping("cleanRedis")
+	public Map<String, Object> cleanRedis() {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			// 获取所有key
+			Set<String> keys = stringRedisTemplate.keys("*");
+			assert keys != null;
+			// 迭代
+			Iterator<String> it1 = keys.iterator();
+			while (it1.hasNext()) {
+				// 循环删除
+				stringRedisTemplate.delete(it1.next());
+			}
+			map.put("code", 1);
+			map.put("msg", "清理全局缓存成功");
+			return map;
+		} catch (Exception e) {
+			map.put("code", -1);
+			map.put("msg", "清理全局缓存失败");
+			return map;
+		}
+	}
+
 }

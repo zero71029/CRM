@@ -1,20 +1,31 @@
 package com.jetec.CRM.filter;
 
 import com.jetec.CRM.controler.service.MarketService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Set;
 
 @Configuration
 public class config {
     @Autowired
     MarketService ms;
+    @Autowired
+    // 注入StringRedisTemplate類別，用來操作Redis
+    StringRedisTemplate stringRedisTemplate;
+
+    Logger logger = LoggerFactory.getLogger("時間");
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
@@ -27,15 +38,16 @@ public class config {
     @Scheduled(cron = "0 0 22 * * *")
     public void layoutSQL() throws IOException {
         //轉賣 自動結案
+        logger.info("轉賣 自動結案");
         ms.AutoCloseCase("轉賣/自用");
         ms.AutoCloseCase("轉賣");
 
         System.out.println("現在時間 :" + dateFormat.format(new Date()));
-        System.out.println("自動備份,輸出SQL");
-        //////
-        SimpleDateFormat  sdf = new SimpleDateFormat("yyyyMMdd-HH-mm");
+
+        //////自動備份
+        logger.info("自動備份,輸出SQL");
         ProcessBuilder builder = new ProcessBuilder(
-                "cmd.exe", "/c", "cd  C:\\MAMP\\bin\\mysql\\bin && mysqldump -uroot -proot crm > C:\\Users\\jetec\\SynologyDrive\\crm" + sdf.format(new Date()) + "自動.sql");
+                "cmd.exe", "/c", "cd  C:\\MAMP\\bin\\mysql\\bin && mysqldump -uroot -proot crm > C:\\Users\\jetec\\SynologyDrive\\crm" + LocalDate.now() + "自動.sql");
         //列印執行結果
         builder.redirectErrorStream(true);
         Process p = builder.start();
@@ -44,13 +56,27 @@ public class config {
         while (true) {
             line = r.readLine();
             if (line == null) { break; }
-            System.out.println(line);
+            logger.info(line);
         }
 
 
+        //清空redis
+        //获取所有key
+        try {
+            Set<String> keys = stringRedisTemplate.keys("*");
+            assert keys != null;
+            // 迭代
+            Iterator<String> it1 = keys.iterator();
+            while (it1.hasNext()) {
+                String key =it1.next();
+                System.out.println(key);
+                // 循环删除
+                stringRedisTemplate.delete(key);
+            }
 
-
-
+        }catch (Exception e){
+            logger.error("redis 錯誤");
+        }
 
 
     }

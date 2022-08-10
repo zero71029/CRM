@@ -51,14 +51,18 @@ public class TaskController {
         Map<String, Object> result = new HashMap<>();
         result.put("bean", TS.getById(id));
         result.put("taskList", TS.getTaskList(id));
-
         return result;
     }
 
     @RequestMapping("/detail/{id}")
     public String detail(Model model, @PathVariable("id") String id) {
         System.out.println("每⽇任務");
-        model.addAttribute("bean", TS.getById(id));
+        EvaluateBean bean = TS.getById(id);
+        if(bean == null){
+            model.addAttribute("message","此id找不到資料");
+            return "/error/500";
+        }
+        model.addAttribute("bean", bean);
         return "/Task/Task";
     }
 
@@ -243,7 +247,6 @@ public class TaskController {
     @ResponseBody
     public ResultBean getLeave(@PathVariable("mon") String mon) {
         logger.info("請假單列表");
-
         return ZeroFactory.buildResultBean(200, "請假單列表", ls.getLeaveList(mon));
     }
 
@@ -265,20 +268,12 @@ public class TaskController {
         return ZeroFactory.buildResultBean(200, "出差申請成功");
     }
 
-    @RequestMapping("/getBusinessTrip")
-    @ResponseBody
-    public ResultBean getBusinessTrip() {
-        System.out.println("讀取出差申請");
-        return ZeroFactory.buildResultBean(200, "讀取出差申請",bts.getById(28));
-    }
-
-
     //出差列表
     @RequestMapping("/BusinessTripList/{mon}")
     @ResponseBody
     public ResultBean BusinessTripList(@PathVariable("mon") String mon) {
         System.out.println("讀取出差申請列表");
-        return ZeroFactory.buildResultBean(200, "讀取出差申請",bts.getBusinessTripList(mon));
+        return ZeroFactory.buildResultBean(200, "讀取出差申請列表",bts.getBusinessTripList(mon));
     }
     //讀取出差資料
     @RequestMapping("/BusinessTrip/{tripid}")

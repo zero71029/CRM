@@ -47,7 +47,7 @@ public class PotentialController {
         Map<String, Object> result = new HashMap<>();
         PotentialCustomerBean pcb =PCS.getById(customerid);
         pcb.setOpentime(LocalDateTime.now().toString());
-        result.put("customer", PCS.getById(customerid));
+        result.put("customer", pcb);
         result.put("track", PCS.getTrackByCustomerid(customerid));
         result.put("bosmessage", DS.getBosMessageList(customerid));
         result.put("changeMessage", DS.getChangeMessage(customerid));
@@ -88,7 +88,6 @@ public class PotentialController {
     @ResponseBody
     public List<PotentialCustomerBean> selectAdmin(@PathVariable("name") String name) {
         System.out.println("搜索潛在客戶");
-        name.trim();
         return PCS.selectPotentialCustomer(name);
     }
 
@@ -187,8 +186,7 @@ public class PotentialController {
         System.out.println("搜索潛在客戶by追蹤時間");
         List<PotentialCustomerBean> list = PCS.selectPotentialCustomerTrack(from, to);
         LinkedHashSet<PotentialCustomerBean> hashSet = new LinkedHashSet<>(list);
-        List<PotentialCustomerBean> result = new ArrayList<>(hashSet);
-        return result;
+        return new ArrayList<>(hashSet);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,5 +1,8 @@
 package com.jetec.CRM.controler.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jetec.CRM.Tool.ZeroCode;
 import com.jetec.CRM.Tool.ZeroTools;
 import com.jetec.CRM.model.MarketFileBean;
 import com.jetec.CRM.model.PotentialCustomerBean;
@@ -12,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +23,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Transactional
@@ -34,15 +40,16 @@ public class PotentialCustomerService {
     PotentialCustomerHelperRepository pchr;
     @Autowired
     TrackRemarkRepository trr;
-    @Autowired
-    ZeroTools zTools;
+
     @Autowired
     UpfileService US;
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //儲存潛在客戶列表
     public PotentialCustomerBean SavePotentialCustomer(PotentialCustomerBean pcb) {
-        String uuid = zTools.getUUID();
+        String uuid = ZeroTools.getUUID();
         if (pcb.getFileforeignid() == null || pcb.getFileforeignid().isEmpty() || pcb.getFileforeignid().equals("")) {
             pcb.setFileforeignid(uuid);
         }
@@ -59,9 +66,16 @@ public class PotentialCustomerService {
             pcb.setFileforeignid(uuid);
         }
         if (pcb.getAaa() == null || pcb.getAaa().isEmpty())
-            pcb.setAaa(zTools.getTime(new Date()));
-        if (pcb.getFileforeignid() == null || pcb.getFileforeignid() == "")
-            pcb.setCustomerid(zTools.getUUID());
+            pcb.setAaa(ZeroTools.getTime(new Date()));
+        if (pcb.getFileforeignid() == null || Objects.equals("", pcb.getFileforeignid()))
+            pcb.setCustomerid(ZeroTools.getUUID());
+
+        try {
+            stringRedisTemplate.delete(ZeroCode.Redis_Customer_Id + pcb.getCustomerid());
+            System.out.println("刪除緩存");
+        } catch (Exception e) {
+
+        }
         return PCR.save(pcb);
     }
 
@@ -80,7 +94,36 @@ public class PotentialCustomerService {
     }
 
     public PotentialCustomerBean getById(String id) {
-        return PCR.findById(id).orElse(null);
+        String jsonString = null;
+        //讀取緩存
+        try {
+            jsonString = stringRedisTemplate.opsForValue().get(ZeroCode.Redis_Customer_Id + id);
+        } catch (Exception e) {
+
+        }
+
+        //如果沒有緩存
+        if (jsonString == null) {
+            PotentialCustomerBean bean = PCR.findById(id).orElse(null);
+            //添加redis
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                stringRedisTemplate.opsForValue().set(ZeroCode.Redis_Customer_Id + bean.getCustomerid(), objectMapper.writeValueAsString(bean), 4, TimeUnit.HOURS);
+                System.out.println("添加緩存" + bean.getCustomerid());
+            } catch (Exception e) {
+
+            }
+            return bean;
+        }
+        //有緩存 轉成bean
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.readValue(jsonString, PotentialCustomerBean.class);
+        } catch (JsonProcessingException e) {
+            return PCR.findById(id).orElse(null);
+        }
+
+
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -112,19 +155,17 @@ public class PotentialCustomerService {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索潛在客戶
     public List<PotentialCustomerBean> selectPotentialCustomer(String name) {
-        List<PotentialCustomerBean> result = new ArrayList<PotentialCustomerBean>();
         boolean boo = true;
         Sort sort = Sort.by(Direction.DESC, "aaa");
 // 搜索名稱
-        for (PotentialCustomerBean p : PCR.findByNameLikeIgnoreCase("%" + name + "%", sort)) {
-            result.add(p);
-        }
+        List<PotentialCustomerBean> result = new ArrayList<>(PCR.findByNameLikeIgnoreCase("%" + name + "%", sort));
 
 // 用業務搜索
         for (PotentialCustomerBean p : PCR.findByUserLikeIgnoreCase("%" + name + "%", sort)) {
             for (PotentialCustomerBean bean : result) {
-                if (bean.getCustomerid() == p.getCustomerid()) {
+                if (Objects.equals(bean.getCustomerid(), p.getCustomerid())) {
                     boo = false;
+                    break;
                 }
             }
             if (boo)
@@ -134,8 +175,9 @@ public class PotentialCustomerService {
 // 用公司搜索
         for (PotentialCustomerBean p : PCR.findByCompanyLikeIgnoreCase("%" + name + "%", sort)) {
             for (PotentialCustomerBean bean : result) {
-                if (bean.getCustomerid() == p.getCustomerid()) {
+                if (Objects.equals(bean.getCustomerid(),p.getCustomerid()) ) {
                     boo = false;
+                    break;
                 }
             }
             if (boo)

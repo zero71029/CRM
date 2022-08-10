@@ -72,8 +72,6 @@
                                 <el-form ref="form" :model="bean" label-width="80px"
                                     action="${pageContext.request.contextPath}/task/save" method="post">
                                     <input type="hidden" name="evaluateid" value="${bean.evaluateid}">
-                                    <input type="hidden" name="">
-                                    <input type="hidden" name="">
 
                                     <div class="row">
                                         <table class="table table-bordered">
