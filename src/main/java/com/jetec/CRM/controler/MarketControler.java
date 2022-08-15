@@ -1,5 +1,8 @@
 package com.jetec.CRM.controler;
 
+import com.jetec.CRM.Tool.ResultBean;
+import com.jetec.CRM.Tool.ZeroCode;
+import com.jetec.CRM.Tool.ZeroFactory;
 import com.jetec.CRM.Tool.ZeroTools;
 import com.jetec.CRM.controler.service.*;
 import com.jetec.CRM.model.*;
@@ -7,6 +10,7 @@ import com.jetec.CRM.repository.AdminRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -33,7 +37,7 @@ import java.util.*;
 @RequestMapping("/Market")
 @PreAuthorize("hasAuthority('系統') OR hasAuthority('主管') OR hasAuthority('業務')OR hasAuthority('行銷')OR hasAuthority('國貿')")
 public class MarketControler {
-    Logger logger = LoggerFactory.getLogger(MarketControler.class);
+    Logger logger = LoggerFactory.getLogger("MarketControler.class");
     @Autowired
     MarketService ms;
     @Autowired
@@ -931,13 +935,18 @@ public class MarketControler {
     //領取任務
     @RequestMapping("/getReceive/{marketid}")
     @ResponseBody
-    public Map<String, String> getReceive(HttpSession session, @PathVariable("marketid") String marketid) {
+    public ResultBean getReceive(HttpSession session, @PathVariable("marketid") String marketid, MarketBean inBean) {
         System.out.println("領取任務");
-        Map<String, String> result = new HashMap<>();
         MarketBean mBean = ms.getById(marketid);
-
         if (mBean != null) {
             AdminBean aBean = (AdminBean) session.getAttribute("user");
+            //判斷 樂觀鎖
+            if (mBean.getBbb() != null) {
+                if (mBean.getBbb().compareTo(inBean.getOpentime()) > 0) {
+                    return ZeroFactory.fail("錯誤,資料已被其他人更新,不能儲存");
+                }
+            }
+            //判斷領取 或 取消
             if (mBean.getReceive() == null || mBean.getReceive().isEmpty() || !Objects.equals(aBean.getName(), mBean.getUser())) {
                 ChangeMessageBean cmBean = new ChangeMessageBean(ZeroTools.getUUID(), mBean.getMarketid(), aBean.getName(), "領取任務", mBean.getReceive(), aBean.getName(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                 ss.saveChangeMesssage(cmBean);
@@ -947,9 +956,7 @@ public class MarketControler {
                 mBean.setUser(aBean.getName());
                 mBean.setReceivestate(1);
                 ms.save(mBean);
-                result.put("state", "領取成功");
-                result.put("user", aBean.getName());
-                return result;
+                return ZeroFactory.success("領取成功");
             }
             ChangeMessageBean cmBean = new ChangeMessageBean(ZeroTools.getUUID(), mBean.getMarketid(), aBean.getName(), "領取任務", aBean.getName(), "null", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             ss.saveChangeMesssage(cmBean);
@@ -959,13 +966,9 @@ public class MarketControler {
             mBean.setUser(null);
             mBean.setReceivestate(3);
             ms.save(mBean);
-            result.put("state", "取消成功");
-            result.put("user", null);
-            return result;
+            return ZeroFactory.success("取消成功");
         }
-        result.put("state", "請先建立任務");
-        result.put("user", null);
-        return result;
+        return ZeroFactory.fail("請先建立任務");
     }
 
     //格式化電話

@@ -1,19 +1,21 @@
 package com.jetec.CRM.controler.service;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.jetec.CRM.Tool.ZeroCode;
 import com.jetec.CRM.Tool.ZeroTools;
 import com.jetec.CRM.model.*;
 import com.jetec.CRM.repository.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.LockModeType;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,7 +27,6 @@ import java.util.stream.Collectors;
 public class MarketService {
     @Autowired
     MarketRepository mr;
-
     @Autowired
     TrackRepository tr;
     @Autowired
@@ -33,26 +34,22 @@ public class MarketService {
     @Autowired
     AgreementRepository ar;
     @Autowired
-    ZeroTools zTools;
-    @Autowired
     UpfileService US;
     @Autowired
     MarketStateRepository msr;
 
+    Logger logger = LoggerFactory.getLogger("MarketService");
+    @Autowired
+    Cache<String, Object> caffeineCache;
+
     public MarketBean save(MarketBean marketBean) {
-        String uuid = zTools.getUUID();
+        String uuid = ZeroTools.getUUID();
 
 
         //如果沒有customerid
         if (marketBean.getCustomerid() == null || marketBean.getCustomerid().isEmpty() || marketBean.getCustomerid().equals("")) {
             marketBean.setCustomerid(uuid);
         }
-
-
-
-
-
-
         //如果沒有Fileforeignid
         if (marketBean.getFileforeignid() == null || marketBean.getFileforeignid().isEmpty() || marketBean.getFileforeignid().equals("")) {
             marketBean.setFileforeignid(uuid);
@@ -72,18 +69,23 @@ public class MarketService {
                 }
                 marketBean.setFileforeignid(uuid);
             }
+        }else {
+            caffeineCache.asMap().remove(ZeroCode.Redis_Market_Id + marketBean.getMarketid());
+            logger.info("刪除緩存 ");
         }
         //插入日期
         if (marketBean.getAaa().equals("")) {
             marketBean.setAaa(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()));
         }
         marketBean.setBbb(LocalDateTime.now().toString());
+
+
         return mr.save(marketBean);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////
     // 銷售機會列表
-    public List<MarketBean> getList(Integer pag ,Integer size) {
+    public List<MarketBean> getList(Integer pag, Integer size) {
         Pageable p = PageRequest.of(pag, size, Direction.DESC, "aaa");
         Page<MarketBean> page = mr.findStage(p);
         List<MarketBean> result = new ArrayList<>();
@@ -115,8 +117,15 @@ public class MarketService {
     /////////////////////////////////////////////////////////////////////////////////////
 
     public MarketBean getById(String id) {
-
-        return mr.getById(id);
+        MarketBean cache = (MarketBean) caffeineCache.getIfPresent(ZeroCode.Redis_Market_Id + id);
+        if (cache == null) {
+            logger.info("添加caffeine緩存 " + ZeroCode.Redis_Market_Id + id);
+            MarketBean marketBean = mr.getById(id);
+            caffeineCache.put(ZeroCode.Redis_Market_Id + id, marketBean);
+            return marketBean;
+        }
+        logger.info("使用caffeine緩存 " + ZeroCode.Redis_Market_Id + id);
+        return cache;
     }
 
 
@@ -124,7 +133,6 @@ public class MarketService {
     // 刪除銷售機會
     public void delMarket(List<String> id) {
         for (String i : id) {
-
             mr.deleteById(i);
         }
     }
@@ -133,13 +141,11 @@ public class MarketService {
 //搜索銷售機會
     public List<MarketBean> selectMarket(String name) {
         name = name.trim();
-        List<MarketBean> result = new ArrayList<MarketBean>();
+        List<MarketBean> result = new ArrayList<>();
         boolean boo = true;
         Sort sort = Sort.by(Direction.DESC, "aaa");
         // 搜索名稱
-        for (MarketBean p : mr.findByNameLikeIgnoreCase("%" + name + "%", sort)) {
-            result.add(p);
-        }
+        result.addAll(mr.findByNameLikeIgnoreCase("%" + name + "%", sort));
 
         // 用業務搜索
         for (MarketBean p : mr.findByUserLikeIgnoreCase("%" + name + "%", sort)) {
@@ -157,6 +163,7 @@ public class MarketService {
             for (MarketBean bean : result) {
                 if (bean.getMarketid().equals(p.getMarketid())) {
                     boo = false;
+                    break;
                 }
             }
             if (boo)
@@ -167,6 +174,7 @@ public class MarketService {
             for (MarketBean bean : result) {
                 if (bean.getMarketid().equals(p.getMarketid())) {
                     boo = false;
+                    break;
                 }
             }
             if (boo)
@@ -191,7 +199,7 @@ public class MarketService {
         System.out.println(qBean.getQdb());
         for (QuotationDetailBean qdb : qBean.getQdb()) {
             if (qdb.getId() == null || qdb.getId().length() == 0) {
-                qdb.setId(zTools.getUUID());
+                qdb.setId(ZeroTools.getUUID());
                 qdb.setQuotationid(qBean.getQuotationid());
             }
         }
@@ -245,11 +253,12 @@ public class MarketService {
 //銷售機會列表
     public List<MarketBean> selectContantPhone(String phone) {
         List<MarketBean> result = mr.findByContactphone(phone);
-        Boolean isBoolean = true;
+        boolean isBoolean = true;
         for (MarketBean bean : mr.findByContactmoblie(phone)) {
             for (MarketBean phonebeBean : result) {
                 if (bean.getMarketid().equals(phonebeBean.getMarketid())) {
                     isBoolean = false;
+                    break;
                 }
             }
             if (isBoolean)
@@ -262,7 +271,7 @@ public class MarketService {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索銷售機會by產品類別
     public List<MarketBean> selectProductType(List<String> data) {
-        List<MarketBean> result = new ArrayList<MarketBean>();
+        List<MarketBean> result = new ArrayList<>();
         for (String typeString : data) {
             result.addAll(mr.findProducttype(typeString));
             result.addAll(mr.findSource(typeString));
@@ -273,7 +282,7 @@ public class MarketService {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索銷售機會by產業
     public List<MarketBean> selectIndustry(List<String> data) {
-        List<MarketBean> result = new ArrayList<MarketBean>();
+        List<MarketBean> result = new ArrayList<>();
         for (String typeString : data) {
             result.addAll(mr.selectType(typeString));
         }
@@ -378,7 +387,7 @@ public class MarketService {
                 result.addAll(mr.findByNameLikeIgnoreCaseOrClientLikeIgnoreCaseAndAaaBetween("%" + val.get(0) + "%", "%" + val.get(0) + "%", startDay, endDay, sort));
                 break;
             case "ContantPhone":
-                String phone = val.get(0).replaceAll("-","");
+                String phone = val.get(0).replaceAll("-", "");
                 System.out.println(phone);
                 result.addAll(mr.findByContactphoneLikeAndAaaBetween("%" + phone + "%", startDay, endDay, sort));
                 result.addAll(mr.findByContactmoblieLikeAndAaaBetween("%" + phone + "%", startDay, endDay, sort));
@@ -427,7 +436,7 @@ public class MarketService {
     public void saveMarketState(Integer adminid, String field, String state, String type) {
 
 
-        msr.save(new MarketStateBean(zTools.getUUID(), adminid, field, state, type));
+        msr.save(new MarketStateBean(ZeroTools.getUUID(), adminid, field, state, type));
 
     }
 
@@ -446,7 +455,7 @@ public class MarketService {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //使用者狀態  主程式
-    public Map<String, Object> getStateList(List<MarketStateBean> stateList, Integer pag,Integer size) {
+    public Map<String, Object> getStateList(List<MarketStateBean> stateList, Integer pag, Integer size) {
         Sort sort = Sort.by(Direction.DESC, "aaa");
         //準備
         Map<String, Object> resoult = new HashMap<>();
@@ -457,17 +466,17 @@ public class MarketService {
         List<Integer> receive = new ArrayList<>();
         String stateday = null;
         String startday = "2022-02-01 00:00";
-        String endday = null;
+        String endday ;
         for (MarketStateBean b : stateList) {
             if (b.getField().equals("admin")) admin.add(b.getState());
             if (b.getField().equals("day")) stateday = b.getState();
             if (b.getField().equals("state")) state.add(b.getState());
-            if (b.getField().equals("receive") &&  Objects.equals(b.getState(),"領取")         ) receive.add(1);
-            if (b.getField().equals("receive") &&  Objects.equals(b.getState(),"分配")         ) receive.add(2);
+            if (b.getField().equals("receive") && Objects.equals(b.getState(), "領取")) receive.add(1);
+            if (b.getField().equals("receive") && Objects.equals(b.getState(), "分配")) receive.add(2);
         }
         //日期處理
         if (stateday == null) {
-            endday = zTools.getTime(new Date());
+            endday = ZeroTools.getTime(new Date());
         } else {
             String[] tokens = stateday.split("~");
             startday = tokens[0] + " 00:00";
@@ -484,15 +493,13 @@ public class MarketService {
             for (String name : state) {
                 list.addAll(mr.findByStageAndAaaBetween(name, startday, endday, sort));
             }
-        }else if (receive.size() > 0) {
+        } else if (receive.size() > 0) {
             for (Integer receicestate : receive) {
                 list.addAll(mr.findByReceivestateAndAaaBetween(receicestate, startday, endday));
             }
         } else {
             list.addAll(mr.findAaa(startday, endday));
         }
-
-
 
 
         //再過濾
@@ -514,14 +521,6 @@ public class MarketService {
                 }
             }
         }
-
-
-
-
-
-
-
-
 
 
         //排序
@@ -589,7 +588,7 @@ public class MarketService {
         System.out.println("自動結案");
         LocalDate ld = LocalDate.now();
         List<MarketBean> list = mr.findByCreatetimeAndEndtimeLessThanEqualAndStageNotAndStageNot(Createtime, ld.toString(), "失敗結案", "成功結案");
-        list.stream().forEach((e) -> {
+        list.forEach((e) -> {
             System.out.println(e);
             e.setClosereason("自動結案");
             e.setStage("失敗結案");
@@ -634,7 +633,7 @@ public class MarketService {
     public void formatPhone() {
         List<MarketBean> list = mr.findAll();
         list.forEach(
-                e->{
+                e -> {
                     e.setContactmoblie(e.getContactmoblie());
                     e.setFax(e.getFax());
                     mr.save(e);

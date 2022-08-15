@@ -1076,8 +1076,8 @@
                 el: '.app',
                 data() {
                     return {
-                        trackdescribe:"",
-                        result:"",
+                        trackdescribe: "",
+                        result: "",
                         bosMassageList: [],//留言LIST
                         bosMassage: "",//留言
                         stateNum: 1,//麵包屑顯示用
@@ -1805,14 +1805,24 @@
                             cancelButtonText: '取消',
                             type: 'error'
                         }).then(() => {
+
+                            let data = new FormData($(".basefrom")[0]);
                             $.ajax({
                                 url: '${pageContext.request.contextPath}/Market/getReceive/${bean.marketid}',
-                                type: 'get',
+                                type: 'post',
+                                data: data,
                                 async: false,
                                 cache: false,
-                                success: (response => (
-                                    location.href = "${pageContext.request.contextPath}/Market/Market/${bean.marketid}"
-                                )),
+                                contentType: false,
+                                processData: false,
+                                success: (response => {
+                                    if (response.code == 300) {
+                                        this.$message.error(response.message);
+                                    }
+                                    if (response.code == 200) {
+                                        location.href = "${pageContext.request.contextPath}/Market/Market/${bean.marketid}";
+                                    }                                   
+                                }),
                                 error: function (returndata) {
                                     console.log(returndata);
                                 }

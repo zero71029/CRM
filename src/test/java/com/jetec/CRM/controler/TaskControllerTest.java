@@ -1,25 +1,20 @@
 package com.jetec.CRM.controler;
 
 import com.jetec.CRM.controler.service.TaskService;
-import com.jetec.CRM.model.AdminBean;
-import com.jetec.CRM.model.EvaluateBean;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockHttpSession;
-import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpSession;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -37,7 +32,7 @@ class TaskControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.taskList").isArray())
                 .andExpect(jsonPath("$.bean.evaluateid").value("1ed16fc968f869f6bf8121d4b88c8c34"))
-                .andExpect(jsonPath("$.bean.name").value("蕭佩宜")).andDo(print());
+                .andExpect(jsonPath("$.bean.name").value("蕭佩宜"));
     }
 
     @Test
@@ -58,7 +53,8 @@ class TaskControllerTest {
     @Test
     @Transactional
     @Rollback
-    void savePotentialCustomer() throws Exception {
+    @DisplayName("未測")
+    void savePotentialCustomer() {
 //        HttpSession session = mockMvc.perform(post("/login")
 //                        .param("username", "AAA@AAA.com")
 //                        .param("password", "AAA")
@@ -114,12 +110,17 @@ class TaskControllerTest {
         mockMvc.perform(post("/task/print/95bbff11c1ac4f13bb322142d9ace043"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.model().attributeExists("bean"))
-                .andExpect(MockMvcResultMatchers.view().name("/Task/print"))
-                .andDo(print());
+                .andExpect(MockMvcResultMatchers.view().name("/Task/print"));
     }
 
     @Test
-    void delTask() {
+    @Transactional
+    @Rollback
+    void delTask() throws Exception {
+        mockMvc.perform(post("/task/delTask")
+                        .param("id","85c456286674491092b98108f57adcac"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").value("刪除成功"));
     }
 
     @Test
@@ -127,7 +128,12 @@ class TaskControllerTest {
     }
 
     @Test
-    void selecttask() {
+    void selecttask() throws Exception {
+        mockMvc.perform(post("/task/selecttask")
+                        .param("pag","1")
+                        .param("name","賴世全"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray());
     }
 
     @Test

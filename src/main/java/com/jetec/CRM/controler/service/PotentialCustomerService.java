@@ -9,6 +9,8 @@ import com.jetec.CRM.model.PotentialCustomerBean;
 import com.jetec.CRM.model.TrackBean;
 import com.jetec.CRM.model.TrackRemarkBean;
 import com.jetec.CRM.repository.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -46,6 +48,7 @@ public class PotentialCustomerService {
     @Autowired
     StringRedisTemplate stringRedisTemplate;
 
+    Logger logger = LoggerFactory.getLogger("PotentialCustomerService.class");
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //儲存潛在客戶列表
     public PotentialCustomerBean SavePotentialCustomer(PotentialCustomerBean pcb) {
@@ -72,9 +75,10 @@ public class PotentialCustomerService {
 
         try {
             stringRedisTemplate.delete(ZeroCode.Redis_Customer_Id + pcb.getCustomerid());
-            System.out.println("刪除緩存");
-        } catch (Exception e) {
+            logger.info("刪除redis緩存 "+ZeroCode.Redis_Customer_Id + pcb.getCustomerid());
 
+        } catch (Exception e) {
+            System.out.println("刪除緩存失敗");
         }
         return PCR.save(pcb);
     }
@@ -99,7 +103,7 @@ public class PotentialCustomerService {
         try {
             jsonString = stringRedisTemplate.opsForValue().get(ZeroCode.Redis_Customer_Id + id);
         } catch (Exception e) {
-
+            System.out.println("讀取緩存失敗");
         }
 
         //如果沒有緩存

@@ -1,83 +1,37 @@
 package com.jetec.CRM.Tool;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.security.GeneralSecurityException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-
-import org.json.JSONObject;
-import org.springframework.stereotype.Component;
-
+import com.github.f4b6a3.uuid.UuidCreator;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
+import com.jetec.CRM.model.AdminBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.security.GeneralSecurityException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Properties;
 
 @Component
 public class ZeroTools {
+     static   Logger logger = LoggerFactory.getLogger(ZeroTools.class);
 
-    // 筆記
-    ///////////////////////////////////////////
-//	返回上一頁
-//	window.history.back();location.reload();
-////////////////////
-// sql修改为不自动更新（只是插入是自动生成当前时间）
-//alter table hello change uptime uptime timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP	
-    //////////////////////////////////////
-//	重置 MySQL 自增列 AUTO_INCREMENT 初時值
-//	ALTER TABLE tbl AUTO_INCREMENT = 1;
-//////////////////////////////////
-//	一键复制至剪切板
-//	url.select();
-//    document.execCommand("Copy");
-//////jpa排序
-    // Sort sort = Sort.by(Direction.DESC,"marketid");
-    // return mr.findAll( sort);
-///////////////////////////////
-    //更新application
-//	HttpServletRequest sce
-//	ServletContext app = sce.getServletContext();
-//	app.setAttribute("billboardgroup", bgr.findAll());
-//////////ajax
-//	var formData = new FormData($(".uppdf")[0]);
-//	$.ajax({
-//        url: '${pageContext.request.contextPath}/CRM/selectContactByClientName/' + $("input[name='client']").val(),//接受請求的Servlet地址
-//        type: 'POST',
-//        // data: formData,
-//        // async: false,//同步請求
-//        // cache: false,//不快取頁面
-//        // contentType: false,//當form以multipart/form-data方式上傳檔案時，需要設定為false
-//        // processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
-//        success: function (json) {
-//            $(".CCC").empty();
-//
-//            for (var j of json) {
-//                console.log(j);
-//
-//                $(".CCC").append('<div class="row TTT" onclick="clickContact(`' + j.name + '`,`' + j.phone + '`,`' + j.moblie + '`)">' +
-//                    '<div class="col-md-1"></div>' +
-//                    '<div class="col-md-3">' + j.name + '</div>' +
-//                    '<div class="col-md-3">' + j.phone + '</div>' +
-//                    '<div class="col-md-3">' + j.moblie + '</div>' +
-//                    '</div>');
-//            }
-//        },
-//        error: function (returndata) {
-//            console.log(returndata);
-//        }
-//    });
 //////////////////////////////////////////////////////////////////
     /*
      *
@@ -164,7 +118,7 @@ public class ZeroTools {
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
                 // Specify the CLIENT_ID of the app that accesses the backend:
                 .setAudience(Collections
-                        .singletonList("849367464998-0c4najofsqmh3rteejq2dc3va9iqdps2.apps.googleusercontent.com"))
+                        .singletonList(""))
                 // Or, if multiple clients access the backend:
                 // .setAudience(Arrays.asList(CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3))
                 .build();
@@ -266,7 +220,7 @@ public class ZeroTools {
      * @return String UUID
      */
     public static String  getUUID() {
-        String s = UUID.randomUUID().toString();
+        String s = UuidCreator.getTimeOrderedWithRandom().toString();
         // 去掉“-”符號
         return s.substring(0, 8) + s.substring(9, 13) + s.substring(14, 18) + s.substring(19, 23) + s.substring(24);
     }
@@ -278,7 +232,7 @@ public class ZeroTools {
         return sdf.format(date);
     }
 
-    //////////////////////////////////////////////////////////////////////////////
+
 //    日期加幾天
     public String addDay(String day,int i) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -294,9 +248,6 @@ public class ZeroTools {
     }
 
 
-
-
-    //////////////////////////////////////////////////////////////////
     /*
      *
      * @mailTo 收件人
@@ -308,8 +259,6 @@ public class ZeroTools {
      * @maillist 群發郵件
      *
      */
-
-
     // 郵件
     public void SynologyMail(String mailTo, String text, String Subject, String maillist) {
 
@@ -338,7 +287,7 @@ public class ZeroTools {
                         new javax.mail.Authenticator() {
                             protected PasswordAuthentication getPasswordAuthentication() {
                                 return new PasswordAuthentication(
-                                        "zero", "Tp6u04xup6");
+                                        "zero", "");
                             }
                         });
                 // 開啟Session的debug模式，這樣就可以查看到程序發送Email的運行狀態
@@ -349,7 +298,7 @@ public class ZeroTools {
                     ts = session.getTransport();
                     // 3、使用郵箱的用戶名和密碼連接郵件服務器
                     // 發送郵件時，發件人需要提交郵箱的用戶名和密碼給smtp服務器，用戶名和密碼都通過驗證之後才能夠正常發送郵件給收件人。
-                    ts.connect("192.168.11.118", "zero", "Tp6u04xup6");
+                    ts.connect("192.168.11.118", "zero", "");
                     // 4、創建郵件
 //	            Message message = createComplexMail(session);
                     MimeMessage message = new MimeMessage(session);
@@ -380,6 +329,18 @@ public class ZeroTools {
             }
         }.start();
 
+    }
+    public static AdminBean  getAdmin(){
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+            return (AdminBean) authentication.getPrincipal();
+        } catch (Exception e) {
+            logger.error("未登入");
+            AdminBean adminBean = new AdminBean();
+            adminBean.setName("");
+           return adminBean;
+        }
     }
 
 }

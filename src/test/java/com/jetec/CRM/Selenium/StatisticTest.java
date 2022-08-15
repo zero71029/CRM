@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.concurrent.TimeUnit;
 
-@SpringBootTest
+//@SpringBootTest
 public class StatisticTest {
 
 

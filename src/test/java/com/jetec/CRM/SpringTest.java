@@ -69,11 +69,32 @@ public class SpringTest {
 
     @Test
     public void downLoadFromUrl() throws Exception {
-
         // https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=csv&date=20220809&stockNo=5871
 
 
         mockMvc.perform(get("https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=csv&date=20220809&stockNo=5871")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED))
+                .andExpect(status().isOk())
+                .andDo(new ResultHandler() {
+                    @Override
+                    public void handle(MvcResult mvcResult) throws Exception {
+                        //保存为文件
+                        File file = new File("c:/e2.csv");
+                        file.delete();
+                        FileOutputStream fout = new FileOutputStream(file);
+                        ByteArrayInputStream bin = new ByteArrayInputStream(mvcResult.getResponse().getContentAsByteArray());
+                        StreamUtils.copy(bin, fout);
+                        fout.close();
+                        System.out.println("is exist:" + file.exists());
+                        //assert
+                        System.out.println("file length:" + file.length());
+
+                    }
+                });
+    }
+    @Test
+    public void jsonromUrl() throws Exception {
+        mockMvc.perform(get("https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=json&date=20220809&stockNo=5871")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED))
                 .andExpect(status().isOk())
                 .andDo(new ResultHandler() {
