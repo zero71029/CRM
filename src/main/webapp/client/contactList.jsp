@@ -49,14 +49,15 @@
                             </div>
                         </div> <!-- <%-- 抬頭搜索--%> -->
                         <div class="col-lg-5">
-                            
-                                <div class="input-group mb-3" style="width: 95%; padding-left: 50px;">
-                                    <input type="text" class="form-control" placeholder=" 名稱  or 公司 or 電話 or 手機"
-                                        aria-label="Recipient's username" aria-describedby="button-addon2" name="name" v-model="name">
-                                    <button class="btn btn-outline-secondary" @click="selectContact"
-                                        id="selectProduct">搜索</button>
-                                </div>
-                       
+
+                            <div class="input-group mb-3" style="width: 95%; padding-left: 50px;">
+                                <input type="text" class="form-control" placeholder=" 名稱  or 公司 or 電話 or 手機"
+                                    aria-label="Recipient's username" aria-describedby="button-addon2" name="name"
+                                    v-model="name">
+                                <button class="btn btn-outline-secondary" @click="selectContact"
+                                    id="selectProduct">搜索</button>
+                            </div>
+
                         </div>
                         <!-- <%-- 中間主體--%> -->
                         <table class="Table table-striped orderTable">
@@ -143,7 +144,7 @@
                         list: [],
                         total: "",//全部多少筆
                         currentPage: "",//當前頁面
-                        name:"",//搜索用
+                        name: "",//搜索用
                     }
                 },
                 created() {
@@ -153,16 +154,15 @@
                         async: false,
                         cache: false,
                         success: response => {
-                            this.list = response.list,
-                                this.total = response.total
+                            this.list = response.data.list;
+                            this.total = response.data.total;
                         },
                         error: function (returndata) {
                             console.log(returndata);
                         }
                     });
-                    
-                },
 
+                },
                 methods: {
                     //進入細節
                     contact(contactid) {
@@ -176,8 +176,8 @@
                             async: false,
                             cache: false,
                             success: response => {
-                                this.list = response.list,
-                                    this.total = response.total
+                                this.list = response.data.list;
+                                this.total = response.data.total;
                             },
                             error: function (returndata) {
                                 console.log(returndata);
@@ -196,15 +196,15 @@
                         $("#activity").prop("checked", $zx.length == $all.length);
                     },
                     //搜索用
-                    selectContact(){
+                    selectContact() {
                         $.ajax({
                             url: '${pageContext.request.contextPath}/contact/selectContact?name=' + this.name,
                             type: 'post',
                             async: false,
                             cache: false,
                             success: response => {
-                                this.list = response,
-                                    this.total = 20
+                                this.list = response.data;
+                                this.total = 20;
                             },
                             error: function (returndata) {
                                 console.log(returndata);
@@ -214,4 +214,5 @@
                 },
             })
         </script>
+
         </html>

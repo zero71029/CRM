@@ -38,14 +38,12 @@
                         <div class="row">
                             <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
 
-                                <label class="btn btn-outline-primary state1" 
-                                onclick="javascript:window.open('${pageContext.request.contextPath}/system/AccountApplication.jsp')"
-                                >新增</label>
+                                <label class="btn btn-outline-primary state1"
+                                    onclick="javascript:window.open('${pageContext.request.contextPath}/system/AccountApplication.jsp')">新增</label>
 
-                                <c:if test="${user.position == '主管' || user.position == '系統'}">                                    
-                                    <label class="btn btn-outline-primary state2" 
-                                        onclick="sta()">刪除</label>
-                                </c:if>                               
+                                <c:if test="${user.position == '主管' || user.position == '系統'}">
+                                    <label class="btn btn-outline-primary state2" onclick="sta()">刪除</label>
+                                </c:if>
                             </div>
                         </div>
                         <!-- <%-- 中間表格--%> -->
@@ -53,15 +51,15 @@
                             <tr>
                                 <td></td>
                                 <td>申請⼈</td>
-                                <td>⽇期</td>   
+                                <td>⽇期</td>
                             </tr>
-                             <tr class="item" v-for="(s, index) in list" :key="index">
+                            <tr class="item" v-for="(s, index) in list" :key="index">
                                 <td><input type="checkbox" :value="s.applicationid" name="mak" @change="clickmak"></td>
                                 <td @click="detail(s.applicationid)">
                                     {{s.admin}}</td>
                                 <td @click="detail(s.applicationid)">
                                     {{s.createtime}}</td>
-                            </tr> 
+                            </tr>
                         </table>
 
 
@@ -82,7 +80,7 @@
             </div>
         </body>
         <script>
-      
+
             //  刪除按鈕
             function sta() {
                 var $zx = $("input[name=mak]:checked");
@@ -132,24 +130,26 @@
                     }
                 },
                 created() {
-                        $.ajax({
-                            url: '${pageContext.request.contextPath}/AccountApplication/ListInit?pag=1',
-                            type: 'POST',
-                            async: false,
-                            cache: false,
-                            success: response => {
-                                console.log(response),
-                             this.list=response
+                    $.ajax({
+                        url: '${pageContext.request.contextPath}/AccountApplication/ListInit?pag=1',
+                        type: 'POST',
+                        async: false,
+                        cache: false,
+                        success: response => {
+                           if(response.code == 200){
+                            this.list = response.data;
+                           }
+                            
 
-                             },
-                            error: function (returndata) {
-                                console.log(returndata);
-                            }
-                        })
+                        },
+                        error: function (returndata) {
+                            console.log(returndata);
+                        }
+                    })
                 },
                 methods: {
                     detail: function (applicationid) {//進入細節
-                        location.href = '${pageContext.request.contextPath}/AccountApplication/detail/'+applicationid+'?mess='
+                        location.href = '${pageContext.request.contextPath}/AccountApplication/detail/' + applicationid + '?mess='
                     },
                     handleCurrentChange(val) {//點擊分頁
                         if (this.selectIn == "") {

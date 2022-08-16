@@ -110,7 +110,7 @@
                 </button>
 
 
-<a href="" target="_blank"></a>
+                <a href="" target="_blank"></a>
 
 
                 <!--  -->
@@ -129,13 +129,13 @@
                     ⼯作職掌說明
                 </button>
                 <button class="employee leave"
-                onclick="javascript:location.href='${pageContext.request.contextPath}/Task/leaveList.jsp'">
-                請假申請
-            </button>
-            <button class="employee businessTrip"
-                onclick="javascript:location.href='${pageContext.request.contextPath}/Task/businessTripList.jsp'">
-                出差佈告欄
-            </button>
+                    onclick="javascript:location.href='${pageContext.request.contextPath}/Task/leaveList.jsp'">
+                    請假申請
+                </button>
+                <button class="employee businessTrip"
+                    onclick="javascript:location.href='${pageContext.request.contextPath}/Task/businessTripList.jsp'">
+                    出差佈告欄
+                </button>
                 <button class="employee"
                     onclick="javascript:window.open('${pageContext.request.contextPath}/system/AccountApplication.jsp')">
                     E-Mail/NAS帳號申請表
@@ -191,40 +191,19 @@
                     </button>
                 </c:if>
             </ul>
-            <!-- session 認證-->
-            <%-- <c:if test='${empty user}'>--%>
-                <%-- <script>--%>
-                    <%-- console.log("未登入");--%>
-                        <%-- $.ajax({--%>
-                            <%-- url: '${pageContext.request.contextPath}/UserAuthorize' ,--%>
-                                <%-- type: 'POST' ,--%>
-                                    <%-- success: function (json) {--%>
-                                        <%-- if (json) {--%>
-                                            <%-- location.reload();--%>
-                                                <%-- } else {--%>
 
-                                                    <%-- console.log("沒有認證");--%>
-                                                        <%-- }--%>
-                                                            <%-- },--%>
-                                                                <%-- error: function (returndata) {--%>
-                                                                    <%-- console.log(returndata);--%>
-                                                                        <%-- }--%>
-                                                                            <%-- });--%>
-                                                                                <%-- </script>--%>
-                                                                                    <%-- </c:if>--%>
-                                                                                        <!-- 工作項目彈窗 -->
-                                                                                        <div class="work" title="工作項目">
-                                                                                            <table
-                                                                                                class="Table table-striped workTable">
-                                                                                                <tr class=''>
-                                                                                                    <td width='100'>種類
-                                                                                                    </td>
-                                                                                                    <td>主題</td>
-                                                                                                    <td width='100'>狀態
-                                                                                                    </td>
-                                                                                                </tr>
-                                                                                            </table>
-                                                                                        </div>
+            <!-- 工作項目彈窗 -->
+            <div class="work" title="工作項目">
+                <table class="Table table-striped workTable">
+                    <tr class=''>
+                        <td width='100'>種類
+                        </td>
+                        <td>主題</td>
+                        <td width='100'>狀態
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
 
         <script>
@@ -366,7 +345,6 @@
                                     $('.workTable').append('<br><br>')
                                 }
                             });
-
                         }
 
                     });

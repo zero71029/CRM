@@ -82,13 +82,6 @@
                                 size="small">
                                 {{s}}</el-button>
                         </el-drawer>
-
-
-
-
-
-
-
                     </div>
                 </div>
             </div>

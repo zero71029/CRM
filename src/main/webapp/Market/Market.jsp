@@ -1816,12 +1816,10 @@
                                 contentType: false,
                                 processData: false,
                                 success: (response => {
-                                    if (response.code == 300) {
-                                        this.$message.error(response.message);
-                                    }
+                                    this.$message.error(response.message);
                                     if (response.code == 200) {
                                         location.href = "${pageContext.request.contextPath}/Market/Market/${bean.marketid}";
-                                    }                                   
+                                    }
                                 }),
                                 error: function (returndata) {
                                     console.log(returndata);
@@ -1846,9 +1844,6 @@
                     }
                 },
             })
-
-
-
             function formatDay(day) {
                 let a = day.getMonth() + 1;
                 let mon = a + "";

@@ -1,7 +1,6 @@
 package com.jetec.CRM.controler;
 
 import com.jetec.CRM.Tool.ResultBean;
-import com.jetec.CRM.Tool.ZeroCode;
 import com.jetec.CRM.Tool.ZeroFactory;
 import com.jetec.CRM.Tool.ZeroTools;
 import com.jetec.CRM.controler.service.*;
@@ -10,7 +9,6 @@ import com.jetec.CRM.repository.AdminRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -63,9 +61,9 @@ public class MarketControler {
         Map<String, Object> result = new HashMap<>();
         MarketBean marketBean = ms.getById(id);
         marketBean.setOpentime(LocalDateTime.now().toString());
-        result.put("existsCustomer", PCS.existsById(marketBean.getCustomerid()));
+        result.put("existsCustomer", PCS.existsById(marketBean.getCustomerid()));//判斷潛在客戶存在
         result.put("bean", marketBean);
-        result.put("changeMessageList", DS.getChangeMessage(id));
+        result.put("changeMessageList", DS.getChangeMessage(id));//讀取主管留言
         return result;
     }
 
@@ -908,7 +906,6 @@ public class MarketControler {
                 ms.save(mBean);
             }
         }
-
         System.out.println("修改結束");
         return "修改結束";
     }
@@ -979,6 +976,4 @@ public class MarketControler {
         ms.formatPhone();
         return "格式化結束";
     }
-
-
 }

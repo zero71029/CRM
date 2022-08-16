@@ -903,14 +903,16 @@
                     };
                 },
                 created() {
-                    axios
-                        .get('${pageContext.request.contextPath}/client/getTag/${ bean.clientid }')
-                        .then(response => (
-                            this.tags = response.data
-                        ))
-                        .catch(function (error) {
-                            console.log(error);
-                        });
+                    $.ajax({
+                        url: '${pageContext.request.contextPath}/client/getTag/${ bean.clientid }',//接受請求的Servlet地址
+                        type: 'get',
+                        success: response => {                        
+                            this.tags = response.data;
+                        },
+                        error: function (returndata) {
+                            console.log(returndata);
+                        }
+                    });
                 },
                 watch: {
                     user: {//客戶負責人改變

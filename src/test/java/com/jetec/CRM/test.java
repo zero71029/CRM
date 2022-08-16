@@ -26,25 +26,18 @@ import java.util.Map;
 
 
 public class test {
-    @Autowired
-    TrackRepository tr;
-    @Autowired
-    MarketRepository mr;
+
 
 
     @Test
     public void XXX() throws Exception {
-        Pageable pageable = PageRequest.of(0, 40, Sort.Direction.DESC, "aaa");
-        List<TrackBean> l = null;
-        for (int x = 0; x < 10; x++) {
-            Long start = System.currentTimeMillis();
-            for (int i = 0; i < 1000; i++) {
-                l = tr.findByCustomerid("00a24b508a454e1186abc80cb8f838e3", Sort.by(Sort.Direction.DESC, "tracktime"));
-            }
-            System.out.println(l.size());
-            System.out.println("=======================================");
-            System.out.println("花費時間 : " + (System.currentTimeMillis() - start));
-        }
+        int[] prices = new int[]{0,0,1,1,1,2,2,3,3,4};
+
+
+
+
+
+
     }
 
     @Test

@@ -1,7 +1,11 @@
 package com.jetec.CRM.controler;
 
+import com.jetec.CRM.Tool.ResultBean;
+import com.jetec.CRM.Tool.ZeroFactory;
 import com.jetec.CRM.controler.service.ClientService;
 import com.jetec.CRM.model.ContactBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -19,24 +23,25 @@ public class ContactController {
 
     @Autowired
     ClientService cs;
-
+    Logger logger = LoggerFactory.getLogger("ContactController.class");
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取聯絡人列表
     @RequestMapping("/ContactListInit")
     @ResponseBody
-    public Map<String, Object> ContactListInit(@RequestParam("pag") Integer pag) {
-        System.out.println("*****讀取聯絡人列表*****");
+    public ResultBean ContactListInit(@RequestParam("pag") Integer pag) {
+        logger.info("讀取聯絡人列表");
         pag--;
-        return cs.getContactList(pag);
+        if (pag < 0) pag = 0;
+        return ZeroFactory.success("聯絡人列表",cs.getContactList(pag));
     }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索聯絡人
     @RequestMapping("/selectContact")
     @ResponseBody
-    public List<ContactBean> selectContact(@RequestParam("name") String name) {
-        System.out.println("*****搜索聯絡人****");
-        System.out.println(cs.selectContact(name));
-        return cs.selectContact(name);
+    public ResultBean selectContact(@RequestParam("name") String name) {
+        logger.info("搜索聯絡人 {}",name);
+        return ZeroFactory.success("搜索聯絡",cs.selectContact(name));
     }
 }

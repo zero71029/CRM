@@ -87,8 +87,9 @@ public class MarketService {
     // 銷售機會列表
     public List<MarketBean> getList(Integer pag, Integer size) {
         Pageable p = PageRequest.of(pag, size, Direction.DESC, "aaa");
-        Page<MarketBean> page = mr.findStage(p);
-        List<MarketBean> result = new ArrayList<>();
+//        Page<MarketBean> page = mr.findStage(p);
+        Page<MarketBean> page = mr.findByStageNotAndStageNot("失敗結案","成功結案",p);
+                List<MarketBean> result = new ArrayList<>();
         if (pag == 0)
             result.addAll(mr.findByCallhelpAndStageNotAndStageNot("1", "失敗結案", "成功結案"));
         result.addAll(page.getContent());

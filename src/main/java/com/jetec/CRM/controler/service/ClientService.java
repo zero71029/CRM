@@ -285,13 +285,11 @@ public class ClientService {
 //刪除標籤
 	public void removeTag(String clienttagid) {
 		ctr.deleteById(clienttagid);
-
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取標籤列表
 	public List<ClientTagBean> getTagList(Integer clientid) {
-
 		return ctr.findByClientid(clientid);
 	}
 
