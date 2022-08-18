@@ -1,9 +1,6 @@
 package com.jetec.CRM.controler.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -87,14 +84,13 @@ public class ClientService {
 		if (contactBean.getClientid() == null)
 			contactBean.setClientid(cr.selectIdByname(contactBean.getCompany()));
 		return contactRepository.save(contactBean);
-
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取聯絡人列表
 	public Map<String, Object> getContactList(Integer pag) {
 		Pageable p = PageRequest.of(pag, 40);
-		Map<String, Object> result = new HashMap();
+		Map<String, Object> result = new HashMap<>();
 		Page<ContactBean> page = contactRepository.findAll(p);
 		List<ContactBean> aaa = page.getContent();
 		result.put("list", aaa);
@@ -132,18 +128,16 @@ public class ClientService {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 搜索聯絡人
 	public List<ContactBean> selectContact(String name) {
-		List<ContactBean> result = new ArrayList<ContactBean>();
 		boolean boo = true;
 		// 搜索名稱
-		for (ContactBean p : contactRepository.findByNameLikeIgnoreCase("%" + name + "%")) {
-			result.add(p);
-		}
+		List<ContactBean> result = new ArrayList<>(contactRepository.findByNameLikeIgnoreCase("%" + name + "%"));
 
 		// 用公司搜索
 		for (ContactBean p : contactRepository.findByCompanyLikeIgnoreCase("%" + name + "%")) {
 			for (ContactBean bean : result) {
-				if (bean.getContactid() == p.getContactid()) {
+				if (Objects.equals(bean.getContactid(), p.getContactid())) {
 					boo = false;
+					break;
 				}
 			}
 			if (boo)
@@ -152,8 +146,9 @@ public class ClientService {
 		// 用客戶搜索
 		for (ContactBean p : contactRepository.findByPhoneLikeIgnoreCase("%" + name + "%")) {
 			for (ContactBean bean : result) {
-				if (bean.getContactid() == p.getContactid()) {
+				if (Objects.equals(bean.getContactid(),p.getContactid()) ) {
 					boo = false;
+					break;
 				}
 			}
 			if (boo)
@@ -162,8 +157,9 @@ public class ClientService {
 		// 用聯絡人搜索
 		for (ContactBean p : contactRepository.findByMoblieLikeIgnoreCase("%" + name + "%")) {
 			for (ContactBean bean : result) {
-				if (bean.getContactid() == p.getContactid()) {
+				if (Objects.equals(bean.getContactid(), p.getContactid())) {
 					boo = false;
+					break;
 				}
 			}
 			if (boo)
@@ -177,18 +173,16 @@ public class ClientService {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索客戶
 	public List<ClientBean> selectclient(String name) {
-		List<ClientBean> result = new ArrayList<ClientBean>();
 		boolean boo = true;
 		// 搜索名稱
-		for (ClientBean p : cr.findByNameLikeIgnoreCase("%" + name + "%")) {
-			result.add(p);
-		}
+		List<ClientBean> result = new ArrayList<>(cr.findByNameLikeIgnoreCase("%" + name + "%"));
 
 		// 用統編搜索
 		for (ClientBean p : cr.findByUniformnumberLikeIgnoreCase("%" + name + "%")) {
 			for (ClientBean bean : result) {
-				if (bean.getClientid() == p.getClientid()) {
+				if (Objects.equals(bean.getClientid(), p.getClientid())) {
 					boo = false;
+					break;
 				}
 			}
 			if (boo)
@@ -197,8 +191,9 @@ public class ClientService {
 		// 用電話搜索
 		for (ClientBean p : cr.findByPhoneLikeIgnoreCase("%" + name + "%")) {
 			for (ClientBean bean : result) {
-				if (bean.getClientid() == p.getClientid()) {
+				if (Objects.equals(bean.getClientid(), p.getClientid())) {
 					boo = false;
+					break;
 				}
 			}
 			if (boo)
@@ -207,8 +202,9 @@ public class ClientService {
 		// 用聯絡人搜索
 		for (ClientBean p : cr.findByUserLikeIgnoreCase("%" + name + "%")) {
 			for (ClientBean bean : result) {
-				if (bean.getClientid() == p.getClientid()) {
+				if (Objects.equals(bean.getClientid(), p.getClientid())) {
 					boo = false;
+					break;
 				}
 			}
 			if (boo)
@@ -255,7 +251,7 @@ public class ClientService {
 //新增其他地址
 	public void newAddress(ClientAddressBean cabean) {
 		if (cabean.getAddressid() == null)
-			cabean.setAddressid(zTools.getUUID());
+			cabean.setAddressid(ZeroTools.getUUID());
 		car.save(cabean);
 
 	}
@@ -273,7 +269,7 @@ public class ClientService {
 		if (!ctr.existsByClientidAndName(clientid, tagName)) {
 			ClientTagBean clientTagBean = new ClientTagBean();
 			clientTagBean.setClientid(clientid);
-			clientTagBean.setClienttagid(zTools.getUUID());
+			clientTagBean.setClienttagid(ZeroTools.getUUID());
 			clientTagBean.setName(tagName);
 			ctr.save(clientTagBean);
 			return "新增成功";
@@ -297,7 +293,7 @@ public class ClientService {
 //點擊標籤
 	public List<ClientBean> clickTag(String tag) {
 		List<ClientTagBean> list = ctr.getTagList(tag);
-		List<ClientBean> result = new ArrayList<ClientBean>();
+		List<ClientBean> result = new ArrayList<>();
 		for (ClientTagBean bean : list) {
 			result.add(cr.getById(bean.getClientid()));
 		}
@@ -316,13 +312,9 @@ public class ClientService {
     public Map<String, Object> init(Integer pag) {
 		Pageable p = PageRequest.of(pag, 40, Sort.Direction.ASC, "clientid");
 		Page<ClientBean> page = cr.findAll(p);
-		Map<String, Object> result = new HashMap();
+		Map<String, Object> result = new HashMap<>();
 		result.put("list", page.getContent());
 		result.put("todayTotal", page.getTotalElements());
-
-
-
-
 		return result;
     }
 

@@ -1,7 +1,11 @@
 package com.jetec.CRM.controler;
 
+import com.jetec.CRM.Tool.ResultBean;
+import com.jetec.CRM.Tool.ZeroFactory;
 import com.jetec.CRM.controler.service.ClientService;
 import com.jetec.CRM.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -11,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -22,30 +28,40 @@ public class CustomerControler {
     @Autowired
     ClientService cs;
 
+    Logger logger = LoggerFactory.getLogger("CustomerControler");
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //客戶列表初始化
     @RequestMapping("/init")
     @ResponseBody
-    public Map<String, Object> init(@RequestParam("pag") Integer pag) {
+    public ResultBean init(@RequestParam("pag") Integer pag) {
         System.out.println("*****客戶列表初始化*****");
         pag--;
-        return cs.init(pag);
+        if (pag < 0) pag = 0;
+
+        return ZeroFactory.success("客戶列表",cs.init(pag));
+//        return cs.init(pag);
 
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //儲存客戶
     @RequestMapping("/SaveClient")
-    public String SaveClient(ClientBean clientBean) {
-        System.out.println("*****儲存客戶*****");
-        System.out.println(clientBean);
+    public String SaveClient(ClientBean clientBean, HttpServletRequest req) {
+        //新案件
         if (clientBean.getClientid() == null) {
             clientBean.setAaa(LocalDate.now().toString());
             clientBean.setState(1);
         }
+        logger.info("儲存客戶 {}",clientBean.getClientid());
         ClientBean save = cs.SaveAdmin(clientBean);
 
-
+        new Thread(() -> {
+            ServletContext sce = req.getServletContext();
+            sce.setAttribute("client", cs.getList());
+            logger.info("更新applient客戶列表");
+        }).start();
+        //
         List<MarketBean> marketList = cs.getMarketListByClientid(clientBean.getClientid());
         for (MarketBean marketBean : marketList) {
             marketBean.setClient(clientBean.getName());
@@ -98,20 +114,19 @@ public class CustomerControler {
 // 搜索客戶
     @ResponseBody
     @RequestMapping("/selectclientResponseBody/{name}")
-    public List<ClientBean> selectclientResponseBody(@PathVariable("name") String name) {
-        System.out.println("搜索客戶");
+    public ResultBean selectclientResponseBody(@PathVariable("name") String name) {
+        logger.info("搜索客戶 {}",name);
         name = name.trim();
-        System.out.println(cs.selectclient(name));
-        return cs.selectclient(name);
+        return ZeroFactory.success("搜索客戶",cs.selectclient(name));
     }
 
-    @RequestMapping("/selectclient")
-    public String selectclient(Model model, @RequestParam("name") String name) {
-        System.out.println("搜索客戶");
-        name = name.trim();
-        model.addAttribute("list", cs.selectclient(name));
-        return "/client/clientList";
-    }
+//    @RequestMapping("/selectclient")
+//    public String selectclient(Model model, @RequestParam("name") String name) {
+//        System.out.println("搜索客戶");
+//        name = name.trim();
+//        model.addAttribute("list", cs.selectclient(name));
+//        return "/client/clientList";
+//    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //刪除客戶

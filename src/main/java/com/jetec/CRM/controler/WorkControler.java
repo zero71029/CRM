@@ -1,11 +1,8 @@
 package com.jetec.CRM.controler;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.jetec.CRM.Tool.ZeroTools;
 import com.jetec.CRM.controler.service.*;
+import com.jetec.CRM.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -15,13 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jetec.CRM.Tool.ZeroTools;
-import com.jetec.CRM.model.ClientBean;
-import com.jetec.CRM.model.ContactBean;
-import com.jetec.CRM.model.MarketBean;
-import com.jetec.CRM.model.PotentialCustomerBean;
-import com.jetec.CRM.model.TrackBean;
-import com.jetec.CRM.model.WorkBean;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 @Controller
 @RequestMapping("/work")
@@ -100,8 +93,18 @@ public class WorkControler {
 //讀取客戶列表
     @RequestMapping("/clientList")
     @ResponseBody
-    public List<ClientBean> clientList() {
-        return cs.getList();
+    public List<Map<String,String>> clientList(HttpServletRequest req) {
+        ServletContext sce = req.getServletContext();
+        List<Map<String,String>> result = new ArrayList<>();
+        List<ClientBean> list =(List<ClientBean>) sce.getAttribute("client");
+        for (ClientBean clientBean : list) {
+            Map<String,String> map =new HashMap<>();
+            map.put("name",clientBean.getName());
+            map.put("clientid",clientBean.getClientid()+"");
+            result.add(map);
+        }
+        return result;
+//        return cs.getList();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

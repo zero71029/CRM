@@ -2,16 +2,12 @@
     <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <html lang="zh-TW">
 
-        <head>3
+        <head>
             <meta charset="UTF-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
             <link rel="preconnect" href="https://fonts.gstatic.com">
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
-
-
-
             <title>CRM客戶管理系統</title>
         </head>
         <style>
@@ -19,14 +15,10 @@
                 /* 按鈕顏色 */
                 background-color: #afe3d5;
             }
-
             .cell {
                 border: 0px solid black;
                 border-bottom: 1px solid black;
-
-
             }
-
             .cellFrom {
                 border: 0px solid black;
                 /* width: 33%; */
@@ -82,7 +74,7 @@
                         </div>
                         <br>
                         <form action="${pageContext.request.contextPath}/CRM/SaveContact" method="post" id="myform"
-                            class="basefrom g-3 " >
+                            class="basefrom g-3 ">
                             <div class="row">
                                 <input type="hidden" name="contactid" value="${bean.contactid}">
                                 <input type="hidden" name="clientid" value="${bean.clientid}">
@@ -146,7 +138,8 @@
                                     <div class="col-md-1"></div>
                                     <div class="col-md-1 cell">公司名稱</div>
                                     <div class="col-md-3 cell FormPadding companyDiv"
-                                        style="background-color: #ccc; line-height: 35px; height: 37px;" onclick="showclient()">
+                                        style="background-color: #ccc; line-height: 35px; height: 37px;"
+                                        onclick="showclient()">
                                         <a href="${pageContext.request.contextPath}/CRM/client/${bean.client.clientid}"
                                             target="_blank" class="clientName">${bean.client.name}</a>
                                         <input type="hidden" name='clientid' value="${bean.client.clientid}">
@@ -261,7 +254,8 @@
                             <div class="col-md-1"></div>
                             <div class="col-md-3"></div>
                             <div class="col-md-3 FormPadding">
-                                <button type="button" style="width: 100%;" class="btn btn-primary" onclick="saveContact()">送出</button>
+                                <button type="button" style="width: 100%;" class="btn btn-primary"
+                                    onclick="saveContact()">送出</button>
                             </div>
                         </div>
                         <!-- ///////////////////////////////////////////////////////////////////////////// -->
@@ -272,7 +266,7 @@
 
 
                     <!-- 客戶彈窗 -->
-                    <div class="clientwork" title="客戶" >
+                    <div class="clientwork" title="客戶">
                         <!-- <%-- 抬頭搜索--%> -->
                         <div class="col-lg-5">
                             <div class="input-group mb-3" style="width: 95%; padding-left: 50px;">
@@ -400,14 +394,14 @@
                 $.ajax({
                     url: '${pageContext.request.contextPath}/work/clientList',//接受請求的Servlet地址
                     type: 'POST',
-                    async: false,//同步請求
+                    async: true,//同步請求
                     cache: false,//不快取頁面
                     success: function (list) {
                         $(".clientTable").empty();
-                        $(".clientTable").append("<tr><td>客戶名稱</td>  <td>電話</td> <td>產業</td></tr>");
+                        $(".clientTable").append("<tr><td>客戶名稱</td>  </tr>");
                         for (var bean of list) {
                             $(".clientTable").append('<tr class="item" onclick="clickClient(`' + bean.name + '`,' + bean.clientid + ')" style="cursor: pointer;">' +
-                                '<td> ' + bean.name + '</td><td> ' + bean.phone + '</td><td>' + bean.industry + ' </td></tr>');
+                                '<td> ' + bean.name + '</td></tr>');
                         }
                     },
                     error: function (returndata) {
@@ -433,28 +427,28 @@
                     }
                 });
             }
-            function saveContact(){
-                
+            function saveContact() {
+
                 console.log($("#company").val());
                 var isok = true;
-                if($("#name").val() ==''){
-                    isok =false;
-                    $("#name").css("border","1px red solid");
-                }else{
-                    $("#name").css("border","1px black solid");
+                if ($("#name").val() == '') {
+                    isok = false;
+                    $("#name").css("border", "1px red solid");
+                } else {
+                    $("#name").css("border", "1px black solid");
                 }
 
 
 
-                if($("#company").val() ==''){
-                    isok =false;
-                    $(".companyDiv").css("border","1px red solid");
-                }else{
-                    $(".companyDiv").css("border","1px black solid");
+                if ($("#company").val() == '') {
+                    isok = false;
+                    $(".companyDiv").css("border", "1px red solid");
+                } else {
+                    $(".companyDiv").css("border", "1px black solid");
                 }
 
 
-                if(isok)document.getElementById("myform").submit();
+                if (isok) document.getElementById("myform").submit();
             }
 
 

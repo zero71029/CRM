@@ -15,10 +15,10 @@ public class ZeroFactory {
     }
 
     public static ResultBean fail(String message){
-        return new ResultBean(300, message);
+        return new ResultBean(ZeroCode.ISFAIL, message);
     }
     public static ResultBean success(String message, Object data){
-        return new ResultBean(200, message ,data);
+        return new ResultBean(ZeroCode.ISOK, message ,data);
     }
     public static ResultBean success(String message){
         return new ResultBean(200, message);

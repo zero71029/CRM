@@ -85,7 +85,9 @@
                                 <td>
                                     {{s.clientid}}</td>
                                 <td>
-                                   <a :href="'${pageContext.request.contextPath}/CRM/client/' +s.clientid" target="_blank">{{s.name}}</a> </td>
+                                    <a :href="'${pageContext.request.contextPath}/CRM/client/' +s.clientid"
+                                        target="_blank">{{s.name}}</a>
+                                </td>
                                 <td>
                                     {{s.uniformnumber}}</td>
                                 <td>
@@ -144,12 +146,6 @@
                             url: '${pageContext.request.contextPath}/CRM/delClient',//接受請求的Servlet地址
                             type: 'POST',
                             data: parm,
-                            // dataType:"json",
-                            // async: false,//同步請求
-                            // cache: false,//不快取頁面
-                            // contentType: false,//當form以multipart/form-data方式上傳檔案時，需要設定為false
-                            // processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
-
                             success: function (json) {
                                 alert(json);
                                 window.location.href = "${pageContext.request.contextPath}/client/clientList.jsp";
@@ -178,9 +174,9 @@
                         async: false,
                         cache: false,
                         success: (response => {
-                            this.list = response.list,
-                                this.total = response.todayTotal,
-                                console.log(this.list)
+                            this.list = response.data.list;
+                            this.total = response.data.todayTotal;
+                            console.log(this.list)
                         }),
                         error: function (returndata) {
                             console.log(returndata);
@@ -194,14 +190,20 @@
                     },
                     //點擊分頁
                     handleCurrentChange(val) {
-                        axios
-                            .get('${pageContext.request.contextPath}/CRM/init?pag=' + val)
-                            .then(response => (
-                                this.list = response.data.list
-                            ))
-                            .catch(function (error) {
-                                console.log(error);
-                            });
+                        $.ajax({
+                            url: '${pageContext.request.contextPath}/CRM/init?pag=' + val,
+                            type: 'POST',
+                            async: false,
+                            cache: false,
+                            success: (response => {
+                                this.list = response.data.list;
+                                this.total = response.data.todayTotal;
+                                console.log(this.list)
+                            }),
+                            error: function (returndata) {
+                                console.log(returndata);
+                            }
+                        });
                     },//搜索
                     selectClient: function () {
                         $.ajax({
@@ -210,7 +212,7 @@
                             async: false,
                             cache: false,
                             success: (response => {
-                                this.list = response,
+                                this.list = response.data,
                                     this.total = 20
                             }),
                             error: function (returndata) {

@@ -645,7 +645,6 @@ public class PublicControl {
     @RequestMapping("/workitem/{adminname}")
     @ResponseBody
     public List<WorkBean> workitem(@PathVariable("adminname") String adminname) {
-
         return ws.workitem(adminname);
     }
 

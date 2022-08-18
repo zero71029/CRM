@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -251,8 +253,6 @@ public class MarketControler {
         }
         System.out.println(startDay);
         System.out.println(endDay);
-
-
         return ms.selectMarketByAll(startDay, endDay, key, val);
     }
 
@@ -364,7 +364,6 @@ public class MarketControler {
             model.addAttribute("bean", new AgreementBean());
         } else {
             model.addAttribute("bean", ms.getAgreementBeanById(id));
-
         }
 //model.addAttribute("admin", ar.findAll());
 
@@ -388,7 +387,7 @@ public class MarketControler {
 //潛在各戶轉成客戶
     @RequestMapping("/changeClient.action")
     @ResponseBody
-    public String changeClient(PotentialCustomerBean Bean) {
+    public String changeClient(PotentialCustomerBean Bean, HttpServletRequest req) {
         logger.info("潛在各戶轉成客戶 Customerid:{}", Bean.getCustomerid());
         logger.info("admin : {}", ZeroTools.getAdmin().getName());
         ChangeMessageBean cmBean = new ChangeMessageBean(ZeroTools.getUUID(), Bean.getCustomerid(), ZeroTools.getAdmin().getName(), "行動", "", "潛在各戶轉成客戶", ZeroTools.getTime(new Date()));
@@ -414,6 +413,10 @@ public class MarketControler {
         clientBean.setSerialnumber(Bean.getSerialnumber());
         clientBean.setAaa(LocalDate.now().toString());
         cs.SaveAdmin(clientBean);
+        new Thread(() -> {
+            ServletContext sce = req.getServletContext();
+            sce.setAttribute("client", cs.getList());
+        }).start();
         return "新增客戶";
     }
 
