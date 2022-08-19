@@ -132,10 +132,11 @@ public class CustomerControler {
 //刪除客戶
     @RequestMapping("/delClient")
     @ResponseBody
-    public String delClient(@RequestParam("id") List<Integer> id) {
-        System.out.println("*****刪除客戶*****");
+    public ResultBean delClient(@RequestParam("id") List<Integer> id) {
+        logger.info("刪除客戶 {}",id);
         cs.delClient(id);
-        return "刪除成功";
+        return ZeroFactory.success("刪除成功");
+
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

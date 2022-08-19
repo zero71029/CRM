@@ -1,7 +1,7 @@
 package com.jetec.CRM.Tool;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
+//import org.springframework.data.redis.core.StringRedisTemplate;
 
 public class note {
     // 筆記

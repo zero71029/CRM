@@ -147,7 +147,7 @@
                             type: 'POST',
                             data: parm,
                             success: function (json) {
-                                alert(json);
+                                alert(json.message);
                                 window.location.href = "${pageContext.request.contextPath}/client/clientList.jsp";
                             },
                             error: function (returndata) {

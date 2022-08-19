@@ -9,7 +9,6 @@ import com.jetec.CRM.repository.AdminRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -52,8 +51,7 @@ public class MarketControler {
     DirectorService DS;
     @Autowired
     SystemService ss;
-    @Autowired
-    StringRedisTemplate stringRedisTemplate;
+
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @RequestMapping("/init/{id}")

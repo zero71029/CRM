@@ -9,7 +9,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.core.context.SecurityContextImpl;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 
@@ -80,15 +82,20 @@ class CustomerControlerTest {
                 .andExpect(jsonPath("$.code").value(200))
                 .andExpect(jsonPath("$.message").value("搜索客戶"))
                 .andExpect(jsonPath("$.data").isArray());
-
     }
 
-    @Test
-    void selectclient() {
-    }
 
     @Test
-    void delClient() {
+    @DisplayName("刪除客戶")
+    @Transactional
+    @Rollback
+    void delClient() throws Exception {
+        mockMvc.perform(post("/CRM/delClient")
+                        .session((MockHttpSession) session)
+                        .param("id","7"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value(200))
+                .andExpect(jsonPath("$.message").value("刪除成功"));
     }
 
     @Test
