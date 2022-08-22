@@ -1169,16 +1169,16 @@
                             async: false,//同步請求
                             cache: false,//不快取頁面
                             success: (response => (
-                                this.bean = response.bean,
-                                this.existsCustomer = response.existsCustomer,
-                                this.changeMessageList = response.changeMessageList,
+                                this.bean = response.data.bean,
+                                this.existsCustomer = response.data.existsCustomer,
+                                this.changeMessageList = response.data.changeMessageList,
                                 this.bean.phone = formatPhone(this.bean.phone),
                                 this.bean.contactphone = formatPhone(this.bean.contactphone),
                                 this.bean.fax = formatPhone(this.bean.fax),
                                 this.bean.contactmoblie = this.bean.contactmoblie.insert(4, "-"),
                                 this.bean.contactmoblie = this.bean.contactmoblie.insert(8, "-"),
                                 this.oldBean = Object.assign({}, this.bean),
-                                this.bosMassageList = response.bean.bm
+                                this.bosMassageList = response.data.bean.bm
 
                             )),
                             error: function (returndata) {

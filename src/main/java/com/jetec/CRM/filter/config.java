@@ -14,7 +14,6 @@ import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Set;
 
 @Configuration
@@ -66,9 +65,7 @@ public class config {
             Set<String> keys = stringRedisTemplate.keys("*");
             assert keys != null;
             // 迭代
-            Iterator<String> it1 = keys.iterator();
-            while (it1.hasNext()) {
-                String key =it1.next();
+            for (String key : keys) {
                 System.out.println(key);
                 // 循环删除
                 stringRedisTemplate.delete(key);

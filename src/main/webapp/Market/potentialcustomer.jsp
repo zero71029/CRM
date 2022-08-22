@@ -857,7 +857,6 @@
                         }
                         if (json == "不存在") {
 
-
                             $.ajax({
                                 url: '${pageContext.request.contextPath}/Market/changeClient.action',
                                 type: 'POST',

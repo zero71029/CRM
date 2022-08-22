@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +21,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/CRM")
@@ -39,7 +40,7 @@ public class CustomerControler {
         pag--;
         if (pag < 0) pag = 0;
 
-        return ZeroFactory.success("客戶列表",cs.init(pag));
+        return ZeroFactory.success("客戶列表", cs.init(pag));
 //        return cs.init(pag);
 
     }
@@ -47,15 +48,22 @@ public class CustomerControler {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //儲存客戶
     @RequestMapping("/SaveClient")
-    public String SaveClient(ClientBean clientBean, HttpServletRequest req) {
+    public String SaveClient(ClientBean clientBean, HttpServletRequest req,Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AdminBean adminBean = (AdminBean) authentication.getPrincipal();
         //新案件
         if (clientBean.getClientid() == null) {
             clientBean.setAaa(LocalDate.now().toString());
             clientBean.setState(1);
+            //名稱檢查
+            if(cs.existsByName(clientBean.getName())){
+                model.addAttribute("message","名稱重複");
+                return "error/500";
+            }
         }
-        logger.info("儲存客戶 {}",clientBean.getClientid());
+        logger.info("{} 儲存客戶 {}", adminBean.getName(), clientBean.getClientid());
         ClientBean save = cs.SaveAdmin(clientBean);
-
+        //更新applient客戶列表
         new Thread(() -> {
             ServletContext sce = req.getServletContext();
             sce.setAttribute("client", cs.getList());
@@ -95,7 +103,9 @@ public class CustomerControler {
 //讀取客戶細節
     @RequestMapping("/client/{id}")
     public String client(Model model, @PathVariable("id") Integer id) {
-        System.out.println("*****讀取客戶細節****");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AdminBean adminBean = (AdminBean) authentication.getPrincipal();
+        logger.info("{} 讀取客戶細節 {}", adminBean.getName(), id);
         if (id == 0) {
             model.addAttribute("bean", new ClientBean());
             model.addAttribute("market", new MarketBean());
@@ -106,7 +116,6 @@ public class CustomerControler {
             model.addAttribute("market", cs.getMarketListByClient(cb.getName()));// 讀取銷售機會by公司
             model.addAttribute("quotation", cs.getQuotationByClient(cb.getName()));// 讀取報價單by公司
         }
-
         return "/client/client";
     }
 
@@ -115,9 +124,11 @@ public class CustomerControler {
     @ResponseBody
     @RequestMapping("/selectclientResponseBody/{name}")
     public ResultBean selectclientResponseBody(@PathVariable("name") String name) {
-        logger.info("搜索客戶 {}",name);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AdminBean adminBean = (AdminBean) authentication.getPrincipal();
+        logger.info("{} 搜索客戶 {}", adminBean.getName(), name);
         name = name.trim();
-        return ZeroFactory.success("搜索客戶",cs.selectclient(name));
+        return ZeroFactory.success("搜索客戶", cs.selectclient(name));
     }
 
 //    @RequestMapping("/selectclient")
@@ -133,18 +144,20 @@ public class CustomerControler {
     @RequestMapping("/delClient")
     @ResponseBody
     public ResultBean delClient(@RequestParam("id") List<Integer> id) {
-        logger.info("刪除客戶 {}",id);
+        logger.info("刪除客戶 {}", id);
         cs.delClient(id);
         return ZeroFactory.success("刪除成功");
 
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//讀取聯絡人by名稱 ajax
+//讀取聯絡人by公司 ajax
     @RequestMapping("/selectContactByClientName/{name}")
     @ResponseBody
     public List<ContactBean> selectContactByClientName(@PathVariable("name") String name) {
-
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AdminBean adminBean = (AdminBean) authentication.getPrincipal();
+        logger.info("{} 讀取聯絡人by公司 {}", adminBean.getName(), name);
         return cs.selectContactByClientName(name);
     }
 
@@ -152,8 +165,8 @@ public class CustomerControler {
 //儲存聯絡人
     @RequestMapping("/SaveContact")
     public String SaveContact(ContactBean contactBean) {
-        System.out.println("*****儲存聯絡人*****");
-        System.out.println(contactBean);
+        logger.info("儲存聯絡人 ");
+        logger.info("{}", contactBean);
         cs.SaveContact(contactBean);
         return "redirect:/client/contactList.jsp";
     }
@@ -163,7 +176,9 @@ public class CustomerControler {
 //讀取聯絡人細節
     @RequestMapping("/contact/{id}")
     public String contact(Model model, @PathVariable("id") Integer id) {
-        System.out.println("*****讀取聯絡人細節****");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AdminBean adminBean = (AdminBean) authentication.getPrincipal();
+        logger.info("{} 讀取聯絡人細節 {}", adminBean.getName(), id);
         if (id == 0) {
             model.addAttribute("bean", new ContactBean());
         } else {
@@ -177,7 +192,9 @@ public class CustomerControler {
     @RequestMapping("/delcontact")
     @ResponseBody
     public String delcontact(@RequestParam("id") List<Integer> id) {
-        System.out.println("*****刪除聯絡人*****");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AdminBean adminBean = (AdminBean) authentication.getPrincipal();
+        logger.info("{} 刪除聯絡人 {}", adminBean.getName(), id);
         cs.delMarket(id);
         return "刪除成功";
     }
@@ -196,7 +213,10 @@ public class CustomerControler {
 //客戶轉換聯絡人
     @RequestMapping("/changeContact")
     public String changeContact(Model model, ClientBean clientBean) {
-        System.out.println("*****客戶轉成聯絡人*****");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AdminBean adminBean = (AdminBean) authentication.getPrincipal();
+        logger.info("{} 將客戶轉成聯絡人 {}", adminBean.getName(), clientBean.getName());
+
         ContactBean contactBean = new ContactBean();
         contactBean.setCompany(clientBean.getName());
         contactBean.setEmail(clientBean.getEmail());
@@ -212,25 +232,15 @@ public class CustomerControler {
         return "/client/contact";
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//轉成銷售機會
-    @RequestMapping("/changeMarket")
-    public String changeMarket(Model model, ClientBean clientBean) {
-        System.out.println("*****轉成銷售機會*****");
-        MarketBean marketBean = new MarketBean();
-        marketBean.setClient(clientBean.getName());
-        marketBean.setPhone(clientBean.getPhone());
-        marketBean.setType(clientBean.getIndustry());
-        marketBean.setContactemail(clientBean.getEmail());
-        model.addAttribute("bean", marketBean);
-        return "/Market/Market";
-    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//轉成銷售機會
+//新增工作項目
     @RequestMapping("/changeWork")
     public String changeWork(Model model, ClientBean clientBean) {
-        System.out.println("*****工作項目*****");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AdminBean adminBean = (AdminBean) authentication.getPrincipal();
+        logger.info("{} 新增工作項目 {}", adminBean.getName(), clientBean.getName());
+
         WorkBean workBean = new WorkBean();
         workBean.setClient(clientBean);
         model.addAttribute("bean", workBean);
@@ -241,7 +251,9 @@ public class CustomerControler {
 //新增其他地址
     @RequestMapping("/newAddress")
     public String newAddress(ClientAddressBean cabean) {
-        System.out.println("*****新增其他地址*****");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AdminBean adminBean = (AdminBean) authentication.getPrincipal();
+        logger.info("{} 新增其他地址 {}", adminBean.getName(), cabean);
         cs.newAddress(cabean);
         return "redirect:/CRM/client/" + cabean.getClientid();
     }
@@ -251,7 +263,9 @@ public class CustomerControler {
     @RequestMapping("/delClientAddress/{addressid}/{clientid}")
     public String delClientAddress(@PathVariable("addressid") String addressid,
                                    @PathVariable("clientid") String clientid) {
-        System.out.println("*****刪除其他地址*****");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AdminBean adminBean = (AdminBean) authentication.getPrincipal();
+        logger.info("{} 刪除其他地址 {}", adminBean.getName(), clientid);
         cs.delAddress(addressid);
         return "redirect:/CRM/client/" + clientid;
     }

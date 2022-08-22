@@ -115,7 +115,7 @@ public class PotentialCustomerService {
                 stringRedisTemplate.opsForValue().set(ZeroCode.Redis_Customer_Id + bean.getCustomerid(), objectMapper.writeValueAsString(bean), 4, TimeUnit.HOURS);
                 System.out.println("添加緩存" + bean.getCustomerid());
             } catch (Exception e) {
-
+                logger.info("此id找不到資料");
             }
             return bean;
         }

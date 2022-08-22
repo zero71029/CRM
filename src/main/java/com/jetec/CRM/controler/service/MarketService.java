@@ -69,7 +69,7 @@ public class MarketService {
                 }
                 marketBean.setFileforeignid(uuid);
             }
-        }else {
+        } else {
             caffeineCache.asMap().remove(ZeroCode.Redis_Market_Id + marketBean.getMarketid());
             logger.info("刪除緩存 ");
         }
@@ -88,8 +88,8 @@ public class MarketService {
     public List<MarketBean> getList(Integer pag, Integer size) {
         Pageable p = PageRequest.of(pag, size, Direction.DESC, "aaa");
 //        Page<MarketBean> page = mr.findStage(p);
-        Page<MarketBean> page = mr.findByStageNotAndStageNot("失敗結案","成功結案",p);
-                List<MarketBean> result = new ArrayList<>();
+        Page<MarketBean> page = mr.findByStageNotAndStageNot("失敗結案", "成功結案", p);
+        List<MarketBean> result = new ArrayList<>();
         if (pag == 0)
             result.addAll(mr.findByCallhelpAndStageNotAndStageNot("1", "失敗結案", "成功結案"));
         result.addAll(page.getContent());
@@ -119,11 +119,16 @@ public class MarketService {
 
     public MarketBean getById(String id) {
         MarketBean cache = (MarketBean) caffeineCache.getIfPresent(ZeroCode.Redis_Market_Id + id);
+        //如果沒有緩存
         if (cache == null) {
-            logger.info("添加caffeine緩存 " + ZeroCode.Redis_Market_Id + id);
-            MarketBean marketBean = mr.getById(id);
-            caffeineCache.put(ZeroCode.Redis_Market_Id + id, marketBean);
-            return marketBean;
+            MarketBean marketBean = mr.findById(id).orElse(null);
+            try {
+                caffeineCache.put(ZeroCode.Redis_Market_Id + id, marketBean);
+                logger.info("添加caffeine緩存 " + ZeroCode.Redis_Market_Id + id);
+                return marketBean;
+            } catch (Exception e) {
+                logger.info("此id找不到資料");
+            }
         }
         logger.info("使用caffeine緩存 " + ZeroCode.Redis_Market_Id + id);
         return cache;
@@ -290,23 +295,17 @@ public class MarketService {
         return result;
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//搜索銷售機會by產品類別
+    //搜索銷售機會by產品類別
     public List<MarketBean> selectClinch(String clinch) {
-        // TODO Auto-generated method stub
         return mr.selectClinch(clinch);
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//搜索銷售機會by預算
+    //搜索銷售機會by預算
     public List<MarketBean> selectBudget(String start, String to) {
-        // TODO Auto-generated method stub
         return mr.selectBudget(start, to);
     }
 
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//今天總計
+    //今天總計
     public Integer gettodayTotal() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String ddd = sdf.format(new Date());
@@ -317,7 +316,6 @@ public class MarketService {
 //讀取過期任務
     public List<MarketBean> getEndCast(String name) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
         return mr.getEndCast(name, sdf.format(new Date()));
     }
 
@@ -467,7 +465,7 @@ public class MarketService {
         List<Integer> receive = new ArrayList<>();
         String stateday = null;
         String startday = "2022-02-01 00:00";
-        String endday ;
+        String endday;
         for (MarketStateBean b : stateList) {
             if (b.getField().equals("admin")) admin.add(b.getState());
             if (b.getField().equals("day")) stateday = b.getState();

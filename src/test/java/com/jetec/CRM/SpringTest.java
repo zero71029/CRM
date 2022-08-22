@@ -1,6 +1,7 @@
 package com.jetec.CRM;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.benmanes.caffeine.cache.Cache;
 import com.jetec.CRM.model.PotentialCustomerBean;
 import com.jetec.CRM.repository.PotentialCustomerRepository;
 import org.junit.jupiter.api.Test;
@@ -31,38 +32,15 @@ public class SpringTest {
     @Autowired
     PotentialCustomerRepository PCR;
     @Autowired
-    // 注入StringRedisTemplate類別，用來操作Redis
-    StringRedisTemplate stringRedisTemplate;
+    Cache<String, Object> caffeineCache;
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
     public void XXX() throws Exception {
-        PotentialCustomerBean pcBean = PCR.findById("1ed17789e2736f339b549d2d94501f6d").orElse(null);
-        ObjectMapper objectMapper = new ObjectMapper();
-        String  j = objectMapper.writeValueAsString(pcBean);
-        System.out.println(j);
-        System.out.println("============");
-        stringRedisTemplate.opsForValue().set("customer:id:"+pcBean.getCustomerid(),j,4, TimeUnit.HOURS);
-        String jsonString = stringRedisTemplate.opsForValue().get("customer:id:"+pcBean.getCustomerid());
-        System.out.println(jsonString);
-        System.out.println("============");
-        PotentialCustomerBean bean = objectMapper.readValue(jsonString,PotentialCustomerBean.class);
-        System.out.println(bean);
 
-        //清空redis
-        //获取所有key
-        Set<String> keys = stringRedisTemplate.keys("*");
-        assert keys != null;
-        // 迭代
-        Iterator<String> it1 = keys.iterator();
-        while (it1.hasNext()) {
-            String key =it1.next();
-            System.out.println(key);
-            // 循环删除
-            stringRedisTemplate.delete(key);
-        }
+        System.out.println(caffeineCache);
 
 
     }

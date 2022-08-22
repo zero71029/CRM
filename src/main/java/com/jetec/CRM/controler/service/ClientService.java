@@ -231,9 +231,8 @@ public class ClientService {
 
 /////////////////////////////////////////////////////////////////////////
 	// 判段客戶存在
-	public boolean existsByName(String client) {
-
-		return cr.existsByName(client);
+	public boolean existsByName(String name) {
+		return cr.existsByName(name);
 	}
 
 /////////////////////////////////////////////////////////////////////////

@@ -109,9 +109,7 @@
                                         <a href="javascript:history.back()">＜</a>
                                     </div>
                                     <c:if test='${not empty bean}'>
-                                        <div class="col-lg-2 btn men">
-                                            <a href="javascript:changeMarket()">新增銷售機會</a>
-                                        </div>
+
                                         <div class="col-lg-2 btn men">
                                             <a href="javascript:changeContact()">新增聯絡人</a>
                                         </div>
@@ -643,17 +641,7 @@
                                         </c:forEach>
                                     </c:if>
                                 </div>
-                                <div class="row">
-                                    <div class="col-lg-1"></div>
-                                    <div class="col-lg-10 row contact" onclick="changeMarket()" style="margin: 0%;">
-                                        <div class="col-lg-2">新增</div>
-                                        <div class="col-lg-2"></div>
-                                        <div class="col-lg-2"></div>
-                                        <div class="col-lg-2"></div>
-                                        <div class="col-lg-2"></div>
-                                        <div class="col-lg-2"></div>
-                                    </div>
-                                </div>
+
 
                                 <!-- ///////////////////////////////工作項目/////////////////////////////////// -->
                                 <hr>
@@ -845,11 +833,7 @@
                 $(".AAA").attr("action", "${pageContext.request.contextPath}/CRM/changeContact");
                 $(".AAA").submit();
             }
-            //轉成銷售機會
-            function changeMarket() {
-                $(".AAA").attr("action", "${pageContext.request.contextPath}/CRM/changeMarket");
-                $(".AAA").submit();
-            }
+
             //轉成工作項目
             function changeWork() {
                 $(".AAA").attr("action", "${pageContext.request.contextPath}/CRM/changeWork");

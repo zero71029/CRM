@@ -1,6 +1,9 @@
 package com.jetec.CRM.Tool;
 
+import com.jetec.CRM.model.AdminBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 //import org.springframework.data.redis.core.StringRedisTemplate;
 
 public class note {
@@ -60,7 +63,6 @@ public class note {
     ////////////////////////////////////////////////////
 
 
-
 //<dependency>
 //        <groupId>org.springframework.boot</groupId>
 //        <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
@@ -90,7 +92,9 @@ public class note {
 //    @Autowired
 //    StringRedisTemplate stringRedisTemplate;
 
-
+    //Security 讀取使用者
+//    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//    AdminBean adminBean = (AdminBean) authentication.getPrincipal();
 
 
 }

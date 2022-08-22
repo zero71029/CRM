@@ -56,15 +56,17 @@ public class MarketControler {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @RequestMapping("/init/{id}")
     @ResponseBody
-    public Map<String, Object> Market(@PathVariable("id") String id) {
-        System.out.println("銷售機會初始化");
+    public ResultBean Market(@PathVariable("id") String id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AdminBean adminBean = (AdminBean) authentication.getPrincipal();
+        logger.info("{} 讀取銷售機會 {}",adminBean.getName(),id);
         Map<String, Object> result = new HashMap<>();
         MarketBean marketBean = ms.getById(id);
         marketBean.setOpentime(LocalDateTime.now().toString());
         result.put("existsCustomer", PCS.existsById(marketBean.getCustomerid()));//判斷潛在客戶存在
         result.put("bean", marketBean);
         result.put("changeMessageList", DS.getChangeMessage(id));//讀取主管留言
-        return result;
+        return ZeroFactory.success("銷售機會",result);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -72,8 +74,9 @@ public class MarketControler {
     @RequestMapping("/SavePotentialCustomer")
     @ResponseBody
     public Map<String, Object> SavePotentialCustomer(PotentialCustomerBean pcb, HttpSession session) {
-        System.out.println(pcb.getReceivestate());
-        System.out.println("*****儲存潛在客戶*****");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AdminBean adminBean = (AdminBean) authentication.getPrincipal();
+        logger.info("{} 儲存潛在客戶 ",adminBean.getName());
         Map<String, Object> result = new HashMap<>();
         AdminBean admin = (AdminBean) session.getAttribute("user");
         //判斷是否是新案件
@@ -86,12 +89,14 @@ public class MarketControler {
                 if (oldBean.getBbb().compareTo(pcb.getOpentime()) > 0) {
                     result.put("state", false);
                     result.put("mess", "錯誤,資料已被其他人更新,不能儲存");
+                    logger.info("錯誤,資料已被其他人更新,不能儲存");
                     return result;
                 }
             }
         }
         pcb.setBbb(LocalDateTime.now().toString());
         PotentialCustomerBean save = PCS.SavePotentialCustomer(pcb);
+        logger.info("儲存{}",save);
         result.put("state", true);
         result.put("mess", "儲存成功");
         result.put("id", save.getCustomerid());
@@ -100,15 +105,18 @@ public class MarketControler {
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//	讀取潛在客戶細節
+//	進入潛在客戶細節
     @RequestMapping("/potentialcustomer/{id}")
     public String potentialcustomer(Model model, @PathVariable("id") String id) {
-        System.out.println("*****讀取潛在客戶細節****");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AdminBean adminBean = (AdminBean) authentication.getPrincipal();
+        logger.info("{} 進入潛在客戶細節 {} ",adminBean.getName(),id);
+        //
         PotentialCustomerBean bean = PCS.getById(id);
-        model.addAttribute("message","此id找不到資料");
-        if(bean == null)return "/error/500";
-
-
+        if(bean == null){
+            model.addAttribute("message","此id找不到資料");
+            return "/error/500";
+        }
         //判斷有沒有轉過銷售機會
         MarketBean mBean = ms.findByCustomerid(id);
         if (mBean != null) {
@@ -125,7 +133,7 @@ public class MarketControler {
 //銷售機會列表
     @ResponseBody
     @RequestMapping("/MarketList")
-    public Map<String, Object> Market(@RequestParam("pag") Integer pag, @RequestParam("pageSize") Integer size, HttpSession session) {
+    public Map<String, Object> MarketList(@RequestParam("pag") Integer pag, @RequestParam("pageSize") Integer size, HttpSession session) {
         System.out.println("*****讀取銷售機會列表****");
         pag--;
         Map<String, Object> result = new HashMap<>();
@@ -139,20 +147,16 @@ public class MarketControler {
             list = ms.getList(pag, size);
             result.put("list", list);
             result.put("total", ms.getTotal());
-
         }
-
         //輸出
         result.put("potential", PCS.getPotentialSubmitBos());//提交主管
         result.put("SubmitBos", ms.getSubmitBos());
-        result.put("endCast", ms.getEndCast(aBean.getName()));
+        result.put("endCast", ms.getEndCast(aBean.getName()));//讀取過期任務
         result.put("todayTotal", ms.gettodayTotal());//今天新增案件數量
         result.put("CallBos", ms.CallBos());// 搜索銷售機會by延長申請
         result.put("marketstate", ms.getMarketStateList(aBean.getAdminid()));//getM使用者狀態列表
         result.put("pcc", ms.getMarketByStageAndUser("潛在客戶轉", aBean.getName()));
-
         result.put("markeCreateTime", ms.getCreatetimeAndEndtime("轉賣"));//轉賣今天到期
-
         return result;
     }
 
@@ -184,9 +188,10 @@ public class MarketControler {
     @RequestMapping("/SaveMarket")
     @ResponseBody
     public Map<String, Object> SaveMarket(MarketBean marketBean, HttpSession session) {
-        System.out.println("*****存銷售機會****");
         Map<String, Object> result = new HashMap<>();
         AdminBean admin = (AdminBean) session.getAttribute("user");
+        logger.info("{} 存銷售機會",admin.getName());
+        logger.info("{}",marketBean);
         if (admin != null && (marketBean.getMarketid() == null || marketBean.getMarketid().isEmpty())) {
             marketBean.setFounder(admin.getName());
         } else if (ms.existMarketById(marketBean.getMarketid())) {
@@ -196,11 +201,11 @@ public class MarketControler {
                 if (oldBean.getBbb().compareTo(marketBean.getOpentime()) > 0) {
                     result.put("state", false);
                     result.put("mess", "錯誤,資料已被其他人更新,不能儲存");
+                    logger.info("錯誤,資料已被其他人更新,不能儲存");
                     return result;
                 }
             }
         }
-        System.out.println(marketBean.getBbb());
         MarketBean save = ms.save(marketBean);
         result.put("state", true);
         result.put("id", save.getMarketid());
@@ -210,9 +215,16 @@ public class MarketControler {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @RequestMapping("/Market/{id}")
-    public String Market(Model model, @PathVariable("id") String id) {
-        System.out.println("進入詳細");
+    public String inMarket(Model model, @PathVariable("id") String id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AdminBean adminBean = (AdminBean) authentication.getPrincipal();
+        System.out.println("進入銷售機會詳細");
+        logger.info("{}  進入銷售機會詳細 {}",adminBean.getName(),id);
         MarketBean mBean = ms.getById(id);
+        if(mBean == null){
+            model.addAttribute("message","此id找不到資料");
+            return "/error/500";
+        }
         mBean.setOpentime(LocalDateTime.now().toString());
         model.addAttribute("bean", mBean);
         return "/Market/Market";
@@ -508,7 +520,7 @@ public class MarketControler {
 
     @RequestMapping("/getchange/{id}")
     @ResponseBody
-    public Map<String, Object> getchange(@PathVariable("id") String id) {
+    public ResultBean getchange(@PathVariable("id") String id) {
         System.out.println("潛在各戶轉銷售機會");
         PotentialCustomerBean pBean = PCS.getById(id);
         MarketBean bean = new MarketBean();
@@ -555,7 +567,7 @@ public class MarketControler {
         Map<String, Object> result = new HashMap<>();
         result.put("bean", bean);
         result.put("changeMessageList", DS.getChangeMessage(id));
-        return result;
+        return ZeroFactory.success("潛在各戶轉銷售機會",result);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

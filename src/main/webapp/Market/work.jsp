@@ -144,10 +144,10 @@
                             <div class="col-md-1"></div>
                             <div class="col-md-1 btn">
                                 <a href="${pageContext.request.contextPath}/Market/workList.jsp"
-                                    style="text-decoration: none;text-align: center;background-color: #569b92;color: white;;display: block;"><span
-                                        class="el-icon-arrow-left"></span></a>
+                                    style="text-decoration: none;text-align: center;background-color: #569b92;color: white;display: block;height: 24px;">
+                                    <span class="el-icon-arrow-left" style="line-height: 24px;"></span>
+                                </a>
                             </div>
-
                         </div>
                         <br>
                         <form action="${pageContext.request.contextPath}/work/SaveWork" method="post" id="myform"

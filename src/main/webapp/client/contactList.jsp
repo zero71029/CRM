@@ -72,7 +72,7 @@
                                 <td>部門</td>
                                 <td>負責人</td>
                             </tr>
-                            <tr class="item" v-for="(s, index) in list" :key="index">
+                            <tr class="item" v-for="(s, index) in list" :key="index" style="cursor: pointer;">
                                 <td><input type="checkbox" :value="s.contactid" name="mak" @change="clickmak"></td>
                                 <td @click="contact(s.contactid)">
                                     {{s.contactid}}</td>

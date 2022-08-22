@@ -11,6 +11,8 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
@@ -61,7 +63,8 @@ class CustomerControlerTest {
     }
 
     @Test
-    void getclientList() {
+    void getclientList() throws Exception {
+
     }
 
     @Test
@@ -69,14 +72,14 @@ class CustomerControlerTest {
         mockMvc.perform(post("/CRM/client/0")
                         .session((MockHttpSession) session))
                 .andExpect(status().isOk())
-                .andExpect(model().attributeExists("bean","market","quotation"))
+                .andExpect(model().attributeExists("bean", "market", "quotation"))
                 .andExpect(view().name("/client/client")).andDo(print());
     }
 
     @Test
     @DisplayName("搜索客戶")
     void selectclientResponseBody() throws Exception {
-        mockMvc.perform(post("/CRM/selectclientResponseBody/技術股份")
+        mockMvc.perform(post("/CRM/selectclientResponseBody/技h術h股h份")
                         .session((MockHttpSession) session))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(200))
@@ -92,46 +95,81 @@ class CustomerControlerTest {
     void delClient() throws Exception {
         mockMvc.perform(post("/CRM/delClient")
                         .session((MockHttpSession) session)
-                        .param("id","7"))
+                        .param("id", "7"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(200))
                 .andExpect(jsonPath("$.message").value("刪除成功"));
     }
 
     @Test
-    void selectContactByClientName() {
+    @DisplayName("搜索聯絡人by公司")
+    void selectContactByClientName() throws Exception {
+        mockMvc.perform(post("/CRM/selectContactByClientName/頎邦科技股份有限公司")
+                        .session((MockHttpSession) session))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0]").exists());
     }
 
     @Test
+    @DisplayName("儲存聯絡人  未測")
     void saveContact() {
     }
 
     @Test
-    void contact() {
+    @DisplayName("讀取聯絡人細節")
+    void contact() throws Exception {
+        mockMvc.perform(post("/CRM/contact/8")
+                        .session((MockHttpSession) session))
+                .andExpect(status().isOk())
+                .andExpect(view().name("/client/contact"))
+                .andExpect(model().attributeExists("bean"));
     }
 
     @Test
-    void delcontact() {
+    @DisplayName("刪除聯絡人")
+    @Transactional
+    @Rollback
+    void delcontact() throws Exception {
+        mockMvc.perform(post("/CRM/delcontact")
+                        .session((MockHttpSession) session)
+                        .param("id","8"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").value("刪除成功"))
+                .andDo(print());
     }
 
     @Test
+    @DisplayName("客戶轉換聯絡人 未測")
     void changeContact() {
     }
 
-    @Test
-    void changeMarket() {
-    }
+
 
     @Test
     void changeWork() {
     }
 
     @Test
-    void newAddress() {
+    @Transactional
+    @Rollback
+    @DisplayName("新增其他地址")
+    void newAddress() throws Exception {
+        mockMvc.perform(post("/CRM/newAddress")
+                        .session((MockHttpSession) session)
+                        .param("clientid","10")
+                        .param("city","彰化縣")
+                        .param("town","福興鄉")
+                        .param("postal","506")
+                        .param("address","iiiiiiiiiiiiiiiii")
+                )
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/CRM/client/10"));
     }
 
     @Test
-    void delClientAddress() {
+    @DisplayName("刪除其他地址  沒有資料 未測")
+    void delClientAddress() throws Exception {
+
     }
 
     @Test
