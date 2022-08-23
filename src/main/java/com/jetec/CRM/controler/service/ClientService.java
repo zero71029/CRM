@@ -113,7 +113,7 @@ public class ClientService {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取聯絡人by名稱
 	public List<ContactBean> selectContactByClientName(String name) {
-		return contactRepository.findByCompany(name);
+		return contactRepository.findByCompanyLikeIgnoreCase("%"+name+"%");
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -131,7 +131,6 @@ public class ClientService {
 		boolean boo = true;
 		// 搜索名稱
 		List<ContactBean> result = new ArrayList<>(contactRepository.findByNameLikeIgnoreCase("%" + name + "%"));
-
 		// 用公司搜索
 		for (ContactBean p : contactRepository.findByCompanyLikeIgnoreCase("%" + name + "%")) {
 			for (ContactBean bean : result) {
@@ -154,7 +153,7 @@ public class ClientService {
 			if (boo)
 				result.add(p);
 		}
-		// 用聯絡人搜索
+		//
 		for (ContactBean p : contactRepository.findByMoblieLikeIgnoreCase("%" + name + "%")) {
 			for (ContactBean bean : result) {
 				if (Objects.equals(bean.getContactid(), p.getContactid())) {

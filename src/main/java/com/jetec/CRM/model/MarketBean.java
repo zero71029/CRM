@@ -68,8 +68,7 @@ public class MarketBean implements Serializable {
     }
 
     // 追蹤資訊
-    @OrderBy("tracktime")
-//    @OneToMany(targetEntity = TrackBean.class, mappedBy = "customerid", cascade = CascadeType.ALL)
+    @OrderBy("tracktime desc")
     @OneToMany(targetEntity = TrackBean.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "customerid", referencedColumnName = "customerid", insertable = false, updatable = false)
     private List<TrackBean> trackbean;

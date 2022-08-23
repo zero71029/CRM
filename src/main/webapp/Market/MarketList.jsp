@@ -161,6 +161,7 @@
                                         <td v-on:click="market(s.marketid)" style="cursor: pointer;">
                                             <span>{{s.aaa}}</span>
                                             <br>
+                                            <!-- 最後追蹤時間 -->
                                             <span class="text-danger">{{s.tracktime}}</span>
                                         </td>
                                         <c:if test="${user.position == '主管' || user.position == '系統'}">

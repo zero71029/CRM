@@ -159,8 +159,15 @@ class MarketControlerTest {
     }
 
     @Test
-    void selectPotentialCustomer() {
+    void selectPotentialCustomer() throws Exception {
+        mockMvc.perform(post("/Market/selectPotentialCustomer")
+                        .session((MockHttpSession) session)
+                        .param("name", "台灣糖業"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("/Market/potentialcustomerList"))
+                .andExpect(model().attributeExists("list"));
     }
+
 
     @Test
     void goQuotation() {
@@ -172,6 +179,7 @@ class MarketControlerTest {
 
     @Test
     void quotation() {
+
     }
 
     @Test
@@ -188,6 +196,7 @@ class MarketControlerTest {
 
     @Test
     void existsClient() {
+
     }
 
     @Test
@@ -202,9 +211,6 @@ class MarketControlerTest {
     void changeContact() {
     }
 
-    @Test
-    void selectContactByClientName() {
-    }
 
     @Test
     void changeWork() {
@@ -223,20 +229,23 @@ class MarketControlerTest {
     }
 
     @Test
-    void selectName() {
+    void selectName() throws Exception {
+        mockMvc.perform(post("/Market/selectMarket/玟嫣")
+                        .session((MockHttpSession) session))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray());
     }
 
     @Test
-    void selectDate() {
+    void selectDate() throws Exception {
+        mockMvc.perform(post("/Market/selectDate")
+                        .session((MockHttpSession) session)
+                        .param("from", "")
+                        .param("to", ""))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray());
     }
 
-    @Test
-    void selectClinch() {
-    }
-
-    @Test
-    void selectBudget() {
-    }
 
     @Test
     void saveTrackByMarket() {
@@ -247,32 +256,47 @@ class MarketControlerTest {
     }
 
     @Test
-    void clicks() {
+    void clicks() throws Exception {
+        mockMvc.perform(post("/Market/clicks/1ed1f9e600136a4fb357459a7da99fda")
+                        .session((MockHttpSession) session))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").value("增加成功"));
     }
 
     @Test
-    void existMarket() {
+    @DisplayName("檢查有無銷售機會")
+    void existMarket() throws Exception {
+        mockMvc.perform(post("/Market/existMarket/1ed1f9e600136a4fb357459a7da99fda")
+                        .session((MockHttpSession) session))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isBoolean());
     }
 
-    @Test
-    void callBos() {
-    }
 
     @Test
-    void callHelp() {
+    @DisplayName("切換使用者狀態")
+    void addState() throws Exception {
+        mockMvc.perform(post("/Market/AddState/admin/玟嫣/success")
+                        .session((MockHttpSession) session))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].adminid").value("2"))
+                .andExpect(jsonPath("$[0].field").value("admin"))
+                .andExpect(jsonPath("$[0].state").value("玟嫣"));
     }
 
-    @Test
-    void addState() {
-    }
 
     @Test
-    void delState() {
+    @DisplayName("刪除所有狀態")
+    void delAllState() throws Exception {
+        mockMvc.perform(post("/Market/delAllState/2")
+                        .session((MockHttpSession) session))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].adminid").value("2"))
+                .andExpect(jsonPath("$[0].field").value("admin"))
+                .andExpect(jsonPath("$[0].state").value("玟嫣"));
     }
 
-    @Test
-    void delAllState() {
-    }
+
 
     @Test
     void blur() {

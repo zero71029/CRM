@@ -867,28 +867,20 @@
                         </el-dialog>
                         <!-- <%-- 彈窗結束/////////////////////////////////////--%> -->
                         <!-- <%-- 公司彈窗--%> -->
-                        <el-dialog title="搜索不到,請先新增客戶" :visible.sync="dialogVisible" width="30%"
+                        <el-dialog title="搜索不到,請先新增客戶" :visible.sync="dialogVisible" width="30%" :close-on-click-modal="false"
                             :before-close="handleClose">
-
-
                             <div style="margin-top: 15px;">
-                                <el-input placeholder="名稱or統編or電話" class="input-with-select" v-model="inclient"
+                                <el-input placeholder="名稱or統編or電話" class="input-with-select" v-model.trim="inclient"
                                     @change="selectclient">
-
                                     <el-button slot="append" icon="el-icon-search" @click="selectclient"></el-button>
                                 </el-input>
                             </div>
                             <br>
-
                             <table class="table table-primary table-striped table-hover">
-
                                 <tr v-for="(s, index) in clientList" :key="index">
                                     <td @click="clickClient(s)">{{s.name}}</td>
                                 </tr>
-
                             </table>
-
-
                             <span slot="footer" class="dialog-footer">
                                 <el-button @click="dialogVisible = false">取消</el-button>
                             </span>
@@ -1091,6 +1083,7 @@
                         changeTableVisible: false,
                         dialogVisible: false,//公司彈窗
                         clientList: [],//客戶列表
+                        oldClientList:[],
                         bean: {
                             fileforeignid: Math.random() * 1000,
                             createtime: "",//案件類型
@@ -1504,6 +1497,7 @@
                             cache: false,//不快取頁面
                             success: (response => (
                                 this.clientList = response,
+                                this.oldClientList =response,
                                 this.dialogVisible = true
                             )),
                             error: function (returndata) {
@@ -1514,7 +1508,6 @@
                     },
                     //點擊公司 彈窗內
                     clickClient: function (s) {
-
                         this.bean.serialnumber = s.serialnumber;
                         this.bean.client = s.name;
                         this.bean.phone = s.phone;
@@ -1523,28 +1516,33 @@
                         this.bean.type = s.industry;
                         this.dialogVisible = false;
                         this.bean.clientid = s.clientid;
-
-
-
-
-
-
-
                     },
-                    selectclient: function () {
-                        $.ajax({
-                            url: '${pageContext.request.contextPath}/CRM/selectclientResponseBody/' + this.inclient,
-                            type: 'POST',
-                            async: false,//同步請求
-                            cache: false,//不快取頁面
-                            success: (response => (
-                                this.clientList = response
-
-                            )),
-                            error: function (returndata) {
-                                console.log(returndata);
+                    selectclient: function () {                      
+                        this.clientList = [];
+                        this.oldClientList.forEach(e => {
+                            if (e.name.indexOf(this.inclient) > 0 || e.name.indexOf(this.inclient) == 0) {
+                                this.clientList.push(e)
+                                console.log(e.name);
                             }
+
                         });
+
+
+
+
+                        // $.ajax({
+                        //     url: '${pageContext.request.contextPath}/CRM/selectclientResponseBody/' + this.inclient,
+                        //     type: 'POST',
+                        //     async: false,//同步請求
+                        //     cache: false,//不快取頁面
+                        //     success: (response => (
+                        //         this.clientList = response.data
+
+                        //     )),
+                        //     error: function (returndata) {
+                        //         console.log(returndata);
+                        //     }
+                        // });
                     }, goClient: function () {//點擊客戶名開新分頁
                         window.open('${pageContext.request.contextPath}/CRM/client/' + this.bean.clientid);
                     },

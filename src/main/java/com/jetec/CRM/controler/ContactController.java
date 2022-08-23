@@ -3,11 +3,14 @@ package com.jetec.CRM.controler;
 import com.jetec.CRM.Tool.ResultBean;
 import com.jetec.CRM.Tool.ZeroFactory;
 import com.jetec.CRM.controler.service.ClientService;
+import com.jetec.CRM.model.AdminBean;
 import com.jetec.CRM.model.ContactBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,7 +44,10 @@ public class ContactController {
     @RequestMapping("/selectContact")
     @ResponseBody
     public ResultBean selectContact(@RequestParam("name") String name) {
-        logger.info("搜索聯絡人 {}",name);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AdminBean adminBean = (AdminBean) authentication.getPrincipal();
+        name = name.trim();
+        logger.info("{} 搜索聯絡人 {}",adminBean.getName(),name);
         return ZeroFactory.success("搜索聯絡",cs.selectContact(name));
     }
 }

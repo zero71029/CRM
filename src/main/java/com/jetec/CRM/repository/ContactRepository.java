@@ -9,7 +9,6 @@ import com.jetec.CRM.model.ContactBean;
 
 public interface ContactRepository extends JpaRepository<ContactBean, Integer>{
 
-	List<ContactBean> findByCompany(String name);
 
 	List<ContactBean> findByNameLikeIgnoreCase(String string);
 

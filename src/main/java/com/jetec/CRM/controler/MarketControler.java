@@ -276,7 +276,7 @@ public class MarketControler {
 //    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//存追蹤	
+//存追蹤by 淺在顧客
     @RequestMapping("/SaveTrack")
     public String SaveTrack(TrackBean trackBean) {
         System.out.println("存追蹤");
@@ -464,14 +464,7 @@ public class MarketControler {
         return "新增聯絡人";
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//讀取聯絡人by名稱 ajax
-    @RequestMapping("/selectContactByClientName/{name}")
-    @ResponseBody
-    public List<ContactBean> selectContactByClientName(@PathVariable("name") String name) {
 
-        return cs.selectContactByClientName(name);
-    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //潛在各戶轉工作項目
@@ -575,7 +568,7 @@ public class MarketControler {
     @ResponseBody
     @RequestMapping("/selectMarket/{name}")
     public List<MarketBean> selectName(@PathVariable("name") String name) {
-        System.out.println("搜索銷售機會AAA");
+        logger.info("{} 負則人列表",name);
         return ms.selectMarketByUser(name);
     }
 
@@ -586,9 +579,6 @@ public class MarketControler {
     public List<MarketBean> selectDate(@RequestParam("from") String startDay, @RequestParam("to") String endDay) {
         System.out.println("搜索銷售機會 日期");
         if (startDay == null || startDay.equals("")) {
-//            startDay = zTools.getTime(new Date());
-//            startDay = startDay.substring(0, 10);
-//            startDay = startDay + " 00:00";
             startDay = "2022-02-01 00:00";
         } else {
             startDay = startDay + " 00:00";
@@ -645,23 +635,23 @@ public class MarketControler {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索銷售機會by成交機率
-    @RequestMapping("/selectClinch/{Clinch}")
-    @ResponseBody
-    public List<MarketBean> selectClinch(@PathVariable("Clinch") String Clinch) {
-        System.out.println("搜索銷售機會by成交機率");
-        return ms.selectClinch(Clinch);
-    }
+//    @RequestMapping("/selectClinch/{Clinch}")
+//    @ResponseBody
+//    public List<MarketBean> selectClinch(@PathVariable("Clinch") String Clinch) {
+//        System.out.println("搜索銷售機會by成交機率");
+//        return ms.selectClinch(Clinch);
+//    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索銷售機會by預算
-    @RequestMapping("/selectBudget/{start}/{to}")
-    @ResponseBody
-    public List<MarketBean> selectBudget(@PathVariable("start") String start, @PathVariable("to") String to) {
-        System.out.println("搜索銷售機會by預算");
-        System.out.println(start);
-        System.out.println(to);
-        return ms.selectBudget(start, to);
-    }
+//    @RequestMapping("/selectBudget/{start}/{to}")
+//    @ResponseBody
+//    public List<MarketBean> selectBudget(@PathVariable("start") String start, @PathVariable("to") String to) {
+//        System.out.println("搜索銷售機會by預算");
+//        System.out.println(start);
+//        System.out.println(to);
+//        return ms.selectBudget(start, to);
+//    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //存追蹤by銷售機會
@@ -677,7 +667,6 @@ public class MarketControler {
             trackBean.setCustomerid(uuid);
             MarketBean marketBean = ms.getById(marketid);
             marketBean.setCustomerid(uuid);
-
             ms.save(marketBean);
         }
         // 插入日期
@@ -708,7 +697,7 @@ public class MarketControler {
     @RequestMapping("/clicks/{id}")
     @ResponseBody
     public String clicks(@PathVariable("id") String id) {
-        System.out.println("點擊數");
+        logger.info("增加點擊數 {}",id);
         MarketBean mBean = ms.getById(id);
         Integer clicks = mBean.getClicks();
         if (clicks == null) clicks = 0;
@@ -716,7 +705,7 @@ public class MarketControler {
         mBean.setClicks(clicks);
 
         ms.save(mBean);
-        return "嘿嘿";
+        return "增加成功";
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -765,15 +754,14 @@ public class MarketControler {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //添加使用者狀態
+    //切換使用者狀態
     @RequestMapping("/AddState/{filed}/{state}/{type}")
     @ResponseBody
     public List<MarketStateBean> AddState(@PathVariable("filed") String field, @PathVariable("state") String state, HttpSession session, @PathVariable("type") String type) {
-        System.out.println("添加使用者狀態");
+
         if (type.equals("user")) type = "";
-
-
         AdminBean aBean = (AdminBean) session.getAttribute("user");
+        logger.info("{} 切換使用者狀態",aBean.getName());
         //如果有相同資料 就不處裡
         if (ms.existMarketState(aBean.getAdminid(), field, state)) {
             ms.delMarketState(aBean.getAdminid(), field, state);
@@ -795,7 +783,7 @@ public class MarketControler {
         }
 
         List<MarketStateBean> stateList = ms.getMarketStateList(aBean.getAdminid());
-        System.out.println(stateList);
+        logger.info("{}",stateList);
         return stateList;
 
     }
@@ -805,9 +793,9 @@ public class MarketControler {
     @RequestMapping("/delState/{marketstateid}")
     @ResponseBody
     public List<MarketStateBean> DelState(@PathVariable("marketstateid") String marketstateid, HttpSession session) {
-        System.out.println("刪除使用者狀態");
         ms.delState(marketstateid);
         AdminBean aBean = (AdminBean) session.getAttribute("user");
+        logger.info("{} 刪除使用者狀態 {}",aBean.getName(),marketstateid);
         return ms.getMarketStateList(aBean.getAdminid());
     }
 
@@ -816,9 +804,10 @@ public class MarketControler {
     @RequestMapping("/delAllState/{adminid}")
     @ResponseBody
     public boolean delAllState(@PathVariable("adminid") Integer adminid) {
-        System.out.println("刪除所有狀態");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AdminBean adminBean = (AdminBean) authentication.getPrincipal();
+        logger.info("{} 刪除所有狀態",adminBean.getName());
         ms.delAllState(adminid);
-
         return true;
     }
 

@@ -290,9 +290,9 @@ public class PotentialCustomerService {
         Sort sort = Sort.by(Direction.DESC, "tracktime");
         return tr.findByCustomerid(customerid, sort);
     }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索詢問內容
-
     public List<PotentialCustomerBean> selectcontent(String selectcontent) {
         return PCR.findByRemarkLikeIgnoreCase("%" + selectcontent + "%");
     }

@@ -2,7 +2,9 @@ package com.jetec.CRM;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.benmanes.caffeine.cache.Cache;
+import com.jetec.CRM.model.ContactBean;
 import com.jetec.CRM.model.PotentialCustomerBean;
+import com.jetec.CRM.repository.ContactRepository;
 import com.jetec.CRM.repository.PotentialCustomerRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,8 @@ public class SpringTest {
     PotentialCustomerRepository PCR;
     @Autowired
     Cache<String, Object> caffeineCache;
+    @Autowired
+    ContactRepository contactRepository;
 
     @Autowired
     private MockMvc mockMvc;
@@ -40,7 +44,8 @@ public class SpringTest {
     @Test
     public void XXX() throws Exception {
 
-        System.out.println(caffeineCache);
+        System.out.println(contactRepository.findByCompanyLikeIgnoreCase("%中聯資%"));
+
 
 
     }
