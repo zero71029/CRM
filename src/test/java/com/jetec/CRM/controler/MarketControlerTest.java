@@ -299,6 +299,7 @@ class MarketControlerTest {
 
 
     @Test
+    @Deprecated
     void blur() {
     }
 

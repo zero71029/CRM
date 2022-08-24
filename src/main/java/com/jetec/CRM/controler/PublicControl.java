@@ -6,6 +6,8 @@ import com.jetec.CRM.controler.service.SystemService;
 import com.jetec.CRM.controler.service.WorkSerivce;
 import com.jetec.CRM.model.*;
 import com.jetec.CRM.repository.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -55,19 +57,20 @@ public class PublicControl {
     @Autowired
     ReplyTimeRepository rtr;
 
+    Logger logger = LoggerFactory.getLogger("PublicControl");
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //登入驗證
     @RequestMapping("/UserAuthorize")
     @ResponseBody
     public boolean UserAuthorize(Authentication authentication, HttpSession session) {
-        System.out.println("*****登入驗證******");
+        logger.info("登入驗證");
         // 驗證 補session user
         if (authentication != null) {
             ss.auth(authentication, session);
             return true;
-        } else {
-            System.out.println("沒有authentication");
         }
+        System.out.println("沒有authentication");
         return false;
     }
 
@@ -84,8 +87,6 @@ public class PublicControl {
                             @RequestParam("sort") String sortString) {
         System.out.println("*****主頁面*****");
         if (sortString.equals("createtime")) sortString = "lastmodified";
-
-
         // 分頁
         if (pag < 1)
             pag = 1;
@@ -95,7 +96,6 @@ public class PublicControl {
         Page<BillboardBean> page = br.getByStateAndTop("公開", "", p);
 //		全部有幾頁
         model.addAttribute("TotalPages", page.getTotalPages());
-
         // 抓取登入者
         AdminBean user = (AdminBean) session.getAttribute("user");
         // 如果有登入者 更新資料
@@ -144,7 +144,6 @@ public class PublicControl {
         Map<String, Object> result = new HashMap<>();
         List<BillboardBean> advice = new ArrayList<>();
         List<BillboardBean> unread = new ArrayList<>();
-
         // 抓取登入者
         AdminBean user = (AdminBean) session.getAttribute("user");
         // 如果有登入者 更新資料
@@ -184,19 +183,18 @@ public class PublicControl {
     public String join(@RequestParam("username") String username, @RequestParam("password") String password,
                        HttpSession session) {
         if (ar.existsByEmailAndPassword(username, password)) {
-            System.out.println(username + "*****登入*****");
+            logger.info("{} 登入",username);
             session.setAttribute("user", ar.findByEmailAndPassword(username, password));
-        } else {
-            return "redirect:/time.jsp";
+            return "redirect:/";
         }
-        return "redirect:/";
+        return "redirect:/time.jsp";
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //登出
     @RequestMapping(path = {"/Signout"})
     public String Signout(HttpSession session) {
-        System.out.println("*****登出*****");
+        logger.info("登出");
         session.invalidate();
         return "redirect:/";
     }
@@ -207,9 +205,8 @@ public class PublicControl {
     @ResponseBody
     public String read(@PathVariable("billboardid") Integer billboardid, @PathVariable("adminid") Integer adminid,
                        HttpSession session) {
-        System.out.println("*****點擊已讀*****");
+        logger.info("{} 點擊已讀 {}",adminid,billboardid);
         String result = ss.saveRead(billboardid, adminid);
-
         session.setAttribute("user", ar.getById(adminid));
         return result;
     }

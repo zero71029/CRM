@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +26,7 @@ import java.util.*;
 @PreAuthorize("hasAuthority('系統') OR hasAuthority('主管') OR hasAuthority('業務')OR hasAuthority('行銷')OR hasAuthority('國貿')")
 public class PotentialController {
 
-    Logger logger =  LoggerFactory.getLogger("PotentialController");
+    Logger logger = LoggerFactory.getLogger("PotentialController");
     @Autowired
     PotentialCustomerService PCS;
     @Autowired
@@ -45,7 +47,7 @@ public class PotentialController {
     public Map<String, Object> init(@PathVariable("customerid") String customerid) {
         logger.info("*****潛在客戶初始化*****");
         Map<String, Object> result = new HashMap<>();
-        PotentialCustomerBean pcb =PCS.getById(customerid);
+        PotentialCustomerBean pcb = PCS.getById(customerid);
         pcb.setOpentime(LocalDateTime.now().toString());
         result.put("customer", pcb);
         result.put("track", PCS.getTrackByCustomerid(customerid));
@@ -54,12 +56,12 @@ public class PotentialController {
         return result;
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//讀取潛在客戶列表
+    //讀取潛在客戶列表
     @RequestMapping("/CustomerList")
     public Map<String, Object> clientList(@RequestParam("pag") Integer pag) {
         logger.info("*****讀取潛在客戶列表*****");
         pag--;
+        if (pag < 0) pag = 0;
         Map<String, Object> result = new HashMap<>();
         result.put("list", PCS.getList(pag));
         result.put("todayTotal", PCS.gettodayTotal());
@@ -87,7 +89,7 @@ public class PotentialController {
     @RequestMapping("/admin/{name}")
     @ResponseBody
     public List<PotentialCustomerBean> selectAdmin(@PathVariable("name") String name) {
-        System.out.println("搜索潛在客戶");
+        logger.info("搜索潛在客戶 {}", name);
         return PCS.selectPotentialCustomer(name);
     }
 
@@ -95,8 +97,8 @@ public class PotentialController {
 //搜索日期
     @RequestMapping("/selectDate")
     public List<PotentialCustomerBean> selectDate(@RequestParam("startDay") String startDay, @RequestParam("endDay") String endDay) {
-        System.out.println("搜索潛在客戶 日期");
-        if (startDay == null || startDay.equals("") ) {
+        logger.info("搜索潛在客戶 日期");
+        if (startDay == null || startDay.equals("")) {
 //			startDay = zTools.getTime(new Date());
 //			startDay = startDay.substring(0,10);
 //			startDay = startDay + " 00:00";
@@ -104,7 +106,7 @@ public class PotentialController {
         } else {
             startDay = startDay + " 00:00";
         }
-        if (endDay.equals("") ) {
+        if (endDay.equals("")) {
             endDay = ZeroTools.getTime(new Date());
         } else {
             endDay = endDay + " 24:00";
@@ -143,6 +145,7 @@ public class PotentialController {
     @RequestMapping("/status/{status}")
     public List<PotentialCustomerBean> selectStatus(@PathVariable("status") String status) {
         System.out.println("搜索潛在客戶");
+        logger.info("搜索潛在客戶 {}", status);
         return PCS.selectStatus(status);
     }
 
@@ -182,8 +185,8 @@ public class PotentialController {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索潛在客戶by追蹤時間
     @RequestMapping("/selectTrackDate")
-    public List<PotentialCustomerBean> selectTrackDate(@RequestParam("from") String from,  @RequestParam("to") String to) {
-        System.out.println("搜索潛在客戶by追蹤時間");
+    public List<PotentialCustomerBean> selectTrackDate(@RequestParam("from") String from, @RequestParam("to") String to) {
+        logger.info("搜索潛在客戶by追蹤時間");
         List<PotentialCustomerBean> list = PCS.selectPotentialCustomerTrack(from, to);
         LinkedHashSet<PotentialCustomerBean> hashSet = new LinkedHashSet<>(list);
         return new ArrayList<>(hashSet);
@@ -193,7 +196,7 @@ public class PotentialController {
 //讀取追蹤資訊
     @RequestMapping("/client/{customerid}")
     public List<TrackBean> client(@PathVariable("customerid") String customerid) {
-        System.out.println("讀取追蹤資訊");
+        logger.info("讀取追蹤資訊 {}", customerid);
         return PCS.getTrackByCustomerid(customerid);
     }
 
@@ -202,8 +205,8 @@ public class PotentialController {
     @RequestMapping("/saveTrackRemark/{trackid}/{content}")
     public List<TrackBean> saveTrackRemark(@PathVariable("trackid") String trackid,
                                            @PathVariable("content") String content, HttpSession session) {
-        System.out.println("回覆追蹤資訊");
         AdminBean aBean = (AdminBean) session.getAttribute("user");
+        logger.info("{} 回覆追蹤資訊 {}", aBean.getName(), content);
         return PCS.saveTrackRemark(trackid, content, aBean.getName());
     }
 
@@ -211,7 +214,7 @@ public class PotentialController {
 //刪除追蹤資訊
     @RequestMapping("/removeTrack/{trackid}")
     public List<TrackBean> removeTrack(@PathVariable("trackid") String trackid) {
-        System.out.println("刪除追蹤資訊");
+        logger.info("刪除追蹤資訊 {}", trackid);
         String customerid = PCS.removeTrack(trackid);
         return PCS.getTrackByCustomerid(customerid);
     }
@@ -221,7 +224,9 @@ public class PotentialController {
     @RequestMapping("/removeTrackremark/{trackremarkid}/{trackid}")
     public List<TrackBean> removeTrackremark(@PathVariable("trackremarkid") String trackremarkid,
                                              @PathVariable("trackid") String trackid) {
-        System.out.println("刪除追蹤回覆");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AdminBean adminBean = (AdminBean) authentication.getPrincipal();
+        logger.info("{} 刪除追蹤回覆 {}",adminBean.getName(),trackremarkid);
         PCS.removeTrackremark(trackremarkid);
         Sort sort = Sort.by(Direction.DESC, "tracktime");
         return tr.findByCustomerid(tr.getById(trackid).getCustomerid(), sort);
@@ -233,7 +238,8 @@ public class PotentialController {
     public Map<String, Object> getCompanyByName(@PathVariable("company") String company) {
         Map<String, Object> map = new HashMap<>();
         ClientBean cBean = CS.getCompanyByName(company);
-        if(cBean != null){
+        logger.info("讀取客戶細節byName {}",company);
+        if (cBean != null) {
             map.put("company", cBean);
             map.put("contact", CS.getByNameAndCompany(cBean.getUser(), company));
         }
@@ -244,7 +250,7 @@ public class PotentialController {
 //搜索詢問內容
     @RequestMapping("/selectcontent")
     public List<PotentialCustomerBean> selectcontent(@RequestBody Map<String, String> data) {
-        System.out.println("搜索詢問內容");
+        logger.info("搜索詢問內容 {}",data.get("selectcontent"));
         return PCS.selectcontent(data.get("selectcontent"));
     }
 
@@ -253,7 +259,7 @@ public class PotentialController {
     @RequestMapping("/CallHelp/{customerid}")
     @ResponseBody
     public String CallHelp(@PathVariable("customerid") String customerid) {
-        System.out.println("求助");
+        logger.info("求助 {}",customerid);
         PotentialCustomerBean mbean = PCS.getById(customerid);
         if (mbean.getCallhelp() == null || !mbean.getCallhelp().equals("1")) {
             mbean.setCallhelp("1");
@@ -271,7 +277,7 @@ public class PotentialController {
 //搜索潛在客戶ByAll
     @RequestMapping("/selectPotential")
     public List<PotentialCustomerBean> selectPotential(@RequestParam("startDay") String startDay, @RequestParam("endDay") String endDay, @RequestParam("key") String key, @RequestParam("val") List<String> val) {
-        System.out.println("搜索潛在客戶ByAll");
+        logger.info("搜索潛在客戶  key={} val={}",key,val);
         if (startDay == null || startDay.equals("")) {
             startDay = "2022-02-01 00:00";
         } else {
@@ -292,7 +298,8 @@ public class PotentialController {
     @RequestMapping("/getReceive")
     @ResponseBody
     public Map<String, Object> getReceive(HttpSession session, PotentialCustomerBean newBean) {
-        System.out.println("領取任務");
+        AdminBean aBean = (AdminBean) session.getAttribute("user");
+        logger.info("{} 領取淺在顧客 務 {}",aBean.getName(),newBean.getCustomerid());
         Map<String, Object> result = new HashMap<>();
         PotentialCustomerBean pcBean = PCS.getById(newBean.getCustomerid());
         //避免同時開同一頁面
@@ -305,25 +312,21 @@ public class PotentialController {
                 return result;
             }
         }
-
         // 領取
         if (pcBean != null) {
-            AdminBean aBean = (AdminBean) session.getAttribute("user");
-            System.out.println(aBean.getName());
-            System.out.println(pcBean.getUser());
-            if (pcBean.getReceive() == null || pcBean.getReceive().isEmpty() || !Objects.equals(aBean.getName(), pcBean.getUser())      ) {
+            if (pcBean.getReceive() == null || pcBean.getReceive().isEmpty() || !Objects.equals(aBean.getName(), pcBean.getUser())) {
                 ChangeMessageBean cmBean = new ChangeMessageBean(ZeroTools.getUUID(), pcBean.getCustomerid(), aBean.getName(), "領取任務", pcBean.getReceive(), aBean.getName(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                 ss.saveChangeMesssage(cmBean);
                 cmBean = new ChangeMessageBean(ZeroTools.getUUID(), pcBean.getCustomerid(), aBean.getName(), "負責人", pcBean.getUser(), aBean.getName(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                 ss.saveChangeMesssage(cmBean);
-                cmBean = new ChangeMessageBean(ZeroTools.getUUID(), pcBean.getCustomerid(), aBean.getName(), "領取狀態", pcBean.getReceivestate()+"", "1", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                cmBean = new ChangeMessageBean(ZeroTools.getUUID(), pcBean.getCustomerid(), aBean.getName(), "領取狀態", pcBean.getReceivestate() + "", "1", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                 ss.saveChangeMesssage(cmBean);
                 newBean.setReceive(aBean.getName());
                 newBean.setUser(aBean.getName());
                 newBean.setReceivestate(1);
                 //存時間
                 newBean.setBbb(LocalDateTime.now().toString());
-                logger.info("{} 領取任務 {}",aBean.getName(),newBean.getCustomerid());
+                logger.info("{} 領取成功 {}", aBean.getName(), newBean.getCustomerid());
                 PCS.SavePotentialCustomer(newBean);
                 result.put("state", true);
                 result.put("receivestate", "1");
@@ -334,13 +337,13 @@ public class PotentialController {
             ss.saveChangeMesssage(cmBean);
             cmBean = new ChangeMessageBean(ZeroTools.getUUID(), pcBean.getCustomerid(), aBean.getName(), "負責人", aBean.getName(), "null", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             ss.saveChangeMesssage(cmBean);
-            cmBean = new ChangeMessageBean(ZeroTools.getUUID(), pcBean.getCustomerid(), aBean.getName(), "領取狀態", pcBean.getReceivestate()+"", "3", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            cmBean = new ChangeMessageBean(ZeroTools.getUUID(), pcBean.getCustomerid(), aBean.getName(), "領取狀態", pcBean.getReceivestate() + "", "3", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             ss.saveChangeMesssage(cmBean);
             newBean.setReceive(null);
             newBean.setUser(null);
             newBean.setReceivestate(3);
             newBean.setBbb(LocalDateTime.now().toString());
-            logger.info("{} 取消任務 {}",aBean.getName(),newBean.getCustomerid());
+            logger.info("{} 取消任務 {}", aBean.getName(), newBean.getCustomerid());
             PCS.SavePotentialCustomer(newBean);
             result.put("state", true);
             result.put("receivestate", "3");

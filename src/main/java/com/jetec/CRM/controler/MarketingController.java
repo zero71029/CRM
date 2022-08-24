@@ -19,6 +19,7 @@ import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -43,9 +44,11 @@ public class MarketingController {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //
     @RequestMapping("/search")
+    @Deprecated
     @ResponseBody
     public String search(@RequestBody Map<String, Object> body) {
         System.out.println(body);
+        logger.info("行銷 搜索1");
         LocalDateTime old = LocalDateTime.now();
 
         List<String> industryList = (List<String>) body.get("industry");
@@ -100,7 +103,7 @@ public class MarketingController {
 
         //輸出
         try {
-            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("c://CRMfile//file_output.csv"), "UTF-8");
+            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("c://CRMfile//file_output.csv"), StandardCharsets.UTF_8);
 //            osw.write(new String(new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF}));
             osw.write('\ufeff');
             BufferedWriter bw = new BufferedWriter(osw);//檔案輸出路徑
@@ -132,8 +135,9 @@ public class MarketingController {
     @RequestMapping("/search2")
     @ResponseBody
     public String search2(@RequestBody Map<String, Object> body) {
+        logger.info("行銷 搜索 改用jdbcTemplate");
         System.out.println(body);
-        System.out.println();
+
         LocalDateTime old = LocalDateTime.now();
         List<ClientBean> clientList = new ArrayList<>();
         String start = (String) body.get("start");
@@ -146,7 +150,7 @@ public class MarketingController {
         if (producttypeList != null && producttypeList.size() > 0) {
             sql.append("( ");
             for (int i = 0; i < producttypeList.size(); i++) {
-                sql.append("producttype = '" + producttypeList.get(i) + "'");
+                sql.append("producttype = '").append(producttypeList.get(i)).append("'");
                 if (i < producttypeList.size() - 1) {
                     sql.append(" or ");
                 }
@@ -160,7 +164,7 @@ public class MarketingController {
             if (producttypeList.size() > 0) sql.append("and");
             sql.append("( ");
             for (int i = 0; i < SourceList.size(); i++) {
-                sql.append("source = '" + SourceList.get(i) + "'");
+                sql.append("source = '").append(SourceList.get(i)).append("'");
                 if (i < SourceList.size() - 1) {
                     sql.append(" or ");
                 }
@@ -182,14 +186,10 @@ public class MarketingController {
 
         List<String> industryList = (List<String>) body.get("industry");
         if (ClientName.size() > 0) {
-            ClientName.forEach(e -> {
-                clientList.add(cr.findByName((String) e.get("client")));
-            });
+            ClientName.forEach(e -> clientList.add(cr.findByName((String) e.get("client"))));
         } else {
             if (producttypeList.size() == 0) {
-                industryList.forEach(s -> {
-                    clientList.addAll(cr.findByIndustry(s));
-                });
+                industryList.forEach(s ->clientList.addAll(cr.findByIndustry(s)));
             }
         }
 
@@ -207,7 +207,7 @@ public class MarketingController {
 
         //刪除 沒有email
         List<ClientBean> result = new ArrayList<>();
-        out.stream().forEach(clientBean -> {
+        out.forEach(clientBean -> {
             if (clientBean != null && clientBean.getEmail().indexOf("@") > 0) result.add(clientBean);
         });
         List<ClientBean> outClient;
@@ -220,7 +220,7 @@ public class MarketingController {
 
         //輸出
         try {
-            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("c://CRMfile//file_output.csv"), "UTF-8");
+            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("c://CRMfile//file_output.csv"), StandardCharsets.UTF_8);
 //            osw.write(new String(new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF}));
             osw.write('\ufeff');
             BufferedWriter bw = new BufferedWriter(osw);//檔案輸出路徑
@@ -251,6 +251,7 @@ public class MarketingController {
     @RequestMapping("/search3")
     @ResponseBody
     public String search3(@RequestBody Map<String, Object> body) {
+        logger.info("行銷 搜索");
         System.out.println(body);
         System.out.println();
         String start = (String) body.get("start");
@@ -274,7 +275,7 @@ public class MarketingController {
 
         //輸出
         try {
-            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("c://CRMfile//file_output.csv"), "UTF-8");
+            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("c://CRMfile//file_output.csv"), StandardCharsets.UTF_8);
 //            osw.write(new String(new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF}));
             osw.write('\ufeff');
             BufferedWriter bw = new BufferedWriter(osw);//檔案輸出路徑
@@ -331,7 +332,7 @@ public class MarketingController {
 
         //輸出
         try {
-            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("c://CRMfile//file_output.csv"), "UTF-8");
+            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("c://CRMfile//file_output.csv"), StandardCharsets.UTF_8);
 //            osw.write(new String(new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF}));
             osw.write('\ufeff');
             BufferedWriter bw = new BufferedWriter(osw);//檔案輸出路徑

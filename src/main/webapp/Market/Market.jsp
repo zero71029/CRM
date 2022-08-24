@@ -1521,14 +1521,9 @@
                         this.clientList = [];
                         this.oldClientList.forEach(e => {
                             if (e.name.indexOf(this.inclient) > 0 || e.name.indexOf(this.inclient) == 0) {
-                                this.clientList.push(e)
-                                console.log(e.name);
+                                this.clientList.push(e);
                             }
-
                         });
-
-
-
 
                         // $.ajax({
                         //     url: '${pageContext.request.contextPath}/CRM/selectclientResponseBody/' + this.inclient,

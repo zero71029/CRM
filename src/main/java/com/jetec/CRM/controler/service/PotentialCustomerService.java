@@ -49,6 +49,7 @@ public class PotentialCustomerService {
     StringRedisTemplate stringRedisTemplate;
 
     Logger logger = LoggerFactory.getLogger("PotentialCustomerService.class");
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //儲存潛在客戶列表
     public PotentialCustomerBean SavePotentialCustomer(PotentialCustomerBean pcb) {
@@ -75,7 +76,7 @@ public class PotentialCustomerService {
 
         try {
             stringRedisTemplate.delete(ZeroCode.Redis_Customer_Id + pcb.getCustomerid());
-            logger.info("刪除redis緩存 "+ZeroCode.Redis_Customer_Id + pcb.getCustomerid());
+            logger.info("刪除redis緩存 " + ZeroCode.Redis_Customer_Id + pcb.getCustomerid());
 
         } catch (Exception e) {
             System.out.println("刪除緩存失敗");
@@ -102,6 +103,7 @@ public class PotentialCustomerService {
         //讀取緩存
         try {
             jsonString = stringRedisTemplate.opsForValue().get(ZeroCode.Redis_Customer_Id + id);
+            logger.info("讀取緩存 {}",ZeroCode.Redis_Customer_Id + id);
         } catch (Exception e) {
             System.out.println("讀取緩存失敗");
         }
@@ -115,7 +117,7 @@ public class PotentialCustomerService {
                 stringRedisTemplate.opsForValue().set(ZeroCode.Redis_Customer_Id + bean.getCustomerid(), objectMapper.writeValueAsString(bean), 4, TimeUnit.HOURS);
                 System.out.println("添加緩存" + bean.getCustomerid());
             } catch (Exception e) {
-                logger.info("此id找不到資料");
+                logger.info("緩存失敗 {}",id);
             }
             return bean;
         }
@@ -179,7 +181,7 @@ public class PotentialCustomerService {
 // 用公司搜索
         for (PotentialCustomerBean p : PCR.findByCompanyLikeIgnoreCase("%" + name + "%", sort)) {
             for (PotentialCustomerBean bean : result) {
-                if (Objects.equals(bean.getCustomerid(),p.getCustomerid()) ) {
+                if (Objects.equals(bean.getCustomerid(), p.getCustomerid())) {
                     boo = false;
                     break;
                 }
@@ -357,5 +359,9 @@ public class PotentialCustomerService {
 
     public List<PotentialCustomerBean> getPotentialSubmitBos() {
         return PCR.findByStatus("提交主管");
+    }
+
+    public void delCache(String id) {
+        stringRedisTemplate.delete(ZeroCode.Redis_Customer_Id + id);
     }
 }

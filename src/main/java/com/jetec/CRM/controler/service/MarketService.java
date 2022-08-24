@@ -45,7 +45,6 @@ public class MarketService {
     public MarketBean save(MarketBean marketBean) {
         String uuid = ZeroTools.getUUID();
 
-
         //如果沒有customerid
         if (marketBean.getCustomerid() == null || marketBean.getCustomerid().isEmpty() || marketBean.getCustomerid().equals("")) {
             marketBean.setCustomerid(uuid);
@@ -124,11 +123,11 @@ public class MarketService {
             MarketBean marketBean = mr.findById(id).orElse(null);
             try {
                 caffeineCache.put(ZeroCode.Redis_Market_Id + id, marketBean);
-                logger.info("添加caffeine緩存 " + ZeroCode.Redis_Market_Id + id);
-                return marketBean;
+                logger.info("添加caffeine緩存 {}" , ZeroCode.Redis_Market_Id + id);
             } catch (Exception e) {
-                logger.info("此id找不到資料");
+                logger.info("添加caffeine緩存失敗 {}",ZeroCode.Redis_Market_Id + id);
             }
+            return marketBean;
         }
         logger.info("使用caffeine緩存 " + ZeroCode.Redis_Market_Id + id);
         return cache;
@@ -605,10 +604,9 @@ public class MarketService {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //手動 將轉賣過期 自動結案
+    //讀取 自動結案
     public Map<String, Object> getAutoClose() {
         Map<String, Object> result = new HashMap<>();
-
         result.put("list", mr.findByClosereason("自動結案", Sort.by(Direction.DESC, "aaa")));
         return result;
     }
@@ -638,6 +636,10 @@ public class MarketService {
                     mr.save(e);
                 }
         );
+    }
+
+    public void delCache(String id) {
+        caffeineCache.asMap().remove(ZeroCode.Redis_Market_Id + id);
     }
 
 

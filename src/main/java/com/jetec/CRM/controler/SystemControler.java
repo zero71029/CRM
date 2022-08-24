@@ -477,7 +477,7 @@ public class SystemControler {
 		return ss.SetectLibraryRecord(librarygroup);
 	}
 	/* ******************************************清理全部缓存开始************************************************** */
-	@RequestMapping("cleanRedis")
+	@RequestMapping("/cleanRedis")
 	public Map<String, Object> cleanRedis() {
 		Map<String, Object> map = new HashMap<>();
 		try {
