@@ -36,7 +36,7 @@ import java.util.*;
 @RequestMapping("/Market")
 @PreAuthorize("hasAuthority('系統') OR hasAuthority('主管') OR hasAuthority('業務')OR hasAuthority('行銷')OR hasAuthority('國貿')")
 public class MarketControler {
-    Logger logger = LoggerFactory.getLogger("MarketControler.class");
+    Logger logger = LoggerFactory.getLogger("MarketControler");
     @Autowired
     MarketService ms;
     @Autowired
@@ -69,7 +69,6 @@ public class MarketControler {
         return ZeroFactory.success("銷售機會", result);
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //儲存潛在客戶
     @RequestMapping("/SavePotentialCustomer")
     @ResponseBody

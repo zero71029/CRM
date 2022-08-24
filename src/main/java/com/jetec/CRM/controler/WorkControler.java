@@ -3,6 +3,8 @@ package com.jetec.CRM.controler;
 import com.jetec.CRM.Tool.ZeroTools;
 import com.jetec.CRM.controler.service.*;
 import com.jetec.CRM.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -33,6 +35,7 @@ public class WorkControler {
     PotentialCustomerService PCS;
     @Autowired
     DirectorService DS;
+    Logger logger  = LoggerFactory.getLogger("WorkControler");
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @RequestMapping("/init/{id}")
     @ResponseBody
@@ -112,6 +115,7 @@ public class WorkControler {
     @RequestMapping("/contactList/{clientid}")
     @ResponseBody
     public List<ContactBean> contactList(@PathVariable("clientid") Integer clientid) {
+        
         return ws.getContactList(clientid);
     }
 

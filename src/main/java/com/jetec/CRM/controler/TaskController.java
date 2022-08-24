@@ -10,6 +10,8 @@ import com.jetec.CRM.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,10 +58,10 @@ public class TaskController {
 
     @RequestMapping("/detail/{id}")
     public String detail(Model model, @PathVariable("id") String id) {
-        System.out.println("每⽇任務");
+        logger.info("進入每⽇任務 {}", id);
         EvaluateBean bean = TS.getById(id);
-        if(bean == null){
-            model.addAttribute("message","此id找不到資料");
+        if (bean == null) {
+            model.addAttribute("message", "此id找不到資料");
             return "/error/500";
         }
         model.addAttribute("bean", bean);
@@ -70,9 +72,8 @@ public class TaskController {
     //儲存每⽇任務
     @RequestMapping("/save")
     public String SavePotentialCustomer(EvaluateBean bean, HttpSession session) {
-        System.out.println("*****儲存每⽇任務*****");
-        System.out.println(bean);
-
+        logger.info("儲存每⽇任務");
+        logger.info(bean.toString());
         String ddd = ZeroTools.getTime(new Date());
         if (bean.getEvaluatedate() == null || bean.getEvaluatedate().isEmpty())
             bean.setEvaluatedate(ZeroTools.getTime(new Date()));
@@ -147,9 +148,6 @@ public class TaskController {
         return TS.getList(pag, name);
     }
 
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     @RequestMapping("/print/{id}")
     public String print(Model model, @PathVariable("id") String id) {
         System.out.println("列印任務");
@@ -162,18 +160,20 @@ public class TaskController {
     @RequestMapping("/delTask")
     @ResponseBody
     public String delTask(@RequestParam("id") List<String> id) {
-        System.out.println("*****刪除每日任務*****");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AdminBean adminBean = (AdminBean) authentication.getPrincipal();
+        logger.info("{} 刪除每日任務 {}",adminBean.getName(),id);
         TS.delMarket(id);
         return "刪除成功";
     }
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//*******************
+//資料庫備份
     @RequestMapping("/sql")
     @ResponseBody
     public String sql() {
-        System.out.println("*****資料庫備份*****");
+        logger.info("資料庫備份");
         //////
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         try {
@@ -205,6 +205,7 @@ public class TaskController {
     @ResponseBody
     public List<EvaluateBean> selecttask(@RequestParam("pag") Integer pag, @RequestParam("name") String name) {
         System.out.println("*****搜索每日任務*****");
+        logger.info("搜索每日任務 {}",name);
         pag--;
         return TS.selecttask(name, pag);
     }
@@ -213,6 +214,9 @@ public class TaskController {
     @RequestMapping("/saveLeave")
     @ResponseBody
     public ResultBean saveLeave(LeaveBean leaveBean) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AdminBean adminBean = (AdminBean) authentication.getPrincipal();
+        logger.info("{} 儲存請假單",adminBean.getName());
         System.out.println(leaveBean);
         LocalDate start = LocalDateTime.parse(leaveBean.getStartday()).toLocalDate();
         LocalDate end = LocalDateTime.parse(leaveBean.getEndday()).toLocalDate();
@@ -221,7 +225,6 @@ public class TaskController {
         newBean.setLeaveday(start.toString());
         newBean.setRemark(leaveBean.getStartday() + " ~ " + leaveBean.getEndday());
         ls.saveLeave(newBean);
-
 
 
         start = start.minusDays(-1);
@@ -254,15 +257,15 @@ public class TaskController {
     @RequestMapping("/leave/{uuid}")
     @ResponseBody
     public ResultBean leave(@PathVariable("uuid") Integer uuid) {
-        System.out.println("讀取請假單");
-        return ZeroFactory.buildResultBean(200, "讀取請假單",ls.getById(uuid));
+        logger.info("讀取請假單 {}",uuid);
+        return ZeroFactory.buildResultBean(200, "讀取請假單", ls.getById(uuid));
     }
 
     //出差申請
     @RequestMapping("/saveBusinessTrip")
     @ResponseBody
     public ResultBean saveBusinessTrip(BusinessTripBean btBean) {
-        logger.info("{} 出差申請",btBean.getSchedule());
+        logger.info("{} 出差申請", btBean.getSchedule());
         System.out.println(btBean);
         bts.save(btBean);
         return ZeroFactory.buildResultBean(200, "出差申請成功");
@@ -273,14 +276,16 @@ public class TaskController {
     @ResponseBody
     public ResultBean BusinessTripList(@PathVariable("mon") String mon) {
         System.out.println("讀取出差申請列表");
-        return ZeroFactory.buildResultBean(200, "讀取出差申請列表",bts.getBusinessTripList(mon));
+        return ZeroFactory.buildResultBean(200, "讀取出差申請列表", bts.getBusinessTripList(mon));
     }
+
     //讀取出差資料
     @RequestMapping("/BusinessTrip/{tripid}")
     @ResponseBody
     public ResultBean BusinessTrip(@PathVariable("tripid") Integer tripid) {
         System.out.println("讀取出差資料");
-        return ZeroFactory.buildResultBean(200, "讀取出差申請",bts.getBusinessTrip(tripid));
+        logger.info("讀取出差資料{}",tripid);
+        return ZeroFactory.buildResultBean(200, "讀取出差申請", bts.getBusinessTrip(tripid));
     }
 
 }

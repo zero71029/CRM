@@ -207,21 +207,14 @@
                         }
                     },
                     created() {
-
                         var url = new URL(location.href);
-                        console.log(url.searchParams.get("id"));
-
-
-
-
-
                         $.ajax({
                             url: '${pageContext.request.contextPath}/Market/init/'+url.searchParams.get("id"),
                             type: 'POST',
                             async: false,
                             cache: false,
                             success: (response => (
-                                this.bean = response.bean,
+                                this.bean = response.data.bean,
                                 // this.existsCustomer = response.existsCustomer,
                                 // this.changeMessageList = response.changeMessageList,
                                 this.bean.phone = formatPhone(this.bean.phone),
