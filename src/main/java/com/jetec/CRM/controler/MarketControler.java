@@ -76,7 +76,7 @@ public class MarketControler {
     public Map<String, Object> SavePotentialCustomer(PotentialCustomerBean pcb, HttpSession session) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AdminBean adminBean = (AdminBean) authentication.getPrincipal();
-        logger.info("{} 儲存潛在客戶 ", adminBean.getName());
+        logger.info("{} 儲存潛在客戶 {}", adminBean.getName(),pcb.getCustomerid());
         Map<String, Object> result = new HashMap<>();
         AdminBean admin = (AdminBean) session.getAttribute("user");
         //判斷是否是新案件

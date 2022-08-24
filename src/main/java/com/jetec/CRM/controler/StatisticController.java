@@ -9,6 +9,8 @@ import com.jetec.CRM.model.AdminBean;
 import com.jetec.CRM.model.LibraryBean;
 import com.jetec.CRM.model.MarketBean;
 import com.jetec.CRM.model.PotentialCustomerBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,18 +37,18 @@ public class StatisticController {
     MarketService ms;
     @Autowired
     PotentialCustomerService pcs;
+    Logger logger = LoggerFactory.getLogger("StatisticController");
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //數據管理初始化
     @RequestMapping("/init")
     @ResponseBody
     public Map<String, Object> init() {
-        System.out.println("數據管理初始化");
+        logger.info("數據管理初始化");
         Map<String, Object> result = new HashMap<>();
         result.put("SubmitBos", ms.getSubmitBos());//提交主管
         result.put("CallBos", ms.CallBos());//延長請求
         result.put("potential", pcs.getPotentialSubmitBos());//提交主管
-
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String endDay = sdf.format(new Date());
         //取90天
@@ -56,10 +58,7 @@ public class StatisticController {
         String startDay = sdf.format(todate1);
         System.out.println("startDay :" + startDay);
         System.out.println("endDay :" + endDay);
-
-
         Map<String, Object> CompanyNumList = getListByDate(startDay, endDay);
-
         result.put("CompanyNumList", CompanyNumList);//每天公司數量
         //result.put("companyNum", ss.selectCompany(startDay, endDay));//公司名稱列表
 //        result.put("AdminCastNum", AdminCastNum(startDay, endDay));//取得個業務案件數量
@@ -71,9 +70,8 @@ public class StatisticController {
     @RequestMapping("/selectCompany")
     @ResponseBody
     public Map<String, Object> selectCompany(@RequestParam("from") String startDay, @RequestParam("to") String endDay, HttpServletRequest sce) {
-        System.out.println("搜索公司數量");
+        logger.info("搜索數據");
         Map<String, Object> result = new HashMap<>();
-
         if (startDay == null || startDay.equals("")) {
             startDay = ZeroTools.getTime(new Date());
             startDay = startDay.substring(0, 10);
@@ -90,7 +88,6 @@ public class StatisticController {
         ServletContext app = sce.getServletContext();
         List<LibraryBean> libraryList = (List<LibraryBean>) app.getAttribute("library");
 
-
         result.put("CompanyNumList", CompanyNumList);//每天案件數量
         result.put("companyNum", ss.selectCompany(startDay, endDay));//公司名稱列表
         result.put("AdminCastNum", AdminCastNum(startDay, endDay));//取得個業務案件數量
@@ -99,7 +96,6 @@ public class StatisticController {
         result.put("MaxNumCompany", ss.getMaxNumCompany(startDay, endDay));//案件最多的5間公司
         result.put("SuccessMaxNumCompany", ss.getSuccessMaxNumCompany(startDay, endDay));//成功案件最多的5間公司
         result.put("FailMaxNumCompany", ss.getFailMaxNumCompany(startDay, endDay));//失敗案件最多的5間公司
-
         return result;
 
     }
@@ -136,7 +132,6 @@ public class StatisticController {
         Map<String, Integer> result = new HashMap<>();
         String s = startDay + " 00:00";
         String e = endDay + " 23:00";
-
         //取得資料
         for (LibraryBean bean : libraryBeanList) {
             if ("producttype".equals(bean.getLibrarygroup())) {
@@ -184,10 +179,7 @@ public class StatisticController {
     //  業務成功失敗
     private Map<String, Object> BusinessState(@RequestParam("from") String startDay, @RequestParam("to") String endDay) {
         System.out.println("業務成功失敗");
-
         Map<String, Object> result = new HashMap<>();
-
-
         List<AdminBean> adminList = systemService.getAdminByDepartment("業務");
         for (AdminBean abean : adminList) {
             List<Integer> sta = new ArrayList<>();
@@ -195,7 +187,6 @@ public class StatisticController {
             sta.add(ss.getAminStateNum(abean.getName(), "失敗結案", startDay, endDay));
             result.put(abean.getName(), sta);
         }
-
         return result;
     }
 
@@ -204,10 +195,8 @@ public class StatisticController {
     @ResponseBody
     @RequestMapping("/CloseState")
     private Map<String, Object> CloseState(@RequestParam("from") String startDay, @RequestParam("to") String endDay) {
-        System.out.println("結案狀態");
+        logger.info("結案狀態");
         Map<String, Object> result = new HashMap<>();
-
-
         if (Objects.equals(endDay, "")) {
             endDay = ZeroTools.getTime(new Date());
         } else {
@@ -220,12 +209,9 @@ public class StatisticController {
         } else {
             startDay = startDay + " 00:00";
         }
-
         result.put("success", ss.getMarketByState("成功結案", startDay, endDay));
         result.put("fail", ss.getMarketByState("失敗結案", startDay, endDay));
         result.put("other", ss.getMarketByCloseNot(startDay, endDay));
-
-
         return result;
     }
 
@@ -234,10 +220,8 @@ public class StatisticController {
     @ResponseBody
     @RequestMapping("/CloseState2")
     private Map<String, Object> CloseState2(@RequestParam("from") String startDay, @RequestParam("to") String endDay) {
-        System.out.println("結案狀態");
+        logger.info("結案狀態");
         Map<String, Object> result = new HashMap<>();
-
-
         if (Objects.equals(endDay, "")) {
             endDay = ZeroTools.getTime(new Date());
         } else {
@@ -250,14 +234,11 @@ public class StatisticController {
         } else {
             startDay = startDay + "T00:00";
         }
-
-
         List<MarketBean> l = ss.getMarketBYBbb(startDay, endDay);
         System.out.println("活耀案件:" + l.size() + "筆");
 //        List<MarketBean> l = ss.getMarketByAaa( startDay,endDay);
         List<Map<String, String>> success = new ArrayList<>();
         l.stream().filter(e -> "成功結案".equals(e.getStage())).forEach(e -> {
-
             Map<String, String> x = new HashMap<>();
             x.put("client", e.getClient());
             x.put("aaa", e.getAaa());
@@ -284,7 +265,7 @@ public class StatisticController {
     @ResponseBody
     @RequestMapping("/BusinessCase")
     private Map<String, Object> BusinessCase(@RequestParam("startDay") String startDay, @RequestParam("endDay") String endDay) {
-        System.out.println("***業務接案***");
+        logger.info("業務接案");
         Map<String, Object> result = new HashMap<>();
         //日期整理
         if (Objects.equals(endDay, "")) {
@@ -363,7 +344,7 @@ public class StatisticController {
                 result.put(a.getName(), o);
             }
         }
-        
+
         return result;
     }
 
@@ -377,12 +358,11 @@ public class StatisticController {
         Map<String, Object> result = new HashMap<>();
         List<MarketBean> mList;
         List<PotentialCustomerBean> pList;
-        System.out.println("state "+state);
-        System.out.println("receives "+receives);
+        System.out.println("state " + state);
+        System.out.println("receives " + receives);
         System.out.println(startDay);
         System.out.println(endDay);
-        System.out.println("user " +user);
-
+        System.out.println("user " + user);
         //日期整理
         if (Objects.equals(endDay, "")) {
             endDay = ZeroTools.getTime(new Date());
@@ -401,8 +381,8 @@ public class StatisticController {
         //
         if (Objects.equals(3, receives)) {
             if (Objects.equals("1", state)) {
-                mList = ss.getMarketByAaaAndUserAndState(user, "成功結案",  startDay, endDay);
-                pList = ss.getPotentialCustomerByUserAndStateAndAaaAndNotinMarket(user, "合格",  startDay, endDay);
+                mList = ss.getMarketByAaaAndUserAndState(user, "成功結案", startDay, endDay);
+                pList = ss.getPotentialCustomerByUserAndStateAndAaaAndNotinMarket(user, "合格", startDay, endDay);
                 result.put("Market", mList);
                 result.put("Customer", pList);
                 System.out.println(result);
@@ -431,7 +411,7 @@ public class StatisticController {
             }
             if (Objects.equals("4", state)) {
                 mList = ss.getMarketBYAaaAndUser(user, startDay, endDay);
-                pList = ss.getPotentialCustomerbyBYAaaAndUserNotinMarket(  startDay, endDay,user);
+                pList = ss.getPotentialCustomerbyBYAaaAndUserNotinMarket(startDay, endDay, user);
                 result.put("Market", mList);
                 result.put("Customer", pList);
                 return result;
@@ -465,8 +445,8 @@ public class StatisticController {
             return result;
         }
         if (Objects.equals("4", state)) {
-            mList = ss.getMarketAndUserAndReceivesByAaa(user,  receives, startDay, endDay);
-            pList = ss.getPotentialCustomerAndUserAndReceivesByAaaAndNotinMarket(user,  receives, startDay, endDay);
+            mList = ss.getMarketAndUserAndReceivesByAaa(user, receives, startDay, endDay);
+            pList = ss.getPotentialCustomerAndUserAndReceivesByAaaAndNotinMarket(user, receives, startDay, endDay);
             result.put("Market", mList);
             result.put("Customer", pList);
             return result;

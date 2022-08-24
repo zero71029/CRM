@@ -129,7 +129,7 @@ public class MarketService {
             }
             return marketBean;
         }
-        logger.info("使用caffeine緩存 " + ZeroCode.Redis_Market_Id + id);
+        logger.info("使用caffeine緩存 {}" , ZeroCode.Redis_Market_Id + id);
         return cache;
     }
 

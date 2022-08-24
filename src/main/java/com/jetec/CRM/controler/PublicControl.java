@@ -183,7 +183,7 @@ public class PublicControl {
     public String join(@RequestParam("username") String username, @RequestParam("password") String password,
                        HttpSession session) {
         if (ar.existsByEmailAndPassword(username, password)) {
-            logger.info("{} 登入",username);
+            logger.info("{} 登入", username);
             session.setAttribute("user", ar.findByEmailAndPassword(username, password));
             return "redirect:/";
         }
@@ -205,7 +205,7 @@ public class PublicControl {
     @ResponseBody
     public String read(@PathVariable("billboardid") Integer billboardid, @PathVariable("adminid") Integer adminid,
                        HttpSession session) {
-        logger.info("{} 點擊已讀 {}",adminid,billboardid);
+        logger.info("{} 點擊已讀 {}", adminid, billboardid);
         String result = ss.saveRead(billboardid, adminid);
         session.setAttribute("user", ar.getById(adminid));
         return result;
@@ -217,6 +217,7 @@ public class PublicControl {
     public String ReRead(@PathVariable("billboardid") Integer billboardid, @PathVariable("adminid") Integer adminid,
                          HttpSession session) {
         System.out.println("*****取消已讀*****");
+        logger.info("{} 取消已讀 {}", adminid, billboardid);
         ss.ReRead(billboardid, adminid);
         session.setAttribute("user", ar.getById(adminid));
         return "redirect:/billboardReply/" + billboardid;
@@ -226,15 +227,14 @@ public class PublicControl {
 //進入公佈欄留言頁面
     @RequestMapping("/billboard/Reply/{id}")
     public String billboardReply(Model model, @PathVariable("id") Integer id, HttpSession session) {
-        System.out.println("*****讀取公佈欄細節****");
+        logger.info("進入公佈欄細節 {}", id);
         // 上傳檔案用
         model.addAttribute("uuid", ZeroTools.getUUID());
         AdminBean adminBean = (AdminBean) session.getAttribute("user");
         // 讀取公佈欄細節 如果有登入就已讀
         model.addAttribute("bean", ss.getBillboardById(id, adminBean));
         // 如果有登入 更新資料
-        if (adminBean != null)
-            session.setAttribute("user", ar.getById(adminBean.getAdminid()));
+        if (adminBean != null) session.setAttribute("user", ar.getById(adminBean.getAdminid()));
         // 讀取2星期內的訊息
 //		model.addAttribute("news", ss.getBillboardByTime());
         // 讀取回覆
@@ -242,30 +242,26 @@ public class PublicControl {
         return "/system/billboardReply";
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//進入授權
+    //進入授權
     @RequestMapping("/authorize/{uuid}")
     public String authorize(Model model, @PathVariable("uuid") String uuid, HttpSession session) {
-        System.out.println("*****進入授權****");
         if (authorizeRepository.existsById(uuid)) {
             AuthorizeBean authorizeBean = authorizeRepository.getById(uuid);
             AdminBean user = (AdminBean) session.getAttribute("user");
-            if (user == null)
-                return "redirect:/CRM.jsp?mess=2";
+            if (user == null) return "redirect:/CRM.jsp?mess=2";
+            logger.info("{} 進入授權 {}", user.getName(), uuid);
             if (user.getName().equals(authorizeBean.getUsed()) || "所有人".equals(authorizeBean.getUsed())) {
                 model.addAttribute("authorizeBean", authorizeBean);
                 return "/authorize";
             }
         }
         return "redirect:/CRM.jsp?mess=3";
-
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 儲存授權
     @RequestMapping("/saveAuthorize/{uuid}")
     public String saveAuthorize(@PathVariable("uuid") String uuid, BillboardBean bean, HttpSession session) {
-        System.out.println("*****儲存授權*****");
+        logger.info("儲存授權");
         bean.setRemark("(被授權)");
         bean.setUser(bean.getUser());
         // 存檔
@@ -286,7 +282,7 @@ public class PublicControl {
 //搜索公布欄
     @RequestMapping("/selectBillboard")
     public String selectMarket(Model model, @RequestParam("search") String search) {
-        System.out.println("搜索公布欄");
+        logger.info("搜索公布欄 {}", search);
         model.addAttribute("list", ss.selectBillboardt(search));
         return "/CRM";
     }
@@ -297,9 +293,9 @@ public class PublicControl {
     @ResponseBody
     public String SaveAdmin(AdminBean abean, HttpServletRequest req, HttpSession session) {
         System.out.println("*****新增員工*****");
-        if (ar.existsByEmail(abean.getEmail())) {
-            return "Email已經被使用,請更換一個";
-        } else {
+        logger.info("新增員工");
+        logger.info("{}", abean);
+        if (!ar.existsByEmail(abean.getEmail())) {
             String save = ss.SaveAdmin(abean);
             ServletContext sce = req.getServletContext();
             sce.setAttribute("admin", ar.findByStateOrState("在職", "新"));
@@ -308,9 +304,8 @@ public class PublicControl {
                 if (user.getPosition().equals("系統") || user.getPosition().equals("主管"))
                     return "儲存成功,<a href='/CRM/system/adminList/adminid'>返回</a>";
             return save;
-
         }
-
+        return "Email已經被使用,請更換一個";
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -319,7 +314,7 @@ public class PublicControl {
     @ResponseBody
     public String upFile(MultipartHttpServletRequest multipartRequest,
                          @PathVariable("authorizeId") String authorizeId) {
-        System.out.println("*****上傳型錄");
+        logger.info("上傳型錄");
         String uuid = ZeroTools.getUUID();
         Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
         System.out.println("fileMap " + fileMap);
@@ -389,6 +384,7 @@ public class PublicControl {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            logger.info("儲存失敗");
             return "儲存失敗";
         }
         return "上傳成功";
@@ -399,7 +395,7 @@ public class PublicControl {
     @RequestMapping("/selectFile/{authorizeId}")
     @ResponseBody
     public List<BillboardFileBean> selectFile(@PathVariable("authorizeId") String authorizeId) {
-        System.out.println("*****要求附件*****" + authorizeId);
+        logger.info("要求附件  {}", authorizeId);
         return bfr.findByAuthorize(authorizeId);
     }
 
@@ -408,6 +404,7 @@ public class PublicControl {
     @RequestMapping("/remove/{fileId}")
     @ResponseBody
     public String removefile(@PathVariable("fileId") String fileId) {
+
         BillboardFileBean billBoardFileBean = bfr.getById(fileId);
         File file = new File("E:\\JetecCRM\\src\\main\\resources\\static\\file\\" + billBoardFileBean.getUrl());
         System.out.println(file.delete());
@@ -423,7 +420,7 @@ public class PublicControl {
     @ResponseBody
     public String billboardid(@PathVariable("billboardid") Integer billboardid,
                               @PathVariable("adminid") Integer adminid, HttpSession session) {
-        System.out.println("*****置頂設定*****");
+        logger.info("置頂設定 {}", billboardid);
         String result = ss.setTop(billboardid, adminid);
         session.setAttribute("user", ar.getById(adminid));
         return result;
@@ -486,7 +483,7 @@ public class PublicControl {
 //修改留言
     @RequestMapping("/replyChange")
     public String replyChange(BillboardReplyBean bean) {
-        System.out.println("*****修改留言*****");
+        logger.info("修改留言 {}", bean.getBillboardid());
         ss.SaveReply(bean);
         return "redirect:/billboardReply/" + bean.getBillboardid();
     }
@@ -495,7 +492,7 @@ public class PublicControl {
 //刪除留言
     @RequestMapping("/replyRemove/{replyId}")
     public String replyRemove(@PathVariable("replyId") String replyId) {
-        System.out.println("*****刪除留言*****");
+        logger.info("刪除留言 {}", replyId);
         Integer Billboardid = ss.delReply(replyId);
         return "redirect:/billboardReply/" + Billboardid;
     }
@@ -505,7 +502,8 @@ public class PublicControl {
     @RequestMapping("/saveReplyreply")
     public String saveReplyreply(ReplyreplyBean replyreplyBean, @RequestParam("billboardid") Integer billboardid) {
         System.out.println("*****儲存留言的留言*****");
-        System.out.println(replyreplyBean);
+        logger.info("儲存留言的留言");
+        logger.info(replyreplyBean.toString());
         replyreplyBean.setLastmodified(new Date());
         ss.saveReplyreply(replyreplyBean);
         return "redirect:/billboardReply/" + billboardid;
@@ -516,8 +514,7 @@ public class PublicControl {
     @RequestMapping("/removeReplyreply/{ReplyreplyId}")
     @ResponseBody
     public String removeReplyreply(@PathVariable("ReplyreplyId") String ReplyreplyId) {
-        System.out.println("*****刪除留言的留言*****");
-
+        logger.info("刪除留言的留言 {}", ReplyreplyId);
         return ss.removeReplyreply(ReplyreplyId);
     }
 
@@ -526,8 +523,7 @@ public class PublicControl {
     @RequestMapping("/replyAdvice/{ReplyId}")
     @ResponseBody
     public List<ReplyAdviceBbean> replyAdvice(@PathVariable("ReplyId") String ReplyId) {
-        System.out.println("*****讀取留言的@*****");
-
+        logger.info("讀取留言的@ {}", ReplyId);
         return ss.replyAdvice(ReplyId);
     }
 
@@ -537,7 +533,7 @@ public class PublicControl {
     @ResponseBody
     public String saveReplyAdvice(@RequestParam("adviceto") Integer[] adviceto, @PathVariable("ReplyId") String ReplyId,
                                   @RequestParam("billboardid") Integer billboardid) {
-        System.out.println("*****儲存留言的@*****");
+        logger.info("儲存留言的@ billboardid:{}",billboardid);
         // 準備ReplyAdvice
         ReplyAdviceBbean raBean = new ReplyAdviceBbean();
         raBean.setReplyid(ReplyId);
@@ -580,8 +576,7 @@ public class PublicControl {
 // 忘記密碼
     @RequestMapping("/forget")
     public String forget(AdminBean bean, Model model) {
-        System.out.println("*****忘記密碼******");
-        System.out.println(bean);
+        logger.info("忘記密碼 {}", bean.getEmail());
         String uuid = zTools.getUUID();
         Map<String, String> errors = new HashMap<>();
         model.addAttribute("errors", errors);
@@ -617,7 +612,7 @@ public class PublicControl {
     @RequestMapping("/resetPassword/{ForgetAuthorizeId}")
     public String resetPassword(@PathVariable("ForgetAuthorizeId") String ForgetAuthorizeId,
                                 @RequestParam("password") String password, Model model) {
-        System.out.println("*****密碼修改******");
+        logger.info("密碼修改");
         ForgetAuthorizeBean forgetAuthorizeBean = ss.getForgetAuthorize(ForgetAuthorizeId);
         if (forgetAuthorizeBean == null) {
             model.addAttribute("error", "驗證碼錯誤");
@@ -641,35 +636,25 @@ public class PublicControl {
 //取得工作項目
     @RequestMapping("/workitem/{adminname}")
     @ResponseBody
-    public List<WorkBean> workitem(@PathVariable("adminname") String adminname) {
-        return ws.workitem(adminname);
-    }
+    public List<WorkBean> workitem(@PathVariable("adminname") String adminname) {return ws.workitem(adminname); }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //取得銷售機會
     @RequestMapping("/marketitem/{adminname}")
     @ResponseBody
-    public List<MarketBean> marketitem(@PathVariable("adminname") String adminname) {
-
-        return ws.marketitem(adminname);
-    }
+    public List<MarketBean> marketitem(@PathVariable("adminname") String adminname) {return ws.marketitem(adminname);}
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //取得銷售機會
     @RequestMapping("/PotentialItem/{adminname}")
     @ResponseBody
-    public List<PotentialCustomerBean> PotentialItem(@PathVariable("adminname") String adminname) {
+    public List<PotentialCustomerBean> PotentialItem(@PathVariable("adminname") String adminname) {return ws.PotentialItem(adminname); }
 
-        return ws.PotentialItem(adminname);
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //紀錄修改
     @RequestMapping("/changeMessage/{id}")
     @ResponseBody
     public boolean changeMessage(@RequestBody Map<String, Object> map, @PathVariable("id") String id, HttpSession session) {
-        System.out.println("******紀錄修改******");
-        System.out.println(map);
+        logger.info("紀錄修改 {}",map);
         Set<String> set = map.keySet();
         Iterator<String> it = set.iterator();
         ChangeMessageBean cmbean = new ChangeMessageBean();
@@ -720,8 +705,6 @@ public class PublicControl {
             System.out.println("沒有登入");
             result = "沒有登入";
         }
-
-
         return result;
     }
 
@@ -730,8 +713,8 @@ public class PublicControl {
     @ResponseBody
     @RequestMapping("/SaveMessage")
     public List<BosMessageBean> SaveMessage(@RequestBody Map<String, String> body) {
-        System.out.println("*****儲存主管留言*****");
-        System.out.println(body);
+        logger.info("儲存主管留言  {}",body);
+
         BosMessageBean bmBean = new BosMessageBean(zTools.getUUID(), body.get("bosmessage"), body.get("admin"), body.get("message"), ZeroTools.getTime(new Date()));
         ds.save(bmBean);
         System.out.println(ds.getBosMessageList(body.get("bosmessage")));

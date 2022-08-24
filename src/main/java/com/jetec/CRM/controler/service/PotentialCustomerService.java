@@ -1,7 +1,6 @@
 package com.jetec.CRM.controler.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.benmanes.caffeine.cache.Cache;
 import com.jetec.CRM.Tool.ZeroCode;
 import com.jetec.CRM.Tool.ZeroTools;
 import com.jetec.CRM.model.MarketFileBean;
@@ -17,7 +16,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @Transactional
@@ -45,10 +42,11 @@ public class PotentialCustomerService {
 
     @Autowired
     UpfileService US;
-    @Autowired
-    StringRedisTemplate stringRedisTemplate;
 
-    Logger logger = LoggerFactory.getLogger("PotentialCustomerService.class");
+
+    @Autowired
+    Cache<String, Object> caffeineCache;
+    Logger logger = LoggerFactory.getLogger("PotentialCustomerService");
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //儲存潛在客戶列表
@@ -75,7 +73,7 @@ public class PotentialCustomerService {
             pcb.setCustomerid(ZeroTools.getUUID());
 
         try {
-            stringRedisTemplate.delete(ZeroCode.Redis_Customer_Id + pcb.getCustomerid());
+            caffeineCache.asMap().remove(ZeroCode.Redis_Market_Id + pcb.getCustomerid());
             logger.info("刪除redis緩存 " + ZeroCode.Redis_Customer_Id + pcb.getCustomerid());
 
         } catch (Exception e) {
@@ -99,37 +97,19 @@ public class PotentialCustomerService {
     }
 
     public PotentialCustomerBean getById(String id) {
-        String jsonString = null;
-        //讀取緩存
-        try {
-            jsonString = stringRedisTemplate.opsForValue().get(ZeroCode.Redis_Customer_Id + id);
-            logger.info("讀取緩存 {}",ZeroCode.Redis_Customer_Id + id);
-        } catch (Exception e) {
-            System.out.println("讀取緩存失敗");
-        }
-
-        //如果沒有緩存
-        if (jsonString == null) {
-            PotentialCustomerBean bean = PCR.findById(id).orElse(null);
-            //添加redis
-            ObjectMapper objectMapper = new ObjectMapper();
+        PotentialCustomerBean cache = (PotentialCustomerBean) caffeineCache.getIfPresent(ZeroCode.Redis_Customer_Id + id);
+        if (cache == null) {
+            PotentialCustomerBean CustomerBean = PCR.findById(id).orElse(null);
             try {
-                stringRedisTemplate.opsForValue().set(ZeroCode.Redis_Customer_Id + bean.getCustomerid(), objectMapper.writeValueAsString(bean), 4, TimeUnit.HOURS);
-                System.out.println("添加緩存" + bean.getCustomerid());
+                caffeineCache.put(ZeroCode.Redis_Customer_Id + id, CustomerBean);
+                logger.info("沒有緩存  添加caffeine緩存  {}" , ZeroCode.Redis_Customer_Id + id);
             } catch (Exception e) {
-                logger.info("緩存失敗 {}",id);
+                logger.info("添加caffeine緩存失敗  {}",ZeroCode.Redis_Customer_Id + id);
             }
-            return bean;
+            return CustomerBean;
         }
-        //有緩存 轉成bean
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.readValue(jsonString, PotentialCustomerBean.class);
-        } catch (JsonProcessingException e) {
-            return PCR.findById(id).orElse(null);
-        }
-
-
+        logger.info("使用caffeine緩存 {}" , ZeroCode.Redis_Customer_Id + id);
+        return cache;
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -362,6 +342,6 @@ public class PotentialCustomerService {
     }
 
     public void delCache(String id) {
-        stringRedisTemplate.delete(ZeroCode.Redis_Customer_Id + id);
+        caffeineCache.asMap().remove(ZeroCode.Redis_Market_Id + id);
     }
 }

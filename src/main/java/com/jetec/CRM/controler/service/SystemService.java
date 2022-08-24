@@ -477,8 +477,7 @@ public class SystemService {
                     boo = false;
                 }
             }
-            if (boo)
-                result.add(p);
+            if (boo) result.add(p);
         }
         return result;
     }
