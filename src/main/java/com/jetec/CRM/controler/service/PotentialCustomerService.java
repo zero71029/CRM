@@ -341,7 +341,5 @@ public class PotentialCustomerService {
         return PCR.findByStatus("提交主管");
     }
 
-    public void delCache(String id) {
-        caffeineCache.asMap().remove(ZeroCode.Redis_Market_Id + id);
-    }
+
 }

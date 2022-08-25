@@ -242,11 +242,8 @@
                         })
                         var regRN = /\r\n/g;
                         this.bean.quote = this.bean.quote.replace(/\r\n/g, '<br />');
-                        this.bean.message = this.bean.message.replace(/\r\n/g, '<br />');
-
-                        
+                        this.bean.message = this.bean.message.replace(/\r\n/g, '<br />');                        
                     },
-
                 })
             </script>
 

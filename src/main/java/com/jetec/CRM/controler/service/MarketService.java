@@ -615,7 +615,6 @@ public class MarketService {
     //market BY 階段 和 業務
     public List<MarketBean> getMarketByStageAndUser(String stage, String user) {
         String day = LocalDate.now().minusDays(3).toString();
-
         return mr.findByStageAndUserAndAaaLessThan(stage, user, day);
     }
 
@@ -627,23 +626,4 @@ public class MarketService {
         return mr.findByCustomerid(id);
     }
 
-    public void formatPhone() {
-        List<MarketBean> list = mr.findAll();
-        list.forEach(
-                e -> {
-                    e.setContactmoblie(e.getContactmoblie());
-                    e.setFax(e.getFax());
-                    mr.save(e);
-                }
-        );
-    }
-
-    public void delCache(String id) {
-        caffeineCache.asMap().remove(ZeroCode.Redis_Market_Id + id);
-    }
-
-
-//    public void updata(String marketid, String field, String val) {
-//        mr.updata(marketid,field,val);
-//    }
 }

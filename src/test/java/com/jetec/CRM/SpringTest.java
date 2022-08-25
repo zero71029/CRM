@@ -41,10 +41,15 @@ public class SpringTest {
     @Autowired
     private MockMvc mockMvc;
 
+
     @Test
     public void XXX() throws Exception {
+        caffeineCache.asMap().forEach((s, o) -> {
+            System.out.println(s);
+            System.out.println(o);
+        });
 
-        System.out.println(contactRepository.findByCompanyLikeIgnoreCase("%中聯資%"));
+
 
 
 

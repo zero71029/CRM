@@ -953,32 +953,4 @@ public class MarketControler {
         }
         return ZeroFactory.fail("請先建立任務");
     }
-
-    //格式化電話
-    @RequestMapping("/formatphone")
-    @ResponseBody
-    @Deprecated
-    public String formatPhone() {
-        logger.info("格式化電話");
-        ms.formatPhone();
-        return "格式化結束";
-    }
-
-    //刪除緩存Market
-    @RequestMapping("/delMarketCache/{id}")
-    @ResponseBody
-    public String delCache(@PathVariable("id") String id) {
-        logger.info("刪除緩存 {}", id);
-        ms.delCache(id);
-        return "刪除緩存 " + id;
-    }
-
-    //刪除緩存Customer
-    @RequestMapping("/delCustomerCache/{id}")
-    @ResponseBody
-    public String delCustomerCache(@PathVariable("id") String id) {
-        logger.info("刪除緩存 {}", id);
-        PCS.delCache(id);
-        return "刪除緩存 " + id;
-    }
 }

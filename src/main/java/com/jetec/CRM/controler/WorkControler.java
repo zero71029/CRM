@@ -115,7 +115,7 @@ public class WorkControler {
     @RequestMapping("/contactList/{clientid}")
     @ResponseBody
     public List<ContactBean> contactList(@PathVariable("clientid") Integer clientid) {
-        
+
         return ws.getContactList(clientid);
     }
 
