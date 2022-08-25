@@ -20,9 +20,7 @@ import java.util.Set;
 public class config {
     @Autowired
     MarketService ms;
-    @Autowired
-    // 注入StringRedisTemplate類別，用來操作Redis
-    StringRedisTemplate stringRedisTemplate;
+
 
     Logger logger = LoggerFactory.getLogger("時間");
 
@@ -34,7 +32,7 @@ public class config {
     }
 
 
-    @Scheduled(cron = "0 0 22 * * *")
+    @Scheduled(cron = "0 0 01 * * *")
     public void layoutSQL() throws IOException {
         //轉賣 自動結案
         logger.info("轉賣 自動結案");
@@ -57,24 +55,6 @@ public class config {
             if (line == null) { break; }
             logger.info(line);
         }
-
-
-        //清空redis
-        //获取所有key
-        try {
-            Set<String> keys = stringRedisTemplate.keys("*");
-            assert keys != null;
-            // 迭代
-            for (String key : keys) {
-                System.out.println(key);
-                // 循环删除
-                stringRedisTemplate.delete(key);
-            }
-
-        }catch (Exception e){
-            logger.error("redis 錯誤");
-        }
-
 
     }
 

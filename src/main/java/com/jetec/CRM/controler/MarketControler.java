@@ -191,7 +191,7 @@ public class MarketControler {
         AdminBean admin = (AdminBean) session.getAttribute("user");
         logger.info("{} 存銷售機會", admin.getName());
         logger.info("{}", marketBean);
-        if (admin != null && (marketBean.getMarketid() == null || marketBean.getMarketid().isEmpty())) {
+        if (marketBean.getMarketid() == null || marketBean.getMarketid().isEmpty()) {
             marketBean.setFounder(admin.getName());
         } else if (ms.existMarketById(marketBean.getMarketid())) {
             //避免同時開同一頁面
@@ -897,7 +897,7 @@ public class MarketControler {
         logger.info("手動 轉賣過期 自動結案");
         ms.AutoCloseCase("轉賣/自用");
         ms.AutoCloseCase("轉賣");
-        return "";
+        return "自動結案 成功";
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

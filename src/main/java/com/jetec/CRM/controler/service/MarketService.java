@@ -146,11 +146,10 @@ public class MarketService {
 //搜索銷售機會
     public List<MarketBean> selectMarket(String name) {
         name = name.trim();
-        List<MarketBean> result = new ArrayList<>();
         boolean boo = true;
         Sort sort = Sort.by(Direction.DESC, "aaa");
         // 搜索名稱
-        result.addAll(mr.findByNameLikeIgnoreCase("%" + name + "%", sort));
+        List<MarketBean> result = new ArrayList<>(mr.findByNameLikeIgnoreCase("%" + name + "%", sort));
 
         // 用業務搜索
         for (MarketBean p : mr.findByUserLikeIgnoreCase("%" + name + "%", sort)) {
@@ -219,7 +218,7 @@ public class MarketService {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取報價單細節
     public QuotationBean getQuotationById(Integer id) {
-        return qr.getById(id);
+        return qr.findById(id).orElse(null);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -239,7 +238,7 @@ public class MarketService {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取合約細節
     public AgreementBean getAgreementBeanById(Integer id) {
-        return ar.getById(id);
+        return ar.findById(id).orElse(null);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -585,7 +584,8 @@ public class MarketService {
         System.out.println("======================================================================");
         System.out.println("自動結案");
         LocalDate ld = LocalDate.now();
-        List<MarketBean> list = mr.findByCreatetimeAndEndtimeLessThanEqualAndStageNotAndStageNot(Createtime, ld.toString(), "失敗結案", "成功結案");
+        LocalDate yesterday =  ld.plusDays(-1);
+        List<MarketBean> list = mr.findByCreatetimeAndEndtimeLessThanEqualAndStageNotAndStageNot(Createtime, yesterday.toString(), "失敗結案", "成功結案");
         list.forEach((e) -> {
             System.out.println(e);
             e.setClosereason("自動結案");

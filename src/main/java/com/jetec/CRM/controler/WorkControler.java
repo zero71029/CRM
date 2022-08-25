@@ -30,17 +30,17 @@ public class WorkControler {
     PotentialCustomerService pcs;
     @Autowired
     MarketService ms;
-
     @Autowired
     PotentialCustomerService PCS;
     @Autowired
     DirectorService DS;
-    Logger logger  = LoggerFactory.getLogger("WorkControler");
+    Logger logger = LoggerFactory.getLogger("WorkControler");
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @RequestMapping("/init/{id}")
     @ResponseBody
     public Map<String, Object> Market(@PathVariable("id") String id) {
-        System.out.println("工作項目初始化");
+        System.out.println("讀取工作項目");
         Map<String, Object> result = new HashMap<>();
 
         result.put("bean", ws.getById(id));
@@ -96,14 +96,14 @@ public class WorkControler {
 //讀取客戶列表
     @RequestMapping("/clientList")
     @ResponseBody
-    public List<Map<String,String>> clientList(HttpServletRequest req) {
+    public List<Map<String, String>> clientList(HttpServletRequest req) {
         ServletContext sce = req.getServletContext();
-        List<Map<String,String>> result = new ArrayList<>();
-        List<ClientBean> list =(List<ClientBean>) sce.getAttribute("client");
+        List<Map<String, String>> result = new ArrayList<>();
+        List<ClientBean> list = (List<ClientBean>) sce.getAttribute("client");
         for (ClientBean clientBean : list) {
-            Map<String,String> map =new HashMap<>();
-            map.put("name",clientBean.getName());
-            map.put("clientid",clientBean.getClientid()+"");
+            Map<String, String> map = new HashMap<>();
+            map.put("name", clientBean.getName());
+            map.put("clientid", clientBean.getClientid() + "");
             result.add(map);
         }
         return result;
@@ -111,11 +111,10 @@ public class WorkControler {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//讀取客戶列表by clientid
+//讀取聯絡人列表by clientid
     @RequestMapping("/contactList/{clientid}")
     @ResponseBody
     public List<ContactBean> contactList(@PathVariable("clientid") Integer clientid) {
-
         return ws.getContactList(clientid);
     }
 
@@ -125,9 +124,9 @@ public class WorkControler {
     @ResponseBody
     public List<ClientBean> selectclient(@PathVariable("name") String name) {
         System.out.println("搜索客戶");
+        logger.info("搜索客戶  {}", name);
         return cs.selectclient(name);
     }
-
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -135,7 +134,7 @@ public class WorkControler {
     @RequestMapping("/selectCustomer/{name}")
     @ResponseBody
     public List<PotentialCustomerBean> selectCustomer(@PathVariable("name") String name) {
-        System.out.println("搜索潛在顧客");
+        logger.info("搜索潛在顧客  {}", name);
         return pcs.selectPotentialCustomer(name);
     }
 
@@ -144,7 +143,7 @@ public class WorkControler {
     @RequestMapping("/selectMarket/{name}")
     @ResponseBody
     public List<MarketBean> selectMarket(@PathVariable("name") String name) {
-        System.out.println("搜索銷售機會");
+        logger.info("搜索銷售機會  {}", name);
         return ms.selectMarket(name);
     }
 
@@ -153,7 +152,7 @@ public class WorkControler {
     @RequestMapping("/delWork")
     @ResponseBody
     public String delMarket(@RequestParam("id") List<String> id) {
-        System.out.println("*****刪除工作項目*****");
+        logger.info("刪除工作項目  {}", id);
         ws.delWorkt(id);
         return "刪除成功";
     }
@@ -163,7 +162,7 @@ public class WorkControler {
     @RequestMapping("/selectWork")
     @ResponseBody
     public Map<String, Object> selectWork(@RequestParam("name") String name, @RequestParam("pag") Integer pag) {
-        System.out.println("搜索工作項目");
+        logger.info("搜索工作項目  {}", name);
         name = name.trim();
         pag--;
         return ws.sekectWork(name, pag);
@@ -174,15 +173,13 @@ public class WorkControler {
     @RequestMapping("/SaveTrackByWork/{workid}")
     @ResponseBody
     public List<TrackBean> SaveTrackByWork(TrackBean trackBean, @PathVariable("workid") String workid) {
-        System.out.println("存追蹤by工作項目");
+        logger.info("存追蹤by工作項目  {}", workid);
         String uuid = ZeroTools.getUUID();
         if (trackBean.getTrackid() == null || trackBean.getTrackid().isEmpty())
             trackBean.setTrackid(uuid);
 // 插入Customerid
         if (trackBean.getCustomerid() == null || trackBean.getCustomerid().isEmpty()) {
             trackBean.setCustomerid(uuid);
-
-
             WorkBean wBean = ws.getById(workid);
             wBean.setTrack(uuid);
             ws.SaveWork(wBean);
@@ -198,7 +195,7 @@ public class WorkControler {
 //修改追蹤by銷售機會
     @RequestMapping("/changeTrackByMarket/{workid}")
     public String changeTrackByMarket(TrackBean trackBean, @PathVariable("workid") Integer workid) {
-        System.out.println("修改追蹤by銷售機會");
+        logger.info("修改追蹤by銷售機會 {}", workid);
         String uuid = ZeroTools.getUUID();
         if (trackBean.getTrackid() == null || trackBean.getTrackid().isEmpty())
             trackBean.setTrackid(uuid);

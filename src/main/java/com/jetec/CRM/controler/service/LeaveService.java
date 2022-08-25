@@ -2,13 +2,11 @@ package com.jetec.CRM.controler.service;
 
 import com.jetec.CRM.model.LeaveBean;
 import com.jetec.CRM.repository.LeaveRepository;
-import com.jetec.CRM.repository.LibraryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Access;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;

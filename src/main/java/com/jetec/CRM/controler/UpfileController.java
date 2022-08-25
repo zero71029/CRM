@@ -291,7 +291,7 @@ public class UpfileController {
         BufferedReader reader;
         try {
             reader = new BufferedReader(new InputStreamReader(new FileInputStream("C:/CRMfile/" + fileName),"UTF-8"));
-            String line = null;
+            String line ;
             System.out.println("=================================================================");
 
             while ((line = reader.readLine()) != null) {

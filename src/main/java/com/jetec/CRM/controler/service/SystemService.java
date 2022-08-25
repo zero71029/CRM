@@ -1,10 +1,7 @@
 package com.jetec.CRM.controler.service;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -124,9 +121,9 @@ public class SystemService {
 //		page.getTotalPages();全部有幾頁		
 //		List<BillboardBean> result = page.getContent();
 
-        Pageable p = (Pageable) PageRequest.of(pag, 40, sort);
+        Pageable p = PageRequest.of(pag, 40, sort);
         // 結果容器
-        List<BillboardBean> resulet = new ArrayList<BillboardBean>();
+        List<BillboardBean> resulet = new ArrayList<>();
         // 把系統置頂抓出來
         List<BillboardBean> billboardBeanList = br.findByStateAndTop(state, "置頂", p);
         resulet.addAll(billboardBeanList);
@@ -134,8 +131,9 @@ public class SystemService {
         if (adminBean != null && pag == 0) {// 如果有登入
             for (BillboardTopBean btb : adminBean.getTop()) {// 讀取個人追蹤 追蹤迴圈
                 for (BillboardBean bean : billboardBeanList) {// 列表迴圈
-                    if (bean.getBillboardid() == btb.getBillboardid()) {// 如果追蹤id == 列表id
+                    if (Objects.equals(bean.getBillboardid(), btb.getBillboardid())) {// 如果追蹤id == 列表id
                         boo = false;
+                        break;
                     }
                 }
                 if (boo)
@@ -148,14 +146,16 @@ public class SystemService {
         List<BillboardBean> list = br.findByStateAndTop(state, "", p);
         for (BillboardBean b : list) {
             for (BillboardBean bean : resulet) {// 找出已徑加入的
-                if (bean.getBillboardid() == b.getBillboardid()) {// 過濾已徑加入的
+                if (Objects.equals(bean.getBillboardid(), b.getBillboardid())) {// 過濾已徑加入的
                     boo = false;
+                    break;
                 }
             }
             if (adminBean != null) {// 如果有登入
                 for (BillboardTopBean btb : adminBean.getTop()) {// 找出個人追蹤
-                    if (btb.getBillboardid() == b.getBillboardid()) {// 過濾各人追蹤
+                    if (Objects.equals(btb.getBillboardid(), b.getBillboardid())) {// 過濾各人追蹤
                         boo = false;
+                        break;
                     }
                 }
             }
@@ -169,72 +169,56 @@ public class SystemService {
     // 讀取公佈欄列表 依分類
 
     public List<BillboardBean> getBillboardList(String state, String billboardgroupid) {
-        List<BillboardBean> resulet = new ArrayList<BillboardBean>();
+        List<BillboardBean> resulet = new ArrayList<>();
         Sort sort = Sort.by(Direction.DESC, "billboardid");
         // 如果是 一般公告的全部
         if ("01dasgregrehvbcv一般公告".equals(billboardgroupid)) {
             List<BillboardBean> list = br.getByStateAndBilltowngroupAndTop(state, "一般公告", "置頂", sort);
-            for (BillboardBean bean : list)
-                resulet.add(bean);
+            resulet.addAll(list);
             list = br.getByStateAndBilltowngroupAndTop(state, "一般公告", "", sort);
-            for (BillboardBean bean : list)
-                resulet.add(bean);
+            resulet.addAll(list);
             return resulet;
         } else if ("01dasgregrehvbcvaaa研發".equals(billboardgroupid)) {
             List<BillboardBean> list = br.getByStateAndBilltowngroupAndTop(state, "研發", "置頂", sort);
-            for (BillboardBean bean : list)
-                resulet.add(bean);
+            resulet.addAll(list);
             list = br.getByStateAndBilltowngroupAndTop(state, "研發", "", sort);
-            for (BillboardBean bean : list)
-                resulet.add(bean);
+            resulet.addAll(list);
             return resulet;
         } else if ("01dasgregrehvbcvbbb業務".equals(billboardgroupid)) {
             List<BillboardBean> list = br.getByStateAndBilltowngroupAndTop(state, "業務", "置頂", sort);
-            for (BillboardBean bean : list)
-                resulet.add(bean);
+            resulet.addAll(list);
             list = br.getByStateAndBilltowngroupAndTop(state, "業務", "", sort);
-            for (BillboardBean bean : list)
-                resulet.add(bean);
+            resulet.addAll(list);
             return resulet;
         } else if ("01dasgregrehvbcvccc行銷".equals(billboardgroupid)) {
             List<BillboardBean> list = br.getByStateAndBilltowngroupAndTop(state, "行銷", "置頂", sort);
-            for (BillboardBean bean : list)
-                resulet.add(bean);
+            resulet.addAll(list);
             list = br.getByStateAndBilltowngroupAndTop(state, "行銷", "", sort);
-            for (BillboardBean bean : list)
-                resulet.add(bean);
+            resulet.addAll(list);
             return resulet;
         } else if ("01dasgregrehvbcvddd生產".equals(billboardgroupid)) {
             List<BillboardBean> list = br.getByStateAndBilltowngroupAndTop(state, "生產", "置頂", sort);
-            for (BillboardBean bean : list)
-                resulet.add(bean);
+            resulet.addAll(list);
             list = br.getByStateAndBilltowngroupAndTop(state, "生產", "", sort);
-            for (BillboardBean bean : list)
-                resulet.add(bean);
+            resulet.addAll(list);
             return resulet;
         } else if ("01dasgregrehvbcvfggg採購".equals(billboardgroupid)) {
             List<BillboardBean> list = br.getByStateAndBilltowngroupAndTop(state, "採購", "置頂", sort);
-            for (BillboardBean bean : list)
-                resulet.add(bean);
+            resulet.addAll(list);
             list = br.getByStateAndBilltowngroupAndTop(state, "採購", "", sort);
-            for (BillboardBean bean : list)
-                resulet.add(bean);
+            resulet.addAll(list);
             return resulet;
         } else if ("01dasgregrehvbcvaaa財務".equals(billboardgroupid)) {
             List<BillboardBean> list = br.getByStateAndBilltowngroupAndTop(state, "財務", "置頂", sort);
-            for (BillboardBean bean : list)
-                resulet.add(bean);
+            resulet.addAll(list);
             list = br.getByStateAndBilltowngroupAndTop(state, "財務", "", sort);
-            for (BillboardBean bean : list)
-                resulet.add(bean);
+            resulet.addAll(list);
             return resulet;
         } else {// 不是的話 根據billboardgroupid尋找
             List<BillboardBean> list = br.getByStateAndBillboardgroupidAndTop(state, billboardgroupid, "置頂", sort);
-            for (BillboardBean bean : list)
-                resulet.add(bean);
+            resulet.addAll(list);
             list = br.getByStateAndBillboardgroupidAndTop(state, billboardgroupid, "", sort);
-            for (BillboardBean bean : list)
-                resulet.add(bean);
+            resulet.addAll(list);
             return resulet;
 
         }
@@ -279,8 +263,8 @@ public class SystemService {
             // 抓出所有人插入maill
             // 如果maill沒資料 //如果不是發布者
             if (!amr.existsByBillboardidAndAdminid(save.getBillboardid(), a.getAdminid())
-                    && a.getAdminid() != adminBean.getAdminid()) {
-                adminMailBean.setAdminmail(zTools.getUUID());// maill插入uuid
+                    && !Objects.equals(a.getAdminid(), adminBean.getAdminid())) {
+                adminMailBean.setAdminmail(ZeroTools.getUUID());// maill插入uuid
                 System.out.println("插入maill Name" + a.getName());
                 adminMailBean.setAdminid(a.getAdminid());// maill插入 人id
                 amr.save(adminMailBean);// 儲存maill
@@ -305,9 +289,8 @@ public class SystemService {
             }
         }
 
-        BillboardBean bean = br.getById(id);
-//		bean.setContent(bean.getContent().replaceAll("<br>", "\n"));		
-        return bean;
+        //		bean.setContent(bean.getContent().replaceAll("<br>", "\n"));
+        return br.getById(id);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -341,7 +324,7 @@ public class SystemService {
             }
             BillboardReadBean brb = new BillboardReadBean();
             brb.setBillboardid(billboardid);
-            brb.setReadid(zTools.getUUID());
+            brb.setReadid(ZeroTools.getUUID());
             brb.setName(adminBean.getName());
             brr.save(brb);
             // @ 如果存在 就取出 插入reply=1
@@ -366,7 +349,7 @@ public class SystemService {
             AdminMailBean aBean = new AdminMailBean();
             aBean.setAdminid(adminid);
             aBean.setBillboardid(billboardid);
-            aBean.setAdminmail(zTools.getUUID());
+            aBean.setAdminmail(ZeroTools.getUUID());
             amr.save(aBean);
             AdminBean adminBean = ar.getById(adminid);
             if (brr.existsByBillboardidAndName(billboardid, adminBean.getName())) {
@@ -380,7 +363,7 @@ public class SystemService {
 //儲存公佈欄留言
     public BillboardReplyBean SaveReply(BillboardReplyBean bean) {
         if (bean.getReplyid() == null || bean.getReplyid().length() == 0)
-            bean.setReplyid(zTools.getUUID());
+            bean.setReplyid(ZeroTools.getUUID());
         // 插入換行
         String content = bean.getContent();
         bean.setContent(content.replaceAll("\\n", "<br>"));
@@ -397,7 +380,7 @@ public class SystemService {
             BillboardGroupBean bean = new BillboardGroupBean();
             bean.setBillboardgroup(group);
             bean.setBillboardoption(option);
-            bean.setBillboardgroupid(zTools.getUUID());
+            bean.setBillboardgroupid(ZeroTools.getUUID());
             bgr.save(bean);
             return group + " " + option + "" + "新增成功";
         }
@@ -462,19 +445,17 @@ public class SystemService {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索公布欄
     public List<BillboardBean> selectBillboardt(String search) {
-        List<BillboardBean> result = new ArrayList<BillboardBean>();
         boolean boo = true;
         // 搜索主題
         Sort sort = Sort.by(Direction.DESC, "lastmodified");
-        for (BillboardBean p : br.findByThemeLikeIgnoreCaseAndState("%" + search + "%", "公開", sort)) {
-            result.add(p);
-        }
+        List<BillboardBean> result = new ArrayList<>(br.findByThemeLikeIgnoreCaseAndState("%" + search + "%", "公開", sort));
 
         // 用發表人搜索
         for (BillboardBean p : br.findByUserLikeIgnoreCaseAndState("%" + search + "%", "公開", sort)) {
             for (BillboardBean bean : result) {
-                if (bean.getBillboardgroupid() == p.getBillboardgroupid()) {
+                if (Objects.equals(bean.getBillboardgroupid(), p.getBillboardgroupid())) {
                     boo = false;
+                    break;
                 }
             }
             if (boo) result.add(p);
@@ -758,6 +739,6 @@ public class SystemService {
         Sort sort = Sort.by(Direction.DESC,"aaa");
        Optional<List<LibraryChangeBean>> op = lcr.findByLibrarygroup(librarygroup,sort );
 
-        return op.get();
+        return op.orElse(null);
     }
 }

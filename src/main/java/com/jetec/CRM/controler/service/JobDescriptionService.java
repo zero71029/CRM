@@ -21,7 +21,7 @@ public class JobDescriptionService {
 
     public List<JobDescriptionBean> findAll() { return  jdr.findAll(); }
 
-    public JobDescriptionBean findById(String jobdescriptionid) {return jdr.findById(jobdescriptionid).get();}
+    public JobDescriptionBean findById(String jobdescriptionid) {return jdr.findById(jobdescriptionid).orElse(null);}
 
 
 }

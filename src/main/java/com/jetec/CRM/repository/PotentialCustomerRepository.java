@@ -57,7 +57,6 @@ public interface PotentialCustomerRepository extends JpaRepository<PotentialCust
     List<PotentialCustomerBean> findByUser(String user);
 
 
-    Integer countByAaaLessThanAndUserIsNull(String format);
 
 
 

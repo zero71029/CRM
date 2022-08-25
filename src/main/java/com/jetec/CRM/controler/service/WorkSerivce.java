@@ -1,9 +1,6 @@
 package com.jetec.CRM.controler.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -49,8 +46,8 @@ public class WorkSerivce {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //工作項目列表
 	public Map<String, Object> getList(Integer pag) {
-		Pageable p = (Pageable) PageRequest.of(pag, 20);
-		Page<WorkBean> page = (Page<WorkBean>) wr.findStage(p);
+		Pageable p = PageRequest.of(pag, 20);
+		Page<WorkBean> page =  wr.findStage(p);
 //		List<WorkBean> result = page.getContent();		
 		Map<String, Object> map = new HashMap<>();
 		System.out.println( page.getContent());
@@ -112,21 +109,19 @@ public class WorkSerivce {
 //搜索工作項目
 	public Map<String, Object> sekectWork(String name, Integer pag) {
 		Map<String, Object> map = new HashMap<>();
-		Pageable p = (Pageable) PageRequest.of(pag, 20);
-		List<WorkBean> result = new ArrayList<WorkBean>();
+		Pageable p =  PageRequest.of(pag, 20);
 		boolean boo = true;
 		// 搜索主題
-		Page<WorkBean> page = (Page<WorkBean>) wr.findByNameLikeIgnoreCase("%" + name + "%", p);
+		Page<WorkBean> page =  wr.findByNameLikeIgnoreCase("%" + name + "%", p);
 		Long total = page.getTotalElements();
-		for (WorkBean b : page.getContent()) {
-			result.add(b);
-		}
+		List<WorkBean> result = new ArrayList<>(page.getContent());
 		// 搜索負責人	
-		page = (Page<WorkBean>) wr.findByUserLikeIgnoreCase("%" + name + "%",p);		
+		page =  wr.findByUserLikeIgnoreCase("%" + name + "%",p);
 		for (WorkBean b : page.getContent()) {
 			for (WorkBean bean : result) {
-				if (bean.getWorkid() == b.getWorkid()) {
+				if (Objects.equals(bean.getWorkid(), b.getWorkid())) {
 					boo = false;
+					break;
 				}
 			}
 			if (boo) {
@@ -137,11 +132,12 @@ public class WorkSerivce {
 		// 搜索客戶
 		Integer clientid = clientRepository.selectIdByname(name);
 		if (clientid != null) {
-			page = (Page<WorkBean>) wr.findByClientid(clientid,p);	
+			page =  wr.findByClientid(clientid,p);
 			for (WorkBean b : page.getContent()) {
 				for (WorkBean bean : result) {
-					if (bean.getWorkid() == b.getWorkid()) {
+					if (Objects.equals(bean.getWorkid(), b.getWorkid())) {
 						boo = false;
+						break;
 					}
 				}
 				System.out.println(p);
@@ -152,11 +148,12 @@ public class WorkSerivce {
 		// 搜索聯絡人
 		clientid = contactRepository.selectIdByname(name);
 		if (clientid != null) {
-			page = (Page<WorkBean>) wr.findByContactid(clientid,p);	
+			page =  wr.findByContactid(clientid,p);
 			for (WorkBean b : page.getContent()) {
 				for (WorkBean bean : result) {
-					if (bean.getWorkid() == b.getWorkid()) {
+					if (Objects.equals(bean.getWorkid(), b.getWorkid())) {
 						boo = false;
+						break;
 					}
 				}
 				if (boo)

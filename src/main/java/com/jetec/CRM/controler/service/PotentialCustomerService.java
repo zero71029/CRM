@@ -71,10 +71,9 @@ public class PotentialCustomerService {
             pcb.setAaa(ZeroTools.getTime(new Date()));
         if (pcb.getFileforeignid() == null || Objects.equals("", pcb.getFileforeignid()))
             pcb.setCustomerid(ZeroTools.getUUID());
-
         try {
-            caffeineCache.asMap().remove(ZeroCode.Redis_Market_Id + pcb.getCustomerid());
-            logger.info("刪除redis緩存 " + ZeroCode.Redis_Customer_Id + pcb.getCustomerid());
+            caffeineCache.asMap().remove(ZeroCode.Redis_Customer_Id + pcb.getCustomerid());
+            logger.info("刪除caffeine緩存 " + ZeroCode.Redis_Customer_Id + pcb.getCustomerid());
 
         } catch (Exception e) {
             System.out.println("刪除緩存失敗");
@@ -186,17 +185,9 @@ public class PotentialCustomerService {
         return PCR.findByStatus(status);
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//搜索潛在客戶by來源
-    public List<PotentialCustomerBean> selectSource(String source) {
-        return PCR.findBySource(source);
-    }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//搜索潛在客戶by產業
-    public List<PotentialCustomerBean> selectIndustry(String industry) {
-        return PCR.findByIndustry(industry);
-    }
+
+
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //添加協助者

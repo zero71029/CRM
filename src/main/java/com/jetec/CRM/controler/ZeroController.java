@@ -16,7 +16,7 @@ import java.util.Set;
 
 @Controller
 @RequestMapping("/zero")
-@PreAuthorize("hasAuthority('系統') OR hasAuthority('主管') ")
+@PreAuthorize("hasAuthority('系統')  ")
 public class ZeroController {
 
 
@@ -47,7 +47,7 @@ public class ZeroController {
     public String ClearCache() {
         logger.info("刪除緩存");
         caffeineCache.asMap().clear();
-        return "刪除緩存 ";
+        return "緩存刪除 成功";
     }
     //輸出緩存
     @RequestMapping("/outCache")

@@ -27,7 +27,6 @@ public class AccountApplicationController {
     ZeroTools zTools;
     @Autowired
     ApplicationService as;
-
     Logger logger = LoggerFactory.getLogger("AccountApplicationController.class");
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

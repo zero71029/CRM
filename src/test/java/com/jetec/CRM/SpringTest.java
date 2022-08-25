@@ -1,28 +1,25 @@
 package com.jetec.CRM;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.benmanes.caffeine.cache.Cache;
-import com.jetec.CRM.model.ContactBean;
-import com.jetec.CRM.model.PotentialCustomerBean;
+import com.jetec.CRM.controler.service.MarketService;
 import com.jetec.CRM.repository.ContactRepository;
 import com.jetec.CRM.repository.PotentialCustomerRepository;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultHandler;
 import org.springframework.util.StreamUtils;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,16 +38,33 @@ public class SpringTest {
     @Autowired
     private MockMvc mockMvc;
 
+    Logger logger = LoggerFactory.getLogger("SpringTest");
+    @Autowired
+    MarketService ms;
+
 
     @Test
     public void XXX() throws Exception {
-        caffeineCache.asMap().forEach((s, o) -> {
-            System.out.println(s);
-            System.out.println(o);
-        });
+        logger.info("轉賣 自動結案");
+        ms.AutoCloseCase("轉賣/自用");
+        ms.AutoCloseCase("轉賣");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        System.out.println("現在時間 :" + dateFormat.format(new Date()));
 
-
-
+        //////自動備份
+        logger.info("自動備份,輸出SQL");
+        ProcessBuilder builder = new ProcessBuilder(
+                "cmd.exe", "/c", "cd  C:\\MAMP\\bin\\mysql\\bin && mysqldump -uroot -proot crm > C:\\Users\\jetec\\SynologyDrive\\crm" + LocalDate.now() + "自動.sql");
+        //列印執行結果
+        builder.redirectErrorStream(true);
+        Process p = builder.start();
+        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String line;
+        while (true) {
+            line = r.readLine();
+            if (line == null) { break; }
+            logger.info(line);
+        }
 
 
     }

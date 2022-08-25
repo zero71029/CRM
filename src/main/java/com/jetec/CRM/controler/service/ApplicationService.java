@@ -27,7 +27,7 @@ public class ApplicationService {
     }
 
     public ApplicationBean getById(Integer applicationid) {
-        return ar.findById(applicationid).get();
+        return ar.findById(applicationid).orElse(null);
     }
 
     public void del(List<Integer> id) { id.forEach(ar::deleteById); }
