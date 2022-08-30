@@ -100,12 +100,12 @@ public class CustomerControler {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//讀取客戶細節
+//進入客戶細節
     @RequestMapping("/client/{id}")
     public String client(Model model, @PathVariable("id") Integer id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AdminBean adminBean = (AdminBean) authentication.getPrincipal();
-        logger.info("{} 讀取客戶細節 {}", adminBean.getName(), id);
+        logger.info("{} 進入客戶細節 {}", adminBean.getName(), id);
         if (id == 0) {
             model.addAttribute("bean", new ClientBean());
             model.addAttribute("market", new MarketBean());

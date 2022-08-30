@@ -75,7 +75,7 @@ public class MarketControler {
     public Map<String, Object> SavePotentialCustomer(PotentialCustomerBean pcb, HttpSession session) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AdminBean adminBean = (AdminBean) authentication.getPrincipal();
-        logger.info("{} 儲存潛在客戶 {}", adminBean.getName(),pcb.getCustomerid());
+        logger.info("{} 儲存潛在客戶 {}", adminBean.getName(), pcb.getCustomerid());
         Map<String, Object> result = new HashMap<>();
         AdminBean admin = (AdminBean) session.getAttribute("user");
         //判斷是否是新案件
@@ -245,7 +245,7 @@ public class MarketControler {
     @ResponseBody
     @RequestMapping("/selectMarket")
     public List<MarketBean> selectMarket(@RequestParam("from") String startDay, @RequestParam("to") String endDay, @RequestParam("key") String key, @RequestParam("val") List<String> val) {
-        System.out.println("搜索銷售機會ALL");
+        logger.info("搜索銷售機會ALL {} :{}", key, val);
         if (startDay == null || startDay.equals("")) {
 //            startDay = zTools.getTime(new Date());
 //            startDay = startDay.substring(0, 10);
@@ -255,8 +255,8 @@ public class MarketControler {
             startDay = startDay + " 00:00";
         }
         if (endDay.equals("")) {
-            endDay = "2022-08-25 00:00";
-//            endDay = ZeroTools.getTime(new Date());
+
+            endDay = ZeroTools.getTime(new Date());
         } else {
             endDay = endDay + " 24:00";
         }
@@ -917,7 +917,7 @@ public class MarketControler {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AdminBean adminBean = (AdminBean) authentication.getPrincipal();
 
-        logger.info("{} 領取任務 {}",adminBean.getName(), marketid);
+        logger.info("{} 領取任務 {}", adminBean.getName(), marketid);
         MarketBean mBean = ms.getById(marketid);
         if (mBean != null) {
             AdminBean aBean = (AdminBean) session.getAttribute("user");
@@ -937,7 +937,7 @@ public class MarketControler {
                 mBean.setUser(aBean.getName());
                 mBean.setReceivestate(1);
                 ms.save(mBean);
-                logger.info("{} 領取成功 {}",adminBean.getName(),marketid);
+                logger.info("{} 領取成功 {}", adminBean.getName(), marketid);
                 return ZeroFactory.success("領取成功");
             }
             ChangeMessageBean cmBean = new ChangeMessageBean(ZeroTools.getUUID(), mBean.getMarketid(), aBean.getName(), "領取任務", aBean.getName(), "null", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
@@ -948,7 +948,7 @@ public class MarketControler {
             mBean.setUser(null);
             mBean.setReceivestate(3);
             ms.save(mBean);
-            logger.info("{} 取消成功 {}",adminBean.getName(),marketid);
+            logger.info("{} 取消成功 {}", adminBean.getName(), marketid);
             return ZeroFactory.success("取消成功");
         }
         return ZeroFactory.fail("請先建立任務");

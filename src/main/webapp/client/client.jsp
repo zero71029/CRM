@@ -119,8 +119,6 @@
                                     </c:if>
                                 </div>
                                 <br>
-
-
                                 <form action="${pageContext.request.contextPath}/CRM/SaveClient" method="post"
                                     id="myform" class="basefrom g-3 AAA">
                                     <div class="row">

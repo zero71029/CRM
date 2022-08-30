@@ -507,9 +507,52 @@ public class MarketBean implements Serializable {
     @Override
     public String toString() {
         return "MarketBean{" +
-                "name='" + name + '\'' +
+                "marketid='" + marketid + '\'' +
+                ", name='" + name + '\'' +
+                ", user='" + user + '\'' +
+                ", createtime='" + createtime + '\'' +
+                ", endtime='" + endtime + '\'' +
+                ", message='" + message + '\'' +
+                ", cost=" + cost +
+                ", client='" + client + '\'' +
+                ", contactname='" + contactname + '\'' +
+                ", contactphone='" + contactphone + '\'' +
+                ", contactextension='" + contactextension + '\'' +
+                ", contactmoblie='" + contactmoblie + '\'' +
+                ", contactemail='" + contactemail + '\'' +
+                ", contactmethod='" + contactmethod + '\'' +
+                ", contacttitle='" + contacttitle + '\'' +
+                ", type='" + type + '\'' +
+                ", source='" + source + '\'' +
+                ", clinch=" + clinch +
                 ", stage='" + stage + '\'' +
+                ", need='" + need + '\'' +
+                ", roianalyze='" + roianalyze + '\'' +
+                ", product='" + product + '\'' +
+                ", producttype='" + producttype + '\'' +
+                ", phone='" + phone + '\'' +
+                ", extension='" + extension + '\'' +
+                ", aaa='" + aaa + '\'' +
                 ", bbb='" + bbb + '\'' +
+                ", opentime='" + opentime + '\'' +
+                ", important='" + important + '\'' +
+                ", line='" + line + '\'' +
+                ", customerid='" + customerid + '\'' +
+                ", clicks=" + clicks +
+                ", fax='" + fax + '\'' +
+                ", clientid=" + clientid +
+                ", quote='" + quote + '\'' +
+                ", jobtitle='" + jobtitle + '\'' +
+                ", serialnumber='" + serialnumber + '\'' +
+                ", callbos='" + callbos + '\'' +
+                ", callhelp='" + callhelp + '\'' +
+                ", fileforeignid='" + fileforeignid + '\'' +
+                ", founder='" + founder + '\'' +
+                ", othersource='" + othersource + '\'' +
+                ", closereason='" + closereason + '\'' +
+                ", closeextend='" + closeextend + '\'' +
+                ", receive='" + receive + '\'' +
+                ", receivestate=" + receivestate +
                 '}';
     }
 

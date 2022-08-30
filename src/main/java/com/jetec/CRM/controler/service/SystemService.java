@@ -288,7 +288,6 @@ public class SystemService {
                 amr.deleteByBillboardidAndAdminid(id, adminBean.getAdminid());// 如果有登入就已讀
             }
         }
-
         //		bean.setContent(bean.getContent().replaceAll("<br>", "\n"));
         return br.getById(id);
     }
@@ -296,7 +295,6 @@ public class SystemService {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取公佈欄細節 後台用
     public BillboardBean getBillboard(Integer id) {
-
         return br.getById(id);
     }
 
@@ -309,7 +307,6 @@ public class SystemService {
             btr.deleteAllByBillboardid(i);
             br.deleteById(i);
         }
-
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -333,12 +330,10 @@ public class SystemService {
                 bab.setReply("0");
                 bar.save(bab);
             }
-
             return "成功已讀  “請刷新頁面“  ";
         } else {
             return "找不到資料";
         }
-
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -356,7 +351,6 @@ public class SystemService {
                 brr.deleteByBillboardidAndName(billboardid, adminBean.getName());
             }
         }
-
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -412,7 +406,6 @@ public class SystemService {
     // 3. 儲存檔案名稱到資料庫
     public void saveUrl(BillboardFileBean billBoardFileBean) {
         bfr.save(billBoardFileBean);
-
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -449,7 +442,6 @@ public class SystemService {
         // 搜索主題
         Sort sort = Sort.by(Direction.DESC, "lastmodified");
         List<BillboardBean> result = new ArrayList<>(br.findByThemeLikeIgnoreCaseAndState("%" + search + "%", "公開", sort));
-
         // 用發表人搜索
         for (BillboardBean p : br.findByUserLikeIgnoreCaseAndState("%" + search + "%", "公開", sort)) {
             for (BillboardBean bean : result) {
@@ -477,7 +469,6 @@ public class SystemService {
             billboardReplyRepository.delete(bean);
             rrr.deleteByReplyid(replyId);
         }
-
         return bean.getBillboardid();
     }
 
@@ -500,7 +491,6 @@ public class SystemService {
         bab.setReply("1");
         // 刪除舊資料
         bar.deleteAllByBillboardid(billboardid);
-
         for (Integer a : adviceto) {
             if (a != 0) {
                 // 插入Advice
@@ -525,12 +515,10 @@ public class SystemService {
         }
         maillist.append("jeter.tony56@gmail.com");
         zTools.mail(mailTo, text, Subject, maillist.toString());
-
     }
 
     public void saveAdvice(Integer adminid, Integer billboardid) {
         bar.deleteAllByBillboardid(billboardid);
-
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -559,7 +547,6 @@ public class SystemService {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //存留言
     public void saveMail(Integer adminid, Integer billboardid, String reply) {
-
         // 如果 mail 沒資料 就存儲
         if (!amr.existsByBillboardidAndAdminid(billboardid, adminid)) {
             AdminMailBean adminMailBean = new AdminMailBean();
@@ -577,7 +564,6 @@ public class SystemService {
     public void saveReplyreply(ReplyreplyBean replyreplyBean) {
         replyreplyBean.setId(zTools.getUUID());
         rrr.save(replyreplyBean);
-
         BillboardReplyBean bean = billboardReplyRepository.getById(replyreplyBean.getReplyid());// 找到留言bean
         AdminBean adminBean = ar.findByName(bean.getName());// 找到留研發布人Bean
         if (!adminBean.getName().equals(replyreplyBean.getName())) { // 如果留研發布人 不等於 評論人
@@ -600,7 +586,6 @@ public class SystemService {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取留言的@
     public List<ReplyAdviceBbean> replyAdvice(String replyId) {
-
         return rar.findByReplyid(replyId);
     }
 
@@ -620,9 +605,7 @@ public class SystemService {
     }
 
 
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //刪除檔案
     public void delBbillboardFfile() {
 //		List<BillboardFileBean> fileList = bfr.findByBillboardid(0);
@@ -685,8 +668,7 @@ public class SystemService {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //新增圖書館子項
     public void addLibrary(String librarygroup, String libraryoption, String name) {
-        String remark = null;
-
+        String remark ;
         switch (librarygroup) {
             case "position":
                 remark = "員工管理 - 職位";
@@ -712,10 +694,9 @@ public class SystemService {
         if (!lr.existsByLibrarygroupAndLibraryoption(librarygroup, libraryoption)) {
             LibraryBean bean = new LibraryBean(zTools.getUUID(), librarygroup, libraryoption, remark);
             lr.save(bean);
-            LibraryChangeBean lcBeam = new LibraryChangeBean(zTools.getUUID(), librarygroup, libraryoption,"新增", zTools.getTime(new Date()));
+            LibraryChangeBean lcBeam = new LibraryChangeBean(zTools.getUUID(), librarygroup, libraryoption, "新增", zTools.getTime(new Date()));
             lcBeam.setAdmin(name);
             lcr.save(lcBeam);
-
         }
     }
 
@@ -725,20 +706,20 @@ public class SystemService {
         Optional<LibraryBean> op = lr.findById(libaryid);
         String librarygroup = null;
         if (op.isPresent()) {
-          librarygroup = op.get().getLibrarygroup();
-            LibraryChangeBean lcBeam = new LibraryChangeBean(zTools.getUUID(), op.get().getLibrarygroup(), op.get().getLibraryoption(),"刪除",zTools.getTime(new Date()));
+            librarygroup = op.get().getLibrarygroup();
+            LibraryChangeBean lcBeam = new LibraryChangeBean(zTools.getUUID(), op.get().getLibrarygroup(), op.get().getLibraryoption(), "刪除", zTools.getTime(new Date()));
             lcBeam.setAdmin(name);
             lcr.save(lcBeam);
             lr.delete(op.get());
         }
         return librarygroup;
     }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 查詢圖書館紀錄
-    public List<LibraryChangeBean> SetectLibraryRecord(String librarygroup){
-        Sort sort = Sort.by(Direction.DESC,"aaa");
-       Optional<List<LibraryChangeBean>> op = lcr.findByLibrarygroup(librarygroup,sort );
-
+    public List<LibraryChangeBean> SetectLibraryRecord(String librarygroup) {
+        Sort sort = Sort.by(Direction.DESC, "aaa");
+        Optional<List<LibraryChangeBean>> op = lcr.findByLibrarygroup(librarygroup, sort);
         return op.orElse(null);
     }
 }

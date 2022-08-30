@@ -53,7 +53,6 @@ public class WorkSerivce {
 		System.out.println( page.getContent());
 		map.put("list", page.getContent());
 		map.put("total", page.getTotalElements());
-
 		return map;
 
 //		ObjectMapper objectMapper = new ObjectMapper();	
@@ -86,7 +85,6 @@ public class WorkSerivce {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //讀取工作項目細節
 	public WorkBean getById(String id) {
-		 
 		return wr.getById(id);
 	}
 
@@ -96,7 +94,6 @@ public class WorkSerivce {
 		for (String i : id) {
 			wr.deleteById(i);
 		}
-
 	}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

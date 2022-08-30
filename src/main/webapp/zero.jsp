@@ -39,7 +39,7 @@
                                 <div class="row ">
                                     <div class="col-md-12">
                                         <div v-for="(s, index) in CacheList" :key="index">
-                                            {{s}}
+                                         [{{index}}]   {{s}}
                                         </div>
                                     </div>
                                 </div>

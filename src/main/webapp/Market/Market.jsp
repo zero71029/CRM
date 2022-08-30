@@ -1303,16 +1303,13 @@
                                 var keys = Object.keys(this.bean);
                                 var data = {};
                                 var hasSave = false;
-
                                 for (const iterator of keys) {
                                     if (this.bean[iterator] == this.oldBean[iterator]) {
-
 
                                     } else {
                                         data[iterator] = [this.bean[iterator], this.oldBean[iterator]];
                                         hasSave = true;
                                     }
-
                                 }
 
                                 if (hasSave) {
@@ -1557,17 +1554,12 @@
                         } else {
                             var day = new Date(this.bean.aaa);
                         }
-
-
                         var day = new Date(this.bean.aaa);
                         if (this.bean.createtime == "轉賣") day.setDate(day.getDate() + 7);
                         if (this.bean.createtime == "自用") day.setDate(day.getDate() + 7);
                         if (this.bean.createtime == "設計/預算規劃") day.setDate(day.getDate() + 14);
                         if (this.bean.createtime == "工程標案") day.setDate(day.getDate() + 30);
                         this.bean.endtime = formatDay(day);
-
-
-
                     },
                     //通知主管
                     callBos: function () {

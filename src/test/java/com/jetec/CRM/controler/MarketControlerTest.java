@@ -112,11 +112,11 @@ class MarketControlerTest {
     @Test
     @DisplayName("進入銷售機會詳細")
     void inMarket() throws Exception {
-        mockMvc.perform(post("/Market/{id}")
+        mockMvc.perform(post("/Market/Market/1ed2387f8e3f664ab0817bfbd7fa0f02")
                         .session((MockHttpSession) session))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/Market/MarketList"))
-                .andExpect(model().attributeExists("list"));
+                .andExpect(view().name("/Market/Market"))
+                .andExpect(model().attributeExists("bean"));
     }
 
     @Test
@@ -291,9 +291,7 @@ class MarketControlerTest {
         mockMvc.perform(post("/Market/delAllState/2")
                         .session((MockHttpSession) session))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].adminid").value("2"))
-                .andExpect(jsonPath("$[0].field").value("admin"))
-                .andExpect(jsonPath("$[0].state").value("玟嫣"));
+                .andExpect(jsonPath("$").isBoolean());
     }
 
 

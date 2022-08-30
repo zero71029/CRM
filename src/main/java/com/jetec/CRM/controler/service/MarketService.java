@@ -423,7 +423,7 @@ public class MarketService {
                 result.addAll(mr.findByClosereasonAndAaaBetween(val.get(0), startDay, endDay, sort));
                 break;
         }
-
+        System.out.println("搜索出 "+ result.size()+" 筆資料");
         return result;
     }
 

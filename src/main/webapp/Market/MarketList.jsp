@@ -371,7 +371,7 @@
                                             <div class="accordion-body">
                                                 <div class="input-group mb-3">
                                                     <input type="text" class="form-control" placeholder=""
-                                                        v-model="name" name="name">
+                                                        v-model.trim="name" name="name">
                                                     <button class="btn btn-outline-secondary" id="clickname"
                                                         @click="selectList">搜索
                                                     </button>
@@ -393,7 +393,7 @@
                                             <div class="accordion-body">
                                                 <div class="input-group mb-3">
                                                     <input type="text" class="form-control" placeholder=""
-                                                        v-model="company" list="company">
+                                                        v-model.trim="company" list="company">
                                                     <button class="btn btn-outline-secondary" @click="selectList">搜索
                                                     </button>
                                                     <datalist id="company">
@@ -447,7 +447,7 @@
                                             <div class="accordion-body">
                                                 <div class="input-group mb-3">
                                                     <input type="text" class="form-control" placeholder="" id="Contact"
-                                                        v-model="inContact">
+                                                        v-model.trim="inContact">
                                                     <button class="btn btn-outline-secondary" @click="selectList">搜索
                                                     </button>
                                                 </div>
@@ -467,7 +467,7 @@
                                             <div class="accordion-body">
                                                 <div class="input-group mb-3">
                                                     <input type="text" class="form-control" placeholder=""
-                                                        v-model="ContantPhone">
+                                                        v-model.trim="ContantPhone">
                                                     <button class="btn btn-outline-secondary" @click="selectList">搜索
                                                     </button>
                                                 </div>
@@ -488,7 +488,7 @@
                                                 <div class="accordion-body">
                                                     <div class="input-group mb-3">
                                                         <input type="text" class="form-control" placeholder=""
-                                                            v-model="product">
+                                                            v-model.trim="product">
                                                         <button class="btn btn-outline-secondary" @click="selectList">搜索
                                                         </button>
                                                     </div>
@@ -510,7 +510,7 @@
                                                 <div class="accordion-body">
                                                     <div class="input-group mb-3">
                                                         <input type="text" class="form-control" placeholder=""
-                                                            v-model="quote">
+                                                            v-model.trim="quote">
                                                         <button class="btn btn-outline-secondary" @click="selectList">搜索
                                                         </button>
                                                     </div>
@@ -1108,7 +1108,7 @@
                         var star = new Date();
                         this.inSortState = [];
                         this.btncheck3 = false;
-                        console.log("輸入時間",this.inDay)
+                        console.log("輸入時間", this.inDay)
                         if (this.inDay == "") {//沒輸入日期
                             this.inDay[0] = "";
                             this.inDay[1] = "";
@@ -1132,7 +1132,7 @@
                         } else if (this.inContact != "") {//聯絡人
                             url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=inContact&val=" + this.inContact;
                         } else if (this.ContantPhone != "") {//電話/傳真
-                            this.ContantPhone = this.ContantPhone.replaceAll("-","");
+                            this.ContantPhone = this.ContantPhone.replaceAll("-", "");
                             url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=ContantPhone&val=" + this.ContantPhone;
                         } else if (this.source != "") {//產業
                             url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=source&val=" + this.source;
@@ -1152,10 +1152,6 @@
                             url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=UserList&val=" + this.inUserList;
                         }
 
-
-
-
-
                         $.ajax({
                             url: url,
                             type: 'POST',
@@ -1164,8 +1160,8 @@
                             success: (response => (
                                 this.list = response,
                                 this.total = this.list.length,
-                                this.oldList = this.list,
-                                console.log( "response",response)
+                                this.oldList = response,
+                                console.log("搜索返回", response)
                             )),
                             error: function (returndata) {
                                 console.log(returndata);
@@ -1190,6 +1186,7 @@
                                 }
                             }
                         }
+                        // console.log("name",this.list);
                         if (this.company != "") {//客戶
                             this.oldList = this.list;
                             this.list = [];
@@ -1199,7 +1196,7 @@
                                 }
                             }
                         }
-
+                        // console.log("company",this.list);
                         if (this.inStateList != "") {//狀態
                             this.oldList = this.list;
                             this.list = [];
@@ -1210,6 +1207,7 @@
                                     }
                                 }
                         }
+                        // console.log("inStateList",this.list);
                         if (this.inContact != "") {//聯絡人
                             this.oldList = this.list;
                             this.list = [];
@@ -1219,22 +1217,24 @@
                                 }
                             }
                         }
+                        // console.log("inContact",this.list);
                         if (this.ContantPhone != "") {//聯絡人電話
-                            
+
                             this.oldList = this.list;
                             this.list = [];
                             for (var bean of this.oldList) {
                                 if (bean.contactphone.indexOf(this.ContantPhone) >= 0) {
                                     this.list.push(bean);
-                                }else
-                                if (bean.contactmoblie.indexOf(this.ContantPhone) >= 0) {
-                                    this.list.push(bean);
-                                }else
-                                if (bean.fax.indexOf(this.ContantPhone) >= 0) {
-                                    this.list.push(bean);
-                                }                                
+                                } else
+                                    if (bean.contactmoblie.indexOf(this.ContantPhone) >= 0) {
+                                        this.list.push(bean);
+                                    } else
+                                        if (bean.fax.indexOf(this.ContantPhone) >= 0) {
+                                            this.list.push(bean);
+                                        }
                             }
                         }
+                        // console.log("ContantPhone",this.list);
                         if (this.source != "") {//產業
                             this.oldList = this.list;
                             this.list = [];
@@ -1245,6 +1245,7 @@
                                     }
                                 }
                         }
+                        // console.log(this.list);
                         if (this.checkedCities != "") {//產品類別
                             this.oldList = this.list;
                             this.list = [];
@@ -1255,6 +1256,7 @@
                                     }
                                 }
                         }
+                        // console.log(this.list);
                         if (this.checkedSources != "") {//機會來源
                             this.oldList = this.list;
                             this.list = [];
@@ -1265,6 +1267,7 @@
                                     }
                                 }
                         }
+                        // console.log(this.list);
                         if (this.clinch != "") {//成交機率
                             this.oldList = this.list;
                             this.list = [];
@@ -1274,6 +1277,7 @@
                                 }
                             }
                         }
+                        // console.log(this.list);
                         if (this.product != "") {//商品
                             this.oldList = this.list;
                             this.list = [];
@@ -1283,7 +1287,7 @@
                                 }
                             }
                         }
-
+                        // console.log(this.list);
                         if (this.AutoClose) {//自動結案
                             this.oldList = this.list;
                             this.list = [];
@@ -1305,12 +1309,12 @@
 
                         }
 
-
+                        // console.log(this.list);
                         this.total = 20;
                         this.oldList = this.list;
 
                         var en = new Date();
-                        console.log( "花費時間" ,en - star);
+                        console.log("花費時間", en - star);
                     },
                     selectBudget: function () {//select預算
                         axios

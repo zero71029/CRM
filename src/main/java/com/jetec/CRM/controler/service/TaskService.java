@@ -29,59 +29,59 @@ public class TaskService {
 
     //讀取每⽇任務
     public EvaluateBean getById(String id) {
-        return  er.findById(id).orElse(null);
+        return er.findById(id).orElse(null);
     }
 
     //儲存每⽇任務
     public EvaluateBean SaveEvaluateBean(EvaluateBean bean) {
         return er.save(bean);
     }
+
     //刪除沒有的
     public void delnull() {
         er.delnull();
         er.delempty();
     }
+
     //讀取任務列表
     public List<EvaluateTaskBean> getTaskList(String id) {
-
-        return  etr.findByEvaluateid(id);
+        return etr.findByEvaluateid(id);
     }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //任務列表
     public Map<String, Object> getList(Integer pag) {
-        Pageable p =   PageRequest.of(pag, 40, Sort.Direction.DESC,"evaluatedate");
-        Page<EvaluateBean> page =  er.findAll(p);
+        Pageable p = PageRequest.of(pag, 40, Sort.Direction.DESC, "evaluatedate");
+        Page<EvaluateBean> page = er.findAll(p);
         Map<String, Object> map = new HashMap<>();
         map.put("list", page.getContent());
         map.put("total", page.getTotalElements());
         map.put("userList", er.getName());
-
         return map;
     }
 
     public Map<String, Object> getList(Integer pag, String name) {
-        Pageable p =   PageRequest.of(pag, 40,Sort.Direction.DESC,"evaluatedate");
-        Page<EvaluateBean> page = er.findByName(name,p);
+        Pageable p = PageRequest.of(pag, 40, Sort.Direction.DESC, "evaluatedate");
+        Page<EvaluateBean> page = er.findByName(name, p);
         Map<String, Object> map = new HashMap<>();
         map.put("list", page.getContent());
         map.put("total", page.getTotalElements());
-
         return map;
     }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //刪除每日任務
     public void delMarket(List<String> id) {
         for (String i : id) {
-           er.deleteById(i);
+            er.deleteById(i);
         }
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //搜索每日任務
     public List<EvaluateBean> selecttask(String name, Integer pag) {
-        Pageable p =   PageRequest.of(pag, 40,Sort.Direction.DESC,"evaluatedate");
-        Page<EvaluateBean> page = er.findByName(name,p);
-        return page.getContent();
-    }
+        Pageable p = PageRequest.of(pag, 40, Sort.Direction.DESC, "evaluatedate");
+        Page<EvaluateBean> page = er.findByName(name, p);
+        return page.getContent();    }
 
 }

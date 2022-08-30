@@ -376,8 +376,6 @@ public class StatisticController {
         } else {
             startDay = startDay + " 00:00";
         }
-
-
         //
         if (Objects.equals(3, receives)) {
             if (Objects.equals("1", state)) {
@@ -453,6 +451,4 @@ public class StatisticController {
         }
         return result;
     }
-
-
 }
