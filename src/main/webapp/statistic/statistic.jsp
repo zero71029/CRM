@@ -73,6 +73,7 @@
                             </div>
 
                         </div>
+                        <!-- 商品種類 -->
                         <div class="row">
                             <div class="col-lg-12">
                                 <el-switch v-model="ProductSwitch" v-show="producttype != ''" active-text="精簡"
@@ -87,9 +88,10 @@
 
                                 案件最多的公司
                                 <el-table :data="MaxNumCompany" style="width: 100%">
-                                    <el-table-column  label="公司">
+                                    <el-table-column label="公司">
                                         <template slot-scope="scope">
-                                            <a :href="'${pageContext.request.contextPath}/CRM/client/'+scope.row.clientid" target="_blank">{{scope.row.company}}</a>
+                                            <a :href="'${pageContext.request.contextPath}/CRM/client/'+scope.row.clientid"
+                                                target="_blank">{{scope.row.company}}</a>
                                         </template>
                                     </el-table-column>
                                     <el-table-column prop="num" label="數量">
@@ -101,9 +103,10 @@
                             <div class="col-lg-4">
                                 成功案件最多的公司
                                 <el-table :data="SuccessMaxNumCompany" style="width: 100%">
-                                    <el-table-column  label="公司">
+                                    <el-table-column label="公司">
                                         <template slot-scope="scope">
-                                            <a :href="'${pageContext.request.contextPath}/CRM/client/'+scope.row.clientid" target="_blank">{{scope.row.company}}</a>
+                                            <a :href="'${pageContext.request.contextPath}/CRM/client/'+scope.row.clientid"
+                                                target="_blank">{{scope.row.company}}</a>
                                         </template>
                                     </el-table-column>
                                     <el-table-column prop="num" label="數量">
@@ -116,9 +119,10 @@
                                 <el-table :data="FailMaxNumCompany" style="width: 100%">
 
 
-                                    <el-table-column  label="公司">
+                                    <el-table-column label="公司">
                                         <template slot-scope="scope">
-                                            <a :href="'${pageContext.request.contextPath}/CRM/client/'+scope.row.clientid" target="_blank">{{scope.row.company}}</a>
+                                            <a :href="'${pageContext.request.contextPath}/CRM/client/'+scope.row.clientid"
+                                                target="_blank">{{scope.row.company}}</a>
                                         </template>
                                     </el-table-column>
                                     <el-table-column prop="num" label="數量">
@@ -267,80 +271,113 @@
 
                                 //轉換格式 list =[{name:ddd,value:111},....]
                                 var keys = Object.keys(this.producttype);
+                                let setKeys = new Set();
                                 for (k of keys) {
-                                    list.push({ name: k, value: this.producttype[k] });
+                                    if (k.indexOf("-") > 0) {
+                                        setKeys.add(k.substring(0, k.indexOf("-")));
+                                    } else {
+                                        setKeys.add(k);
+                                    }
+                                }
+                                console.log(this.producttype)
+
+                                for (setk of setKeys) {
+                                    let n = 0;
+                                    for (k of keys) {
+                                        if (k.indexOf(setk) >= 0) {
+                                            n = n + this.producttype[k];
+                                        }
+                                    }
+                                    list.push({ name: setk, value: n });
                                 }
 
-                                var Vehicles = list;
-                                var list = [];
-                                var pressure = 0;
-                                var 氣象儀器 = 0;
-                                var 氣體 = 0;
-                                var 流量 = 0;
-                                var 液位 = 0;
-                                var 溫濕 = 0;
-                                for (const x of Vehicles) {
-                                    if (x.name.includes("壓力")) {
-                                        pressure = pressure + x.value;
-                                    }
-                                    if (x.name.includes("氣象儀器")) {
-                                        氣象儀器 = 氣象儀器 + x.value;
-                                    }
-                                    if (x.name.includes("氣體")) {
-                                        氣體 = 氣體 + x.value;
-                                    }
-                                    if (x.name.includes("流量")) {
-                                        流量 = 流量 + x.value;
-                                    }
-                                    if (x.name.includes("液位")) {
-                                        液位 = 液位 + x.value;
-                                    }
-                                    if (x.name.includes("溫濕")) {
-                                        溫濕 = 溫濕 + x.value;
-                                    }
+                                console.log(list);
 
-                                }
+                                // for (k of keys) {
+                                //     list.push({ name: k.subString(0,k.indexOf("-")), value: this.producttype[k] });
+                                // }
 
-                                if (溫濕 > 0)
-                                    list.push({ name: "溫濕", value: 溫濕 });
-                                if (this.producttype['溫控器-TOHO'] + this.producttype['溫控器-其他'] > 0)
-                                    list.push({ name: "溫控器", value: this.producttype['溫控器-TOHO'] + this.producttype['溫控器-其他'] });
-                                if (液位 > 0)
-                                    list.push({ name: "液位/料位", value: 液位 });
-                                if (流量 > 0)
-                                    list.push({ name: "流量", value: 流量 });
-                                if (氣體 > 0)
-                                    list.push({ name: "氣體", value: 氣體 });
-                                if (氣象儀器 > 0)
-                                    list.push({ name: "氣象儀器", value: 氣象儀器 });
-                                if (pressure > 0)
-                                    list.push({ name: "壓力", value: pressure });
-                                if (this.producttype['其它'] > 0)
-                                    list.push({ name: "其他", value: this.producttype['其它'] });
-                                if (this.producttype['大型顯示器'] > 0)
-                                    list.push({ name: "大型顯示器", value: this.producttype['大型顯示器'] });
-                                if (this.producttype['差壓'] > 0)
-                                    list.push({ name: "差壓", value: this.producttype['差壓'] });
-                                if (this.producttype['感溫線棒'] > 0)
-                                    list.push({ name: "感溫線棒", value: this.producttype['感溫線棒'] });
-                                if (this.producttype['水質相關'] > 0)
-                                    list.push({ name: "水質相關", value: this.producttype['水質相關'] });
-                                if (this.producttype['溫度貼紙'] > 0)
-                                    list.push({ name: "溫度貼紙", value: this.producttype['溫度貼紙'] });
-                                if (this.producttype['無線傳輸'] > 0)
-                                    list.push({ name: "無線傳輸", value: this.producttype['無線傳輸'] });
-                                if (this.producttype['空氣品質'] > 0)
-                                    list.push({ name: "空氣品質", value: this.producttype['空氣品質'] });
-                                if (this.producttype['紅外線'] > 0)
-                                    list.push({ name: "紅外線", value: this.producttype['紅外線'] });
-                                if (this.producttype['編碼器/電位計'] > 0)
-                                    list.push({ name: "編碼器/電位計", value: this.producttype['編碼器/電位計'] });
-                                if (this.producttype['能源管理控制'] > 0)
-                                    list.push({ name: "能源管理控制", value: this.producttype['能源管理控制'] });
-                                if (this.producttype['記錄器'] > 0)
-                                    list.push({ name: "記錄器", value: this.producttype['記錄器'] });
-                                if (this.producttype['資料收集器-JETEC'] + this.producttype['資料收集器-其他'] > 0)
-                                    list.push({ name: "資料收集器", value: this.producttype['資料收集器-JETEC'] + this.producttype['資料收集器-其他'] });
+                                // var Vehicles = list;
+                                // list = [];
+                                // var pressure = 0;
+                                // var 氣象儀器 = 0;
+                                // var 氣體 = 0;
+                                // var 流量 = 0;
+                                // var 液位 = 0;
+                                // var 溫濕 = 0;
+                                // var 資料收集器 = 0;
+                                // var 溫控器 = 0;
+                                // for (const x of Vehicles) {
+                                //     if (x.name.includes("壓力")) {
+                                //         pressure = pressure + x.value;
+                                //     }
+                                //     if (x.name.includes("氣象儀器")) {
+                                //         氣象儀器 = 氣象儀器 + x.value;
+                                //     }
+                                //     if (x.name.includes("氣體")) {
+                                //         氣體 = 氣體 + x.value;
+                                //     }
+                                //     if (x.name.includes("流量")) {
+                                //         流量 = 流量 + x.value;
+                                //     }
+                                //     if (x.name.includes("液位")) {
+                                //         液位 = 液位 + x.value;
+                                //     }
+                                //     if (x.name.includes("溫濕")) {
+                                //         溫濕 = 溫濕 + x.value;
+                                //     }
+                                //     if (x.name.includes("溫控器")) {
+                                //         溫控器 = 溫控器 + x.value;
+                                //     }
+                                //     if (x.name.includes("資料收集器")) {
+                                //         資料收集器 = 資料收集器 + x.value;
+                                //     }
+
+                                // }
+
+
+                                // if (溫濕 > 0)
+                                //     list.push({ name: "溫濕", value: 溫濕 });
+                                // if (溫控器 > 0)
+                                //     list.push({ name: "溫控器", value: 溫控器 });
+                                // if (液位 > 0)
+                                //     list.push({ name: "液位/料位", value: 液位 });
+                                // if (流量 > 0)
+                                //     list.push({ name: "流量", value: 流量 });
+                                // if (氣體 > 0)
+                                //     list.push({ name: "氣體", value: 氣體 });
+                                // if (氣象儀器 > 0)
+                                //     list.push({ name: "氣象儀器", value: 氣象儀器 });
+                                // if (pressure > 0)
+                                //     list.push({ name: "壓力", value: pressure });
+                                // if (資料收集器 > 0)
+                                //     list.push({ name: "資料收集器", value: 資料收集器 });
+
+                                // if (this.producttype['其它'] > 0)
+                                //     list.push({ name: "其他", value: this.producttype['其它'] });
+                                // if (this.producttype['大型顯示器'] > 0)
+                                //     list.push({ name: "大型顯示器", value: this.producttype['大型顯示器'] });
+                                // if (this.producttype['差壓'] > 0)
+                                //     list.push({ name: "差壓", value: this.producttype['差壓'] });
+                                // if (this.producttype['感溫線棒'] > 0)
+                                //     list.push({ name: "感溫線棒", value: this.producttype['感溫線棒'] });
+                                // if (this.producttype['水質相關'] > 0)
+                                //     list.push({ name: "水質相關", value: this.producttype['水質相關'] });
+                                // if (this.producttype['溫度貼紙'] > 0)
+                                //     list.push({ name: "溫度貼紙", value: this.producttype['溫度貼紙'] });
+                                // if (this.producttype['無線傳輸'] > 0)
+                                //     list.push({ name: "無線傳輸", value: this.producttype['無線傳輸'] });
+                                // if (this.producttype['空氣品質'] > 0)
+                                //     list.push({ name: "空氣品質", value: this.producttype['空氣品質'] });
+                                // if (this.producttype['紅外線'] > 0)
+                                //     list.push({ name: "紅外線", value: this.producttype['紅外線'] });
+                                // if (this.producttype['編碼器/電位計'] > 0)
+                                //     list.push({ name: "編碼器/電位計", value: this.producttype['編碼器/電位計'] });
+                                // if (this.producttype['能源管理控制'] > 0)
+                                //     list.push({ name: "能源管理控制", value: this.producttype['能源管理控制'] });
+                                // if (this.producttype['記錄器'] > 0)
+                                //     list.push({ name: "記錄器", value: this.producttype['記錄器'] });
+
                                 //排序
                                 var Vehicles = list;
                                 Vehicles = Vehicles.sort(function (a, b) {
@@ -355,9 +392,6 @@
                                 }
 
                                 this.BarChart(nameList, valueList, 'producttype', '商品種類精簡');
-
-                                console.log(list);
-
                                 console.log("*****商品種類精簡結束*****");
                             } else {
                                 console.log("*****商品種類*****");
@@ -422,6 +456,7 @@
                                 this.MaxNumCompany = response.MaxNumCompany,
                                 this.SuccessMaxNumCompany = response.SuccessMaxNumCompany,
                                 this.FailMaxNumCompany = response.FailMaxNumCompany,
+                                this.ProductSwitch = false,
                                 console.log("案件最多", response.MaxNumCompany),
                                 console.log(response, "response")
                             )),
