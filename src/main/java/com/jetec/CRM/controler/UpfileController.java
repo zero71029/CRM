@@ -14,12 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -281,74 +277,9 @@ public class UpfileController {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//寄信
-    @RequestMapping("/sendMail")
-    @ResponseBody
-    public List<String> sendMail(@RequestParam("fileName") String fileName, @RequestParam("content") String content, @RequestParam("Subject") String Subject) {
-        //讀取檔案
-        Integer i = US.getZeroMailnum();
-        List<String> suCompany = new ArrayList<>();
-        BufferedReader reader;
-        try {
-            reader = new BufferedReader(new InputStreamReader(new FileInputStream("C:/CRMfile/" + fileName),"UTF-8"));
-            String line ;
-            System.out.println("=================================================================");
-
-            while ((line = reader.readLine()) != null) {
-                String item[] = line.split(",");
-                /** 讀取 **/
-                String email= item[0].trim();
-                String company;
-                String contact;
-                try {
-                    company = item[1].trim();
-                }catch (Exception e){
-                    company = "";
-                }
-
-                try {
-                    contact = item[2].trim();
-                }catch (Exception e){
-                    contact = "";
-                }
-                try {
-                    System.out.print(email + "\t" + company + "\t" + contact + "\n");
-                    String result = content.replace("@company", company);
-                    result = result.replace("@contact", contact);
-                    String resultSubject = Subject.replace("@company", company);
-                    resultSubject = resultSubject.replace("@contact", contact);
-                    System.out.println(email.indexOf("@") > 0);
-                    i++;
-                    if (email.indexOf("@") > 0) {
-                        //寄信去
-                            zTools.SynologyMail(email, result, resultSubject, "");
-                            Thread.sleep(100);
-                            suCompany.add(company);//成功的公司
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        US.saveZeroMailnum(i);
 
 
-        return suCompany;
-    }
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//寄預覽信
-//    @RequestMapping("/testMail")
-//    @ResponseBody
-//    public boolean testMail(@RequestParam("fileName") String fileName, @RequestParam("content") String content, @RequestParam("Subject") String Subject) {
-//
-//
-//        zTools.SynologyMail(email, result, resultSubject, "");
-//        return true;
-//    }
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //上傳附件

@@ -23,6 +23,16 @@
                     <jsp:include page="/Sidebar.jsp"></jsp:include>
                     <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
                     <div class="col-md-11 app">
+                        <el-dialog title="寄預覽信" :visible.sync="tesVisible" width="30%"
+                        :close-on-click-modal ="false">
+                            <input type="email" v-model="testMail" class="form-control">
+
+                  
+                            <span slot="footer" class="dialog-footer">
+                                <el-button type="primary" @click="test">确 定</el-button>
+                            </span>
+                        </el-dialog>
+
                         <el-dialog title="成功的公司" :visible.sync="dialogVisible" width="30%">
                             寄了{{successList.length}}封 <br>
                             <p v-for="(item, index) in successList" :key="index">{{item}}</p>
@@ -31,7 +41,6 @@
                         </el-dialog>
                         <div class="row ">
                             <!-- <%-- 中間主體--%> -->
-
                             <div class="col-md-11 ">
                                 <div class="row ">
                                     <div class="col-md-12 ">
@@ -43,8 +52,6 @@
                                         </el-upload>
                                     </div>
                                 </div>
-
-
 
 
                                 <div class="row ">
@@ -68,22 +75,16 @@
                                             <input type="hidden" name="fileName" v-model="fileName">
                                             <textarea id="content"></textarea>
                                         </form>
-                                        <button @click="test">寄信</button>
+                                        <el-button type="primary" @click="tesVisible = true">寄預覽信</el-button>
+                                        <el-button type="danger" @click="sendMail">寄信</el-button>
                                     </div>
                                 </div>
                                 <div class="row ">
                                     <div class="col-md-12 ">
                                     </div>
                                 </div>
-
-
-
-
                             </div>
-
-
                             <p>&nbsp;</p>
-
                         </div>
                     </div>
                 </div>
@@ -124,10 +125,12 @@
                 el: ".app",
                 data() {
                     return {
+                        testMail: "",
                         fileName: "",
                         fileList: [],
                         textarea: "",
                         dialogVisible: false,
+                        tesVisible: false,
                         successList: [],
                     }
                 },
@@ -144,76 +147,63 @@
                         this.fileName = file.name;
                     },
                     test() {
-                        console.log(tinyMCE.editors[0].getContent());
+                        var testData = new FormData();
+                        testData.append("testMail", this.testMail);
+                        testData.append("content", tinyMCE.editors[0].getContent());
+                        testData.append("Subject", $("#Subject").val());
+                        $.ajax({
+                            url: '${pageContext.request.contextPath}/Marketing/testMail',
+                            type: 'POST',
+                            data: testData,
+                            async: false,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            success: response=> {
+                                if(response.code == 300){
+                                    this.$message.error(response.message)
+                                }
+                                if(response.code == 200){
+                                    this.$message.success(response.message);
+                                    this.tesVisible=false;
+                                }                         
 
+                            },
+                            error: function (returndata) {
+                                console.log(returndata);
+                            }
+                        });
+
+
+
+                    }, sendMail() {
                         if (this.fileName == "") {
-
                             this.$message({
                                 type: 'error',
-                                message: '先上傳檔案!'
+                                message: '先上傳檔案!'ㄡ
                             });
                         } else {
-                            var testData = new FormData();
-                            testData.append("fileName", "zero.csv");
-                            testData.append("content", tinyMCE.editors[0].getContent());
-                            testData.append("Subject", $("#Subject").val());
+                            var formData = new FormData($("#sendForm")[0]);
+                            formData.append("content", tinyMCE.editors[0].getContent());
                             $.ajax({
-                                url: '${pageContext.request.contextPath}/sendMail',//接受請求的Servlet地址
+                                url: '${pageContext.request.contextPath}/Marketing/sendMail',
                                 type: 'POST',
-                                data: testData,
-                                async: false,//同步請求
-                                cache: false,//不快取頁面
-                                contentType: false,//當form以multipart/form-data方式上傳檔案時，需要設定為false
-                                processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
+                                data: formData,
+                                async: false,
+                                cache: false,
+                                contentType: false,
+                                processData: false,
                                 success: function (url) {
                                     console.log(url);
-
+                                    vm.successList = url;
+                                    vm.dialogVisible = true;
                                 },
                                 error: function (returndata) {
                                     console.log(returndata);
                                 }
                             });
-                            this.$confirm("<p>已寄預覽信給 jeter.tony56@gmail.com  jetecmarketing03@gmail.com  ychen@jetec.com.tw 請確認再行動</p>" +
-                                "<p>&nbsp;</p>" + tinyMCE.editors[0].getContent() + "<p>&nbsp;</p>", '預覽內容', {
-                                dangerouslyUseHTMLString: true,
-                                confirmButtonText: '确定',
-                                cancelButtonText: '取消'
-                            }).then(() => {
-
-
-                                var formData = new FormData($("#sendForm")[0]);
-                                formData.append("content", tinyMCE.editors[0].getContent());
-
-
-
-
-                                $.ajax({
-                                    url: '${pageContext.request.contextPath}/sendMail',//接受請求的Servlet地址
-                                    type: 'POST',
-                                    data: formData,
-                                    async: false,//同步請求
-                                    cache: false,//不快取頁面
-                                    contentType: false,//當form以multipart/form-data方式上傳檔案時，需要設定為false
-                                    processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
-                                    success: function (url) {
-                                        console.log(url);
-                                        vm.successList = url;
-                                        vm.dialogVisible = true;
-                                    },
-                                    error: function (returndata) {
-                                        console.log(returndata);
-                                    }
-                                });
-
-                            }).catch(() => {
-                                this.$message({
-                                    type: 'info',
-                                    message: '已取消删除'
-                                });
-                            });
                         }
-
-                    },
+                    }
                 }
             })
         </script>

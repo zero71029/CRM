@@ -147,7 +147,7 @@
                         行銷部
                     </button>
                     <button class="marketing zeroMail"
-                        onclick="javascript:location.href='${pageContext.request.contextPath}/Marketing/zeroMail.jsp'">
+                        onclick="javascript:location.href='${pageContext.request.contextPath}/Marketing/Mail.jsp'">
                         郵件
                     </button>
                     <button class="marketing output"

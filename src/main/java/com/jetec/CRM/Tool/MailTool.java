@@ -2,7 +2,6 @@ package com.jetec.CRM.Tool;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -18,13 +17,24 @@ public class MailTool {
 
 
     public void sendSimpleMail(String to, String Subject,String text) throws Exception {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("zero@mail-jetec.com.tw");
-        message.setTo(to);
-        message.setSubject(Subject);
-        message.setText(text);
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+        helper.setFrom("zero@mail-jetec.com.tw");
+        helper.setTo(to);
+        helper.setSubject(Subject);
+        helper.setText(text, true);
 
-        mailSender.send(message);
+        mailSender.send(mimeMessage);
+    }
+    public void sendSimpleMail(String[] to, String Subject,String text) throws Exception {
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+        helper.setFrom("zero@mail-jetec.com.tw");
+        helper.setTo(to);
+        helper.setSubject(Subject);
+        helper.setText(text, true);
+
+        mailSender.send(mimeMessage);
     }
     //添加附件
     public void sendAttachmentsMail(String to, String Subject,String text) throws Exception {

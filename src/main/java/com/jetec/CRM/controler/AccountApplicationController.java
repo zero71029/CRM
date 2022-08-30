@@ -1,6 +1,7 @@
 package com.jetec.CRM.controler;
 
 
+import com.jetec.CRM.Tool.MailTool;
 import com.jetec.CRM.Tool.ResultBean;
 import com.jetec.CRM.Tool.ZeroFactory;
 import com.jetec.CRM.Tool.ZeroTools;
@@ -23,8 +24,9 @@ import java.util.List;
 @RequestMapping("/AccountApplication")
 public class AccountApplicationController {
 
+
     @Autowired
-    ZeroTools zTools;
+    MailTool mailTool;
     @Autowired
     ApplicationService as;
     Logger logger = LoggerFactory.getLogger("AccountApplicationController.class");
@@ -33,7 +35,7 @@ public class AccountApplicationController {
 //儲存帳號申請表
     @RequestMapping("/save")
     public String save(ApplicationBean aBean) {
-        logger.info("***** 儲存新進⼈員E-Mail/NAS帳號申請表 *****");
+        logger.info("***** 儲存新進⼈員E-Mail/NAS帳號申請表 ***** {}",aBean.getAdmin());
         if (aBean.getApplicationid() == null) {
             aBean.setCreatetime(ZeroTools.getTime(new Date()));
             String text = "到職⽇:  " + aBean.getArrivetime() + "<br><br>" +
@@ -43,8 +45,13 @@ public class AccountApplicationController {
                     "私⼈Email:  " + aBean.getPrivateemail() + "<br><br>" +
                     "ID名稱:  " + aBean.getPrivateid() + "<br><br>" +
                     "公司Email帳號:  " + aBean.getEmail();
-            zTools.SynologyMail("ychen@jetec.com.tw", text, "新進⼈員E-Mail/NAS帳號申請表", "jeter.tony56@gmail.com,zero@mail-jetec.com.tw,ychen@mail-jetec.com.tw");
-
+//            zTools.SynologyMail("ychen@jetec.com.tw", text, "新進⼈員 E-Mail/NAS帳號申請表", "jeter.tony56@gmail.com,zero@mail-jetec.com.tw,ychen@mail-jetec.com.tw");
+            try {
+                String[] mailto = new String[]{"jeter.tony56@gmail.com","zero@mail-jetec.com.tw","ychen@jetec.com.tw","ychen@mail-jetec.com.tw"};
+                mailTool.sendSimpleMail(mailto, "新進⼈員 E-Mail/NAS帳號申請表", text);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return "redirect:/AccountApplication/detail/" + as.save(aBean).getApplicationid() + "?mess=save ok";
     }

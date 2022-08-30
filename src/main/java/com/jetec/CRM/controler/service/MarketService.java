@@ -241,8 +241,13 @@ public class MarketService {
         return ar.findById(id).orElse(null);
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // 搜索銷售機會by日期
+    /**
+     * 搜索銷售機會by日期
+     *
+     * @param startTime 开始时间
+     * @param endTime   结束时间
+     * @return {@link List}<{@link MarketBean}>
+     */
     public List<MarketBean> selectDate(String startTime, String endTime) {
 //        List<MarketBean> result = mr.findAaa(startTime, endTime);
 //        for (MarketBean bean : result) {
