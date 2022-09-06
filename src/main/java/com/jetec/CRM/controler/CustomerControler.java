@@ -21,7 +21,11 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
+/**
+ * @author jetec
+ */
 @Controller
 @RequestMapping("/CRM")
 @PreAuthorize("hasAuthority('系統') OR hasAuthority('主管') OR hasAuthority('業務')OR hasAuthority('國貿')")
@@ -48,9 +52,12 @@ public class CustomerControler {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //儲存客戶
     @RequestMapping("/SaveClient")
-    public String SaveClient(ClientBean clientBean, HttpServletRequest req,Model model) {
+    public String saveClient(ClientBean clientBean, HttpServletRequest req,Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AdminBean adminBean = (AdminBean) authentication.getPrincipal();
+        clientBean.setName(clientBean.getName().trim());
+
+
         //新案件
         if (clientBean.getClientid() == null) {
             clientBean.setAaa(LocalDate.now().toString());
@@ -60,6 +67,12 @@ public class CustomerControler {
                 model.addAttribute("message","名稱重複");
                 return "error/500";
             }
+        }
+        //檢查修改名稱  是否重複
+        ClientBean oldBean = cs.getCompanyByName(clientBean.getName());
+        if (oldBean != null &&      !Objects.equals(oldBean.getClientid(),clientBean.getClientid())){
+            model.addAttribute("message","名稱重複");
+            return "error/500";
         }
         logger.info("{} 儲存客戶 {}", adminBean.getName(), clientBean.getClientid());
         ClientBean save = cs.SaveAdmin(clientBean);
@@ -73,7 +86,7 @@ public class CustomerControler {
         List<MarketBean> marketList = cs.getMarketListByClientid(clientBean.getClientid());
         for (MarketBean marketBean : marketList) {
             marketBean.setClient(clientBean.getName());
-            if (clientBean.getSerialnumber() == null || clientBean.getSerialnumber().equals("")) {
+            if (clientBean.getSerialnumber() == null || "".equals(clientBean.getSerialnumber())) {
                 System.out.println("沒有編號");
             } else {
                 marketBean.setSerialnumber(clientBean.getSerialnumber());
@@ -83,14 +96,7 @@ public class CustomerControler {
         return "redirect:/CRM/client/" + save.getClientid();
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//讀取客戶列表
-//    @RequestMapping("/ClientList")
-//    public String clientList(Model model) {
-//        System.out.println("*****讀取客戶列表*****");
-//        model.addAttribute("list", cs.getList());
-//        return "/client/clientList";
-//    }
+
 
     @RequestMapping("/getclientList")
     @ResponseBody
@@ -131,16 +137,10 @@ public class CustomerControler {
         return ZeroFactory.success("搜索客戶", cs.selectclient(name));
     }
 
-//    @RequestMapping("/selectclient")
-//    public String selectclient(Model model, @RequestParam("name") String name) {
-//        System.out.println("搜索客戶");
-//        name = name.trim();
-//        model.addAttribute("list", cs.selectclient(name));
-//        return "/client/clientList";
-//    }
+
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//刪除客戶
+    //刪除客戶
     @RequestMapping("/delClient")
     @ResponseBody
     public ResultBean delClient(@RequestParam("id") List<Integer> id) {
@@ -164,7 +164,7 @@ public class CustomerControler {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //儲存聯絡人
     @RequestMapping("/SaveContact")
-    public String SaveContact(ContactBean contactBean) {
+    public String saveContact(ContactBean contactBean) {
         logger.info("儲存聯絡人 ");
         logger.info("{}", contactBean);
         cs.SaveContact(contactBean);
@@ -199,15 +199,7 @@ public class CustomerControler {
         return "刪除成功";
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//    // 搜索聯絡人
-//    @RequestMapping("/selectContact")
-//    public String sselectContact(Model model, @RequestParam("name") String name) {
-//        System.out.println("搜索聯絡人");
-//        name = name.trim();
-//        model.addAttribute("list", cs.selectContact(name));
-//        return "/client/contactList";
-//    }
+
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //客戶轉換聯絡人

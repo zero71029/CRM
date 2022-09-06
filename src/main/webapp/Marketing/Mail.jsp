@@ -60,7 +60,7 @@
                                         <span>用 @contact 替換聯絡人名稱</span>
                                     </div>
                                 </div>
-
+                                
 
                                 <div class="row ">
                                     <div class="col-md-12 ">
@@ -180,7 +180,7 @@
                         if (this.fileName == "") {
                             this.$message({
                                 type: 'error',
-                                message: '先上傳檔案!'ㄡ
+                                message: '先上傳檔案!'
                             });
                         } else {
                             var formData = new FormData($("#sendForm")[0]);

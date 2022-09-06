@@ -1,5 +1,6 @@
 package com.jetec.CRM.controler;
 
+import com.jetec.CRM.Tool.MailTool;
 import com.jetec.CRM.Tool.ZeroTools;
 import com.jetec.CRM.controler.service.DirectorService;
 import com.jetec.CRM.controler.service.SystemService;
@@ -114,13 +115,11 @@ public class PublicControl {
 //            }
 
             //////////////////////////////////////////////////////////////////////////////
-            if (sortString.equals("lastmodified"))
+            if (sortString.equals("lastmodified")) {
                 model.addAttribute("list", ss.getBillboardList("公開", adminBean, pag, sort));
+            }
             if (sortString.equals("reply.lastmodified")) {
-
-
                 model.addAttribute("list", ss.getBillboardList("公開", adminBean, pag, sort));
-
             }
             session.setAttribute("user", adminBean);
 //            model.addAttribute("advice", advice);// 抓被@的資料
@@ -300,9 +299,15 @@ public class PublicControl {
             ServletContext sce = req.getServletContext();
             sce.setAttribute("admin", ar.findByStateOrState("在職", "新"));
             AdminBean user = (AdminBean) session.getAttribute("user");
-            if (user != null)
-                if (user.getPosition().equals("系統") || user.getPosition().equals("主管"))
+            if (user != null) {
+                if (user.getPosition().equals("系統") || user.getPosition().equals("主管")) {
+                    zTools.mail("jeter.tony56@gmail.com","CRM新增員工 "+user.getName(),"CRM新增員工","");
+
+
+
                     return "儲存成功,<a href='/CRM/system/adminList/adminid'>返回</a>";
+                }
+            }
             return save;
         }
         return "Email已經被使用,請更換一個";
@@ -445,7 +450,7 @@ public class PublicControl {
         AdminBean user = (AdminBean) session.getAttribute("user");// 登入者
         // 插入最後回覆時間時間
         Date date = new Date();
-        bb.setReplytime(zTools.getTime(date));
+        bb.setReplytime(ZeroTools.getTime(date));
         AdminBean abean = ar.findByName(bb.getUser());// 取出發佈人
         // 寄Emai 給發佈人
         String mailTo = abean.getEmail();
@@ -554,7 +559,7 @@ public class PublicControl {
             for (Integer a : adviceto) {
                 if (a != 0) {
                     // 儲存ReplyAdvice
-                    raBean.setReplyadvice(zTools.getUUID());
+                    raBean.setReplyadvice(ZeroTools.getUUID());
                     raBean.setAdviceto(a);
                     ss.saveReplyAdvice(raBean);
                     // 儲存maill

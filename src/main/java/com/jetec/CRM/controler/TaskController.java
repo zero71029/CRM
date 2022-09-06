@@ -135,7 +135,8 @@ public class TaskController {
     @ResponseBody
     @RequestMapping("/directorTaskList")
     public Map<String, Object> directorTaskList(@RequestParam("pag") Integer pag) {
-        System.out.println("主管任務列表");
+
+        logger.info("主管任務列表");
         pag--;
         return TS.getList(pag);
     }

@@ -35,7 +35,11 @@
                         <br>
                         <c:if test="${user.position== '主管' || user.position== '系統'}">
                             <el-tag v-for="(s, index) in userList" :key="index" @click="search(s)"
-                            style="cursor: pointer; margin-right: 10px;">{{s}}</el-tag>      
+                            style="cursor: pointer; margin-right: 10px;"
+                            
+                            
+                            
+                            >{{s}}</el-tag>      
                             <hr>
                         </c:if>
 

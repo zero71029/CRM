@@ -25,6 +25,6 @@ public interface EvaluateRepository extends JpaRepository<EvaluateBean,String> {
     Page<EvaluateBean> findByName(String name, Pageable p);
 
 
-    @Query(value ="SELECT DISTINCT name from evaluate ", nativeQuery=true)
+    @Query(value ="SELECT distinct  e.name from evaluate e left join admin a on e.name = a.name where state = '在職' or  state ='新' ", nativeQuery=true)
     List<String> getName();
 }

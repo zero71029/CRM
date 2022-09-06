@@ -134,11 +134,14 @@
                                             <div class="col-lg-9 cell FormPadding">
 
                                                 <div class="input-group mb-3">
+
+
                                                     <input type="text" class="form-control" placeholder="名稱" name="name"
                                                         value="${bean.name}" maxlength="100" required>
                                                     <span class="input-group-text">-</span>
                                                     <input type="text" class="form-control" placeholder="編號"
                                                         name="serialnumber" value="${bean.serialnumber}">
+                                                        
                                                 </div>
 
                                             </div>
