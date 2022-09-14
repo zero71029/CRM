@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -178,6 +179,8 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
     List<MarketBean> findByFaxLikeAndAaaBetween(String s, String startDay, String endDay, Sort sort);
 
     Page<MarketBean> findByStageNotAndStageNot(String stage1, String stage2, Pageable p);
+
+    List<MarketBean> findByCreatetimeAndAaaBetween(String s, String startDay, String endDay, Sort sort);
 
 
 //   Strin a = """

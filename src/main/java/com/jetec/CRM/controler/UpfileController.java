@@ -5,6 +5,8 @@ import com.jetec.CRM.controler.service.UpfileService;
 import com.jetec.CRM.model.MarketFileBean;
 import com.jetec.CRM.model.ReplyFileBean;
 import com.jetec.CRM.repository.ReplyFileRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +30,8 @@ public class UpfileController {
     ReplyFileRepository rfr;
     @Autowired
     UpfileService US;
+
+    Logger logger = LoggerFactory.getLogger("UpfileController");
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //上傳留言型錄
@@ -186,15 +190,16 @@ public class UpfileController {
     public MarketFileBean upFileByMarket(MultipartHttpServletRequest multipartRequest,
                                          @RequestParam("authorizeId") String authorizeId) {
         System.out.println("*****上傳附件*****" + authorizeId);
+        logger.info("*****上傳附件*****()" , authorizeId);
         Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
         System.out.println("fileMap " + fileMap);//圖片儲存
         try {
 //2. 儲存圖片到資料夾
             if (fileMap.get("file") != null) {//讀取檔眳
                 //讀取檔名
-                System.out.println(fileMap.get("file").getOriginalFilename());
+
+                logger.info(fileMap.get("file").getOriginalFilename());
                 String filename = fileMap.get("file").getOriginalFilename();
-                System.out.println(filename.indexOf("[") + "ddddddddddddddddd");
                 //替換特殊符號
                 if (filename.indexOf("[") > 0) {
                     filename = filename.replace("[", "-");
@@ -210,7 +215,7 @@ public class UpfileController {
                 String path3 = "C:\\Users\\Rong\\Desktop\\tomcat-9.0.41\\webapps\\CRM\\WEB-INF\\classes\\static\\file\\"
                         + filename;
 //檔案輸出
-                System.out.println("檔案輸出到" + path2);
+                logger.info("檔案輸出到 {}" , path2);
                 fileMap.get("file").transferTo(new File(path2));
                 System.out.println("輸出成功");
 //3. 儲存檔案名稱到資料庫

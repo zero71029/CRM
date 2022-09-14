@@ -124,6 +124,8 @@
                                     <div class="row">
                                         <input type="hidden" name="user" v-model="user">
                                         <input type="hidden" name="clientid" value="${bean.clientid}">
+                                        <input type="hidden" name="state" value="${bean.state}">
+                                        <input type="hidden" name="aaa" value="${bean.aaa}">
                                         <div class="row">
                                             <div class="col-lg-1"></div>
                                             <div class="col-lg-10 log ">基本資訊</div>

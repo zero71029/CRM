@@ -39,6 +39,7 @@
                     <jsp:include page="/Sidebar.jsp"></jsp:include>
                     <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
                     <div class="col-md-11 app" v-cloak>
+
                         <!-- <%-- 抬頭按鈕--%> -->
                         <div class="row">
                             <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
@@ -518,29 +519,35 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!--  產業-->
+                                    <!--  案件類型 -->
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
                                             <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#i99">
-                                                產業
+                                                data-bs-toggle="collapse" data-bs-target="#i13">
+                                                案件類型
                                             </button>
                                         </h2>
-                                        <div id="i99" class="accordion-collapse collapse"
+                                        <div id="i13" class="accordion-collapse collapse"
                                             aria-labelledby="flush-headingThree">
                                             <div class="accordion-body">
-                                                <div class="form-check" v-for="(s, index) in ind" :key="index">
-                                                    <input class="form-check-input" type="checkbox" :value="s"
-                                                        :id="'industry'+index" name="industry" v-model="source">
-                                                    <label class="form-check-label" :for="'industry'+index">
-                                                        {{s}}
-                                                    </label>
-                                                </div>
+
+                                                <el-checkbox-group v-model="Casetype">
+                                                    <div class="row">
+                                                        <div class="col-md-5">
+                                                            <el-checkbox label="轉賣"> 轉賣 </el-checkbox>
+                                                            <el-checkbox label="自用"> 自用 </el-checkbox>
+                                                            <el-checkbox label="設計/預算規劃"> 設計/預算規劃 </el-checkbox>
+                                                            <el-checkbox label="工程標案"> 工程標案 </el-checkbox>
+                                                        </div>
+                                                    </div>
+                                                </el-checkbox-group>
+                                                <el-button type="primary" @click="selectList" style="width: 100%;">送出
+                                                </el-button>
+
                                             </div>
-                                            <button class="btn btn-outline-secondary" v-on:click="selectList">搜索
-                                            </button>
                                         </div>
                                     </div>
+
                                     <!--  產品類別-->
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
@@ -569,6 +576,29 @@
                                                 <el-button type="primary" @click="selectList" style="width: 100%;">送出
                                                 </el-button>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <!--  產業-->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#i99">
+                                                產業
+                                            </button>
+                                        </h2>
+                                        <div id="i99" class="accordion-collapse collapse"
+                                            aria-labelledby="flush-headingThree">
+                                            <div class="accordion-body">
+                                                <div class="form-check" v-for="(s, index) in ind" :key="index">
+                                                    <input class="form-check-input" type="checkbox" :value="s"
+                                                        :id="'industry'+index" name="industry" v-model="source">
+                                                    <label class="form-check-label" :for="'industry'+index">
+                                                        {{s}}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-outline-secondary" v-on:click="selectList">搜索
+                                            </button>
                                         </div>
                                     </div>
                                     <!--  機會來源 -->
@@ -622,18 +652,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- 自動結案 -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header">
 
-
-
-                                            <!-- <button class="accordion-button collapsed" type="button" @click="getAutoClose"
-                                        data-bs-toggle="collapse" data-bs-target="#i13"></button> -->
-
-
-                                        </h2>
-                                    </div>
 
 
 
@@ -747,6 +766,7 @@
                     </div>
                 </div>
             </div>
+
         </body>
         <script>
             $(".market").show();
@@ -807,6 +827,7 @@
             const vm = new Vue({
                 el: '.app',
                 data: {
+                    loading: true,
                     pccVisible: true,
                     pcc: [],//3天前潛在客戶轉
                     MarketStateList: [],//狀態列表
@@ -889,6 +910,7 @@
                     budget1: "0",
                     budget2: "",
                     //搜索區資料
+                    Casetype: [],//案件類型
                     AutoClose: false,
                     company: "",
                     intracktime: [],
@@ -1105,6 +1127,12 @@
 
                     },
                     selectList: function () {//搜索
+                        const loading = this.$loading({
+                            lock: true,
+                            text: 'Loading',
+                            spinner: 'el-icon-loading',
+                            background: 'rgba(0, 0, 0, 0.7)'
+                        });
                         var star = new Date();
                         this.inSortState = [];
                         this.btncheck3 = false;
@@ -1150,171 +1178,191 @@
                             url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=closereason&val=自動結案";
                         } else if (this.inUserList != "") {//負責人
                             url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=UserList&val=" + this.inUserList;
+                        } else if (this.Casetype != "") {//案件類型
+                            url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=createtime&val=" + this.Casetype;
                         }
 
                         $.ajax({
                             url: url,
                             type: 'POST',
-                            async: false,//同步請求
-                            cache: false,//不快取頁面
-                            success: (response => (
-                                this.list = response,
-                                this.total = this.list.length,
-                                this.oldList = response,
-                                console.log("搜索返回", response)
-                            )),
+                            // async: false,//同步請求
+                            // cache: false,//不快取頁面
+                            success: response => {
+                                this.list = response;
+                                this.total = this.list.length;
+                                this.oldList = response;
+                                console.log("搜索返回", response);
+                                if (this.inUserList != "") {//負責人
+                                    this.oldList = this.list;
+                                    this.list = []
+                                    for (var u of this.inUserList)
+                                        for (var bean of this.oldList) {
+                                            if (u == bean.user) {
+                                                this.list.push(bean);
+                                            }
+                                        }
+                                }
+                                if (this.name != "") {//機會民稱
+                                    this.oldList = this.list;
+                                    this.list = [];
+                                    for (var bean of this.oldList) {
+                                        if (bean.name.indexOf(this.name) >= 0) {
+                                            this.list.push(bean);
+                                        }
+                                    }
+                                }
+                                // console.log("name",this.list);
+                                if (this.company != "") {//客戶
+                                    this.oldList = this.list;
+                                    this.list = [];
+                                    for (var bean of this.oldList) {
+                                        if (bean.client.indexOf(this.company) >= 0) {
+                                            this.list.push(bean);
+                                        }
+                                    }
+                                }
+                                // console.log("company",this.list);
+                                if (this.inStateList != "") {//狀態
+                                    this.oldList = this.list;
+                                    this.list = [];
+                                    for (var u of this.inStateList)
+                                        for (var bean of this.oldList) {
+                                            if (u == bean.stage) {
+                                                this.list.push(bean);
+                                            }
+                                        }
+                                }
+                                // console.log("inStateList",this.list);
+                                if (this.inContact != "") {//聯絡人
+                                    this.oldList = this.list;
+                                    this.list = [];
+                                    for (var bean of this.oldList) {
+                                        if (bean.contactname.indexOf(this.inContact) >= 0) {
+                                            this.list.push(bean);
+                                        }
+                                    }
+                                }
+                                // console.log("inContact",this.list);
+                                if (this.ContantPhone != "") {//聯絡人電話
+
+                                    this.oldList = this.list;
+                                    this.list = [];
+                                    for (var bean of this.oldList) {
+                                        if (bean.contactphone.indexOf(this.ContantPhone) >= 0) {
+                                            this.list.push(bean);
+                                        } else
+                                            if (bean.contactmoblie.indexOf(this.ContantPhone) >= 0) {
+                                                this.list.push(bean);
+                                            } else
+                                                if (bean.fax.indexOf(this.ContantPhone) >= 0) {
+                                                    this.list.push(bean);
+                                                }
+                                    }
+                                }
+                                // console.log("ContantPhone",this.list);
+                                if (this.source != "") {//產業
+                                    this.oldList = this.list;
+                                    this.list = [];
+                                    for (var u of this.source)
+                                        for (var bean of this.oldList) {
+                                            if (u == bean.type) {
+                                                this.list.push(bean);
+                                            }
+                                        }
+                                }
+                                // console.log(this.list);
+                                if (this.checkedCities != "") {//產品類別
+                                    this.oldList = this.list;
+                                    this.list = [];
+                                    for (var u of this.checkedCities)
+                                        for (var bean of this.oldList) {
+                                            if (u == bean.producttype) {
+                                                this.list.push(bean);
+                                            }
+                                        }
+                                }
+                                // console.log(this.list);
+                                if (this.checkedSources != "") {//機會來源
+                                    this.oldList = this.list;
+                                    this.list = [];
+                                    for (var u of this.checkedSources)
+                                        for (var bean of this.oldList) {
+                                            if (u == bean.source) {
+                                                this.list.push(bean);
+                                            }
+                                        }
+                                }
+                                // console.log(this.list);
+                                if (this.clinch != "") {//成交機率
+                                    this.oldList = this.list;
+                                    this.list = [];
+                                    for (var bean of this.oldList) {
+                                        if (bean.clinch == this.clinch) {
+                                            this.list.push(bean);
+                                        }
+                                    }
+                                }
+                                // console.log(this.list);
+                                if (this.product != "") {//商品
+                                    this.oldList = this.list;
+                                    this.list = [];
+                                    for (var bean of this.oldList) {
+                                        if (bean.product.indexOf(this.product) >= 0 || bean.message.indexOf(this.product) >= 0 || bean.name.indexOf(this.product) >= 0 || bean.quote.indexOf(this.product) >= 0) {
+                                            this.list.push(bean);
+                                        }
+                                    }
+                                }
+                                // console.log(this.list);
+                                if (this.AutoClose) {//自動結案
+                                    this.oldList = this.list;
+                                    this.list = [];
+                                    for (var bean of this.oldList) {
+                                        if (bean.closereason == "自動結案") {
+                                            this.list.push(bean);
+                                        }
+                                    }
+                                }
+                                if (this.quote != "") {//報價內容
+                                    this.oldList = this.list;
+                                    this.list = [];
+                                    this.oldList.forEach((val, index, arr) => {
+                                        if (val.quote != null)
+                                            if (val.quote.indexOf(this.quote) >= 0) {
+                                                this.list.push(val);
+                                            }
+                                    })
+                                }
+
+
+
+
+                                if (this.Casetype != "") {//案件類型
+                                    this.oldList = this.list;
+                                    this.list = [];
+                                    this.oldList.forEach((val, index, arr) => {
+                                        if (val.createtime != null)
+                                            if (val.createtime.indexOf(this.Casetype) >= 0) {
+                                                this.list.push(val);
+                                            }
+                                    })
+                                }
+
+
+
+
+                                loading.close();
+                                // console.log(this.list);
+                                this.total = 20;
+                                this.oldList = this.list;
+
+                                var en = new Date();
+                                console.log("花費時間", en - star);
+                            },
                             error: function (returndata) {
                                 console.log(returndata);
                             }
                         });
-                        if (this.inUserList != "") {//負責人
-                            this.oldList = this.list;
-                            this.list = []
-                            for (var u of this.inUserList)
-                                for (var bean of this.oldList) {
-                                    if (u == bean.user) {
-                                        this.list.push(bean);
-                                    }
-                                }
-                        }
-                        if (this.name != "") {//機會民稱
-                            this.oldList = this.list;
-                            this.list = [];
-                            for (var bean of this.oldList) {
-                                if (bean.name.indexOf(this.name) >= 0) {
-                                    this.list.push(bean);
-                                }
-                            }
-                        }
-                        // console.log("name",this.list);
-                        if (this.company != "") {//客戶
-                            this.oldList = this.list;
-                            this.list = [];
-                            for (var bean of this.oldList) {
-                                if (bean.client.indexOf(this.company) >= 0) {
-                                    this.list.push(bean);
-                                }
-                            }
-                        }
-                        // console.log("company",this.list);
-                        if (this.inStateList != "") {//狀態
-                            this.oldList = this.list;
-                            this.list = [];
-                            for (var u of this.inStateList)
-                                for (var bean of this.oldList) {
-                                    if (u == bean.stage) {
-                                        this.list.push(bean);
-                                    }
-                                }
-                        }
-                        // console.log("inStateList",this.list);
-                        if (this.inContact != "") {//聯絡人
-                            this.oldList = this.list;
-                            this.list = [];
-                            for (var bean of this.oldList) {
-                                if (bean.contactname.indexOf(this.inContact) >= 0) {
-                                    this.list.push(bean);
-                                }
-                            }
-                        }
-                        // console.log("inContact",this.list);
-                        if (this.ContantPhone != "") {//聯絡人電話
 
-                            this.oldList = this.list;
-                            this.list = [];
-                            for (var bean of this.oldList) {
-                                if (bean.contactphone.indexOf(this.ContantPhone) >= 0) {
-                                    this.list.push(bean);
-                                } else
-                                    if (bean.contactmoblie.indexOf(this.ContantPhone) >= 0) {
-                                        this.list.push(bean);
-                                    } else
-                                        if (bean.fax.indexOf(this.ContantPhone) >= 0) {
-                                            this.list.push(bean);
-                                        }
-                            }
-                        }
-                        // console.log("ContantPhone",this.list);
-                        if (this.source != "") {//產業
-                            this.oldList = this.list;
-                            this.list = [];
-                            for (var u of this.source)
-                                for (var bean of this.oldList) {
-                                    if (u == bean.type) {
-                                        this.list.push(bean);
-                                    }
-                                }
-                        }
-                        // console.log(this.list);
-                        if (this.checkedCities != "") {//產品類別
-                            this.oldList = this.list;
-                            this.list = [];
-                            for (var u of this.checkedCities)
-                                for (var bean of this.oldList) {
-                                    if (u == bean.producttype) {
-                                        this.list.push(bean);
-                                    }
-                                }
-                        }
-                        // console.log(this.list);
-                        if (this.checkedSources != "") {//機會來源
-                            this.oldList = this.list;
-                            this.list = [];
-                            for (var u of this.checkedSources)
-                                for (var bean of this.oldList) {
-                                    if (u == bean.source) {
-                                        this.list.push(bean);
-                                    }
-                                }
-                        }
-                        // console.log(this.list);
-                        if (this.clinch != "") {//成交機率
-                            this.oldList = this.list;
-                            this.list = [];
-                            for (var bean of this.oldList) {
-                                if (bean.clinch == this.clinch) {
-                                    this.list.push(bean);
-                                }
-                            }
-                        }
-                        // console.log(this.list);
-                        if (this.product != "") {//商品
-                            this.oldList = this.list;
-                            this.list = [];
-                            for (var bean of this.oldList) {
-                                if (bean.product.indexOf(this.product) >= 0 || bean.message.indexOf(this.product) >= 0 || bean.name.indexOf(this.product) >= 0 || bean.quote.indexOf(this.product) >= 0) {
-                                    this.list.push(bean);
-                                }
-                            }
-                        }
-                        // console.log(this.list);
-                        if (this.AutoClose) {//自動結案
-                            this.oldList = this.list;
-                            this.list = [];
-                            for (var bean of this.oldList) {
-                                if (bean.closereason == "自動結案") {
-                                    this.list.push(bean);
-                                }
-                            }
-                        }
-                        if (this.quote != "") {//報價內容
-                            this.oldList = this.list;
-                            this.list = [];
-                            this.oldList.forEach((val, index, arr) => {
-                                if (val.quote != null)
-                                    if (val.quote.indexOf(this.quote) >= 0) {
-                                        this.list.push(val);
-                                    }
-                            })
-
-                        }
-
-                        // console.log(this.list);
-                        this.total = 20;
-                        this.oldList = this.list;
-
-                        var en = new Date();
-                        console.log("花費時間", en - star);
                     },
                     selectBudget: function () {//select預算
                         axios

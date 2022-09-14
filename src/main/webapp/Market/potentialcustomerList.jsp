@@ -621,6 +621,12 @@
                 methods: {
                     //搜索
                     selectList: function () {
+                        const loading = this.$loading({
+                            lock: true,
+                            text: 'Loading',
+                            spinner: 'el-icon-loading',
+                            background: 'rgba(0, 0, 0, 0.7)'
+                        });
                         console.log(this.inDay[0]);
                         this.btncheck3 = false;
                         if (this.inDay == "") {//沒輸入日期                  
@@ -647,80 +653,83 @@
                         $.ajax({
                             url: url,
                             type: 'POST',
-                            async: false,
-                            cache: false,
-                            success: (response => (
-                                this.list = response,
-                                this.total = this.list.length
-                            )),
+                            // async: false,
+                            // cache: false,
+                            success: response => {
+                                this.list = response;
+                                this.total = this.list.length;
+                                if (this.inUserList != "") {//負責人
+                                    this.oldList = this.list;
+                                    this.list = []
+                                    for (var u of this.inUserList)
+                                        for (var bean of this.oldList) {
+                                            if (u == bean.user) {
+                                                this.list.push(bean);
+                                            }
+                                        }
+                                }
+
+                                if (this.content != "") {//詢問內容
+                                    this.oldList = this.list;
+                                    this.list = [];
+                                    for (var bean of this.oldList) {
+                                        if (bean.remark.indexOf(this.content) >= 0) {
+                                            this.list.push(bean);
+                                        }
+                                    }
+                                }
+                                if (this.name != "") {//聯絡人,公司名稱
+                                    this.oldList = this.list;
+                                    this.list = [];
+                                    for (var bean of this.oldList) {
+                                        if (bean.name.indexOf(this.name) >= 0 || bean.company.indexOf(this.name) >= 0) {
+                                            this.list.push(bean);
+                                        }
+                                    }
+                                }
+                                if (this.inStateList != "") {//狀態
+                                    console.log(this.inStateList);
+                                    this.oldList = this.list;
+                                    this.list = [];
+                                    for (var u of this.inStateList)
+                                        for (var bean of this.oldList) {
+                                            console.log(u == bean.status);
+                                            if (u == bean.status) {
+                                                this.list.push(bean);
+                                            }
+                                        }
+                                }
+                                console.log(this.industry);
+                                if (this.industry != "") {//產業
+                                    this.oldList = this.list;
+                                    this.list = [];
+                                    for (var u of this.industry)
+                                        for (var bean of this.oldList) {
+                                            if (u == bean.industry) {
+                                                this.list.push(bean);
+                                            }
+                                        }
+                                }
+                                this.total = 40;
+                                console.log(this.list.length, "this.list.length");
+
+
+                                //領取狀態翻譯
+                                this.list.forEach(e => {
+                                    switch (e.receivestate) {
+                                        case 1: e.receivestate = '<el-tag>領取</el-tag>'; break;
+                                        case 2: e.receivestate = '<el-tag>分配</el-tag>'; break;
+                                        case 3: e.receivestate = ''; break;
+                                    }
+                                });
+                                loading.close();
+
+                            },
                             error: function (returndata) {
                                 console.log(returndata);
                             }
                         });
-                        if (this.inUserList != "") {//負責人
-                            this.oldList = this.list;
-                            this.list = []
-                            for (var u of this.inUserList)
-                                for (var bean of this.oldList) {
-                                    if (u == bean.user) {
-                                        this.list.push(bean);
-                                    }
-                                }
-                        }
 
-                        if (this.content != "") {//詢問內容
-                            this.oldList = this.list;
-                            this.list = [];
-                            for (var bean of this.oldList) {
-                                if (bean.remark.indexOf(this.content) >= 0) {
-                                    this.list.push(bean);
-                                }
-                            }
-                        }
-                        if (this.name != "") {//聯絡人,公司名稱
-                            this.oldList = this.list;
-                            this.list = [];
-                            for (var bean of this.oldList) {
-                                if (bean.name.indexOf(this.name) >= 0 || bean.company.indexOf(this.name) >= 0) {
-                                    this.list.push(bean);
-                                }
-                            }
-                        }
-                        if (this.inStateList != "") {//狀態
-                            console.log(this.inStateList);
-                            this.oldList = this.list;
-                            this.list = [];
-                            for (var u of this.inStateList)
-                                for (var bean of this.oldList) {
-                                    console.log(u == bean.status);
-                                    if (u == bean.status) {
-                                        this.list.push(bean);
-                                    }
-                                }
-                        }
-                        console.log(this.industry);
-                        if (this.industry != "") {//產業
-                            this.oldList = this.list;
-                            this.list = [];
-                            for (var u of this.industry)
-                                for (var bean of this.oldList) {
-                                    if (u == bean.industry) {
-                                        this.list.push(bean);
-                                    }
-                                }
-                        }
-                        this.total = 40;
-                        console.log(this.list.length, "this.list.length");
-
-
-                        //領取狀態翻譯
-                        this.list.forEach(e => {
-                            switch (e.receivestate) {
-                                case 1: e.receivestate = '<el-tag>領取</el-tag>'; break;
-                                case 2: e.receivestate = '<el-tag>分配</el-tag>'; break;
-                                case 3: e.receivestate = ''; break;
-                            }
-                        });
                     },
                     handleCurrentChange(val) {//點擊分頁
                         axios

@@ -1,6 +1,5 @@
 package com.jetec.CRM.controler;
 
-import com.jetec.CRM.Tool.MailTool;
 import com.jetec.CRM.Tool.ZeroTools;
 import com.jetec.CRM.controler.service.DirectorService;
 import com.jetec.CRM.controler.service.SystemService;
@@ -87,7 +86,7 @@ public class PublicControl {
     public String billboard(Model model, HttpSession session, @RequestParam("pag") Integer pag,
                             @RequestParam("sort") String sortString) {
         System.out.println("*****主頁面*****");
-        if (sortString.equals("createtime")) sortString = "lastmodified";
+        if ("createtime".equals(sortString)) sortString = "lastmodified";
         // 分頁
         if (pag < 1)
             pag = 1;
@@ -115,10 +114,10 @@ public class PublicControl {
 //            }
 
             //////////////////////////////////////////////////////////////////////////////
-            if (sortString.equals("lastmodified")) {
+            if ("lastmodified".equals(sortString)) {
                 model.addAttribute("list", ss.getBillboardList("公開", adminBean, pag, sort));
             }
-            if (sortString.equals("reply.lastmodified")) {
+            if ("reply.lastmodified".equals(sortString)) {
                 model.addAttribute("list", ss.getBillboardList("公開", adminBean, pag, sort));
             }
             session.setAttribute("user", adminBean);
@@ -126,9 +125,9 @@ public class PublicControl {
 //            model.addAttribute("unread", unread);// 抓被未讀的資料
         } else {
             AdminBean xxx = null;
-            if (sortString.equals("lastmodified"))
+            if ("lastmodified".equals(sortString))
                 model.addAttribute("list", ss.getBillboardList("公開", xxx, pag, sort));
-            if (sortString.equals("reply.lastmodified")) {
+            if ("reply.lastmodified".equals(sortString)) {
                 model.addAttribute("list", ss.getBillboardList("公開", xxx, pag, sort));
             }
         }
@@ -151,7 +150,7 @@ public class PublicControl {
             AdminBean adminBean = ar.getById(user.getAdminid());
             List<BillboardAdviceBean> a = adminBean.getAdvice();
             for (BillboardAdviceBean bean : a) {
-                if (bean.getReply().equals("1"))
+                if ("1".equals(bean.getReply()))
                     advice.add(br.getById(bean.getBillboardid()));
             }
             // 抓被未讀的資料
@@ -300,7 +299,7 @@ public class PublicControl {
             sce.setAttribute("admin", ar.findByStateOrState("在職", "新"));
             AdminBean user = (AdminBean) session.getAttribute("user");
             if (user != null) {
-                if (user.getPosition().equals("系統") || user.getPosition().equals("主管")) {
+                if ("系統".equals(user.getPosition()) || "主管".equals(user.getPosition())) {
                     zTools.mail("jeter.tony56@gmail.com","CRM新增員工 "+user.getName(),"CRM新增員工","");
 
 
@@ -582,7 +581,7 @@ public class PublicControl {
     @RequestMapping("/forget")
     public String forget(AdminBean bean, Model model) {
         logger.info("忘記密碼 {}", bean.getEmail());
-        String uuid = zTools.getUUID();
+        String uuid = ZeroTools.getUUID();
         Map<String, String> errors = new HashMap<>();
         model.addAttribute("errors", errors);
         model.addAttribute("email", bean.getEmail());
@@ -720,7 +719,7 @@ public class PublicControl {
     public List<BosMessageBean> SaveMessage(@RequestBody Map<String, String> body) {
         logger.info("儲存主管留言  {}",body);
 
-        BosMessageBean bmBean = new BosMessageBean(zTools.getUUID(), body.get("bosmessage"), body.get("admin"), body.get("message"), ZeroTools.getTime(new Date()));
+        BosMessageBean bmBean = new BosMessageBean(ZeroTools.getUUID(), body.get("bosmessage"), body.get("admin"), body.get("message"), ZeroTools.getTime(new Date()));
         ds.save(bmBean);
         System.out.println(ds.getBosMessageList(body.get("bosmessage")));
         return ds.getBosMessageList(body.get("bosmessage"));

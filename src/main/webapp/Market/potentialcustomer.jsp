@@ -361,9 +361,9 @@
                                         <div class="col-md-4  FormPadding ">
 
 
-                                            <div class="receive" v-show="customer.receive == '${user.name}'  "
+                                            <!-- <div class="receive" v-show="customer.receive == '${user.name}'  "
                                                 style="color: #0d6efd;cursor: pointer;line-height: 30px;"
-                                                @click="clickReceive">取消任務</div>
+                                                @click="clickReceive">取消任務</div> -->
                                             <div class="receive" v-show="customer.receivestate == '3' "
                                                 style="color: #0d6efd;cursor: pointer;line-height: 30px;"
                                                 @click="clickReceive">領取任務</div>
@@ -373,10 +373,6 @@
 
                                         </div>
                                     </div>
-
-
-
-
 
                                     <div class="row">
                                         <div class="col-md-3 cellz" style="line-height: 30px;">潛在客戶負責人</div>

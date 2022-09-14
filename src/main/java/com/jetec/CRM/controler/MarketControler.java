@@ -278,9 +278,12 @@ public class MarketControler {
 //存追蹤by 淺在顧客
     @RequestMapping("/SaveTrack")
     public String SaveTrack(TrackBean trackBean) {
-        System.out.println("存追蹤");
-        if (trackBean.getTrackid() == null || trackBean.getTrackid().isEmpty())
+        logger.info("存追蹤 {}" ,trackBean.getCustomerid());
+        logger.info(trackBean.getTrackdescribe());
+        logger.info(trackBean.getResult());
+        if (trackBean.getTrackid() == null || trackBean.getTrackid().isEmpty()) {
             trackBean.setTrackid(ZeroTools.getUUID());
+        }
         trackBean.setTracktime(ZeroTools.getTime(new Date()));
         ms.SaveTrack(trackBean);
         return "redirect:/Market/potentialcustomer/" + trackBean.getCustomerid();
@@ -657,6 +660,9 @@ public class MarketControler {
     @ResponseBody
     public List<TrackBean> SaveTrackByMarket(TrackBean trackBean, @PathVariable("marketid") String marketid) {
         System.out.println("存追蹤by銷售機會");
+        logger.info("存追蹤by銷售機會 {}",trackBean.getCustomerid());
+        logger.info(trackBean.getTrackdescribe());
+        logger.info(trackBean.getResult());
         String uuid = ZeroTools.getUUID();
         if (trackBean.getTrackid() == null || trackBean.getTrackid().isEmpty())
             trackBean.setTrackid(uuid);

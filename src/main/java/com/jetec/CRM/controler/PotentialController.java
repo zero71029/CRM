@@ -61,7 +61,9 @@ public class PotentialController {
     public Map<String, Object> clientList(@RequestParam("pag") Integer pag) {
         logger.info("*****讀取潛在客戶列表*****");
         pag--;
-        if (pag < 0) pag = 0;
+        if (pag < 0) {
+            pag = 0;
+        }
         Map<String, Object> result = new HashMap<>();
         result.put("list", PCS.getList(pag));
         result.put("todayTotal", PCS.gettodayTotal());
@@ -98,7 +100,7 @@ public class PotentialController {
     @RequestMapping("/selectDate")
     public List<PotentialCustomerBean> selectDate(@RequestParam("startDay") String startDay, @RequestParam("endDay") String endDay) {
         logger.info("搜索潛在客戶 日期");
-        if (startDay == null || startDay.equals("")) {
+        if (startDay == null || "".equals(startDay)) {
 //			startDay = zTools.getTime(new Date());
 //			startDay = startDay.substring(0,10);
 //			startDay = startDay + " 00:00";
@@ -106,7 +108,7 @@ public class PotentialController {
         } else {
             startDay = startDay + " 00:00";
         }
-        if (endDay.equals("")) {
+        if ("".equals(endDay)) {
             endDay = ZeroTools.getTime(new Date());
         } else {
             endDay = endDay + " 24:00";
@@ -261,7 +263,7 @@ public class PotentialController {
     public String CallHelp(@PathVariable("customerid") String customerid) {
         logger.info("求助 {}",customerid);
         PotentialCustomerBean mbean = PCS.getById(customerid);
-        if (mbean.getCallhelp() == null || !mbean.getCallhelp().equals("1")) {
+        if (mbean.getCallhelp() == null || !"1".equals(mbean.getCallhelp())) {
             mbean.setCallhelp("1");
             PCS.SavePotentialCustomer(mbean);
             return "求助";
@@ -278,12 +280,12 @@ public class PotentialController {
     @RequestMapping("/selectPotential")
     public List<PotentialCustomerBean> selectPotential(@RequestParam("startDay") String startDay, @RequestParam("endDay") String endDay, @RequestParam("key") String key, @RequestParam("val") List<String> val) {
         logger.info("搜索潛在客戶  key={} val={}",key,val);
-        if (startDay == null || startDay.equals("")) {
+        if (startDay == null || "".equals(startDay)) {
             startDay = "2022-02-01 00:00";
         } else {
             startDay = startDay + " 00:00";
         }
-        if (endDay.equals("")) {
+        if ("".equals(endDay)) {
             endDay = ZeroTools.getTime(new Date());
         } else {
             endDay = endDay + " 24:00";

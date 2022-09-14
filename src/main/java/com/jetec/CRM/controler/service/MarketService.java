@@ -415,8 +415,9 @@ public class MarketService {
                 result.addAll(mr.findByClinchAndAaaBetween(Integer.parseInt(val.get(0)), startDay, endDay, sort));
                 break;
             case "checkedCities"://產品類別
-                for (String producttype : val)
+                for (String producttype : val) {
                     result.addAll(mr.findByProducttypeAndAaaBetween(producttype, startDay, endDay, sort));
+                }
                 break;
             case "product":
                 result.addAll(mr.findByProductLikeIgnoreCaseOrNameLikeIgnoreCaseOrMessageLikeIgnoreCaseAndAaaBetween("%" + val.get(0) + "%", "%" + val.get(0) + "%", "%" + val.get(0) + "%", startDay, endDay, sort));
@@ -427,6 +428,9 @@ public class MarketService {
             case "closereason":
                 result.addAll(mr.findByClosereasonAndAaaBetween(val.get(0), startDay, endDay, sort));
                 break;
+            case "createtime":
+                result.addAll(mr.findByCreatetimeAndAaaBetween(val.get(0), startDay, endDay, sort));
+                break;
         }
         System.out.println("搜索出 "+ result.size()+" 筆資料");
         return result;
@@ -436,10 +440,7 @@ public class MarketService {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //添加使用者狀態
     public void saveMarketState(Integer adminid, String field, String state, String type) {
-
-
         msr.save(new MarketStateBean(ZeroTools.getUUID(), adminid, field, state, type));
-
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
