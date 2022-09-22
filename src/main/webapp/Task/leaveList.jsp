@@ -53,7 +53,9 @@
                                 </div>
                                 <div class="row ">
                                     <div class="col-md-2">
-                                        <a href="${pageContext.request.contextPath}/Task/leave.jsp">請假申請</a>
+                                        <c:if test="${user.position != '職員' || user.position != '新'}">
+                                            <a href="${pageContext.request.contextPath}/Task/leave.jsp">請假申請</a>
+                                        </c:if>
                                     </div>
                                     <div class="col-md-8">
                                         <p>&nbsp;</p>
@@ -71,7 +73,9 @@
                                                 <td> {{s.department}}</td>
                                                 <td> {{s.user}}</td>
                                                 <td> {{s.leaveName}}</td>
-                                                <td><a :href="'${pageContext.request.contextPath}/Task/leave.jsp?id='+s.leaveid">{{s.remark}}</a> </td>
+                                                <td><a
+                                                        :href="'${pageContext.request.contextPath}/Task/leave.jsp?id='+s.leaveid">{{s.remark}}</a>
+                                                </td>
                                             </tr>
 
                                         </table>
@@ -113,8 +117,9 @@
                             async: false,//同步請求
                             cache: false,//不快取頁面
                             success: response => {
+                                console.log(response.data);
                                 if (response.code == 200) {
-                                    this.list = response.data;
+                                    this.list = response.data; 
                                 }
                             },
                             error: function (returndata) {

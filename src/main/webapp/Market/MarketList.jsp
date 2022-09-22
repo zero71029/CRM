@@ -1049,9 +1049,8 @@
                             error: function (returndata) {
                                 console.log(returndata);
                             }
-
                         });
-                        this.sortState();
+                        this.sortState();//
                     },
                     handleCurrentChange(val) {//點擊分頁
 
@@ -1339,12 +1338,12 @@
                                 if (this.Casetype != "") {//案件類型
                                     this.oldList = this.list;
                                     this.list = [];
-                                    this.oldList.forEach((val, index, arr) => {
-                                        if (val.createtime != null)
-                                            if (val.createtime.indexOf(this.Casetype) >= 0) {
-                                                this.list.push(val);
+                                    for (var u of this.Casetype)
+                                        for (var bean of this.oldList) {
+                                            if (u == bean.createtime) {
+                                                this.list.push(bean);
                                             }
-                                    })
+                                        }
                                 }
 
 

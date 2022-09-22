@@ -26,10 +26,8 @@ import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Controller
 @RequestMapping("/task")
@@ -163,7 +161,7 @@ public class TaskController {
     public String delTask(@RequestParam("id") List<String> id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AdminBean adminBean = (AdminBean) authentication.getPrincipal();
-        logger.info("{} 刪除每日任務 {}",adminBean.getName(),id);
+        logger.info("{} 刪除每日任務 {}", adminBean.getName(), id);
         TS.delMarket(id);
         return "刪除成功";
     }
@@ -206,7 +204,7 @@ public class TaskController {
     @ResponseBody
     public List<EvaluateBean> selecttask(@RequestParam("pag") Integer pag, @RequestParam("name") String name) {
         System.out.println("*****搜索每日任務*****");
-        logger.info("搜索每日任務 {}",name);
+        logger.info("搜索每日任務 {}", name);
         pag--;
         return TS.selecttask(name, pag);
     }
@@ -217,7 +215,7 @@ public class TaskController {
     public ResultBean saveLeave(LeaveBean leaveBean) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AdminBean adminBean = (AdminBean) authentication.getPrincipal();
-        logger.info("{} 儲存請假單",adminBean.getName());
+        logger.info("{} 儲存請假單", adminBean.getName());
         System.out.println(leaveBean);
         LocalDate start = LocalDateTime.parse(leaveBean.getStartday()).toLocalDate();
         LocalDate end = LocalDateTime.parse(leaveBean.getEndday()).toLocalDate();
@@ -258,7 +256,7 @@ public class TaskController {
     @RequestMapping("/leave/{uuid}")
     @ResponseBody
     public ResultBean leave(@PathVariable("uuid") Integer uuid) {
-        logger.info("讀取請假單 {}",uuid);
+        logger.info("讀取請假單 {}", uuid);
         return ZeroFactory.buildResultBean(200, "讀取請假單", ls.getById(uuid));
     }
 
@@ -276,7 +274,7 @@ public class TaskController {
     @RequestMapping("/BusinessTripList/{mon}")
     @ResponseBody
     public ResultBean BusinessTripList(@PathVariable("mon") String mon) {
-        System.out.println("讀取出差申請列表");
+        logger.info("讀取出差申請列表");
         return ZeroFactory.buildResultBean(200, "讀取出差申請列表", bts.getBusinessTripList(mon));
     }
 
@@ -285,8 +283,52 @@ public class TaskController {
     @ResponseBody
     public ResultBean BusinessTrip(@PathVariable("tripid") Integer tripid) {
         System.out.println("讀取出差資料");
-        logger.info("讀取出差資料{}",tripid);
+        logger.info("讀取出差資料{}", tripid);
         return ZeroFactory.buildResultBean(200, "讀取出差申請", bts.getBusinessTrip(tripid));
+    }
+
+
+    /**
+     * 日歷初始化
+     *
+     * @return {@link ResultBean}
+     */
+    @RequestMapping("/calendarInit/{mon}")
+    @ResponseBody
+    public ResultBean calendarInit(@PathVariable("mon") String mon) {
+        logger.info("日歷初始化");
+        LocalDate localDate = LocalDate.parse(mon, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        Map<String ,List> result =new HashMap<>(2);
+        List<LeaveBean> leave = ls.getLeaveList(localDate.minusMonths(-1).format(DateTimeFormatter.ofPattern("yyyy-MM")));
+        leave.addAll(ls.getLeaveList(localDate.format(DateTimeFormatter.ofPattern("yyyy-MM"))));
+        leave.addAll(ls.getLeaveList(localDate.minusMonths(+1).format(DateTimeFormatter.ofPattern("yyyy-MM"))));
+
+        List<BusinessTripBean> businessTrip =bts.getBusinessTripList(localDate.minusMonths(-1).format(DateTimeFormatter.ofPattern("yyyy-MM")));
+        businessTrip.addAll(bts.getBusinessTripList(localDate.format(DateTimeFormatter.ofPattern("yyyy-MM"))));
+        businessTrip.addAll(bts.getBusinessTripList(localDate.minusMonths(+1).format(DateTimeFormatter.ofPattern("yyyy-MM"))));
+
+        result.put("leave",leave);
+        result.put("businessTrip",businessTrip);
+
+        return ZeroFactory.buildResultBean(200, "日歷初始化", result);
+    }
+
+    /**
+     * 添加日历
+     *
+     * @param theme 主题
+     * @param day   一天
+     * @param desc  desc
+     * @return {@link ResultBean}
+     */
+    @RequestMapping("/addCalender")
+    @ResponseBody
+    public ResultBean addCalender(@RequestParam("theme") String theme,@RequestParam("day") String day,@RequestParam("desc") String desc) {
+        logger.info("添加日历");
+        System.out.println(theme);
+        System.out.println(day);
+        System.out.println(desc);
+        return ZeroFactory.success( "添加成功");
     }
 
 }

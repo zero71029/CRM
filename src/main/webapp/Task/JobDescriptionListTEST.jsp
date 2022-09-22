@@ -64,7 +64,7 @@
                             <tr class="item" v-for="(s, index) in list" :key="index">
                                 <td><input type="checkbox" :value="s.evaluateid" name="mak" @change="changeMak"></td>
                                 <td @click="detail(s.evaluateid)" style="cursor: pointer;">
-                                    {{s.evaluatedate}}</td>
+                                     {{s.evaluatedate}}</td>
                                 <td @click="detail(s.evaluateid)" style="cursor: pointer;">
                                     {{s.name}}</td>
                                 <td>職務</td>

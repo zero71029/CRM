@@ -429,7 +429,8 @@ public class MarketService {
                 result.addAll(mr.findByClosereasonAndAaaBetween(val.get(0), startDay, endDay, sort));
                 break;
             case "createtime":
-                result.addAll(mr.findByCreatetimeAndAaaBetween(val.get(0), startDay, endDay, sort));
+                for (String type : val)
+                result.addAll(mr.findByCreatetimeAndAaaBetween(type, startDay, endDay, sort));
                 break;
         }
         System.out.println("搜索出 "+ result.size()+" 筆資料");
