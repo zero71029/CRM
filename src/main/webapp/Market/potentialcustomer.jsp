@@ -589,12 +589,12 @@
 
 
                                         
-                                        <el-input type="textarea" :autosize="{ minRows: 2}" v-model="trackdescribe"
+                                        <el-input type="textarea" :autosize="{ minRows: 4}" v-model="trackdescribe" show-word-limit
                                             name="trackdescribe" maxlength="950" id="trackdescribe">
                                         </el-input>
                                     </div>
                                     <div class="col-md-4 FormPadding">
-                                        <el-input type="textarea" :autosize="{ minRows: 2}" v-model="result"
+                                        <el-input type="textarea" :autosize="{ minRows: 4}" v-model="result" show-word-limit
                                             name="result" maxlength="950" id="result">
                                         </el-input>
                                     </div>

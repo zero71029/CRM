@@ -9,8 +9,6 @@
 
             <link rel="preconnect" href="https://fonts.gstatic.com">
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
-
-
             <!-- <%-- 主要的CSS、JS放在這裡--%> -->
             <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
             <title>CRM客戶管理系統</title>
@@ -20,7 +18,6 @@
                 }
             </style>
         </head>
-
         <body>
             <div class="container-fluid">
                 <div class="row">
@@ -35,8 +32,6 @@
                                 <div class="row ">
                                     <div class="col-md-3"></div>
                                     <div class="col-md-4">
-
-
                                         <div class="row" style="text-align: center;">
                                             <div class="col-md-12  text-white"
                                                 style="font-size: 1.5rem;border-radius: 5px 5px 0 0 ;background-color: #67C23A;">
@@ -47,6 +42,7 @@
                                             style="border: 1px solid #b4bccc;border-radius: 0 0 5px 5px  ; ">
 
                                             <el-form ref="form" :model="form" label-width="80px" label-position="left">
+                                                <input type="hidden" name="calenderid" v-model="form.calenderid">
                                                 <input type="hidden" name="name" v-model="form.name">
                                                 <br>
                                                 <el-form-item label="主題">
@@ -58,21 +54,17 @@
                                                 </el-form-item>
                                                 <el-form-item label="細節">
                                                     <el-input type="textarea" v-model="form.detail" name="detail"
-                                                        maxlength="100" :autosize="{ minRows: 5}" show-word-limit>
+                                                        maxlength="1000" :autosize="{ minRows: 5}" show-word-limit>
                                                     </el-input>
                                                 </el-form-item>
-                                                <el-form-item>
+                                                <el-form-item v-show="form.calenderid == ''">
                                                     <el-button type="primary" @click="onSubmit">立即創建</el-button>
                                                 </el-form-item>
-                                            </el-form>
-
-
+                                            </el-form>                             
                                         </div>
                                     </div>
                                     <div class="col-md-4"></div>
                                 </div>
-
-
                             </div>
                         </div>
                     </div>
@@ -85,16 +77,31 @@
                 data() {
                     return {
                         form: {
+                            calenderid: '${param.id}',
                             theme: "",
                             day: new Date(),
                             detail: "",
-                            name:"",
+                            name: "${user.name}",
                         }
-
                     }
                 },
                 created() {
-
+                    console.log(this.form.calenderid);
+                    if (this.form.calenderid != "") {
+                        $.ajax({
+                            url: "${pageContext.request.contextPath}/task/getCalender?id=${param.id}",
+                            type: 'get',                   
+                            success: response => {
+                                console.log(response.data);
+                                if (response.code == 200) {                            
+                                    this.form = response.data;
+                                }
+                            },
+                            error: function (returndata) {
+                                console.log(returndata);
+                            }
+                        });
+                    }
                 },
                 methods: {
                     onSubmit() {
@@ -110,9 +117,8 @@
                             success: response => {
                                 console.log(response.data);
                                 if (response.code == 200) {
-                                    console.log(response.message)
-
-
+                                    console.log(response.message);
+                                    location.href='${pageContext.request.contextPath}/Task/calendar.jsp'
                                 }
                             },
                             error: function (returndata) {
@@ -140,6 +146,7 @@
                     },
                 },
             })
+            $(".employee").show();
         </script>
 
 

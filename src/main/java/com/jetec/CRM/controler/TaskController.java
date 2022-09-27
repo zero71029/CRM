@@ -4,6 +4,7 @@ import com.jetec.CRM.Tool.ResultBean;
 import com.jetec.CRM.Tool.ZeroFactory;
 import com.jetec.CRM.Tool.ZeroTools;
 import com.jetec.CRM.controler.service.BusinessTripService;
+import com.jetec.CRM.controler.service.CalenderService;
 import com.jetec.CRM.controler.service.LeaveService;
 import com.jetec.CRM.controler.service.TaskService;
 import com.jetec.CRM.model.*;
@@ -40,6 +41,8 @@ public class TaskController {
     LeaveService ls;
     @Autowired
     ZeroTools zTools;
+    @Autowired
+    CalenderService cs;
 
     Logger logger = LoggerFactory.getLogger("TaskController");
 
@@ -307,28 +310,39 @@ public class TaskController {
         businessTrip.addAll(bts.getBusinessTripList(localDate.format(DateTimeFormatter.ofPattern("yyyy-MM"))));
         businessTrip.addAll(bts.getBusinessTripList(localDate.minusMonths(+1).format(DateTimeFormatter.ofPattern("yyyy-MM"))));
 
+        List<CalenderBean> calender = cs.getCalendarInitByDay(localDate.minusMonths(-1));
+        calender.addAll(cs.getCalendarInitByDay(localDate));
+        calender.addAll(cs.getCalendarInitByDay(localDate.minusMonths(+1)));
+
         result.put("leave",leave);
         result.put("businessTrip",businessTrip);
-
+        result.put("calender",calender);
         return ZeroFactory.buildResultBean(200, "日歷初始化", result);
     }
 
-    /**
-     * 添加日历
-     *
-     * @param theme 主题
-     * @param day   一天
-     * @param desc  desc
-     * @return {@link ResultBean}
-     */
+
     @RequestMapping("/addCalender")
     @ResponseBody
-    public ResultBean addCalender(@RequestParam("theme") String theme,@RequestParam("day") String day,@RequestParam("desc") String desc) {
+    public ResultBean addCalender(CalenderBean cBean) {
         logger.info("添加日历");
-        System.out.println(theme);
-        System.out.println(day);
-        System.out.println(desc);
+            System.out.println(cBean);
+
+            cs.save(cBean);
         return ZeroFactory.success( "添加成功");
+    }
+
+    /**
+     * 讀取日历
+     *
+     * @param id id
+     * @return {@link ResultBean}
+     */
+    @RequestMapping("/getCalender")
+    @ResponseBody
+    public ResultBean getCalender(@RequestParam("id")Integer id) {
+        logger.info("讀取日历 {}",id);
+
+        return ZeroFactory.success( "添加成功",cs.getById(id));
     }
 
 }

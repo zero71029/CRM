@@ -56,6 +56,15 @@
                                                 </a>
                                             </div>
                                         </div>
+
+                                        <div v-for="(s, index) in calender" :key="index">
+                                            <div v-if="s.day == data.day ">
+                                                <a :href="'${pageContext.request.contextPath}/Task/addCalender.jsp?id='+s.calenderid"
+                                                    style="background-color: rgb(103, 194, 58);color: #fff;margin: 3px;padding: 3px;display: inline-block;width: 100%">
+                                                    {{s.name}} <span style="float: right;"> {{s.theme}}</span>
+                                                </a>
+                                            </div>
+                                        </div>
                                     </template>
                                 </el-calendar>
                                 <a href="${pageContext.request.contextPath}/Task/addCalender.jsp">添加日誌</a>
@@ -75,6 +84,7 @@
                         valueData: new Date(),
                         leave: [],
                         businessTrip: [],
+                        calender:[],
                     }
                 },
                 created() {
@@ -119,6 +129,7 @@
                                 if (response.code == 200) {
                                     this.leave = response.data.leave;
                                     this.businessTrip = response.data.businessTrip;
+                                    this.calender= response.data.calender;
                                 }
                             },
                             error: function (returndata) {

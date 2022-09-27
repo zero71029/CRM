@@ -631,7 +631,7 @@
                                                         style="visibility: hidden ; position: absolute;z-index: -1;width: 312px;">
                                                     </div>
 
-                                                    <el-input type="textarea" v-model="bean.quote" rows="5" id="quote"
+                                                    <el-input type="textarea" v-model="bean.quote" rows="6" id="quote"
                                                         maxlength="990" show-word-limit name="quote"
                                                         @input="changeTextarea('quote')"></el-input>
                                                 </div>
@@ -715,13 +715,13 @@
                                 <div class="col-md-1"></div>
                                 <div class="col-md-4 FormPadding">
 
-                                    <el-input type="textarea" :autosize="{ minRows: 2}" v-model="trackdescribe"
+                                    <el-input type="textarea" :autosize="{ minRows: 4}" v-model="trackdescribe" show-word-limit
                                         name="trackdescribe" maxlength="950" id="trackdescribe">
                                     </el-input>
 
                                 </div>
                                 <div class="col-md-4 FormPadding">
-                                    <el-input type="textarea" :autosize="{ minRows: 2}" v-model="result" name="result"
+                                    <el-input type="textarea" :autosize="{ minRows: 4}" v-model="result" name="result" show-word-limit
                                         maxlength="950" id="result">
                                     </el-input>
 

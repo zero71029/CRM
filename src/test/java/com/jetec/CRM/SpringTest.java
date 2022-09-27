@@ -1,6 +1,7 @@
 package com.jetec.CRM;
 
 import com.github.benmanes.caffeine.cache.Cache;
+import com.jetec.CRM.Tool.ZeroTools;
 import com.jetec.CRM.controler.service.MarketService;
 import com.jetec.CRM.repository.ContactRepository;
 import com.jetec.CRM.repository.PotentialCustomerRepository;
@@ -41,6 +42,16 @@ public class SpringTest {
     Logger logger = LoggerFactory.getLogger("SpringTest");
     @Autowired
     MarketService ms;
+
+
+
+    @Test
+    public void zeroMail(){
+
+        ZeroTools zTools = new ZeroTools();
+        zTools.mail("sales@jetec.com.tw","網管測試.....","網管測試","");
+
+    }
 
 
     @Test
