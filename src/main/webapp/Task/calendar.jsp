@@ -84,11 +84,21 @@
                         valueData: new Date(),
                         leave: [],
                         businessTrip: [],
-                        calender:[],
+                        calender: [],
                     }
                 },
                 created() {
                     this.inday = this.dateFormat('YYYY-mm-dd', this.valueData);
+                    let url = new URL(location.href);
+                    let d = url.searchParams.get('inday');
+                    if (d != null) {
+                        this.inday = d+"-01";
+                        console.log("lll",this.inday);
+                        this.valueData=new Date(this.inday);
+                    }
+                    //
+
+
                     this.getLeave(this.inday);
                 },
                 mounted() {
@@ -129,7 +139,7 @@
                                 if (response.code == 200) {
                                     this.leave = response.data.leave;
                                     this.businessTrip = response.data.businessTrip;
-                                    this.calender= response.data.calender;
+                                    this.calender = response.data.calender;
                                 }
                             },
                             error: function (returndata) {

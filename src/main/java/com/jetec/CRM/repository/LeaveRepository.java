@@ -8,4 +8,10 @@ import java.util.List;
 
 public interface LeaveRepository extends JpaRepository<LeaveBean,Integer> {
     List<LeaveBean> findByLeavedayBetween(String start, String end, Sort leaveday);
+
+    void deleteByUuid(String uuid);
+
+    boolean existsByUuid(String uuid);
+
+
 }

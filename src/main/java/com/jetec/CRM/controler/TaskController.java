@@ -216,8 +216,17 @@ public class TaskController {
     @RequestMapping("/saveLeave")
     @ResponseBody
     public ResultBean saveLeave(LeaveBean leaveBean) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        AdminBean adminBean = (AdminBean) authentication.getPrincipal();
+        Authentication authentication;
+        AdminBean adminBean = null;
+        try {
+            authentication = SecurityContextHolder.getContext().getAuthentication();
+            adminBean = (AdminBean) authentication.getPrincipal();
+        } catch (Exception e) {
+            return ZeroFactory.fail("錯誤! 未登入");
+        }
+        if (!leaveBean.getUuid().isEmpty()) {
+            ls.delByUuid(leaveBean.getUuid());
+        }
         logger.info("{} 儲存請假單", adminBean.getName());
         System.out.println(leaveBean);
         LocalDate start = LocalDateTime.parse(leaveBean.getStartday()).toLocalDate();
@@ -301,12 +310,12 @@ public class TaskController {
     public ResultBean calendarInit(@PathVariable("mon") String mon) {
         logger.info("日歷初始化");
         LocalDate localDate = LocalDate.parse(mon, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        Map<String ,List> result =new HashMap<>(2);
+        Map<String, List> result = new HashMap<>(2);
         List<LeaveBean> leave = ls.getLeaveList(localDate.minusMonths(-1).format(DateTimeFormatter.ofPattern("yyyy-MM")));
         leave.addAll(ls.getLeaveList(localDate.format(DateTimeFormatter.ofPattern("yyyy-MM"))));
         leave.addAll(ls.getLeaveList(localDate.minusMonths(+1).format(DateTimeFormatter.ofPattern("yyyy-MM"))));
 
-        List<BusinessTripBean> businessTrip =bts.getBusinessTripList(localDate.minusMonths(-1).format(DateTimeFormatter.ofPattern("yyyy-MM")));
+        List<BusinessTripBean> businessTrip = bts.getBusinessTripList(localDate.minusMonths(-1).format(DateTimeFormatter.ofPattern("yyyy-MM")));
         businessTrip.addAll(bts.getBusinessTripList(localDate.format(DateTimeFormatter.ofPattern("yyyy-MM"))));
         businessTrip.addAll(bts.getBusinessTripList(localDate.minusMonths(+1).format(DateTimeFormatter.ofPattern("yyyy-MM"))));
 
@@ -314,9 +323,9 @@ public class TaskController {
         calender.addAll(cs.getCalendarInitByDay(localDate));
         calender.addAll(cs.getCalendarInitByDay(localDate.minusMonths(+1)));
 
-        result.put("leave",leave);
-        result.put("businessTrip",businessTrip);
-        result.put("calender",calender);
+        result.put("leave", leave);
+        result.put("businessTrip", businessTrip);
+        result.put("calender", calender);
         return ZeroFactory.buildResultBean(200, "日歷初始化", result);
     }
 
@@ -325,10 +334,10 @@ public class TaskController {
     @ResponseBody
     public ResultBean addCalender(CalenderBean cBean) {
         logger.info("添加日历");
-            System.out.println(cBean);
+        System.out.println(cBean);
 
-            cs.save(cBean);
-        return ZeroFactory.success( "添加成功");
+        cs.save(cBean);
+        return ZeroFactory.success("添加成功");
     }
 
     /**
@@ -339,10 +348,66 @@ public class TaskController {
      */
     @RequestMapping("/getCalender")
     @ResponseBody
-    public ResultBean getCalender(@RequestParam("id")Integer id) {
-        logger.info("讀取日历 {}",id);
+    public ResultBean getCalender(@RequestParam("id") Integer id) {
+        logger.info("讀取日历 {}", id);
+        return ZeroFactory.success("添加成功", cs.getById(id));
+    }
 
-        return ZeroFactory.success( "添加成功",cs.getById(id));
+    /**
+     * 刪除請假紀錄
+     *
+     * @param uuid uuid
+     * @return {@link ResultBean}
+     */
+    @RequestMapping("/delLeave")
+    @ResponseBody
+    public ResultBean delLeave(@RequestParam("uuid") String uuid) {
+        Authentication authentication;
+        AdminBean adminBean = null;
+        try {
+            authentication = SecurityContextHolder.getContext().getAuthentication();
+            adminBean = (AdminBean) authentication.getPrincipal();
+        } catch (Exception e) {
+            logger.info("刪除請假紀錄 未登入");
+            return ZeroFactory.fail("錯誤! 未登入");
+        }
+        if (!uuid.isEmpty() || ls.existsByUuid(uuid)) {
+            logger.info("{} 刪除請假紀錄 {}", adminBean.getName(), uuid);
+            ls.delByUuid(uuid);
+            return ZeroFactory.success("刪除成功");
+        }
+        logger.info("刪除請假紀錄 資料錯誤");
+        return ZeroFactory.fail("刪除錯誤! 資料錯誤");
+    }
+
+    @RequestMapping("/clickDirector")
+    @ResponseBody
+    public ResultBean clickDirector(@RequestParam("id") Integer id) {
+        Authentication authentication;
+        AdminBean adminBean = null;
+        try {
+            authentication = SecurityContextHolder.getContext().getAuthentication();
+            adminBean = (AdminBean) authentication.getPrincipal();
+        } catch (Exception e) {
+            logger.info("主管核准 未登入");
+            return ZeroFactory.fail("錯誤! 未登入");
+        }
+        logger.info("{} 核准請假單",adminBean.getName() );
+        LeaveBean lBean = ls.getById(id);
+        if (lBean != null) {
+            if (lBean.getDirector() != null && !lBean.getDirector().isEmpty()) {
+                lBean.setDirector("");
+                ls.saveLeave(lBean);
+                logger.info("取消核准");
+                return ZeroFactory.buildResultBean(200, "核准取消","");
+            }
+            lBean.setDirector(adminBean.getName());
+            ls.saveLeave(lBean);
+            logger.info("核准成功");
+            return ZeroFactory.success("核准成功",adminBean.getName());
+        }
+        logger.info("核准請假紀錄 資料錯誤");
+        return ZeroFactory.fail("核准錯誤! 資料錯誤");
     }
 
 }

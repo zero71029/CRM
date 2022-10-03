@@ -214,4 +214,16 @@ class TaskControllerTest {
                 .andExpect(jsonPath("data.tripid").value(10))
                 .andExpect(jsonPath("data").exists()).andDo(print());
     }
+    @Test
+    @DisplayName("刪除請假")
+    void delLeave() throws Exception {
+        mockMvc.perform(post("/task/delLeave?uuid=ddddddd"))
+                .andExpect(jsonPath("code").value(300))
+                .andExpect(jsonPath("message").value("錯誤! 未登入"));
+
+        mockMvc.perform(post("/task/delLeave?uuid=ddddddd"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("code").value(300))
+                .andExpect(jsonPath("message").value("刪除錯誤! 資料錯誤"));
+    }
 }

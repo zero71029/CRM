@@ -59,6 +59,7 @@
                                 <!-- <%-- 中間主體--%> -->
                                 <div class="row ">
                                     <div class="col-md-8 ">
+                                        
                                         <p style="text-align: center;font-size: 48px;">出差申請</p>
                                     </div>
                                 </div>
@@ -69,12 +70,25 @@
                                                 placeholder="排程人員">
                                             <span style="color: red;font-size: 20px;line-height: 40px;">新增行程 </span>
                                             排程人員：
-                                            <c:if test="${empty param.id}">
+                                            <!-- <c:if test="${empty param.id}">
                                                 ${user.name}
                                             </c:if>
                                             <c:if test="${not empty param.id}">
                                                 {{bean.schedule}}
-                                            </c:if>
+                                            </c:if> -->
+                                            <el-select v-model="bean.schedule" placeholder="">
+
+                                                <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}"
+                                                    items="${admin}" var="s">
+                                                    <el-option label="${s.name}" value="${s.name}">
+                                                    </el-option>
+                                                </c:forEach>
+                                            </el-select>
+
+
+
+
+
 
                                             <span style="float: right;">
                                                 行程日期：
@@ -82,21 +96,32 @@
                                                     placeholder="行程日期" id="tripday">
                                                 </el-date-picker>
                                                 預估時間:
-                                                <el-input v-model="bean.expected" name="expected" maxlength="100"
-                                                    style="width: auto;" id="expected">
-                                                </el-input>
+                                                <el-select v-model="bean.expected" placeholder="">
+                                                    <el-option label="半天" value="半天"></el-option>
+                                                    <el-option label="1天" value="1天"></el-option>
+                                                    <el-option label="2天" value="2天"></el-option>
+                                                    <el-option label="3天" value="3天"></el-option>
+                                                    <el-option label="4天" value="4天"></el-option>
+                                                    <el-option label="5天" value="5天"></el-option>
+                                                    <el-option label="6天" value="6天"></el-option>
+                                                    <el-option label="7天" value="7天"></el-option>
+                                                </el-select>
+
+
+
                                             </span>
                                             <br><br>
-                                            負責人員1<el-input v-model="bean.responsible1" name="responsible1"
+                                            主負責人<el-input v-model="bean.responsible1" name="responsible1"
                                                 maxlength="100" style="width: auto;">
                                             </el-input>
-                                            &nbsp;&nbsp;&nbsp;負責人員2<el-input v-model="bean.responsible2"
+                                            &nbsp;&nbsp;&nbsp;次負責人<el-input v-model="bean.responsible2"
                                                 name="responsible2" maxlength="100" style="width: auto;">
                                             </el-input>
-                                            &nbsp;&nbsp;&nbsp;負責人員3<el-input v-model="bean.responsible3"
+                                            &nbsp;&nbsp;&nbsp;協從人<el-input v-model="bean.responsible3"
                                                 name="responsible3" maxlength="100" style="width: auto;">
                                             </el-input>
-
+                                            &nbsp;&nbsp;&nbsp;
+                                            <el-button type="primary" icon="el-icon-edit" size="medium" circle></el-button>
 
                                             <hr>
                                             <table class="table  table-bordered border border-dark">
@@ -158,10 +183,11 @@
                         schedule: "${user.name}",
                         bean: {
                             type: "北上",
-                            tripday:"",
-                            expected:"",
-                            content:"",
-                            tripname:""
+                            tripday: "",
+                            expected: "",
+                            content: "",
+                            tripname: "",
+                            responsible1:"${user.name}",
                         },
                     }
                 },

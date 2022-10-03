@@ -37,6 +37,7 @@
                     <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
                     <div class="col-md-11 app" v-cloak>
                         <div class="row ">
+                            <!--  -->
                             <div class="col-md-12">
                                 <!-- <%-- 中間主體--%> -->
                                 <div class="row ">
@@ -53,7 +54,7 @@
                                 </div>
                                 <div class="row ">
                                     <div class="col-md-2">
-                                        <c:if test="${user.position != '職員' || user.position != '新'}">
+                                        <c:if test="${user.position == '主管' || user.position == '系統' }">
                                             <a href="${pageContext.request.contextPath}/Task/leave.jsp">請假申請</a>
                                         </c:if>
                                     </div>
@@ -66,7 +67,6 @@
                                                 <td>姓名</td>
                                                 <td>假別</td>
                                                 <td>備註</td>
-
                                             </tr>
                                             <tr v-for="(s, index) in list" :key="index">
                                                 <td>{{s.leaveday}}</td>
@@ -75,12 +75,18 @@
                                                 <td> {{s.leaveName}}</td>
                                                 <td><a
                                                         :href="'${pageContext.request.contextPath}/Task/leave.jsp?id='+s.leaveid">{{s.remark}}</a>
+
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
                                                 </td>
                                             </tr>
-
                                         </table>
+                                        <br><br>
+                                        <a
+                                            :href="'${pageContext.request.contextPath}/Task/calendar.jsp?inday='+inday">月歷</a>
                                     </div>
                                 </div>
+                                <!-- . -->
                                 <div class="row ">
                                     <div class="col-md-12"></div>
                                 </div>
@@ -112,14 +118,14 @@
                     //讀取資料
                     getLeave(mon) {
                         $.ajax({
-                            url: "${pageContext.request.contextPath}/task/getLeave/" + mon,//接受請求的Servlet地址
+                            url: "${pageContext.request.contextPath}/task/getLeave/" + mon,
                             type: 'get',
-                            async: false,//同步請求
-                            cache: false,//不快取頁面
+                            async: false,
+                            cache: false,
                             success: response => {
                                 console.log(response.data);
                                 if (response.code == 200) {
-                                    this.list = response.data; 
+                                    this.list = response.data;
                                 }
                             },
                             error: function (returndata) {

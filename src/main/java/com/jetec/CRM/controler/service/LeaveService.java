@@ -21,6 +21,7 @@ public class LeaveService {
     //儲存請假單
     public void saveLeave(LeaveBean leaveBean) {
         lr.save(leaveBean);
+
     }
     //請假單列表
     public List<LeaveBean> getLeaveList(String mon) {
@@ -35,5 +36,18 @@ public class LeaveService {
 
     public LeaveBean getById(Integer leaveid) {
         return lr.findById(leaveid).orElse(null);
+    }
+
+    public void delByUuid(String uuid) {
+        lr.deleteByUuid(uuid);
+    }
+
+    public boolean existsByUuid(String uuid) {
+        return lr.existsByUuid(uuid);
+    }
+
+
+    public boolean existsById(Integer id) {
+        return lr.existsById(id);
     }
 }

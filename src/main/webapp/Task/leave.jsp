@@ -61,6 +61,7 @@
                                     <div class="col-md-2"></div>
                                     <div class="col-md-8 ">
                                         <form action="" method="post" id="leaveForm">
+                                            <input type="hidden" v-model="bean.uuid" name="uuid">
                                             <table class="table  table-bordered border border-dark">
                                                 <tr>
                                                     <td>
@@ -68,7 +69,16 @@
                                                             <label for="inputUser" class="col-form-label">申請人:</label>
                                                             <div class="">
                                                                 <input type="text" class="form-control" id="inputUser"
-                                                                    v-model="bean.user" name="user" max="90">
+                                                                    v-model="bean.user" name="user" max="90"
+                                                                    list="browsers">
+                                                                <datalist id="browsers">
+                                                                    <c:forEach varStatus="loop" begin="0"
+                                                                        end="${admin.size()-1}" items="${admin}"
+                                                                        var="s">
+                                                                        <option value="${s.name}">
+                                                                        </option>
+                                                                    </c:forEach>
+                                                                </datalist>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -79,7 +89,26 @@
                                                             <div class="">
                                                                 <input type="text" class="form-control"
                                                                     v-model="bean.department" id="inputDepartment"
-                                                                    name="department" maxlength="10">
+                                                                    name="department" maxlength="10" list="department">
+                                                                <datalist id="department">
+                                                                    <option value="生產">
+                                                                        生產</option>
+                                                                    <option value="採購">
+                                                                        採購</option>
+                                                                    <option value="研發">
+                                                                        研發</option>
+                                                                    <option value="業務">
+                                                                        業務</option>
+                                                                    <option value="行銷">
+                                                                        行銷</option>
+                                                                    <option value="財務">
+                                                                        財務</option>
+                                                                    <option value="IT">
+                                                                        IT</option>
+                                                                    <option value="國貿">
+                                                                        國貿</option>
+
+                                                                </datalist>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -92,8 +121,11 @@
                                                             @change="changeLeaveName">事假</el-radio>
                                                         <el-radio v-model="bean.leaveName" label="特休"
                                                             @change="changeLeaveName">特休</el-radio>
+                                                        <el-radio v-model="bean.leaveName" label="其他"
+                                                            @change="changeLeaveName">其他</el-radio>
                                                         <br><br>
-                                                        <el-input @change="changeLeaveOther" placeholder="其他"
+                                                        <el-input v-show="bean.leaveName =='其他'"
+                                                            @change="changeLeaveOther" placeholder="其他"
                                                             v-model="bean.leaveOther" maxlength="80"></el-input>
 
                                                     </td>
@@ -122,7 +154,7 @@
                                                     <td colspan="2" id="leaveTime">請假時間: <br>
                                                         <el-date-picker v-model="bean.startDay" name="startDay"
                                                             type="date" placeholder="起始日期" format="yyyy 年 MM 月 dd 日"
-                                                            value-format="yyyy-MM-dd" @change="changeTime">
+                                                            value-format="yyyy-MM-dd" @input="changeTime">
                                                         </el-date-picker>
                                                         &nbsp;
                                                         <select name="startTime" @change="changeTime"
@@ -155,7 +187,7 @@
                                                         <hr>
                                                         <el-date-picker v-model="bean.endDay" name="endDay" type="date"
                                                             placeholder="結束日期" format="yyyy 年 MM 月 dd 日"
-                                                            value-format="yyyy-MM-dd" @change="changeTime">
+                                                            value-format="yyyy-MM-dd" @input="changeTime">
                                                         </el-date-picker>
                                                         &nbsp;
                                                         <select name="endTime" @change="changeTime"
@@ -190,8 +222,17 @@
 
                                                 </tr>
                                                 <tr>
-                                                    <td>主管核准:<el-input v-model="bean.director" name="director">
-                                                        </el-input>
+                                                    <td @click="clickDirector">主管核准 &nbsp;:
+                                                        &nbsp;&nbsp;<span>{{bean.director}}</span>
+
+
+                                                        <el-result v-show="bean.director == ''" icon="info" title="點擊核准"
+                                                            style="padding: 0px;"></el-result>
+                                                        <el-result v-show="bean.director != ''" icon="success"
+                                                            style="padding: 0px;"></el-result>
+
+                                                        <input v-model="bean.director" name="director" type="hidden"
+                                                            style="border: 0px;">
                                                     </td>
                                                     <td>申請日期: <br>
                                                         <el-date-picker style="width: 100%;" type="date" name="applyDay"
@@ -200,16 +241,21 @@
                                                         </el-date-picker>
                                                     </td>
                                                 </tr>
-                                                <tr>
+                                                <!-- <tr>
                                                     <td colspan="2">備註:核准後此單請教人事部保管</td>
-                                                </tr>
+                                                </tr> -->
                                             </table>
                                         </form>
                                         <p style="text-align: center;">
-                                            
-                                            <c:if test="${empty param.id}">
-                                                <el-button type="primary" @click="sumbitForm">送出請假單</el-button>
+
+                                            <c:if test="${user.position == '主管'  || user.position == '系統'}">
+                                                xx
                                             </c:if>
+                                            <el-button type="primary" @click="sumbitForm">送出</el-button>
+                                            <el-button type="danger" v-show="bean.uuid != ''" @click="delLeave">
+                                                刪除
+                                            </el-button>
+
                                         </p>
                                     </div>
                                 </div>
@@ -221,6 +267,8 @@
             </div>
         </body>
         <script>
+            const url = new URL(location.href);
+            const id = url.searchParams.get("id");
             $(".employee").show();
             var vm = new Vue({
                 el: ".app",
@@ -231,12 +279,14 @@
                             department: "${user.department}",
                             startTime: "T08:00",
                             endTime: "T17:00",
-                            leaveName:"" , 
-                            leaveOther:"",
-                            agent:"",
-                            reason:"",
-                            startDay:"",
-                            endDay:""
+                            leaveName: "",
+                            leaveOther: "",
+                            agent: "",
+                            reason: "",
+                            startDay: "",
+                            endDay: "",
+                            director: "",
+                            uuid: "",
                         },
                     }
                 },
@@ -247,8 +297,7 @@
                     const dd = day.getDate() + "";
                     this.bean.applyday = day.getFullYear() + "-" + mm.padStart(2, "0") + "-" + dd.padStart(2, "0");
                     //
-                    const url = new URL(location.href);
-                    const id = url.searchParams.get("id");
+
                     if (id != "" && id != null) {
                         $.ajax({
                             url: "${pageContext.request.contextPath}/task/leave/" + id,
@@ -278,7 +327,8 @@
                     changeLeaveName() {
                         this.bean.leaveOther = "";
                     },
-                    changeTime() {
+                    changeTime() {//.
+                        console.error(this.bean.startDay)
                         if (this.bean.startDay != undefined) {
                             if (this.bean.endDay != undefined) {
                                 const day1 = new Date(this.bean.startDay + this.bean.startTime);
@@ -310,6 +360,14 @@
                             this.$message.error("假別為空");
                             $("#inLeave").css("border", "1px solid red");
                         }
+
+                        if (this.bean.leaveName == '其他' && this.bean.leaveOther == '') {
+                            isok = false;
+                            this.$message.error("其他需填寫");
+                            $("#inLeave").css("border", "1px solid red");
+                        }
+
+
                         if (this.bean.agent == "") {
                             isok = false;
                             this.$message.error("職務代理人為空");
@@ -352,12 +410,79 @@
                                             }
                                         });
                                     }
+                                    if (response.code == 300) {
+                                        this.$message.error(response.message);
+                                    }
+                                    console.log(response);
                                 },
                                 error: function (returndata) {
                                     console.log(returndata);
                                 }
                             });
                         }
+                    },
+                    clickDirector() {
+                        if ('${user.name}' == '') {
+
+                            return '';
+                        }
+                        if ('${user.department}' != this.bean.department) {
+
+                            return '';
+                        }
+                        if ('${user.position}' == '主管' || '${user.position}' == '系統') {
+                            $.ajax({
+                                url: "${pageContext.request.contextPath}/task/clickDirector?id=" + id,
+                                type: 'POST',
+                                async: false,//同步請求
+                                cache: false,//不快取頁面
+                                success: response => {
+                                    if (response.code == 200) {
+                                        this.bean.director = response.data;
+                                    }
+                                    if (response.code == 300) {
+                                        this.$message.error(response.message);
+                                    }
+                                    console.log(response);
+                                    console.log(this.bean.director);
+                                    this.$forceUpdate();
+                                },
+                                error: function (returndata) {
+                                    console.log(returndata);
+                                }
+                            });
+                        }
+
+
+                    },
+                    delLeave() {
+                        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }).then(() => {
+                            $.ajax({
+                                url: "${pageContext.request.contextPath}/task/delLeave?uuid=" + this.bean.uuid,
+                                type: 'POST',
+                                success: response => {
+                                    if (response.code == 200) {
+                                        location.href = "${pageContext.request.contextPath}/Task/leaveList.jsp";
+                                    }
+                                    if (response.code == 300) {
+                                        this.$message.error(response.message);
+                                    }
+                                    console.log(response);
+                                },
+                                error: function (returndata) {
+                                    console.log(returndata);
+                                }
+                            });
+                        }).catch(() => {
+                            this.$message({
+                                type: 'info',
+                                message: '已取消删除'
+                            });
+                        });
                     },
                 },
             })

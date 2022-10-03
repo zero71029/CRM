@@ -130,7 +130,7 @@
                 </button>
                 <button class="employee calendar"
                     onclick="javascript:location.href='${pageContext.request.contextPath}/Task/calendar.jsp'">
-                    日歷
+                    月歷
                 </button>
                 <button class="employee leave"
                     onclick="javascript:location.href='${pageContext.request.contextPath}/Task/leaveList.jsp'">

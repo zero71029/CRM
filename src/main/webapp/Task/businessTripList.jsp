@@ -63,7 +63,9 @@
                                 </div>
                                 <div class="row ">
                                     <div class="col-md-2">
+                                        <c:if test="${user.position == '主管' || user.position == '系統' }">
                                         <a href="${pageContext.request.contextPath}/Task/businessTrip.jsp">出差申請</a>
+                                        </c:if>
                                     </div>
                                     <div class="col-md-8">
                                         <p>&nbsp;</p>
