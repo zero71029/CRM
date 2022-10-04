@@ -52,8 +52,8 @@
                     <!-- <%-- 插入側邊欄--%> -->
                     <jsp:include page="/Sidebar.jsp"></jsp:include>
                     <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
-                    <div class="col-md-11 app" v-cloak>
-                        <div class="row ">
+                    <div class="col-md-11 app">
+                        <div class="row " v-cloak>
                             <div class="col-md-12">
                                 <!-- <%-- 中間主體--%> -->
                                 <p style="text-align: center;font-size: 48px;">請假單</p>
@@ -87,10 +87,8 @@
                                                             <label for="inputDepartment"
                                                                 class=" col-form-label">部門:</label>
                                                             <div class="">
-                                                                <input type="text" class="form-control"
-                                                                    v-model="bean.department" id="inputDepartment"
-                                                                    name="department" maxlength="10" list="department">
-                                                                <datalist id="department">
+                                                                <select class="form-control" v-model="bean.department"
+                                                                    id="inputDepartment" name="department">
                                                                     <option value="生產">
                                                                         生產</option>
                                                                     <option value="採購">
@@ -107,8 +105,7 @@
                                                                         IT</option>
                                                                     <option value="國貿">
                                                                         國貿</option>
-
-                                                                </datalist>
+                                                                </select>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -224,13 +221,10 @@
                                                 <tr>
                                                     <td @click="clickDirector">主管核准 &nbsp;:
                                                         &nbsp;&nbsp;<span>{{bean.director}}</span>
-
-
                                                         <el-result v-show="bean.director == ''" icon="info" title="點擊核准"
                                                             style="padding: 0px;"></el-result>
                                                         <el-result v-show="bean.director != ''" icon="success"
                                                             style="padding: 0px;"></el-result>
-
                                                         <input v-model="bean.director" name="director" type="hidden"
                                                             style="border: 0px;">
                                                     </td>
@@ -247,15 +241,13 @@
                                             </table>
                                         </form>
                                         <p style="text-align: center;">
-
                                             <c:if test="${user.position == '主管'  || user.position == '系統'}">
-                                                xx
+                                                <el-button type="primary" v-show="bean.uuid != ''" @click="sumbitForm">送出</el-button>
+                                                <el-button type="danger" v-show="bean.uuid != ''" @click="delLeave">
+                                                    刪除
+                                                </el-button>
                                             </c:if>
-                                            <el-button type="primary" @click="sumbitForm">送出</el-button>
-                                            <el-button type="danger" v-show="bean.uuid != ''" @click="delLeave">
-                                                刪除
-                                            </el-button>
-
+                                            <el-button type="primary" v-show="bean.uuid == ''" @click="sumbitForm">送出</el-button>
                                         </p>
                                     </div>
                                 </div>
@@ -311,7 +303,6 @@
                                     this.bean.endDay = response.data.endday.substring(0, 10);
                                     this.bean.endTime = response.data.endday.substring(10);
                                     this.changeTime();
-
                                 }
                             },
                             error: function (returndata) {
@@ -327,8 +318,7 @@
                     changeLeaveName() {
                         this.bean.leaveOther = "";
                     },
-                    changeTime() {//.
-                        console.error(this.bean.startDay)
+                    changeTime() {//
                         if (this.bean.startDay != undefined) {
                             if (this.bean.endDay != undefined) {
                                 const day1 = new Date(this.bean.startDay + this.bean.startTime);
@@ -338,7 +328,6 @@
                                 const h = difference - (days * 1000 * 3600 * 24);
                                 const hours = h / (1000 * 3600);
                                 this.bean.totalTime = days + " 天 " + hours + " 時";
-                                console.log("this.bean.totalTime", this.bean.totalTime);
                                 this.$forceUpdate();
                             }
                         };
@@ -383,7 +372,6 @@
                             this.$message.error("請假時間為空");
                             $("#leaveTime").css("border", "1px solid red");
                         }
-                        console.log("this.applyday", this.bean.applyday);
                         if (isok) {
                             this.bean.startDay += this.bean.startTime;
                             this.bean.endDay += this.bean.endTime;
@@ -413,7 +401,6 @@
                                     if (response.code == 300) {
                                         this.$message.error(response.message);
                                     }
-                                    console.log(response);
                                 },
                                 error: function (returndata) {
                                     console.log(returndata);
@@ -423,28 +410,23 @@
                     },
                     clickDirector() {
                         if ('${user.name}' == '') {
-
                             return '';
                         }
                         if ('${user.department}' != this.bean.department) {
-
                             return '';
                         }
                         if ('${user.position}' == '主管' || '${user.position}' == '系統') {
                             $.ajax({
                                 url: "${pageContext.request.contextPath}/task/clickDirector?id=" + id,
                                 type: 'POST',
-                                async: false,//同步請求
-                                cache: false,//不快取頁面
                                 success: response => {
                                     if (response.code == 200) {
                                         this.bean.director = response.data;
+                                        this.$message.success(response.message);
                                     }
                                     if (response.code == 300) {
                                         this.$message.error(response.message);
                                     }
-                                    console.log(response);
-                                    console.log(this.bean.director);
                                     this.$forceUpdate();
                                 },
                                 error: function (returndata) {
@@ -452,8 +434,6 @@
                                 }
                             });
                         }
-
-
                     },
                     delLeave() {
                         this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
@@ -471,7 +451,6 @@
                                     if (response.code == 300) {
                                         this.$message.error(response.message);
                                     }
-                                    console.log(response);
                                 },
                                 error: function (returndata) {
                                     console.log(returndata);

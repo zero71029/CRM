@@ -2,6 +2,7 @@ package com.jetec.CRM.model;
 
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "businesstrip")
@@ -19,8 +20,30 @@ public class BusinessTripBean {
     private String schedule;//排程人員
     private String tripday;//行程日期
     private String expected;//預估時間
+    private String director;//主管
 
 
+    @OneToMany(targetEntity = CooperatorBean.class , cascade = CascadeType.ALL)
+    @JoinColumn(name="tripid", referencedColumnName="tripid")
+    private List<CooperatorBean> cooperator;
+    //@他人
+
+
+    public List<CooperatorBean> getCooperator() {
+        return cooperator;
+    }
+
+    public void setCooperator(List<CooperatorBean> cooperator) {
+        this.cooperator = cooperator;
+    }
+
+    public String getDirector() {
+        return director;
+    }
+
+    public void setDirector(String director) {
+        this.director = director;
+    }
 
     public Integer getTripid() {
         return tripid;
@@ -119,6 +142,8 @@ public class BusinessTripBean {
                 ", schedule='" + schedule + '\'' +
                 ", tripday='" + tripday + '\'' +
                 ", expected='" + expected + '\'' +
+                ", director='" + director + '\'' +
+                ", cooperator=" + cooperator +
                 '}';
     }
 }

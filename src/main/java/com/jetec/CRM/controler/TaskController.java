@@ -276,10 +276,21 @@ public class TaskController {
     @RequestMapping("/saveBusinessTrip")
     @ResponseBody
     public ResultBean saveBusinessTrip(BusinessTripBean btBean) {
-        logger.info("{} 出差申請", btBean.getSchedule());
+        logger.info("{} 存出差申請", btBean.getSchedule());
         System.out.println(btBean);
-        bts.save(btBean);
-        return ZeroFactory.buildResultBean(200, "出差申請成功");
+        List<CooperatorBean> cList = btBean.getCooperator();
+
+        Iterator<CooperatorBean> iterator = cList.iterator();
+        while (iterator.hasNext()) {
+            CooperatorBean e = iterator.next();
+            if (e.getName().isEmpty()) {
+                iterator.remove();// 推薦使用
+            }
+        }
+        btBean.setCooperator(cList);
+        BusinessTripBean save = bts.save(btBean);
+        bts.delNull();
+        return ZeroFactory.buildResultBean(200, "出差申請成功",save.getTripid());
     }
 
     //出差列表
@@ -380,6 +391,12 @@ public class TaskController {
         return ZeroFactory.fail("刪除錯誤! 資料錯誤");
     }
 
+    /**
+     * 核准請假單
+     *
+     * @param id id
+     * @return {@link ResultBean}
+     */
     @RequestMapping("/clickDirector")
     @ResponseBody
     public ResultBean clickDirector(@RequestParam("id") Integer id) {
@@ -392,22 +409,75 @@ public class TaskController {
             logger.info("主管核准 未登入");
             return ZeroFactory.fail("錯誤! 未登入");
         }
-        logger.info("{} 核准請假單",adminBean.getName() );
+        logger.info("{} 核准請假單", adminBean.getName());
         LeaveBean lBean = ls.getById(id);
         if (lBean != null) {
             if (lBean.getDirector() != null && !lBean.getDirector().isEmpty()) {
                 lBean.setDirector("");
                 ls.saveLeave(lBean);
                 logger.info("取消核准");
-                return ZeroFactory.buildResultBean(200, "核准取消","");
+                return ZeroFactory.buildResultBean(200, "核准取消", "");
             }
             lBean.setDirector(adminBean.getName());
             ls.saveLeave(lBean);
             logger.info("核准成功");
-            return ZeroFactory.success("核准成功",adminBean.getName());
+            return ZeroFactory.success("核准成功", adminBean.getName());
         }
         logger.info("核准請假紀錄 資料錯誤");
         return ZeroFactory.fail("核准錯誤! 資料錯誤");
     }
+
+    /**
+     * 核准出差申請
+     *
+     * @param id id
+     * @return {@link ResultBean}
+     */
+    @RequestMapping("/clickTripDirector")
+    @ResponseBody
+    public ResultBean clickTripDirector(@RequestParam("id") Integer id) {
+        AdminBean adminBean = ZeroTools.getAdmin();
+        if (adminBean == null) {
+            logger.info("核准出差申請 未登入");
+            return ZeroFactory.fail("錯誤! 未登入");
+        }
+        logger.info("{} 核准出差申請", adminBean.getName());
+        BusinessTripBean btBean = bts.getBusinessTrip(id);
+
+        if (btBean.getDirector() != null && !btBean.getDirector().isEmpty()) {
+            btBean.setDirector("");
+            bts.save(btBean);
+            logger.info("取消核准");
+            return ZeroFactory.buildResultBean(200, "核准取消", "");
+        }
+        btBean.setDirector(adminBean.getName());
+        bts.save(btBean);
+        logger.info("核准成功");
+        return ZeroFactory.success("核准成功", adminBean.getName());
+    }
+
+    /**
+     * 刪除出差申請
+     *
+     * @param id id
+     * @return {@link ResultBean}
+     */
+    @RequestMapping("/delTripLeave")
+    @ResponseBody
+    public ResultBean delTripLeave(@RequestParam("id") Integer id) {
+        AdminBean adminBean = ZeroTools.getAdmin();
+        if (adminBean == null) {
+            logger.info("刪除出差申請 未登入");
+            return ZeroFactory.fail("錯誤! 未登入");
+        }
+        if ( bts.existsById(id)) {
+            logger.info("{} 刪除請假紀錄 {}", adminBean.getName(), id);
+            bts.delByUuid(id);
+            return ZeroFactory.success("刪除成功");
+        }
+        logger.info("刪除請假紀錄 資料錯誤");
+        return ZeroFactory.fail("刪除錯誤! 資料錯誤");
+    }
+
 
 }

@@ -18,8 +18,8 @@ public class BusinessTripService {
     @Autowired
     BusinessTripRepository btr;
     //出差申請
-    public void save(BusinessTripBean btBean) {
-        btr.save(btBean);
+    public BusinessTripBean save(BusinessTripBean btBean) {
+     return   btr.save(btBean);
     }
 
     public List<BusinessTripBean> getBusinessTripList(String mon) {
@@ -32,6 +32,19 @@ public class BusinessTripService {
     }
     //讀取出差資料
     public BusinessTripBean getBusinessTrip(Integer tripid) {
-        return btr.findById(tripid).orElse(null);
+        return btr.findById(tripid).orElse(new BusinessTripBean());
+    }
+
+    public boolean existsById(Integer id) {
+        return btr.existsById(id);
+    }
+
+    public void delByUuid(Integer id) {
+        btr.deleteById(id);
+    }
+
+    public void delNull() {
+        btr.delNull();
+        btr.zero();
     }
 }

@@ -128,10 +128,6 @@
                     onclick="javascript:location.href='${pageContext.request.contextPath}/JobDescription/JobDescriptionList.jsp'">
                     ⼯作職掌說明
                 </button>
-                <button class="employee calendar"
-                    onclick="javascript:location.href='${pageContext.request.contextPath}/Task/calendar.jsp'">
-                    月歷
-                </button>
                 <button class="employee leave"
                     onclick="javascript:location.href='${pageContext.request.contextPath}/Task/leaveList.jsp'">
                     請假申請

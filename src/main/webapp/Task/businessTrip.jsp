@@ -59,15 +59,14 @@
                                 <!-- <%-- 中間主體--%> -->
                                 <div class="row ">
                                     <div class="col-md-8 ">
-                                        
                                         <p style="text-align: center;font-size: 48px;">出差申請</p>
                                     </div>
                                 </div>
                                 <div class="row ">
                                     <div class="col-md-8 ">
                                         <form action="" method="post" id="leaveForm">
-                                            <input type="hidden" name="schedule" value="${user.name}" id="schedule"
-                                                placeholder="排程人員">
+                                            <input type="hidden" v-model="bean.tripid" name="tripid">
+                                            <input type="hidden" name="director" v-model="bean.director">
                                             <span style="color: red;font-size: 20px;line-height: 40px;">新增行程 </span>
                                             排程人員：
                                             <!-- <c:if test="${empty param.id}">
@@ -76,7 +75,7 @@
                                             <c:if test="${not empty param.id}">
                                                 {{bean.schedule}}
                                             </c:if> -->
-                                            <el-select v-model="bean.schedule" placeholder="">
+                                            <el-select v-model="bean.schedule" placeholder="" name="schedule">
 
                                                 <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}"
                                                     items="${admin}" var="s">
@@ -84,19 +83,13 @@
                                                     </el-option>
                                                 </c:forEach>
                                             </el-select>
-
-
-
-
-
-
                                             <span style="float: right;">
                                                 行程日期：
                                                 <el-date-picker name="tripday" v-model="bean.tripday" type="date"
                                                     placeholder="行程日期" id="tripday">
                                                 </el-date-picker>
                                                 預估時間:
-                                                <el-select v-model="bean.expected" placeholder="">
+                                                <el-select v-model="bean.expected" name="expected">
                                                     <el-option label="半天" value="半天"></el-option>
                                                     <el-option label="1天" value="1天"></el-option>
                                                     <el-option label="2天" value="2天"></el-option>
@@ -106,9 +99,6 @@
                                                     <el-option label="6天" value="6天"></el-option>
                                                     <el-option label="7天" value="7天"></el-option>
                                                 </el-select>
-
-
-
                                             </span>
                                             <br><br>
                                             主負責人<el-input v-model="bean.responsible1" name="responsible1"
@@ -121,8 +111,21 @@
                                                 name="responsible3" maxlength="100" style="width: auto;">
                                             </el-input>
                                             &nbsp;&nbsp;&nbsp;
-                                            <el-button type="primary" icon="el-icon-edit" size="medium" circle></el-button>
+                                            <!-- 新增協從人 cooperator-->
+                                            <el-button type="primary" icon="el-icon-edit" size="medium" circle
+                                                @click="addCooperator">
+                                            </el-button>
+                                            <br><br>
+                                            <div class="row">
+                                                <div class="col-lg-4" v-for="(s, index) in bean.cooperator" :key="index">
+                                                    協從人<el-input v-model="s.name" :name="'cooperator['+index+'].name'"
+                                                        maxlength="100" style="width: auto;">
+                                                    </el-input>
+                                                    <input type="hidden" :name="'cooperator['+index+'].tripid'" v-model="bean.tripid">
+                                                    <input type="hidden" :name="'cooperator['+index+'].id'" v-model="s.id">
 
+                                                </div>
+                                            </div>
                                             <hr>
                                             <table class="table  table-bordered border border-dark">
                                                 <tr>
@@ -158,12 +161,29 @@
                                                         </el-input>
                                                     </td>
                                                 </tr>
+                                                <tr>
+                                                    <td>主管核准</td>
+                                                    <td @click="clickDirector">
+                                                        <span>{{bean.director}}</span>
+                                                        <el-result v-show="bean.director == ''" icon="info" title="點擊核准"
+                                                            style="padding: 0px;"></el-result>
+                                                        <el-result v-show="bean.director != ''" icon="success"
+                                                            style="padding: 0px;"></el-result>
+                                                    </td>
+                                                </tr>
                                             </table>
                                         </form>
                                         <p style="text-align: center;">
-                                            <c:if test="${empty param.id}">
-                                                <el-button type="primary" @click="sumbitForm">送出出差單</el-button>
+                                            <c:if test="${user.position == '主管'  || user.position == '系統'}">
+                                                <el-button type="primary"  v-show="bean.tripid != ''" @click="sumbitForm">送出出差單</el-button>
+                                                <el-button type="danger" v-show="bean.tripid != ''" @click="delLeave">
+                                                    刪除
+                                                </el-button>
                                             </c:if>
+                                           
+                                            <el-button v-show="bean.tripid == '' " type="primary" @click="sumbitForm">
+                                                送出出差單</el-button>
+
                                         </p>
                                     </div>
                                 </div>
@@ -175,6 +195,8 @@
             </div>
         </body>
         <script>
+            const url = new URL(location.href);
+            const id = url.searchParams.get("id");
             $(".employee").show();
             var vm = new Vue({
                 el: ".app",
@@ -182,18 +204,19 @@
                     return {
                         schedule: "${user.name}",
                         bean: {
+                            tripid: "",
+                            director: "",
                             type: "北上",
                             tripday: "",
                             expected: "",
                             content: "",
                             tripname: "",
-                            responsible1:"${user.name}",
+                            responsible1: "${user.name}",
+                            cooperator:[],
                         },
                     }
                 },
                 created() {
-                    const url = new URL(location.href);
-                    const id = url.searchParams.get("id");
                     if (id != "" && id != null) {
                         $.ajax({
                             url: "${pageContext.request.contextPath}/task/BusinessTrip/" + id,
@@ -247,7 +270,7 @@
                                         this.$alert(response.message, '申請成功', {
                                             confirmButtonText: '確定',
                                             callback: action => {
-                                                location.href = "${pageContext.request.contextPath}/Task/businessTripList.jsp";
+                                                location.href = "${pageContext.request.contextPath}/Task/businessTrip.jsp?id="+response.data;
                                             }
                                         });
                                     }
@@ -258,6 +281,64 @@
                             });
                         }
                     },
+                    clickDirector() {
+                        if ('${user.name}' == '') {
+                            return '';
+                        }
+                        if ('${user.position}' == '主管' || '${user.position}' == '系統') {
+                            $.ajax({
+                                url: "${pageContext.request.contextPath}/task/clickTripDirector?id=" + id,
+                                type: 'POST',
+                                success: response => {
+                                    if (response.code == 200) {
+                                        this.bean.director = response.data;
+                                        this.$message.success(response.message);
+                                    }
+                                    if (response.code == 300) {
+                                        this.$message.error(response.message);
+                                    }
+                                    this.$forceUpdate();
+                                },
+                                error: function (returndata) {
+                                    console.log(returndata);
+                                }
+                            });
+                        }
+                    },
+                    delLeave() {
+                        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }).then(() => {
+                            $.ajax({
+                                url: "${pageContext.request.contextPath}/task/delTripLeave?id=" + id,
+                                type: 'POST',
+                                success: response => {
+                                    if (response.code == 200) {
+                                        location.href = "${pageContext.request.contextPath}/Task/businessTripList.jsp";
+                                    }
+                                    if (response.code == 300) {
+                                        this.$message.error(response.message);
+                                    }
+                                },
+                                error: function (returndata) {
+                                    console.log(returndata);
+                                }
+                            });
+                        }).catch(() => {
+                            this.$message({
+                                type: 'info',
+                                message: '已取消删除'
+                            });
+                        });
+                    },
+                    addCooperator() {
+                        this.bean.cooperator.push({name:""});
+                    }
+
+
+
                 },
             })
         </script>

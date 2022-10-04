@@ -56,7 +56,9 @@
                                     <div class="col-md-2">
                                         <c:if test="${user.position == '主管' || user.position == '系統' }">
                                             <a href="${pageContext.request.contextPath}/Task/leave.jsp">請假申請</a>
-                                        </c:if>
+                                        </c:if><br><br>
+                                        <a
+                                        :href="'${pageContext.request.contextPath}/Task/calendar.jsp?inday='+inday">月歷</a>
                                     </div>
                                     <div class="col-md-8">
                                         <p>&nbsp;</p>
@@ -81,9 +83,8 @@
                                                 </td>
                                             </tr>
                                         </table>
-                                        <br><br>
-                                        <a
-                                            :href="'${pageContext.request.contextPath}/Task/calendar.jsp?inday='+inday">月歷</a>
+                                
+
                                     </div>
                                 </div>
                                 <!-- . -->

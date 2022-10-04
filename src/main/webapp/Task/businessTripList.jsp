@@ -63,9 +63,12 @@
                                 </div>
                                 <div class="row ">
                                     <div class="col-md-2">
-                                        <c:if test="${user.position == '主管' || user.position == '系統' }">
+                                       
                                         <a href="${pageContext.request.contextPath}/Task/businessTrip.jsp">出差申請</a>
-                                        </c:if>
+                                        
+                                        <br><br>
+                                        <a
+                                        :href="'${pageContext.request.contextPath}/Task/calendar.jsp?inday='+inday">月歷</a>
                                     </div>
                                     <div class="col-md-8">
                                         <p>&nbsp;</p>
@@ -102,6 +105,7 @@
             </div>
         </body>
         <script>
+
             $(".employee").show();
             var vm = new Vue({
                 el: ".app",
@@ -156,7 +160,6 @@
                     },
                     //切換上下月份
                     changeMon(i) {
-
                         let myDate = new Date(this.inday)
                         myDate.setMonth(myDate.getMonth() + i);
                         this.inday = this.formatMon(myDate);
