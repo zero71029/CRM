@@ -278,6 +278,7 @@ public class TaskController {
     public ResultBean saveBusinessTrip(BusinessTripBean btBean) {
         logger.info("{} 存出差申請", btBean.getSchedule());
         System.out.println(btBean);
+        bts.delNull();
         List<CooperatorBean> cList = btBean.getCooperator();
 
         Iterator<CooperatorBean> iterator = cList.iterator();
