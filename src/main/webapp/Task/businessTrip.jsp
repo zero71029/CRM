@@ -63,7 +63,7 @@
                                     </div>
                                 </div>
                                 <div class="row ">
-                                    <div class="col-md-8 ">
+                                    <div class="col-md-9 ">
                                         <form action="" method="post" id="leaveForm">
                                             <input type="hidden" v-model="bean.tripid" name="tripid">
                                             <input type="hidden" name="director" v-model="bean.director">

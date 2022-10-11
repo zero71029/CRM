@@ -279,16 +279,19 @@ public class TaskController {
         logger.info("{} 存出差申請", btBean.getSchedule());
         System.out.println(btBean);
         bts.delNull();
-        List<CooperatorBean> cList = btBean.getCooperator();
 
-        Iterator<CooperatorBean> iterator = cList.iterator();
-        while (iterator.hasNext()) {
-            CooperatorBean e = iterator.next();
-            if (e.getName().isEmpty()) {
-                iterator.remove();// 推薦使用
+        List<CooperatorBean> cList = btBean.getCooperator();
+        if(cList != null ){
+            Iterator<CooperatorBean> iterator = cList.iterator();
+            while (iterator.hasNext()) {
+                CooperatorBean e = iterator.next();
+                if (e.getName().isEmpty()) {
+                    iterator.remove();// 推薦使用
+                }
             }
+            btBean.setCooperator(cList);
         }
-        btBean.setCooperator(cList);
+
         BusinessTripBean save = bts.save(btBean);
         bts.delNull();
         return ZeroFactory.buildResultBean(200, "出差申請成功",save.getTripid());

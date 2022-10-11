@@ -145,7 +145,6 @@
                                                             v-model="bean.reason">
                                                         </el-input>
                                                     </td>
-
                                                 </tr>
                                                 <tr>
                                                     <td colspan="2" id="leaveTime">請假時間: <br>
@@ -187,7 +186,7 @@
                                                             value-format="yyyy-MM-dd" @input="changeTime">
                                                         </el-date-picker>
                                                         &nbsp;
-                                                        <select name="endTime" @change="changeTime"
+                                                         <select name="endTime" @change="changeTime"
                                                             v-model="bean.endTime">
                                                             <option value="T01:00">01</option>
                                                             <option value="T02:00">02</option>
