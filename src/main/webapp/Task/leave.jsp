@@ -56,12 +56,14 @@
                         <div class="row " v-cloak>
                             <div class="col-md-12">
                                 <!-- <%-- 中間主體--%> -->
-                                <p style="text-align: center;font-size: 48px;">請假單</p>
+                                <p style="text-align: center;font-size: 48px;">請假單 <span v-show="bean.del == 1" style="color: red;">(刪除)</span></p>
                                 <div class="row ">
                                     <div class="col-md-2"></div>
                                     <div class="col-md-8 ">
                                         <form action="" method="post" id="leaveForm">
+                                            <input type="hidden" v-model="bean.del" name="del">
                                             <input type="hidden" v-model="bean.uuid" name="uuid">
+                                            <input type="hidden" v-model="bean.leaveid" name="leaveid">
                                             <table class="table  table-bordered border border-dark">
                                                 <tr>
                                                     <td>
@@ -186,7 +188,7 @@
                                                             value-format="yyyy-MM-dd" @input="changeTime">
                                                         </el-date-picker>
                                                         &nbsp;
-                                                         <select name="endTime" @change="changeTime"
+                                                        <select name="endTime" @change="changeTime"
                                                             v-model="bean.endTime">
                                                             <option value="T01:00">01</option>
                                                             <option value="T02:00">02</option>
@@ -241,18 +243,37 @@
                                         </form>
                                         <p style="text-align: center;">
                                             <c:if test="${user.position == '主管'  || user.position == '系統'}">
-                                                <el-button type="primary" v-show="bean.uuid != ''" @click="sumbitForm">送出</el-button>
+                                                <el-button type="primary" v-show="bean.uuid != ''" @click="sumbitForm">
+                                                    送出</el-button>
                                                 <el-button type="danger" v-show="bean.uuid != ''" @click="delLeave">
                                                     刪除
                                                 </el-button>
                                             </c:if>
-                                            <el-button type="primary" v-show="bean.uuid == ''" @click="sumbitForm">送出</el-button>
+                                            <el-button type="primary" v-show="bean.uuid == ''" @click="sumbitForm">送出
+                                            </el-button>
                                         </p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-11"></div>
+                                    <div class="col-lg-1">
+                                        <el-link type="primary" @click="dialogVisible = true">紀錄</el-link>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <!-- <%-- 彈窗  修改紀錄--%> -->
+                        <el-dialog title="修改紀錄" :visible.sync="dialogVisible" width="50%">
+                            <el-table :data="changeMessageList" height="450">
+                                <el-table-column property="name" label="姓名"></el-table-column>
+                                <el-table-column property="filed" label="欄位"></el-table-column>
+                                <el-table-column property="source" label="原本"></el-table-column>
+                                <el-table-column property="after" label="修改後"></el-table-column>
+                                <el-table-column property="createtime" label="日期" width="120"></el-table-column>
+                            </el-table>
+                        </el-dialog>
                     </div>
+
                 </div>
             </div>
         </body>
@@ -276,8 +297,12 @@
                             startDay: "",
                             endDay: "",
                             director: "",
-                            uuid: "",
+                            uuid: "",                           
+                            del:0,
                         },
+                        dialogVisible: false,
+                        changeMessageList:[],
+                        oldBean:{},
                     }
                 },
                 created() {
@@ -294,13 +319,22 @@
                             type: 'POST',
                             success: response => {
                                 if (response.code == 200) {
-                                    this.bean = response.data;
+                                    this.bean = response.data.bean;                               
                                     this.bean.leaveOther = this.bean.leaveName
-                                    this.bean.startDay = response.data.startday.substring(0, 10);
-                                    this.bean.startTime = response.data.startday.substring(10);
-                                    this.bean.endDay = response.data.endday.substring(0, 10);
-                                    this.bean.endTime = response.data.endday.substring(10);
+                                    this.bean.startDay = response.data.bean.startday.substring(0, 10);
+                                    this.bean.startTime = response.data.bean.startday.substring(10);
+                                    this.bean.endDay = response.data.bean.endday.substring(0, 10);
+                                    this.bean.endTime = response.data.bean.endday.substring(10);
+                                    this.oldBean = Object.assign({}, this.bean);
+                                    this.changeMessageList = response.data.changeMessageList;
                                     this.changeTime();
+
+                                    if (this.bean.leaveName == '事假' || this.bean.leaveName == '病假' || this.bean.leaveName == '特休') {
+
+                                    } else {
+                                        this.bean.leaveOther = this.bean.leaveName;
+                                        this.bean.leaveName = '其他';
+                                    }
                                 }
                             },
                             error: function (returndata) {
@@ -347,14 +381,11 @@
                             this.$message.error("假別為空");
                             $("#inLeave").css("border", "1px solid red");
                         }
-
                         if (this.bean.leaveName == '其他' && this.bean.leaveOther == '') {
                             isok = false;
                             this.$message.error("其他需填寫");
                             $("#inLeave").css("border", "1px solid red");
                         }
-
-
                         if (this.bean.agent == "") {
                             isok = false;
                             this.$message.error("職務代理人為空");
@@ -371,6 +402,33 @@
                             $("#leaveTime").css("border", "1px solid red");
                         }
                         if (isok) {
+                            //如果不是新資料 就 紀錄修改
+                            console.log(this.oldBean)
+                            console.log(this.bean)
+                            if (this.bean.uuid != "") {
+                                var keys = Object.keys(this.bean);
+                                var data = {};
+                                var hasSave = false;
+                                for (const iterator of keys) {
+                                    if (this.bean[iterator] == this.oldBean[iterator]) {
+
+                                    } else {
+                                        data[iterator] = [this.bean[iterator], this.oldBean[iterator]];
+                                        hasSave = true;
+                                    }
+                                }
+                                if (hasSave) {
+                                    axios
+                                        .post('${pageContext.request.contextPath}/changeMessage/' + this.bean.uuid, data)
+                                        .then(
+                                            response => (
+                                                console.log("response3")
+                                            ))
+                                } else {
+                                    this.$message.error('沒有任何改變');
+                                }
+                            }
+                            //
                             this.bean.startDay += this.bean.startTime;
                             this.bean.endDay += this.bean.endTime;
                             var data = new FormData(document.getElementById("leaveForm"));
@@ -380,13 +438,13 @@
                             data.append("applyday", this.bean.applyday);
                             data.append("totalTime", this.bean.totalTime);
                             $.ajax({
-                                url: "${pageContext.request.contextPath}/task/saveLeave",//接受請求的Servlet地址
+                                url: "${pageContext.request.contextPath}/task/saveLeave",
                                 type: 'POST',
                                 data: data,
-                                async: false,//同步請求
-                                cache: false,//不快取頁面
-                                contentType: false,//當form以multipart/form-data方式上傳檔案時，需要設定為false
-                                processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
+                                async: false,
+                                cache: false,
+                                contentType: false,
+                                processData: false,
                                 success: response => {
                                     if (response.code == 200) {
                                         this.$alert(response.message, '申請成功', {
@@ -406,6 +464,7 @@
                             });
                         }
                     },
+
                     clickDirector() {
                         if ('${user.name}' == '') {
                             return '';
@@ -425,7 +484,7 @@
                                     if (response.code == 300) {
                                         this.$message.error(response.message);
                                     }
-                                    this.$forceUpdate();
+                                    location.href='${pageContext.request.contextPath}/Task/leave.jsp?id='+id;
                                 },
                                 error: function (returndata) {
                                     console.log(returndata);

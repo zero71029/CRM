@@ -10,7 +10,7 @@ public class LeaveBean {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer leaveid;
     @Column(columnDefinition="CHAR(32)")
-    private String uuid;//申請人
+    private String uuid;
     private String user;//申請人
     private String department;//部門
     private String leaveName;//假別
@@ -22,6 +22,8 @@ public class LeaveBean {
     private String leaveday;//請假日
     private String applyday;//申請日期
     private String remark;//備註
+    @Column(columnDefinition="tinyint")
+    private int del;
 
     public LeaveBean() {
     }
@@ -39,6 +41,15 @@ public class LeaveBean {
         leaveday = leaveBean.getLeaveday();
         applyday = leaveBean.getApplyday();
         remark = leaveBean.getRemark();
+    }
+
+
+    public int getDel() {
+        return del;
+    }
+
+    public void setDel(int del) {
+        this.del = del;
     }
 
     public String getUuid() {

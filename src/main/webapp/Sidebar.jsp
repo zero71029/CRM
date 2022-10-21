@@ -62,136 +62,136 @@
         </header>
         <!--側邊欄 -->
         <div class="col-lg-1 navfix mainColor" style="padding: 0%;">
-
-            <ul class="list-group">
-                <!--  -->
-                <button class="list-group-item" onclick="market()">
-                    營銷模塊
-                </button>
-                <button class="market customerbar"
-                    onclick="javascript:location.href='${pageContext.request.contextPath}/Market/potentialcustomerList.jsp'">
-                    潛在客戶
-                </button>
-                <button class="market marketbar"
-                    onclick="javascript:location.href='${pageContext.request.contextPath}/Market/MarketList.jsp'">銷售機會
-                </button>
-                <button class="market workbar"
-                    onclick="javascript:location.href='${pageContext.request.contextPath}/Market/workList.jsp'">工作項目
-                </button>
-                <!-- <button class="market"
+            <c:if test='${not empty user }'>
+                <ul class="list-group">
+                    <!--  -->
+                    <button class="list-group-item" onclick="market()">
+                        營銷模塊
+                    </button>
+                    <button class="market customerbar"
+                        onclick="javascript:location.href='${pageContext.request.contextPath}/Market/potentialcustomerList.jsp'">
+                        潛在客戶
+                    </button>
+                    <button class="market marketbar"
+                        onclick="javascript:location.href='${pageContext.request.contextPath}/Market/MarketList.jsp'">銷售機會
+                    </button>
+                    <button class="market workbar"
+                        onclick="javascript:location.href='${pageContext.request.contextPath}/Market/workList.jsp'">工作項目
+                    </button>
+                    <!-- <button class="market"
                     onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/QuotationList'">報價單</button> -->
-                <!--  -->
-                <button class="list-group-item" onclick="client()">
-                    客戶管理
-                </button>
-                <button class="client clientbar"
-                    onclick="javascript:location.href='${pageContext.request.contextPath}/client/clientList.jsp'">客戶
-                </button>
-                <button class="client contactbar"
-                    onclick="javascript:location.href='${pageContext.request.contextPath}/client/contactList.jsp'">聯絡人
-                </button>
-                <!-- <button class="client">流失客戶</button> -->
-                <!-- <button class="list-group-item" onclick="javascript:location.href=''"> 服務管理 </button> -->
-                <button class="list-group-item " onclick="statistic()">
-                    數據管理
-                </button>
-                <button class="statistic BusinessCase"
-                    onclick="javascript:location.href='${pageContext.request.contextPath}/statistic/BusinessCase.jsp'">
-                    業務接案
-                </button>
-
-                <button class="statistic"
-                    onclick="javascript:location.href='${pageContext.request.contextPath}/statistic/statistic.jsp'">
-                    每日案件
-                </button>
-                <button class="statistic CloseState"
-                    onclick="javascript:location.href='${pageContext.request.contextPath}/statistic/CloseState.jsp'">
-                    結案狀態
-                </button>
-
-
-                <a href="" target="_blank"></a>
-
-
-                <!--  -->
-
-                <button class="list-group-item" onclick="employee()">
-                    員工區
-                </button>
-
-
-                <button class="employee taskbar"
-                    onclick="javascript:location.href='${pageContext.request.contextPath}/Task/TaskList.jsp'">
-                    每日任務
-                </button>
-                <button class="employee JobDescriptionList"
-                    onclick="javascript:location.href='${pageContext.request.contextPath}/JobDescription/JobDescriptionList.jsp'">
-                    ⼯作職掌說明
-                </button>
-                <button class="employee leave"
-                    onclick="javascript:location.href='${pageContext.request.contextPath}/Task/leaveList.jsp'">
-                    請假申請
-                </button>
-                <button class="employee businessTrip"
-                    onclick="javascript:location.href='${pageContext.request.contextPath}/Task/businessTripList.jsp'">
-                    出差佈告欄
-                </button>
-                <button class="employee"
-                    onclick="javascript:window.open('${pageContext.request.contextPath}/system/AccountApplication.jsp')">
-                    E-Mail/NAS帳號申請表
-                </button>
-
-                <!--  -->
-                <c:if test='${ user.position == "系統" ||user.position == "總經理" ||user.department == "行銷"}'>
-                    <button class="list-group-item " onclick="marketing()">
-                        行銷部
+                    <!--  -->
+                    <button class="list-group-item" onclick="client()">
+                        客戶管理
                     </button>
-                    <button class="marketing zeroMail"
-                        onclick="javascript:location.href='${pageContext.request.contextPath}/Marketing/Mail.jsp'">
-                        郵件
+                    <button class="client clientbar"
+                        onclick="javascript:location.href='${pageContext.request.contextPath}/client/clientList.jsp'">客戶
                     </button>
-                    <button class="marketing output"
-                        onclick="javascript:location.href='${pageContext.request.contextPath}/Marketing/output.jsp'">
-                        客戶輸出
+                    <button class="client contactbar"
+                        onclick="javascript:location.href='${pageContext.request.contextPath}/client/contactList.jsp'">聯絡人
                     </button>
-                    <button class="marketing MarketOutput"
-                        onclick="javascript:location.href='${pageContext.request.contextPath}/Marketing/MarketOutput.jsp'">
-                        銷售機會輸出
+                    <!-- <button class="client">流失客戶</button> -->
+                    <!-- <button class="list-group-item" onclick="javascript:location.href=''"> 服務管理 </button> -->
+                    <button class="list-group-item " onclick="statistic()">
+                        數據管理
                     </button>
-                </c:if>
+                    <button class="statistic BusinessCase"
+                        onclick="javascript:location.href='${pageContext.request.contextPath}/statistic/BusinessCase.jsp'">
+                        業務接案
+                    </button>
+
+                    <button class="statistic"
+                        onclick="javascript:location.href='${pageContext.request.contextPath}/statistic/statistic.jsp'">
+                        每日案件
+                    </button>
+                    <button class="statistic CloseState"
+                        onclick="javascript:location.href='${pageContext.request.contextPath}/statistic/CloseState.jsp'">
+                        結案狀態
+                    </button>
 
 
+                    <a href="" target="_blank"></a>
 
 
-                <!--  -->
-                <c:if
-                    test='${user.position == "主管" || user.position == "系統" ||user.position == "總經理" ||user.name == "謝姍妤"}'>
-                    <button class="list-group-item " onclick="system()">
-                        系統管理
+                    <!--  -->
+
+                    <button class="list-group-item" onclick="employee()">
+                        員工區
                     </button>
-                    <c:if test='${user.position == "系統"||user.position == "總經理"}'>
-                        <button class="system"
-                            onclick="javascript:window.open('${pageContext.request.contextPath}/task/sql')">
-                            資料庫備份
+
+
+                    <button class="employee taskbar"
+                        onclick="javascript:location.href='${pageContext.request.contextPath}/Task/TaskList.jsp'">
+                        每日任務
+                    </button>
+                    <button class="employee JobDescriptionList"
+                        onclick="javascript:location.href='${pageContext.request.contextPath}/JobDescription/JobDescriptionList.jsp'">
+                        ⼯作職掌說明
+                    </button>
+                    <button class="employee leave"
+                        onclick="javascript:location.href='${pageContext.request.contextPath}/Task/leaveList.jsp'">
+                        請假申請
+                    </button>
+                    <button class="employee businessTrip"
+                        onclick="javascript:location.href='${pageContext.request.contextPath}/Task/businessTripList.jsp'">
+                        出差佈告欄
+                    </button>
+                    <button class="employee"
+                        onclick="javascript:window.open('${pageContext.request.contextPath}/system/AccountApplication.jsp')">
+                        E-Mail/NAS帳號申請表
+                    </button>
+
+                    <!--  -->
+                    <c:if test='${ user.position == "系統" ||user.position == "總經理" ||user.department == "行銷"}'>
+                        <button class="list-group-item " onclick="marketing()">
+                            行銷部
                         </button>
-                        <button class="system "
-                            onclick="javascript:location.href='${pageContext.request.contextPath}/system/adminList/adminid'">
-                            員工管理
+                        <button class="marketing zeroMail"
+                            onclick="javascript:location.href='${pageContext.request.contextPath}/Marketing/Mail.jsp'">
+                            郵件
+                        </button>
+                        <button class="marketing output"
+                            onclick="javascript:location.href='${pageContext.request.contextPath}/Marketing/output.jsp'">
+                            客戶輸出
+                        </button>
+                        <button class="marketing MarketOutput"
+                            onclick="javascript:location.href='${pageContext.request.contextPath}/Marketing/MarketOutput.jsp'">
+                            銷售機會輸出
                         </button>
                     </c:if>
-                    <button class="system"
-                        onclick="javascript:location.href='${pageContext.request.contextPath}/system/AccountApplicationList.jsp'">新進⼈員帳號申請表
-                    </button>
-                    <button class="system"
-                        onclick="javascript:location.href='${pageContext.request.contextPath}/system/libraryList.jsp'">下拉選單管理
-                    </button>
-                    <button class="system"
-                        onclick="javascript:location.href='${pageContext.request.contextPath}/system/billboardList?pag=1'">
-                        討論區管理
-                    </button>
-                </c:if>
-            </ul>
 
+
+
+
+                    <!--  -->
+                    <c:if
+                        test='${user.position == "主管" || user.position == "系統" ||user.position == "總經理" ||user.name == "謝姍妤"}'>
+                        <button class="list-group-item " onclick="system()">
+                            系統管理
+                        </button>
+                        <c:if test='${user.position == "系統"||user.position == "總經理"}'>
+                            <button class="system"
+                                onclick="javascript:window.open('${pageContext.request.contextPath}/task/sql')">
+                                資料庫備份
+                            </button>
+                            <button class="system "
+                                onclick="javascript:location.href='${pageContext.request.contextPath}/system/adminList/adminid'">
+                                員工管理
+                            </button>
+                        </c:if>
+                        <button class="system"
+                            onclick="javascript:location.href='${pageContext.request.contextPath}/system/AccountApplicationList.jsp'">新進⼈員帳號申請表
+                        </button>
+                        <button class="system"
+                            onclick="javascript:location.href='${pageContext.request.contextPath}/system/libraryList.jsp'">下拉選單管理
+                        </button>
+                        <button class="system"
+                            onclick="javascript:location.href='${pageContext.request.contextPath}/system/billboardList?pag=1'">
+                            討論區管理
+                        </button>
+                    </c:if>
+                </ul>
+            </c:if>
             <!-- 工作項目彈窗 -->
             <div class="work" title="工作項目">
                 <table class="Table table-striped workTable">

@@ -124,10 +124,11 @@
                     <div class="col-lg-11 ">
                         <div class="row ">
                             <div class="col-md-8">
-                                <!-- <%-- 中間主體--%> -->
+                                <!-- <%-- 中間主體 ..........--%> -->
                                 <br>
                                 <!-- 上一頁 -->
                                 <div class="row">
+                                    <div class="col-lg-1 "></div>
                                     <div class="col-lg-2">
                                         <a href="javascript:history.back()" style="text-decoration: none;"><img
                                                 src="${pageContext.request.contextPath}/img/Pre.png" alt="上一頁"></a>
@@ -176,13 +177,16 @@
                                 <c:if test="${not empty authorizeBean}">
                                     <form action="${pageContext.request.contextPath}/saveAuthorize/${authorizeBean.id}"
                                         method="post" id="myform" class="g-3 needs-validation">
-                                </c:if>
+                                </c:if>.
 
 
                                 <div class="row">
+                                    <div class="col-lg-1"></div>
+
                                     <input type="hidden" name="authorize" value="${param.authorize}">
                                     <input type="hidden" name="billboardid" value="${bean.billboardid}">
                                     <input type="hidden" name="user" value="${user.name}">
+                                    <div class="col-lg-11">
                                     <div class="row">
                                         <div class="col-lg-10 cell position-relative cellbackgroud"
                                             style="text-align: center;color:white;background-color: #569b92; font-size: 20px;">
@@ -324,6 +328,7 @@
                                             </div>
                                         </div>
                                     </c:if>
+                                    </div>
                                 </div>
                                 </form>
                                 <br><br>

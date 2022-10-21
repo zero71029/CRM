@@ -188,7 +188,7 @@
                                                 <div class="col-md-6 FormPadding  clientDiv"
                                                     style="background-color: #EEE;">
                                                     <a href="#" @click.stop.prevent="goClient">{{bean.client}}</a>
-                                                    <input type="hidden" class="form-control cellzFrom client"
+                                                     <input type="hidden" class="form-control cellzFrom client"
                                                         v-model.trim="bean.client" name="client" maxlength="100"
                                                         readonly>
                                                 </div>
@@ -991,30 +991,18 @@
                     }
                 });
             }
-
-
             function clickContact(name, phone, moblie, jobtitle) {
                 vm.bean.contactphone = phone;
                 vm.bean.contactmoblie = moblie;
                 vm.bean.contactname = name;
                 vm.bean.jobtitle = jobtitle;
                 vm.outerVisible = false;
-
-
-
-
-
             }
-
             function catbtn() {
                 vm.bean.contactname = $("input[name='catin']").val();
                 vm.bean.contactphone = "";
                 vm.bean.contactmoblie = "";
                 vm.outerVisible = false;
-
-
-
-
             }
 
             //建立報價單
@@ -1216,7 +1204,6 @@
                 watch: {
                     TrackList: {
                         handler(newValue, oldValue) {
-
                             for (var track of newValue) {
                                 track.trackdescribe = track.trackdescribe.replace(/\r\n/g, '<br />');
                                 track.result = track.result.replace(/\r\n/g, '<br />');

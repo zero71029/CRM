@@ -86,7 +86,7 @@ class TaskControllerTest {
     @Test
     void directorTaskList() throws Exception {
         mockMvc.perform(post("/task/directorTaskList")
-                        .param("pag","1")
+                        .param("pag", "1")
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.total").isNumber())
@@ -97,8 +97,8 @@ class TaskControllerTest {
     @Test
     void workList() throws Exception {
         mockMvc.perform(post("/task/taskList")
-                        .param("pag","1")
-                        .param("name","賴世全")
+                        .param("pag", "1")
+                        .param("name", "賴世全")
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.total").isNumber())
@@ -118,7 +118,7 @@ class TaskControllerTest {
     @Rollback
     void delTask() throws Exception {
         mockMvc.perform(post("/task/delTask")
-                        .param("id","85c456286674491092b98108f57adcac"))
+                        .param("id", "85c456286674491092b98108f57adcac"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value("刪除成功"));
     }
@@ -130,8 +130,8 @@ class TaskControllerTest {
     @Test
     void selecttask() throws Exception {
         mockMvc.perform(post("/task/selecttask")
-                        .param("pag","1")
-                        .param("name","賴世全"))
+                        .param("pag", "1")
+                        .param("name", "賴世全"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray());
     }
@@ -214,6 +214,7 @@ class TaskControllerTest {
                 .andExpect(jsonPath("data.tripid").value(10))
                 .andExpect(jsonPath("data").exists()).andDo(print());
     }
+
     @Test
     @DisplayName("刪除請假")
     void delLeave() throws Exception {
@@ -225,5 +226,16 @@ class TaskControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("code").value(300))
                 .andExpect(jsonPath("message").value("刪除錯誤! 資料錯誤"));
+    }
+
+    @Test
+    @DisplayName("出差搜索 車號")
+    void searchCar() throws Exception {
+        mockMvc.perform(post("/task/searchCar")
+                        .param("car", "2311-WJ")
+                        .param("start", "2022-10-01")
+                        .param("end", "2022-10-31"))
+                .andExpect(jsonPath("code").value(200))
+                .andExpect(jsonPath("message").value("出差搜索"));
     }
 }

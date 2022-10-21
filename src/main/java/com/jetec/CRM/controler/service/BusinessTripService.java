@@ -17,19 +17,21 @@ public class BusinessTripService {
 
     @Autowired
     BusinessTripRepository btr;
+
     //出差申請
     public BusinessTripBean save(BusinessTripBean btBean) {
-     return   btr.save(btBean);
+        return btr.save(btBean);
     }
 
     public List<BusinessTripBean> getBusinessTripList(String mon) {
-        LocalDate d = LocalDate.parse(mon+"-01");
+        LocalDate d = LocalDate.parse(mon + "-01");
         //本月的第一天
-        LocalDate firstday = LocalDate.of(d.getYear(),d.getMonth(),1);
+        LocalDate firstday = LocalDate.of(d.getYear(), d.getMonth(), 1);
         //本月的最后一天
-        LocalDate lastDay =d.with(TemporalAdjusters.lastDayOfMonth());
-        return btr.findByTripdayBetween(firstday.toString() ,lastDay.toString(), Sort.by(Sort.Direction.DESC,"tripday"));
+        LocalDate lastDay = d.with(TemporalAdjusters.lastDayOfMonth());
+        return btr.findByDelAndTripdayBetween(0, firstday.toString(), lastDay.toString(), Sort.by(Sort.Direction.DESC, "tripday"));
     }
+
     //讀取出差資料
     public BusinessTripBean getBusinessTrip(Integer tripid) {
         return btr.findById(tripid).orElse(new BusinessTripBean());
@@ -39,12 +41,21 @@ public class BusinessTripService {
         return btr.existsById(id);
     }
 
-    public void delByUuid(Integer id) {
-        btr.deleteById(id);
-    }
 
     public void delNull() {
         btr.delNull();
         btr.zero();
+    }
+
+
+    public List<BusinessTripBean> searchCar(String car, String start, String end) {
+        return btr.getByCar(car, car, start, end);
+    }
+    public List<BusinessTripBean> searchCar(String car) {
+        return btr.getByOnlyCar(car, car);
+    }
+
+    public void delById(Integer id) {
+        btr.delId(id);
     }
 }

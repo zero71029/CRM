@@ -36,6 +36,10 @@
                     background-color: #d9ecff;
                     color: red;
                 }
+
+                .el-month-table tr {
+                    background-color: #FFF;
+                }
             </style>
         </head>
 
@@ -58,19 +62,18 @@
                                         </el-date-picker>
                                         &nbsp;&nbsp;
                                         <el-button type="text" @click="changeMon(1)">❯❯</el-button>
-
                                     </div>
                                 </div>
                                 <div class="row ">
-                                    <div class="col-md-2">
-                                       
+                                    <div class="col-md-1">
                                         <a href="${pageContext.request.contextPath}/Task/businessTrip.jsp">出差申請</a>
-                                        
                                         <br><br>
                                         <a
-                                        :href="'${pageContext.request.contextPath}/Task/calendar.jsp?inday='+inday">月歷</a>
+                                            :href="'${pageContext.request.contextPath}/Task/calendar.jsp?inday='+inday">月歷</a>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-8" v-loading="loading" element-loading-text="拼命加载中"
+                                        element-loading-spinner="el-icon-loading"
+                                        element-loading-background="rgba(0, 0, 0, 0.8)">
                                         <p>&nbsp;</p>
                                         <table class="table table-bordered border border-dark border-2 ">
                                             <tr class="text-center">
@@ -91,8 +94,22 @@
                                                 <td><a :href="'${pageContext.request.contextPath}/Task/businessTrip.jsp?id='+s.tripid"
                                                         target="_blank">細節</a></td>
                                             </tr>
-
                                         </table>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="block">
+                                            <el-date-picker v-model="value2" type="monthrange" align="right"
+                                                value-format="yyyy-MM-dd" unlink-panels range-separator="至"
+                                                start-placeholder="開始月份" end-placeholder="結束月份"
+                                                :picker-options="pickerOptions">
+                                            </el-date-picker>
+                                        </div>
+                                        <input type="text" placeholder="車號" list="car" v-model="car">
+                                        <button @click="searchCar">搜索</button>
+                                        <datalist id="car">
+                                            <option value="2311-WJ">2311-WJ</option>
+                                            <option value="2311-P6">2311-P6</option>
+                                        </datalist>
                                     </div>
                                 </div>
                                 <div class="row ">
@@ -113,6 +130,32 @@
                     return {
                         inday: "",
                         list: [],
+                        pickerOptions: {
+                            shortcuts: [{
+                                text: '本月',
+                                onClick(picker) {
+                                    picker.$emit('pick', [new Date(new Date().getFullYear(), new Date().getMonth()), new Date()]);
+                                }
+                            }, {
+                                text: '今年至今',
+                                onClick(picker) {
+                                    const end = new Date();
+                                    const start = new Date(new Date().getFullYear(), 0);
+                                    picker.$emit('pick', [start, end]);
+                                }
+                            }, {
+                                text: '最近六个月',
+                                onClick(picker) {
+                                    const end = new Date();
+                                    const start = new Date();
+                                    start.setMonth(start.getMonth() - 6);
+                                    picker.$emit('pick', [start, end]);
+                                }
+                            }]
+                        },
+                        value2: '',
+                        car: "",
+                        loading: true,
                     }
                 },
                 created() {
@@ -145,8 +188,8 @@
                                         }
 
                                     });
-                                    console.log(this.list);
                                 }
+                                this.loading = false;
                             },
                             error: function (returndata) {
                                 console.log(returndata);
@@ -165,8 +208,44 @@
                         this.inday = this.formatMon(myDate);
                         this.getLeave(this.inday);
                     },
+                    //搜索車號 
+                    searchCar() {
+                        this.loading = true;
+                        if (this.car == "") {
+                            this.$message.error("輸入車號")
+                        } else {
+                            let data = "car=" + this.car + "&start=" + this.value2[0] + "&end=" + this.value2[1];
+                            $.ajax({
+                                url: "${pageContext.request.contextPath}/task/searchCar",
+                                type: 'post',
+                                data: data,
+                                async: false,
+                                cache: false,
+                                success: response => {
+                                    console.log("TripList ", response.data);
+                                    if (response.code == 200) {
+                                        this.list = response.data;
+                                        this.list.forEach(element => {
+                                            let d = new Date(element.tripday);
+                                            d.setDate(d.getDate() + 1);
+                                            if (d.getTime() >= new Date().getTime()) {
+                                                console.log(element.tripday)
+                                                element.isExpired = true;
+                                            } else {
+                                                element.isExpired = false;
+                                            }
+                                        });
+                                    }
+                                    this.loading = false;
+                                },
+                                error: function (returndata) {
+                                    this.$message.error("發生錯誤")
+                                    console.log(returndata);
+                                }
+                            });
+                        }
+                    }
                 },
-
             })
         </script>
 

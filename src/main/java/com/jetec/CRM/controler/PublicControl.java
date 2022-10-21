@@ -480,7 +480,7 @@ public class PublicControl {
         replyTimeBean.setAaa("1");
         replyTimeBean.setLastmodified(new Date());
         rtr.save(replyTimeBean);
-        return "redirect:/billboardReply/" + bean.getBillboardid();
+        return "redirect:/billboard/Reply/" + bean.getBillboardid();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

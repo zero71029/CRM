@@ -211,7 +211,8 @@
 
                                     </div>
                                 </form>
-
+                                <p>&nbsp;</p>
+                                <p>&nbsp;</p>
 
                                 <!-- 回覆內容 -->
                                 <style>
@@ -350,7 +351,8 @@
                                         </c:if>
                                     </div>
                                 </div>
-
+                                <p>&nbsp;</p>
+                                <p>&nbsp;</p>
                                 <c:if test="${not empty user}">
                                     <form action="${pageContext.request.contextPath}/saveReply/${uuid}" method="post"
                                         id="formReply" class="row g-3 needs-validation">

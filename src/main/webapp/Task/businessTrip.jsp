@@ -52,19 +52,21 @@
                     <!-- <%-- 插入側邊欄--%> -->
                     <jsp:include page="/Sidebar.jsp"></jsp:include>
                     <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
-                    <div class="col-md-11 app" v-cloak>
-                        <div class="row ">
+                    <div class="col-md-11 app" >
+                        <div class="row " v-cloak>
                             <div class="col-md-2"></div>
                             <div class="col-md-10">
                                 <!-- <%-- 中間主體--%> -->
                                 <div class="row ">
                                     <div class="col-md-8 ">
-                                        <p style="text-align: center;font-size: 48px;">出差申請</p>
+                                        <p style="text-align: center;font-size: 48px;">出差申請<span v-show="bean.del == 1" style="color: red;">(刪除)</span></p>
                                     </div>
                                 </div>
                                 <div class="row ">
                                     <div class="col-md-9 ">
                                         <form action="" method="post" id="leaveForm">
+                                            <input type="hidden" v-model="bean.del" name="del">
+                                            <input type="hidden" v-model="bean.uuid" name="uuid">
                                             <input type="hidden" v-model="bean.tripid" name="tripid">
                                             <input type="hidden" name="director" v-model="bean.director">
                                             <span style="color: red;font-size: 20px;line-height: 40px;">新增行程 </span>
@@ -117,12 +119,15 @@
                                             </el-button>
                                             <br><br>
                                             <div class="row">
-                                                <div class="col-lg-4" v-for="(s, index) in bean.cooperator" :key="index">
+                                                <div class="col-lg-4" v-for="(s, index) in bean.cooperator"
+                                                    :key="index">
                                                     協從人<el-input v-model="s.name" :name="'cooperator['+index+'].name'"
                                                         maxlength="100" style="width: auto;">
                                                     </el-input>
-                                                    <input type="hidden" :name="'cooperator['+index+'].tripid'" v-model="bean.tripid">
-                                                    <input type="hidden" :name="'cooperator['+index+'].id'" v-model="s.id">
+                                                    <input type="hidden" :name="'cooperator['+index+'].tripid'"
+                                                        v-model="bean.tripid">
+                                                    <input type="hidden" :name="'cooperator['+index+'].id'"
+                                                        v-model="s.id">
 
                                                 </div>
                                             </div>
@@ -142,12 +147,33 @@
                                                         行程類型
                                                     </td>
                                                     <td>
-                                                        <select name="type" v-model="bean.type">
+                                                        <select class="form-control" name="type" v-model="bean.type"
+                                                            style="width: 40%;">
                                                             <option value="北上">北上</option>
                                                             <option value="中部">中部</option>
                                                             <option value="南下">南下</option>
                                                             <option value="其他">其他</option>
                                                         </select>
+                                                    </td>
+                                                </tr>
+
+
+                                                <tr>
+                                                    <td>
+                                                        車輛
+                                                    </td>
+                                                    <td>
+                                                        <el-input name="car1" v-model="bean.car1" maxlength="20"
+                                                            list="car" style="width: 40%; margin: 5px;">
+                                                        </el-input>
+                                                        <el-input name="car2" v-model="bean.car2" maxlength="20"
+                                                            list="car" style="width: 40%;margin: 5px;">
+                                                        </el-input>
+                                                        <datalist id="car">
+                                                            <option value="無">無</option>
+                                                            <option value="2311-WJ">2311-WJ</option>
+                                                            <option value="2311-P6">2311-P6</option>
+                                                        </datalist>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -175,20 +201,35 @@
                                         </form>
                                         <p style="text-align: center;">
                                             <c:if test="${user.position == '主管'  || user.position == '系統'}">
-                                                <el-button type="primary"  v-show="bean.tripid != ''" @click="sumbitForm">送出出差單</el-button>
+                                                <el-button type="primary" v-show="bean.tripid != ''"
+                                                    @click="sumbitForm">送出出差單</el-button>
                                                 <el-button type="danger" v-show="bean.tripid != ''" @click="delLeave">
                                                     刪除
                                                 </el-button>
                                             </c:if>
-                                           
+
                                             <el-button v-show="bean.tripid == '' " type="primary" @click="sumbitForm">
                                                 送出出差單</el-button>
-
                                         </p>
                                     </div>
                                 </div>
-
+                                <div class="row">
+                                    <div class="col-lg-11"></div>
+                                    <div class="col-lg-1">
+                                        <el-link type="primary" @click="dialogVisible = true">紀錄</el-link>
+                                    </div>
+                                </div>
                             </div>
+                            <!-- <%-- 彈窗  修改紀錄--%> -->
+                            <el-dialog title="修改紀錄" :visible.sync="dialogVisible" width="50%">
+                                <el-table :data="changeMessageList" height="450">
+                                    <el-table-column property="name" label="姓名"></el-table-column>
+                                    <el-table-column property="filed" label="欄位"></el-table-column>
+                                    <el-table-column property="source" label="原本"></el-table-column>
+                                    <el-table-column property="after" label="修改後"></el-table-column>
+                                    <el-table-column property="createtime" label="日期" width="120"></el-table-column>
+                                </el-table>
+                            </el-dialog>
                         </div>
                     </div>
                 </div>
@@ -212,8 +253,13 @@
                             content: "",
                             tripname: "",
                             responsible1: "${user.name}",
-                            cooperator:[],
+                            cooperator: [],
+                            del: 0,
+                            uuid: "",
                         },
+                        oldBean: {},
+                        dialogVisible:false,
+                        changeMessageList:[],
                     }
                 },
                 created() {
@@ -223,7 +269,9 @@
                             type: 'POST',
                             success: response => {
                                 if (response.code == 200) {
-                                    this.bean = response.data;
+                                    this.bean = response.data.bean;
+                                    this.changeMessageList =response.data.changeMessageList;
+                                    this.oldBean = Object.assign({}, this.bean);
                                 }
                             },
                             error: function (returndata) {
@@ -256,6 +304,34 @@
                             $("#tripname").css("border", "1px solid red");
                         }
                         if (isok) {
+                            //如果不是新資料 就 紀錄修改
+                            console.log(this.oldBean)
+                            console.log(this.bean)
+                            if (this.bean.uuid != "") {
+                                var keys = Object.keys(this.bean);
+                                var data = {};
+                                var hasSave = false;
+                                for (const iterator of keys) {
+                                    if (this.bean[iterator] == this.oldBean[iterator]) {
+
+                                    } else {
+                                        data[iterator] = [this.bean[iterator], this.oldBean[iterator]];
+                                        hasSave = true;
+                                    }
+                                }
+                                if (hasSave) {
+                                    axios
+                                        .post('${pageContext.request.contextPath}/changeMessage/' + this.bean.uuid, data)
+                                        .then(
+                                            response => (
+                                                console.log("response3")
+                                            ))
+                                } else {
+                                    this.$message.error('沒有任何改變');
+                                }
+                            }
+
+                            //
                             var data = new FormData(document.getElementById("leaveForm"));
                             $.ajax({
                                 url: "${pageContext.request.contextPath}/task/saveBusinessTrip",//接受請求的Servlet地址
@@ -270,7 +346,7 @@
                                         this.$alert(response.message, '申請成功', {
                                             confirmButtonText: '確定',
                                             callback: action => {
-                                                location.href = "${pageContext.request.contextPath}/Task/businessTrip.jsp?id="+response.data;
+                                                location.href = "${pageContext.request.contextPath}/Task/businessTrip.jsp?id=" + response.data;
                                             }
                                         });
                                     }
@@ -297,7 +373,7 @@
                                     if (response.code == 300) {
                                         this.$message.error(response.message);
                                     }
-                                    this.$forceUpdate();
+                                    location.href='${pageContext.request.contextPath}/Task/businessTrip.jsp?id='+id;
                                 },
                                 error: function (returndata) {
                                     console.log(returndata);
@@ -334,11 +410,8 @@
                         });
                     },
                     addCooperator() {
-                        this.bean.cooperator.push({name:""});
+                        this.bean.cooperator.push({ name: "" });
                     }
-
-
-
                 },
             })
         </script>

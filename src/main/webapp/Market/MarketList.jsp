@@ -11,10 +11,8 @@
             <!-- 思源黑體 -->
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
             <link rel="stylesheet" href="${pageContext.request.contextPath}\icons\bootstrap-icons.css">
-
             <!-- <%-- 主要的CSS、JS放在這裡--%> -->
             <!-- <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css"> -->
-
             <style>
                 .marketbar {
                     /* 按鈕顏色 */
@@ -32,14 +30,12 @@
         </head>
 
         <body>
-
             <div class="container-fluid">
                 <div class="row">
                     <!-- <%-- 插入側邊欄--%> -->
                     <jsp:include page="/Sidebar.jsp"></jsp:include>
                     <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
                     <div class="col-md-11 app" v-cloak>
-
                         <!-- <%-- 抬頭按鈕--%> -->
                         <div class="row">
                             <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
@@ -47,18 +43,13 @@
                                     onclick="javascript: window.open('${pageContext.request.contextPath}/Market/Market.jsp')">
                                 <label class="btn btn-outline-primary state1" for="btncheck1"><i
                                         class="bi bi-clipboard-check"></i>新增</label>
-
-
                                 <c:if test="${user.position == '主管' || user.position == '系統'}">
                                     <label class="btn btn-outline-primary state2" onclick="sta()"><i
                                             class="bi bi-trash"></i>刪除</label>
                                 </c:if>
-
                                 <input type="checkbox" class="btn-check" id="btncheck3" v-model="btncheck3">
                                 <label class="btn btn-outline-primary" for="btncheck3" @click="aadmin(admin)"><i
                                         class="bi bi-person-square"></i>{{admin}}</label>
-
-
                                 <label class="btn btn-outline-primary" data-bs-toggle="offcanvas"
                                     data-bs-target="#offcanvasRight" id="search"><i class="bi-search"></i>搜索</label>
                                 <label class="btn btn-outline-primary" data-bs-toggle="offcanvas"
@@ -75,7 +66,6 @@
                                     {{tag.state}}
                                 </el-tag>
                             </div>
-
                         </div>
                         <transition-group name="slide-fade" appear>
                             <table class="Table table-striped orderTable" key="1" v-if="show">
@@ -94,7 +84,6 @@
                                     <td>領取</td>
                                     <td style="width: 230px;">客戶</td>
                                     <td>描述</td>
-
                                     <td>機率</td>
                                     <td @click="sortItem('important')"><a href="#">重要性</a></td>
                                     <td>追蹤次數</td>
@@ -117,12 +106,9 @@
                                             style="cursor: pointer;">
                                             {{s.stage}} <i class="el-icon-paperclip" style="color: blue;"
                                                 v-if="isEmpty(s.marketfilelist)"></i>
-
-
                                             <span class="badge rounded-pill bg-danger"
                                                 v-show="s.bm.length > 0">{{s.bm.length ==
                                                 0?"":s.bm.length}}</span>
-
                                         </td>
                                         <td v-on:click="market(s.marketid)" style="cursor: pointer;">
                                             {{s.user}}
@@ -146,7 +132,6 @@
                                                 </el-button>
                                             </el-popover>
                                         </td>
-
                                         <td v-on:click="market(s.marketid)" style="cursor: pointer;">
                                             {{s.clinch}}
                                         </td>
@@ -169,7 +154,6 @@
                                             <td>{{s.clicks}}</td>
                                         </c:if>
                                 </tr>
-
                             </table>
                             <!-- 分頁 -->
                             <div class="block text-center" key="2" v-if="show">
@@ -181,13 +165,6 @@
                                     </el-pagination>
                                 </p>
                             </div>
-
-
-
-
-
-
-
                             <!--  -->
                             <div key="3">今天筆數 : {{todayTotal}}</div>
                             <div key="4">
@@ -199,34 +176,8 @@
                                 <el-button type="text" @click="CreateVisible = true">轉賣 - 今天到期
                                     {{markeCreateTime.length}}</el-button>
                             </div>
-
                             <!--  -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                         </transition-group>
-
-
                         <!-- 轉賣  - 今天到期 彈窗-->
                         <el-dialog title="轉賣 - 今天到期" :visible.sync="CreateVisible"
                             :default-sort="{prop: 'stage', order: 'descending'}">
@@ -238,10 +189,6 @@
                                 <el-table-column property="createtime" label="案件類型" sortable></el-table-column>
                             </el-table>
                         </el-dialog>
-
-
-
-
                         <!-- 潛在客戶轉 超過三天 彈窗-->
                         <el-dialog title="潛在客戶轉 超過三天" :visible.sync="pccVisible">
                             <el-table :data="pcc" @row-click="clickEndCast">
@@ -250,10 +197,6 @@
                                 <el-table-column property="stage" label="階段"></el-table-column>
                             </el-table>
                         </el-dialog>
-
-
-
-
                         <!-- 到期任務 彈窗-->
                         <el-dialog title="到期任務 (延長結束時間 或 結案)" :visible.sync="endCastVisible"
                             :default-sort="{prop: 'stage', order: 'descending'}">
@@ -377,7 +320,6 @@
                                                         @click="selectList">搜索
                                                     </button>
                                                 </div>
-
                                             </div>
                                         </div>
                                     </div>
@@ -406,7 +348,6 @@
                                                         </c:if>
                                                     </datalist>
                                                 </div>
-
                                             </div>
                                         </div>
                                     </div>
@@ -530,7 +471,6 @@
                                         <div id="i13" class="accordion-collapse collapse"
                                             aria-labelledby="flush-headingThree">
                                             <div class="accordion-body">
-
                                                 <el-checkbox-group v-model="Casetype">
                                                     <div class="row">
                                                         <div class="col-md-5">
@@ -543,11 +483,9 @@
                                                 </el-checkbox-group>
                                                 <el-button type="primary" @click="selectList" style="width: 100%;">送出
                                                 </el-button>
-
                                             </div>
                                         </div>
                                     </div>
-
                                     <!--  產品類別-->
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
@@ -628,7 +566,6 @@
                                                 </el-checkbox-group>
                                                 <el-button type="primary" @click="selectList" style="width: 100%;">送出
                                                 </el-button>
-
                                             </div>
                                         </div>
                                     </div>
@@ -652,11 +589,6 @@
                                             </div>
                                         </div>
                                     </div>
-
-
-
-
-
                                 </div>
                             </div>
                         </div>
@@ -709,14 +641,11 @@
                                                 @click="AddState('state','潛在客戶轉','info')" icon="el-icon-s-goods">潛在客戶轉
                                             </el-button>
                                         </div>
-
                                         <div style="float: left;margin: 3px;">
                                             <el-button type="info" size="mini" plain
                                                 @click="AddState('state','內部詢價中','info')" icon="el-icon-s-goods">內部詢價中
                                             </el-button>
                                         </div>
-
-
                                         <div style="float: left;margin: 3px;">
                                             <el-button type="info" size="mini" plain
                                                 @click="AddState('state','已報價','info')" icon="el-icon-s-goods">已報價
@@ -737,7 +666,6 @@
                                                 @click="AddState('state','失敗結案','info')" icon="el-icon-s-goods">失敗結案
                                             </el-button>
                                         </div>
-
                                     </div>
                                     <div style="clear:both;margin-bottom: 15px;"></div>
                                     <hr>
@@ -752,28 +680,20 @@
                                                 @click="AddState('receive','分配','danger')" icon="el-icon-s-goods">分配
                                             </el-button>
                                         </div>
-
-
                                     </div>
                                     <div style="clear:both;margin-bottom: 15px;"></div>
-
                                     <hr>
-
-
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </body>
         <script>
             $(".market").show();
-
             //  刪除按鈕
             function sta() {
-
                 var $zx = $("input[name=mak]:checked");
                 if ($zx.length == 0) {
                     alert("須勾選要刪除項目");
@@ -793,7 +713,6 @@
                             // cache: false,//不快取頁面
                             // contentType: false,//當form以multipart/form-data方式上傳檔案時，需要設定為false
                             // processData: false,//如果要傳送Dom樹資訊或其他不需要轉換的資訊，請設定為false
-
                             success: function (json) {
                                 alert(json);
                                 window.location.href = "${pageContext.request.contextPath}/Market/MarketList.jsp";
@@ -804,7 +723,6 @@
                         });
                     }
                 }
-
             }
         </script>
         <script>
@@ -967,7 +885,6 @@
                     //讀取url參數name
                     var url = new URL(location.href);
                     const name = url.searchParams.get("user");
-
                     if (this.admin != "") {
                         $.ajax({
                             url: '${pageContext.request.contextPath}/Market/MarketList?pag=1&pageSize=40',
@@ -994,7 +911,6 @@
                                 console.log(returndata);
                             }
                         });
-
                     } else {
                         location.href = "${pageContext.request.contextPath}/"
                     }
@@ -1023,14 +939,12 @@
                                 if (bean.trackbean.length != 0)
                                     bean.tracktime = bean.trackbean[0].tracktime;
                             }
-
                         }
                     },
                 },
                 methods: {
                     clickEndCast: function (row, column, event) {
                         window.open('${pageContext.request.contextPath}/Market/Market/' + row.marketid);
-
                     },
                     clickPotential: function (row, column, event) {
                         window.open('${pageContext.request.contextPath}/Market/potentialcustomer/' + row.customerid);
@@ -1050,10 +964,9 @@
                                 console.log(returndata);
                             }
                         });
-                        this.sortState();//
+                        this.sortState();
                     },
                     handleCurrentChange(val) {//點擊分頁
-
                         this.currentPage = val;
                         $.ajax({
                             url: '${pageContext.request.contextPath}/Market/MarketList?pag=' + val + '&pageSize=' + this.pageSize,
@@ -1067,7 +980,6 @@
                             error: function (returndata) {
                                 console.log(returndata);
                             }
-
                         });
                         this.sortState();
                     },
@@ -1101,7 +1013,6 @@
                             type: 'POST',
                             success: function (url) {
                                 window.open('${pageContext.request.contextPath}/Market/Market/' + id);
-
                             },
                         });
                     },
@@ -1143,11 +1054,8 @@
                         console.log(this.inDay[0])
                         console.log(this.inDay[1])
                         var url = '${pageContext.request.contextPath}/Market/selectDate?from=' + this.inDay[0] + "&to=" + this.inDay[1];
-
-
                         if (this.intracktime != "") {//最後追蹤時間
                             url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=tractime&val=" + this.intracktime;
-
                         } else if (this.name != "") {//機會民稱 客戶
                             url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=name&val=" + this.name;
                         }
@@ -1155,7 +1063,6 @@
                             url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=name&val=" + this.company;
                         } else if (this.inStateList != "") {//狀態
                             url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=inStateList&val=" + this.inStateList;
-
                         } else if (this.inContact != "") {//聯絡人
                             url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=inContact&val=" + this.inContact;
                         } else if (this.ContantPhone != "") {//電話/傳真
@@ -1170,7 +1077,7 @@
                         } else if (this.product != "") {//商品
                             url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=product&val=" + this.product;
                         } else if (this.checkedCities != "") {//產品類別
-                            url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=checkedCitiest&val=" + this.product;
+                            url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=checkedCities&val=" + this.checkedCities;
                         } else if (this.quote != "") {//報價內容
                             url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=quote&val=" + this.quote;
                         } else if (this.AutoClose) {
@@ -1180,7 +1087,6 @@
                         } else if (this.Casetype != "") {//案件類型
                             url = '${pageContext.request.contextPath}/Market/selectMarket?from=' + this.inDay[0] + "&to=" + this.inDay[1] + "&key=createtime&val=" + this.Casetype;
                         }
-
                         $.ajax({
                             url: url,
                             type: 'POST',
@@ -1331,10 +1237,6 @@
                                             }
                                     })
                                 }
-
-
-
-
                                 if (this.Casetype != "") {//案件類型
                                     this.oldList = this.list;
                                     this.list = [];
@@ -1345,15 +1247,10 @@
                                             }
                                         }
                                 }
-
-
-
-
                                 loading.close();
                                 // console.log(this.list);
                                 this.total = 20;
                                 this.oldList = this.list;
-
                                 var en = new Date();
                                 console.log("花費時間", en - star);
                             },
@@ -1384,7 +1281,6 @@
                         for (let index = i + 1; index < 3; index++) {
                             nimp.push(imp[index])
                         }
-
                         //根據列表抓數據
                         for (let index = 0; index <= i; index++) {
                             nimp.push(imp[index])
@@ -1409,7 +1305,6 @@
                                 }
                             }
                         }
-
                     },
                     changeActivity: function () {
                         var $all = $("input[name=mak]");
@@ -1428,19 +1323,15 @@
                         } else {
                             return marketfilelist.length > 0
                         }
-
                     },
                     //添加使用者狀態
                     AddState(filed, state, type) {
-
-
                         if (filed == "day") {
                             if (state == "") {//沒輸入日期
                                 return null;
                             }
                             state = this.stateDay[0] + "~" + this.stateDay[1];
                         }
-
                         console.log(filed, state, type);
                         $.ajax({
                             url: '${pageContext.request.contextPath}/Market/AddState/' + filed + '/' + state + '/' + type,
@@ -1453,7 +1344,6 @@
                             error: function (returndata) {
                                 console.log(returndata);
                             }
-
                         })
                         $.ajax({
                             url: '${pageContext.request.contextPath}/Market/MarketList?pag=1&pageSize=40',
@@ -1477,8 +1367,6 @@
                                 console.log(returndata);
                             }
                         });
-
-
                     },
                     //刪除使用者狀態
                     CloseMarketState(tag) {
@@ -1489,7 +1377,6 @@
                             async: false,
                             cache: false,
                             success: (response => (
-
                                 this.MarketStateList = response
                                 // this.list = response,
                                 // this.total = this.list.length,
@@ -1521,8 +1408,6 @@
                                 console.log(returndata);
                             }
                         });
-
-
                     }, delAllState() {
                         $.ajax({
                             url: '${pageContext.request.contextPath}/Market/delAllState/${user.adminid}',
@@ -1531,7 +1416,6 @@
                             cache: false,
                             success: (response => (
                                 location.href = "${pageContext.request.contextPath}/Market/MarketList.jsp"
-
                             )),
                             error: function (returndata) {
                                 console.log(returndata);
@@ -1545,7 +1429,6 @@
                             case 2: return "分配";
                             case 3: return "";
                         }
-
                     },
                     // getAutoClose(){
                     //     $.ajax({
@@ -1567,7 +1450,6 @@
                 },
             })
         </script>
-
         <p style="text-align:center"></p>
         <style>
             .el-date-editor--daterange.el-input__inner {
@@ -1577,7 +1459,6 @@
             .el-rate__icon {
                 font-size: 30px;
                 width: 30px;
-
             }
 
             /* 可以设置不同的进入和离开动画 */
@@ -1606,11 +1487,7 @@
 
             .description:hover {
                 color: blue;
-
             }
         </style>
-
-
-
 
         </html>

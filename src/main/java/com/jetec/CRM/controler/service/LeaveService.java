@@ -23,14 +23,15 @@ public class LeaveService {
         lr.save(leaveBean);
 
     }
+
     //請假單列表
     public List<LeaveBean> getLeaveList(String mon) {
-        LocalDate d = LocalDate.parse(mon+"-01");
+        LocalDate d = LocalDate.parse(mon + "-01");
         //本月的第一天
-        LocalDate firstday = LocalDate.of(d.getYear(),d.getMonth(),1);
+        LocalDate firstday = LocalDate.of(d.getYear(), d.getMonth(), 1);
         //本月的最后一天
-        LocalDate lastDay =d.with(TemporalAdjusters.lastDayOfMonth());
-        return lr.findByLeavedayBetween(firstday.toString() ,lastDay.toString(), Sort.by(Sort.Direction.DESC,"leaveday"));
+        LocalDate lastDay = d.with(TemporalAdjusters.lastDayOfMonth());
+        return lr.findByLeavedayBetweenAndDel(firstday.toString(), lastDay.toString(), 0, Sort.by(Sort.Direction.DESC, "leaveday"));
     }
 
 
@@ -40,6 +41,7 @@ public class LeaveService {
 
     public void delByUuid(String uuid) {
         lr.deleteByUuid(uuid);
+        lr.delAutoIncrement();
     }
 
     public boolean existsByUuid(String uuid) {
@@ -49,5 +51,16 @@ public class LeaveService {
 
     public boolean existsById(Integer id) {
         return lr.existsById(id);
+    }
+
+    public List<LeaveBean> searchUser(String person, String start, String end) {
+        return lr.findByUserLikeAndDelAndLeavedayBetween( "%" +person + "%", 0, start, end, Sort.by(Sort.Direction.DESC, "leaveday"));
+    }
+    public List<LeaveBean> searchUser(String person) {
+        return lr.findByUserLikeAndDel( "%" +person + "%", 0,  Sort.by(Sort.Direction.DESC, "leaveday"));
+    }
+
+    public List<LeaveBean> getByUuid(String uuid) {
+        return lr.findByUuid(uuid);
     }
 }

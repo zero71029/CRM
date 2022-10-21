@@ -11,6 +11,8 @@ public class BusinessTripBean {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer tripid;
+    @Column(columnDefinition="CHAR(32)")
+    private String uuid;
     private String responsible1;//負責人員1
     private String responsible2;//負責人員2
     private String responsible3;//負責人員3
@@ -20,14 +22,33 @@ public class BusinessTripBean {
     private String schedule;//排程人員
     private String tripday;//行程日期
     private String expected;//預估時間
+    private String car1;
+    private String car2;
     private String director;//主管
-
+    @Column(columnDefinition="tinyint")
+    private int del;
 
     @OneToMany(targetEntity = CooperatorBean.class , cascade = CascadeType.ALL)
     @JoinColumn(name="tripid", referencedColumnName="tripid")
     private List<CooperatorBean> cooperator;
     //@他人
 
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public int getDel() {
+        return del;
+    }
+
+    public void setDel(int del) {
+        this.del = del;
+    }
 
     public List<CooperatorBean> getCooperator() {
         return cooperator;
@@ -127,6 +148,23 @@ public class BusinessTripBean {
 
     public void setTripday(String tripday) {
         this.tripday = tripday;
+    }
+
+
+    public String getCar1() {
+        return car1;
+    }
+
+    public void setCar1(String car1) {
+        this.car1 = car1;
+    }
+
+    public String getCar2() {
+        return car2;
+    }
+
+    public void setCar2(String car2) {
+        this.car2 = car2;
     }
 
     @Override

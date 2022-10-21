@@ -26,6 +26,10 @@
                     /* 按鈕顏色 */
                     background-color: #afe3d5;
                 }
+
+                .el-month-table tr {
+                    background-color: #FFF;
+                }
             </style>
         </head>
 
@@ -53,14 +57,15 @@
                                     </div>
                                 </div>
                                 <div class="row ">
-                                    <div class="col-md-2">
+                                    <div class="col-md-1">
                                         <c:if test="${user.position == '主管' || user.position == '系統' }">
                                             <a href="${pageContext.request.contextPath}/Task/leave.jsp">請假申請</a>
                                         </c:if><br><br>
                                         <a
-                                        :href="'${pageContext.request.contextPath}/Task/calendar.jsp?inday='+inday">月歷</a>
+                                            :href="'${pageContext.request.contextPath}/Task/calendar.jsp?inday='+inday">月歷</a>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-8" v-loading="loading" element-loading-text="拼命加载中"
+                                        element-loading-spinner="el-icon-loading">
                                         <p>&nbsp;</p>
                                         <table class="table table-bordered border border-dark border-2">
                                             <tr class="text-center">
@@ -83,8 +88,24 @@
                                                 </td>
                                             </tr>
                                         </table>
-                                
-
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="block">
+                                            <el-date-picker v-model="value2" type="monthrange" align="right"
+                                                value-format="yyyy-MM-dd" unlink-panels range-separator="至"
+                                                start-placeholder="開始月份" end-placeholder="結束月份"
+                                                :picker-options="pickerOptions">
+                                            </el-date-picker>
+                                        </div>
+                                        <input type="text" placeholder="人員" list="person" v-model="person">
+                                        <button @click="searchPerson">搜索</button>
+                                        <datalist id="person">
+                                            <c:forEach varStatus="loop" begin="0" end="${admin.size()-1}"
+                                                items="${admin}" var="s">
+                                                <option value="${s.name}">
+                                                </option>
+                                            </c:forEach>
+                                        </datalist>
                                     </div>
                                 </div>
                                 <!-- . -->
@@ -105,6 +126,33 @@
                     return {
                         inday: "",
                         list: [],
+                        pickerOptions: {
+                            shortcuts: [{
+                                text: '本月',
+                                onClick(picker) {
+                                    picker.$emit('pick', [new Date(new Date().getFullYear(), new Date().getMonth()), new Date()]);
+                                }
+                            }, {
+                                text: '今年至今',
+                                onClick(picker) {
+                                    const end = new Date();
+                                    const start = new Date(new Date().getFullYear(), 0);
+                                    picker.$emit('pick', [start, end]);
+                                }
+                            }, {
+                                text: '最近六个月',
+                                onClick(picker) {
+                                    const end = new Date();
+                                    const start = new Date();
+                                    start.setMonth(start.getMonth() - 6);
+                                    picker.$emit('pick', [start, end]);
+                                }
+                            }]
+                        },
+                        value2: '',
+                        car: "",
+                        loading: true,
+                        person: "",
                     }
                 },
                 created() {
@@ -128,6 +176,7 @@
                                 if (response.code == 200) {
                                     this.list = response.data;
                                 }
+                                this.loading = false;
                             },
                             error: function (returndata) {
                                 console.log(returndata);
@@ -146,8 +195,34 @@
                         this.inday = this.formatMon(myDate);
                         this.getLeave(this.inday);
                     },
+                    //搜索人員
+                    searchPerson() {
+                        this.loading = true;
+                        if (this.person == "") {
+                            this.$message.error("輸入人員");
+                        } else {
+                            let data = "person=" + this.person + "&start=" + this.value2[0] + "&end=" + this.value2[1];
+                            $.ajax({
+                                url: "${pageContext.request.contextPath}/task/searchLeaveByPerson",
+                                type: 'post',
+                                data: data,
+                                async: false,
+                                cache: false,
+                                success: response => {
+                                    console.log("TripList ", response.data);
+                                    if (response.code == 200) {
+                                        this.list = response.data;
+                                    }
+                                    this.loading = false;
+                                },
+                                error: function (returndata) {
+                                    this.$message.error("發生錯誤")
+                                    console.log(returndata);
+                                }
+                            });
+                        }
+                    }
                 },
-
             })
         </script>
 

@@ -49,7 +49,7 @@
 
 
                                 <input type="checkbox" class="btn-check" id="btncheck4" autocomplete="off">
-                                <label class="btn btn-outline-primary" for="btncheck4"
+                                <label class="btn btn-outli.ne-primary" for="btncheck4"
                                     onclick="javascript:location.href='${pageContext.request.contextPath}/task/closed'">XXX</label> -->
                             </div>
                         </div>

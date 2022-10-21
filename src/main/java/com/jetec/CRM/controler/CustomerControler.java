@@ -1,6 +1,8 @@
 package com.jetec.CRM.controler;
 
+import com.github.benmanes.caffeine.cache.Cache;
 import com.jetec.CRM.Tool.ResultBean;
+import com.jetec.CRM.Tool.ZeroCode;
 import com.jetec.CRM.Tool.ZeroFactory;
 import com.jetec.CRM.controler.service.ClientService;
 import com.jetec.CRM.model.*;
@@ -34,6 +36,8 @@ public class CustomerControler {
     ClientService cs;
 
     Logger logger = LoggerFactory.getLogger("CustomerControler");
+    @Autowired
+    Cache<String, Object> caffeineCache;
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //客戶列表初始化
@@ -52,7 +56,7 @@ public class CustomerControler {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //儲存客戶
     @RequestMapping("/SaveClient")
-    public String saveClient(ClientBean clientBean, HttpServletRequest req,Model model) {
+    public String saveClient(ClientBean clientBean, HttpServletRequest req, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AdminBean adminBean = (AdminBean) authentication.getPrincipal();
         clientBean.setName(clientBean.getName().trim());
@@ -63,15 +67,15 @@ public class CustomerControler {
             clientBean.setAaa(LocalDate.now().toString());
             clientBean.setState(1);
             //名稱檢查
-            if(cs.existsByName(clientBean.getName())){
-                model.addAttribute("message","名稱重複");
+            if (cs.existsByName(clientBean.getName())) {
+                model.addAttribute("message", "名稱重複");
                 return "error/500";
             }
         }
         //檢查修改名稱  是否重複
         ClientBean oldBean = cs.getCompanyByName(clientBean.getName());
-        if (oldBean != null &&      !Objects.equals(oldBean.getClientid(),clientBean.getClientid())){
-            model.addAttribute("message","名稱重複");
+        if (oldBean != null && !Objects.equals(oldBean.getClientid(), clientBean.getClientid())) {
+            model.addAttribute("message", "名稱重複");
             return "error/500";
         }
         logger.info("{} 儲存客戶 {}", adminBean.getName(), clientBean.getClientid());
@@ -82,7 +86,7 @@ public class CustomerControler {
             sce.setAttribute("client", cs.getList());
             logger.info("更新applient客戶列表");
         }).start();
-        //
+        //修改銷售機會 客戶名稱 客戶編號
         List<MarketBean> marketList = cs.getMarketListByClientid(clientBean.getClientid());
         for (MarketBean marketBean : marketList) {
             marketBean.setClient(clientBean.getName());
@@ -91,11 +95,12 @@ public class CustomerControler {
             } else {
                 marketBean.setSerialnumber(clientBean.getSerialnumber());
             }
+            marketBean.setClient(clientBean.getName());
+            caffeineCache.asMap().remove(ZeroCode.Redis_Market_Id + marketBean.getMarketid());
             cs.saveMarket(marketBean);
         }
         return "redirect:/CRM/client/" + save.getClientid();
     }
-
 
 
     @RequestMapping("/getclientList")
@@ -136,7 +141,6 @@ public class CustomerControler {
         name = name.trim();
         return ZeroFactory.success("搜索客戶", cs.selectclient(name));
     }
-
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -198,7 +202,6 @@ public class CustomerControler {
         cs.delMarket(id);
         return "刪除成功";
     }
-
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

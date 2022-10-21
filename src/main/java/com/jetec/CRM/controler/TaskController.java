@@ -8,9 +8,11 @@ import com.jetec.CRM.controler.service.CalenderService;
 import com.jetec.CRM.controler.service.LeaveService;
 import com.jetec.CRM.controler.service.TaskService;
 import com.jetec.CRM.model.*;
+import com.jetec.CRM.repository.ChangeMessageRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -28,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 
 @Controller
@@ -43,6 +46,8 @@ public class TaskController {
     ZeroTools zTools;
     @Autowired
     CalenderService cs;
+    @Autowired
+    ChangeMessageRepository cmr;
 
     Logger logger = LoggerFactory.getLogger("TaskController");
 
@@ -226,12 +231,15 @@ public class TaskController {
         }
         if (!leaveBean.getUuid().isEmpty()) {
             ls.delByUuid(leaveBean.getUuid());
+
+        } else {
+            leaveBean.setUuid(ZeroTools.getUUID());
         }
         logger.info("{} 儲存請假單", adminBean.getName());
         System.out.println(leaveBean);
         LocalDate start = LocalDateTime.parse(leaveBean.getStartday()).toLocalDate();
         LocalDate end = LocalDateTime.parse(leaveBean.getEndday()).toLocalDate();
-        leaveBean.setUuid(ZeroTools.getUUID());
+
         LeaveBean newBean = new LeaveBean(leaveBean);
         newBean.setLeaveday(start.toString());
         newBean.setRemark(leaveBean.getStartday() + " ~ " + leaveBean.getEndday());
@@ -265,11 +273,17 @@ public class TaskController {
     }
 
     //讀取請假單
-    @RequestMapping("/leave/{uuid}")
+    @RequestMapping("/leave/{id}")
     @ResponseBody
-    public ResultBean leave(@PathVariable("uuid") Integer uuid) {
-        logger.info("讀取請假單 {}", uuid);
-        return ZeroFactory.buildResultBean(200, "讀取請假單", ls.getById(uuid));
+    public ResultBean leave(@PathVariable("id") Integer id) {
+        logger.info("讀取請假單 {}", id);
+        Map<String, Object> result = new HashMap<>();
+
+        LeaveBean leaveBean = ls.getById(id);
+        System.out.println(cmr.findByChangeid(leaveBean.getUuid(), Sort.by(Sort.Direction.DESC, "createtime")));
+        result.put("bean", leaveBean);
+        result.put("changeMessageList", cmr.findByChangeid(leaveBean.getUuid(), Sort.by(Sort.Direction.DESC, "createtime")));
+        return ZeroFactory.buildResultBean(200, "讀取請假單", result);
     }
 
     //出差申請
@@ -280,13 +294,18 @@ public class TaskController {
         System.out.println(btBean);
         bts.delNull();
 
+        if (btBean.getUuid() == null || btBean.getUuid().isEmpty()) {
+            btBean.setUuid(ZeroTools.getUUID());
+        }
+
         List<CooperatorBean> cList = btBean.getCooperator();
-        if(cList != null ){
+        //刪除空白的協從人員
+        if (cList != null) {
             Iterator<CooperatorBean> iterator = cList.iterator();
             while (iterator.hasNext()) {
                 CooperatorBean e = iterator.next();
                 if (e.getName().isEmpty()) {
-                    iterator.remove();// 推薦使用
+                    iterator.remove();
                 }
             }
             btBean.setCooperator(cList);
@@ -294,7 +313,7 @@ public class TaskController {
 
         BusinessTripBean save = bts.save(btBean);
         bts.delNull();
-        return ZeroFactory.buildResultBean(200, "出差申請成功",save.getTripid());
+        return ZeroFactory.buildResultBean(200, "出差申請成功", save.getTripid());
     }
 
     //出差列表
@@ -311,7 +330,12 @@ public class TaskController {
     public ResultBean BusinessTrip(@PathVariable("tripid") Integer tripid) {
         System.out.println("讀取出差資料");
         logger.info("讀取出差資料{}", tripid);
-        return ZeroFactory.buildResultBean(200, "讀取出差申請", bts.getBusinessTrip(tripid));
+        Map<String , Object> result = new HashMap<>();
+
+        BusinessTripBean bean = bts.getBusinessTrip(tripid);
+        result.put("bean",bean);
+        result.put("changeMessageList", cmr.findByChangeid(bean.getUuid(), Sort.by(Sort.Direction.DESC, "createtime")));
+        return ZeroFactory.buildResultBean(200, "讀取出差申請", result);
     }
 
 
@@ -388,7 +412,13 @@ public class TaskController {
         }
         if (!uuid.isEmpty() || ls.existsByUuid(uuid)) {
             logger.info("{} 刪除請假紀錄 {}", adminBean.getName(), uuid);
-            ls.delByUuid(uuid);
+            List<LeaveBean> leaveList = ls.getByUuid(uuid);
+            for (LeaveBean leaveBean : leaveList) {
+                leaveBean.setDel(1);
+                ls.saveLeave(leaveBean);
+            }
+            ChangeMessageBean changeMessageBean = new ChangeMessageBean(ZeroTools.getUUID(), uuid, adminBean.getName(), "刪除請假", "刪除請假", uuid, LocalDateTime.now().format(DateTimeFormatter.ISO_DATE));
+            cmr.save(changeMessageBean);
             return ZeroFactory.success("刪除成功");
         }
         logger.info("刪除請假紀錄 資料錯誤");
@@ -417,11 +447,15 @@ public class TaskController {
         LeaveBean lBean = ls.getById(id);
         if (lBean != null) {
             if (lBean.getDirector() != null && !lBean.getDirector().isEmpty()) {
+                ChangeMessageBean changeMessageBean = new ChangeMessageBean(ZeroTools.getUUID(), lBean.getUuid(), adminBean.getName(), "取消核准", lBean.getDirector(), "", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                cmr.save(changeMessageBean);
                 lBean.setDirector("");
                 ls.saveLeave(lBean);
                 logger.info("取消核准");
                 return ZeroFactory.buildResultBean(200, "核准取消", "");
             }
+            ChangeMessageBean changeMessageBean = new ChangeMessageBean(ZeroTools.getUUID(), lBean.getUuid(), adminBean.getName(), "核准成功", lBean.getDirector(), adminBean.getName(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            cmr.save(changeMessageBean);
             lBean.setDirector(adminBean.getName());
             ls.saveLeave(lBean);
             logger.info("核准成功");
@@ -449,11 +483,15 @@ public class TaskController {
         BusinessTripBean btBean = bts.getBusinessTrip(id);
 
         if (btBean.getDirector() != null && !btBean.getDirector().isEmpty()) {
+            ChangeMessageBean changeMessageBean = new ChangeMessageBean(ZeroTools.getUUID(), btBean.getUuid(), adminBean.getName(), "取消核准", btBean.getDirector(), "", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            cmr.save(changeMessageBean);
             btBean.setDirector("");
             bts.save(btBean);
             logger.info("取消核准");
             return ZeroFactory.buildResultBean(200, "核准取消", "");
         }
+        ChangeMessageBean changeMessageBean = new ChangeMessageBean(ZeroTools.getUUID(), btBean.getUuid(), adminBean.getName(), "核准成功", btBean.getDirector(), adminBean.getName(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        cmr.save(changeMessageBean);
         btBean.setDirector(adminBean.getName());
         bts.save(btBean);
         logger.info("核准成功");
@@ -474,14 +512,64 @@ public class TaskController {
             logger.info("刪除出差申請 未登入");
             return ZeroFactory.fail("錯誤! 未登入");
         }
-        if ( bts.existsById(id)) {
+        if (bts.existsById(id)) {
             logger.info("{} 刪除請假紀錄 {}", adminBean.getName(), id);
-            bts.delByUuid(id);
+
+
+            bts.delById(id);
             return ZeroFactory.success("刪除成功");
         }
         logger.info("刪除請假紀錄 資料錯誤");
         return ZeroFactory.fail("刪除錯誤! 資料錯誤");
     }
 
+    /**
+     * 搜索汽车
+     *
+     * @param car   车
+     * @param start 开始
+     * @param end   结束
+     * @return {@link ResultBean}
+     */
+    @RequestMapping("/searchCar")
+    @ResponseBody
+    public ResultBean searchCar(@RequestParam("car") String car, @RequestParam("start") String start, @RequestParam("end") String end) {
+        if (Objects.equals("undefined", start)) {
+            start = "2022-10-01";
+        }
+        if (Objects.equals("undefined", end)) {
+            logger.info("出差搜索 車號{} {} {}", car, start, end);
+            return ZeroFactory.success("出差搜索", bts.searchCar(car));
+        }
+        end = LocalDate.parse(end).with(TemporalAdjusters.lastDayOfMonth()).format(DateTimeFormatter.ISO_DATE);
+
+        logger.info("出差搜索 車號{} {} {}", car, start, end);
+
+        return ZeroFactory.success("出差搜索", bts.searchCar(car, start, end));
+    }
+
+    /**
+     * 假單搜索
+     *
+     * @param person 人
+     * @param start  开始
+     * @param end    结束
+     * @return {@link ResultBean}
+     */
+    @RequestMapping("/searchLeaveByPerson")
+    @ResponseBody
+    public ResultBean searchLeaveByPerson(@RequestParam("person") String person, @RequestParam("start") String start, @RequestParam("end") String end) {
+        if (Objects.equals("undefined", start)) {
+            start = "2022-10-01";
+        }
+        if (Objects.equals("undefined", end)) {
+            logger.info("假單搜索 人員 :{} {} {}", person, start, end);
+            return ZeroFactory.success("假單搜索", ls.searchUser(person));
+        }
+        end = LocalDate.parse(end).with(TemporalAdjusters.lastDayOfMonth()).format(DateTimeFormatter.ISO_DATE);
+
+        logger.info("假單搜索 人員 :{} {} {}", person, start, end);
+        return ZeroFactory.success("假單搜索", ls.searchUser(person, start, end));
+    }
 
 }
