@@ -44,4 +44,6 @@ public interface ClientRepository extends JpaRepository<ClientBean, Integer>{
 	List<ClientBean> findByIndustryIsNullAndAaaBetween(String start, String end);
 
 	List<ClientBean> findByIndustryIsNull();
+
+
 }

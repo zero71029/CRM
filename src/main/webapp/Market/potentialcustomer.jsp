@@ -7,7 +7,7 @@
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  
+
             <title>CRM客戶管理系統</title>
         </head>
         <style>
@@ -145,6 +145,7 @@
                             <input type="hidden" name="fromactivity" value="${bean.fromactivity}">
                             <input type="hidden" name="fileforeignid" v-model="customer.fileforeignid">
                             <input type="hidden" name="founder" v-model="customer.founder">
+                            <input type="hidden" name="contactid" v-model="customer.contactid">
                             <div class="row">
                                 <!-- 基本資料 -->
                                 <div class="col-md-7">
@@ -179,7 +180,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1"></div>
-                                        <div class="col-md-2 cellz">聯絡人<span style="color: red;">*</span></div>
+                                        <div class="col-md-2 cellz">聯絡人 {{customer.contactid}}<span style="color: red;">*</span></div>
 
                                         <div class="col-md-2 FormPadding">
                                             <select name="contacttitle" class="form-select cellzFrom"
@@ -588,14 +589,14 @@
 
 
 
-                                        
-                                        <el-input type="textarea" :autosize="{ minRows: 4}" v-model="trackdescribe" show-word-limit
-                                            name="trackdescribe" maxlength="950" id="trackdescribe">
+
+                                        <el-input type="textarea" :autosize="{ minRows: 4}" v-model="trackdescribe"
+                                            show-word-limit name="trackdescribe" maxlength="950" id="trackdescribe">
                                         </el-input>
                                     </div>
                                     <div class="col-md-4 FormPadding">
-                                        <el-input type="textarea" :autosize="{ minRows: 4}" v-model="result" show-word-limit
-                                            name="result" maxlength="950" id="result">
+                                        <el-input type="textarea" :autosize="{ minRows: 4}" v-model="result"
+                                            show-word-limit name="result" maxlength="950" id="result">
                                         </el-input>
                                     </div>
                                     <div class="col-md-1" style="padding: 0%;">
@@ -895,22 +896,28 @@
                     cache: false,
                     contentType: false,
                     processData: false,
-                    success: function (json) {
-                        if (json == "聯絡人已存在") {
+                    success: json => {
+                        console.log(json)
+                        if (json.code == 200) {
+                            
+                            vm.customer.contactid = json.data;
                             vm.$message({
-                                message: json,
+                                message: json.message,
                                 type: 'warning'
                             });
                             return;
                         }
-                        if (json == "公司不存在") {
-                            vm.$message({
-                                message: "公司不存在,請先轉客戶",
-                                type: 'warning'
-                            });
-                            return;
-                        }
-                        if (json == "不存在") {
+
+                        if (json.code == 300) {
+                            if (json.message == "公司不存在") {
+                                vm.$message({
+                                    message: "公司不存在,請先轉客戶",
+                                    type: 'warning'
+                                });
+                                return;
+                            }
+
+                            if (json.message == "不存在") {
                             $.ajax({
                                 url: '${pageContext.request.contextPath}/Market/changeContact.action',
                                 type: 'POST',
@@ -919,9 +926,11 @@
                                 cache: false,
                                 contentType: false,
                                 processData: false,
-                                success: function (url) {
+                                success: function (json) {
+
+                                    vm.customer.contactid = json.data;
                                     vm.$message({
-                                        message: url,
+                                        message: json.message,
                                         type: 'success'
                                     });
                                 },
@@ -929,10 +938,16 @@
                                     console.log(returndata);
                                 }
                             });
-
-
                             return;
                         }
+
+
+                        }
+
+
+
+
+
                         alert("錯誤");
                     },
                     error: function (returndata) {
@@ -1094,6 +1109,7 @@
                             source: "其他",
                             industry: "尚未分類",
                             receivestate: 3,
+                            contactid:66660,
 
                         },//bean
                         bosMassage: "",//主管留言欄位

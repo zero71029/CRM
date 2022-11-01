@@ -278,7 +278,7 @@ public class MarketControler {
 //存追蹤by 淺在顧客
     @RequestMapping("/SaveTrack")
     public String SaveTrack(TrackBean trackBean) {
-        logger.info("存追蹤 {}" ,trackBean.getCustomerid());
+        logger.info("存追蹤 {}", trackBean.getCustomerid());
         logger.info(trackBean.getTrackdescribe());
         logger.info(trackBean.getResult());
         if (trackBean.getTrackid() == null || trackBean.getTrackid().isEmpty()) {
@@ -436,34 +436,40 @@ public class MarketControler {
 //判斷聯絡人存在
     @RequestMapping("/existsContact")
     @ResponseBody
-    public String existsContact(PotentialCustomerBean Bean) {
+    public ResultBean existsContact(PotentialCustomerBean Bean) {
         System.out.println("*****判斷聯絡人存在****");
         if (cs.existsContactByName(Bean.getName(), Bean.getCompany())) {
             System.out.println("*****聯絡人已存在****");
-            return "聯絡人已存在";
+            ContactBean c = cs.getContactByNameAndCompany(Bean.getName(), Bean.getCompany());
+            return ZeroFactory.success("聯絡人已存在", c.getContactid());
+
         } else if (!cs.existsContactByCompany(Bean.getCompany())) {
             System.out.println("*****公司不存在****");
-            return "公司不存在";
+            return ZeroFactory.fail("公司不存在");
+
         }
         System.out.println("*****不存在****");
-        return "不存在";
+        return ZeroFactory.fail("不存在");
+
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //潛在各戶 轉 聯絡人
     @RequestMapping("/changeContact.action")
     @ResponseBody
-    public String changeContact(ContactBean contactBean, @RequestParam("customerid") String customerid) {
-
+    public ResultBean changeContact(ContactBean contactBean, @RequestParam("customerid") String customerid) {
         logger.info("潛在各戶轉聯絡人 Customerid:{}", customerid);
         logger.info("admin : {}", ZeroTools.getAdmin().getName());
         ChangeMessageBean cmBean = new ChangeMessageBean(ZeroTools.getUUID(), customerid, ZeroTools.getAdmin().getName(), "行動", "", "潛在各戶轉聯絡人", ZeroTools.getTime(new Date()));
         ss.saveChangeMesssage(cmBean);
-
-
         contactBean.setRemark("");
-        cs.SaveContact(contactBean);
-        return "新增聯絡人";
+        ContactBean save = cs.SaveContact(contactBean);
+        PotentialCustomerBean pcBean = PCS.getById(customerid);
+        if (pcBean != null) {
+            pcBean.setContactid(save.getContactid());
+            PCS.SavePotentialCustomer(pcBean);
+        }
+        return ZeroFactory.success("新增聯絡人", save.getContactid());
     }
 
 
@@ -556,7 +562,7 @@ public class MarketControler {
         bean.setQuote("");
         bean.setReceivestate(pBean.getReceivestate());
         bean.setReceive(pBean.getReceive());
-
+        bean.setContactid(pBean.getContactid());
 
         Map<String, Object> result = new HashMap<>();
         result.put("bean", bean);
@@ -660,7 +666,7 @@ public class MarketControler {
     @ResponseBody
     public List<TrackBean> SaveTrackByMarket(TrackBean trackBean, @PathVariable("marketid") String marketid) {
         System.out.println("存追蹤by銷售機會");
-        logger.info("存追蹤by銷售機會 {}",trackBean.getCustomerid());
+        logger.info("存追蹤by銷售機會 {}", trackBean.getCustomerid());
         logger.info(trackBean.getTrackdescribe());
         logger.info(trackBean.getResult());
         String uuid = ZeroTools.getUUID();
@@ -959,4 +965,40 @@ public class MarketControler {
         }
         return ZeroFactory.fail("請先建立任務");
     }
+
+
+    //客戶列表
+    @RequestMapping("/selectContactByClientName/{name}")
+    @ResponseBody
+    public ResultBean selectContactByClientName(@PathVariable("name") String name) {
+        logger.info("讀取客戶列表 {}", name);
+        return ZeroFactory.success("聯絡人列表", cs.selectContactByClientName(name));
+    }
+
+    //銷售機會中 新增聯絡人
+    @RequestMapping("/newContact/{clientid}")
+    public String newContact(@PathVariable("clientid") Integer clientid, Model model) {
+        logger.info("銷售機會中 新增聯絡人  clientid:{}", clientid);
+        //沒找到公司
+        if (!cs.existsByid(clientid)) {
+            System.out.println("沒找到公司");
+            return null;
+        }
+        ClientBean cBean = cs.getById(clientid);
+        ContactBean contactBean = new ContactBean();
+        //找到公司
+        contactBean.setPhone(cBean.getPhone());
+        contactBean.setExtension(cBean.getExtension());
+        contactBean.setClientid(cBean.getClientid());
+        contactBean.setFax(cBean.getFax());
+        contactBean.setCompany(cBean.getName());
+        contactBean.setClient(cBean);
+
+
+        model.addAttribute("bean",contactBean);
+        System.out.println("找到公司");
+        return "/client/contact";
+
+    }
+
 }

@@ -17,7 +17,9 @@ public class MarketBean implements Serializable {
     private String endtime;//結束時間
     private String message;// 描述
     private Integer cost;// 預算
+    private Integer clientid;//客戶id
     private String client;// 客戶
+    private Integer contactid;// 聯絡人id
     private String contactname;// 聯絡人
     private String contactphone;// 聯絡人電話
     private String contactextension;//聯絡人電話分機
@@ -43,7 +45,6 @@ public class MarketBean implements Serializable {
     private String customerid;//追蹤資訊
     private Integer clicks;//點擊數
     private String fax;//傳真
-    private Integer clientid;//客戶id
     private String quote;//報價內容
     private String jobtitle;//職稱
     private String serialnumber;//編號
@@ -84,6 +85,9 @@ public class MarketBean implements Serializable {
     @JoinColumn(name = "bosid", referencedColumnName = "customerid", insertable = false, updatable = false)
     private List<BosMessageBean> bm;
 
+
+
+
 //	//舊
 //	@JsonIgnore
 //	@OrderBy("createtime DESC")
@@ -95,6 +99,16 @@ public class MarketBean implements Serializable {
 //	@OneToMany(targetEntity = WorkBean.class, mappedBy = "marketid", cascade = CascadeType.ALL)
 //	private List<WorkBean> work;
 
+
+
+
+    public Integer getContactid() {
+        return contactid;
+    }
+
+    public void setContactid(Integer contactid) {
+        this.contactid = contactid;
+    }
 
     public String getOpentime() {
         return opentime;
@@ -221,7 +235,7 @@ public class MarketBean implements Serializable {
     }
 
     public void setFax(String fax) {
-        if(fax != null){
+        if (fax != null) {
             fax = fax.replace("-", "");
             fax = fax.replace("(", "");
             fax = fax.replace(")", "");
@@ -332,7 +346,7 @@ public class MarketBean implements Serializable {
     }
 
     public void setContactphone(String contactphone) {
-        if(contactphone != null){
+        if (contactphone != null) {
             contactphone = contactphone.replace("-", "");
             contactphone = contactphone.replace("(", "");
             contactphone = contactphone.replace(")", "");
@@ -342,11 +356,27 @@ public class MarketBean implements Serializable {
     }
 
     public String getContactmoblie() {
-        return contactmoblie;
+
+        StringBuffer sb = new StringBuffer(contactmoblie);
+        if(sb.length()==10) {
+            sb.insert(3, "-");
+            sb.insert(7, "-");
+        }
+        if(sb.length()==9) {
+            sb.insert(2, "-");
+            sb.insert(6, "-");
+        }
+        if(sb.length()==8) {
+            sb.insert(5, "-");
+        }
+        if(sb.length()==7) {
+            sb.insert(4, "-");
+        }
+        return sb.toString();
     }
 
     public void setContactmoblie(String contactmoblie) {
-        if(contactmoblie != null){
+        if (contactmoblie != null) {
             contactmoblie = contactmoblie.replace("-", "");
             contactmoblie = contactmoblie.replace("(", "");
             contactmoblie = contactmoblie.replace(")", "");

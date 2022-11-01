@@ -19,40 +19,166 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 
 public class test {
 
 
-
     @Test
     public void XXX() throws Exception {
-        int[] prices = new int[]{0,0,1,1,1,2,2,3,3,4};
+        int[] nums = {0, 9, 0, 8, 1, 7, 1, 15, 1, 2, 2, 13, 13, 4};
+
+        List numList = Arrays.stream(nums).distinct().boxed().collect(Collectors.toList());
+        
+        numList.forEach(System.out::println);
 
 
-
-
+        Arrays.sort(nums);
+        int a = 0;
+        int b = 1;
+        while (b < nums.length) {
+            if (nums[a] != nums[b]) {
+                a++;
+                nums[a] = nums[b];
+            }
+            b++;
+        }
+        int[] result = new int[a+1];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = nums[i];
+            System.out.print(result[i] + "  ");
+        }
 
 
     }
+
+    @Test
+    public void test1() throws Exception {
+
+        int n = 10 / 2;
+        for (int i = 1; i < n + 1; i++) {
+            for (int j = n; j > i; j--) {
+                System.out.print(" ");
+            }
+            for (int j = 0; j < 2 * i - 1; j++) {
+                System.out.print("*");
+            }
+            System.out.println();
+        }
+        for (int i = n - 1; i > 0; i--) {
+            for (int j = n; j > i; j--) {
+                System.out.print(" ");
+            }
+            for (int j = 0; j < 2 * i - 1; j++) {
+                System.out.print("*");
+            }
+            System.out.println();
+        }
+
+
+    }
+
 
     @Test
     public void test2() throws Exception {
-        Pageable pageable = PageRequest.of(0, 40, Sort.Direction.DESC, "aaa");
-        for (int x = 0; x < 10; x++) {
-            Long start = System.currentTimeMillis();
-            for (int i = 0; i < 1000; i++) {
-
+        int n = 3;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < i + 1; j++) {
+                System.out.print("*");
             }
-            System.out.println("==================test2=====================");
-
-            System.out.println("花費時間 : " + (System.currentTimeMillis() - start));
+            System.out.println("");
         }
+        System.out.println("==============================================");
+        for (int i = 0; i < n; i++) {
+            for (int j = i; j < n; j++) {
+                System.out.print("*");
+            }
+            System.out.println("");
+        }
+        System.out.println("==============================================");
+
+        for (int i = 0; i < n; i++) {
+
+            for (int j = i; j < n; j++) {
+                System.out.print(" ");
+            }
+            for (int j = 0; j < i + 1; j++) {
+                System.out.print("*");
+            }
+            System.out.println("");
+        }
+        System.out.println("==============================================");
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                System.out.print(" ");
+            }
+            for (int j = i; j < n; j++) {
+                System.out.print("*");
+            }
+
+            System.out.println("");
+        }
+
+        System.out.println("==============================================");
+
+        for (int i = 0; i <= n; i++) {
+            for (int j = i; j < n; j++) {
+                System.out.print(" ");
+            }
+            for (int j = 0; j < 2 * i - 1; j++) {
+                System.out.print("*");
+            }
+
+            System.out.println("");
+        }
+        for (int i = n - 1; i > 0; i--) {
+            for (int j = i; j < n; j++) {
+                System.out.print(" ");
+            }
+            for (int j = 0; j < 2 * i - 1; j++) {
+                System.out.print("*");
+            }
+
+
+            System.out.println("");
+        }
+
     }
+
+    @Test
+    public void test3() throws Exception {
+        int x = 3 * 11 * 5;
+        int y = 2 * 11 * 5;
+        int tmp = 0;
+        while (x % y != 0) {
+            tmp = y;
+            y = x % y;
+            x = tmp;
+        }
+        System.out.println(y);
+    }
+
+    @Test
+    public void test4() throws Exception {
+        int x = 165;
+        int y = 2 * 11 * 5;
+        int tmp = 0;
+        int in1 = x;
+        int in2 = y;
+        while (y % x != 0) {
+            tmp = x;
+            x = y % x;
+            y = tmp;
+        }
+        System.out.println(in1 * in2 / y);
+    }
+
 
     @Test
     public void ObjectMapper() throws JsonProcessingException {
@@ -74,7 +200,8 @@ public class test {
         String ujson = objectMapper.writeValueAsString(ulist);
 
         // json 轉 List<User>
-        List<AdminBean> urlist = objectMapper.readValue(ujson, new TypeReference<List<AdminBean>>() {});
+        List<AdminBean> urlist = objectMapper.readValue(ujson, new TypeReference<List<AdminBean>>() {
+        });
 
         // Map<String, User> 轉 json
         HashMap<String, AdminBean> umap = new HashMap<>();
@@ -83,7 +210,8 @@ public class test {
         String mjson2 = objectMapper.writeValueAsString(umap);
 
         // json 轉 Map<String, User>
-        Map<String, AdminBean> urMap = objectMapper.readValue(mjson2, new TypeReference<HashMap<String, AdminBean>>() {});
+        Map<String, AdminBean> urMap = objectMapper.readValue(mjson2, new TypeReference<HashMap<String, AdminBean>>() {
+        });
 
 
     }
@@ -184,39 +312,38 @@ public class test {
     @Test
     public void sss() {
 
-            int HttpResult; // 伺服器返回的狀態
-            String ee = new String();
-            try {
-                URL url = new URL("https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=csv&date=20220809&stockNo=5871"); // 建立URL
-                URLConnection urlconn = url.openConnection(); // 試圖連線並取得返回狀態碼
-                urlconn.connect();
-                HttpURLConnection httpconn = (HttpURLConnection) urlconn;
-                HttpResult = httpconn.getResponseCode();
-                if (HttpResult != HttpURLConnection.HTTP_OK) {
-                    System.out.print("無法連線到");
-                } else {
-                    int filesize = urlconn.getContentLength(); // 取資料長度
-                    InputStreamReader isReader = new InputStreamReader(urlconn.getInputStream(), "UTF-8");
-                    BufferedReader reader = new BufferedReader(isReader);
-                    StringBuffer buffer = new StringBuffer();
-                    String line; // 用來儲存每行讀取的內容
-                    line = reader.readLine(); // 讀取第一行
-                    while (line != null) { // 如果 line 為空說明讀完了
-                        buffer.append(line); // 將讀到的內容新增到 buffer 中
-                        buffer.append(" "); // 新增換行符
-                        line = reader.readLine(); // 讀取下一行
-                    }
-                    System.out.print(buffer.toString());
-                    ee = buffer.toString();
+        int HttpResult; // 伺服器返回的狀態
+        String ee = new String();
+        try {
+            URL url = new URL("https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=csv&date=20220809&stockNo=5871"); // 建立URL
+            URLConnection urlconn = url.openConnection(); // 試圖連線並取得返回狀態碼
+            urlconn.connect();
+            HttpURLConnection httpconn = (HttpURLConnection) urlconn;
+            HttpResult = httpconn.getResponseCode();
+            if (HttpResult != HttpURLConnection.HTTP_OK) {
+                System.out.print("無法連線到");
+            } else {
+                int filesize = urlconn.getContentLength(); // 取資料長度
+                InputStreamReader isReader = new InputStreamReader(urlconn.getInputStream(), "UTF-8");
+                BufferedReader reader = new BufferedReader(isReader);
+                StringBuffer buffer = new StringBuffer();
+                String line; // 用來儲存每行讀取的內容
+                line = reader.readLine(); // 讀取第一行
+                while (line != null) { // 如果 line 為空說明讀完了
+                    buffer.append(line); // 將讀到的內容新增到 buffer 中
+                    buffer.append(" "); // 新增換行符
+                    line = reader.readLine(); // 讀取下一行
                 }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+                System.out.print(buffer.toString());
+                ee = buffer.toString();
             }
-
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
+    }
 
 
 }

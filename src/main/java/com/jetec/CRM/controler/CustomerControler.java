@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -60,8 +61,6 @@ public class CustomerControler {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AdminBean adminBean = (AdminBean) authentication.getPrincipal();
         clientBean.setName(clientBean.getName().trim());
-
-
         //新案件
         if (clientBean.getClientid() == null) {
             clientBean.setAaa(LocalDate.now().toString());
@@ -97,17 +96,27 @@ public class CustomerControler {
             }
             marketBean.setClient(clientBean.getName());
             caffeineCache.asMap().remove(ZeroCode.Redis_Market_Id + marketBean.getMarketid());
+            caffeineCache.asMap().remove(ZeroCode.Redis_Customer_Id + marketBean.getCustomerid());
             cs.saveMarket(marketBean);
         }
+        //修改聯絡人  客戶名稱
+        List<ContactBean> contactList = cs.getContactByClientid(clientBean.getClientid());
+        for (ContactBean contactBean : contactList) {
+            contactBean.setCompany(clientBean.getName());
+            cs.SaveContact(contactBean);
+        }
+
+
         return "redirect:/CRM/client/" + save.getClientid();
     }
 
 
     @RequestMapping("/getclientList")
     @ResponseBody
-    public List<ClientBean> getclientList() {
+    public List<ClientBean> getclientList(HttpServletRequest req) {
         System.out.println("*****讀取客戶列表*****");
-        return cs.getList();
+        ServletContext sce = req.getServletContext();
+        return (List<ClientBean>) sce.getAttribute("client");
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -172,6 +181,22 @@ public class CustomerControler {
         logger.info("儲存聯絡人 ");
         logger.info("{}", contactBean);
         cs.SaveContact(contactBean);
+        List<MarketBean> mList = cs.getMarketListByContactid(contactBean.getContactid());
+        if (mList != null) {
+            mList.forEach(e -> {
+                e.setContactid(contactBean.getContactid());
+                e.setContactname(contactBean.getName());
+                e.setContactmoblie(contactBean.getMoblie());
+                e.setContactextension(contactBean.getExtension());
+                e.setContactemail(contactBean.getEmail());
+                e.setContacttitle(contactBean.getContacttitle());
+                e.setJobtitle(contactBean.getJobtitle());
+                e.setFax(contactBean.getFax());
+                e.setLine(contactBean.getLine());
+                caffeineCache.asMap().remove(ZeroCode.Redis_Market_Id + e.getMarketid());
+                cs.saveMarket(e);
+            });
+        }
         return "redirect:/client/contactList.jsp";
     }
 

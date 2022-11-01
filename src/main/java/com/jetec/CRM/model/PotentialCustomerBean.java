@@ -49,6 +49,7 @@ public class PotentialCustomerBean implements Serializable {
     private String receive;//領取人
     @Column(columnDefinition = "TINYINT(1)")
     private Integer receivestate;//領取狀態
+    private Integer contactid;
 
     @Override
     public String toString() {
@@ -86,6 +87,15 @@ public class PotentialCustomerBean implements Serializable {
     //留言
     @OneToMany(targetEntity = BosMessageBean.class, mappedBy = "bosid", cascade = CascadeType.ALL)
     private List<BosMessageBean> bm;
+
+
+    public Integer getContactid() {
+        return contactid;
+    }
+
+    public void setContactid(Integer contactid) {
+        this.contactid = contactid;
+    }
 
     public Integer getReceivestate() {
         return receivestate;

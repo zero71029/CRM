@@ -81,8 +81,9 @@ public class ClientService {
 //儲存聯絡人
 	public ContactBean SaveContact(ContactBean contactBean) {
 		// 用公司名稱 去找id
-		if (contactBean.getClientid() == null)
+		if (contactBean.getClientid() == null){
 			contactBean.setClientid(cr.selectIdByname(contactBean.getCompany()));
+		}
 		return contactRepository.save(contactBean);
 	}
 
@@ -323,4 +324,21 @@ public class ClientService {
 	public List<MarketBean> getMarketListByClientid(Integer clientid) {
 		return mr.findByClientid(clientid);
 	}
+
+	public List<ContactBean> getContactByClientid(Integer clientid) {
+
+		return contactRepository.findByClientid(clientid);
+	}
+
+	public ContactBean getContactByNameAndCompany(String name, String company) {
+		return (ContactBean) contactRepository.findByNameAndCompany(name,company);
+	}
+
+	public boolean existsByid(Integer clientid) {
+		return cr.existsById(clientid);
+	}
+
+    public List<MarketBean> getMarketListByContactid(Integer contactid) {
+		return mr.findByContactid(contactid);
+    }
 }

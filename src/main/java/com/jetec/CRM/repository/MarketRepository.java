@@ -182,6 +182,14 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
 
     List<MarketBean> findByCreatetimeAndAaaBetween(String s, String startDay, String endDay, Sort sort);
 
+    List< MarketBean> findByContactnameAndClient(String name, String company);
+
+
+
+    List<MarketBean> findByContactnameAndClientidIsNull(String name);
+
+    List<MarketBean> findByContactid(Integer contactid);
+
 
 //   Strin a = """
 //    select * from market m

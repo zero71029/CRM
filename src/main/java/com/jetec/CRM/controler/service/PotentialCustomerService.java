@@ -67,10 +67,14 @@ public class PotentialCustomerService {
             }
             pcb.setFileforeignid(uuid);
         }
-        if (pcb.getAaa() == null || pcb.getAaa().isEmpty())
+        if (pcb.getAaa() == null || pcb.getAaa().isEmpty()) {
             pcb.setAaa(ZeroTools.getTime(new Date()));
-        if (pcb.getFileforeignid() == null || Objects.equals("", pcb.getFileforeignid()))
+        }
+
+        if (pcb.getFileforeignid() == null || Objects.equals("", pcb.getFileforeignid())) {
             pcb.setCustomerid(ZeroTools.getUUID());
+        }
+
         try {
             caffeineCache.asMap().remove(ZeroCode.Redis_Customer_Id + pcb.getCustomerid());
             logger.info("刪除caffeine緩存 " + ZeroCode.Redis_Customer_Id + pcb.getCustomerid());
@@ -101,13 +105,13 @@ public class PotentialCustomerService {
             PotentialCustomerBean CustomerBean = PCR.findById(id).orElse(null);
             try {
                 caffeineCache.put(ZeroCode.Redis_Customer_Id + id, CustomerBean);
-                logger.info("沒有緩存  添加caffeine緩存  {}" , ZeroCode.Redis_Customer_Id + id);
+                logger.info("沒有緩存  添加caffeine緩存  {}", ZeroCode.Redis_Customer_Id + id);
             } catch (Exception e) {
-                logger.info("添加caffeine緩存失敗  {}",ZeroCode.Redis_Customer_Id + id);
+                logger.info("添加caffeine緩存失敗  {}", ZeroCode.Redis_Customer_Id + id);
             }
             return CustomerBean;
         }
-        logger.info("使用caffeine緩存 {}" , ZeroCode.Redis_Customer_Id + id);
+        logger.info("使用caffeine緩存 {}", ZeroCode.Redis_Customer_Id + id);
         return cache;
     }
 
@@ -184,9 +188,6 @@ public class PotentialCustomerService {
         // TODO Auto-generated method stub
         return PCR.findByStatus(status);
     }
-
-
-
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

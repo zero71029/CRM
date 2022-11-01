@@ -133,7 +133,7 @@
                                 <!-- <%-- 中間主體--%> -->
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <h3>銷售機會</h3>
+                                        <h3>銷售機會</h3>                                  
                                     </div>
                                 </div>
                                 <br>
@@ -161,6 +161,7 @@
                                     <input type="hidden" name="fileforeignid" v-model="bean.fileforeignid">
                                     <input type="hidden" name="callbos" v-model="bean.callbos">
                                     <input type="hidden" name="founder" v-model="bean.founder">
+                                    <input type="hidden" name="contactid" v-model="bean.contactid">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="row" style="text-align: center;">
@@ -188,7 +189,7 @@
                                                 <div class="col-md-6 FormPadding  clientDiv"
                                                     style="background-color: #EEE;">
                                                     <a href="#" @click.stop.prevent="goClient">{{bean.client}}</a>
-                                                     <input type="hidden" class="form-control cellzFrom client"
+                                                    <input type="hidden" class="form-control cellzFrom client"
                                                         v-model.trim="bean.client" name="client" maxlength="100"
                                                         readonly>
                                                 </div>
@@ -199,7 +200,7 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-2 cellz">聯絡人 <span style="color: red;">*</span>
+                                                <div class="col-md-2 cellz">聯絡人 {{bean.contactid}}<span style="color: red;">*</span>
 
                                                 </div>
 
@@ -715,14 +716,14 @@
                                 <div class="col-md-1"></div>
                                 <div class="col-md-4 FormPadding">
 
-                                    <el-input type="textarea" :autosize="{ minRows: 4}" v-model="trackdescribe" show-word-limit
-                                        name="trackdescribe" maxlength="950" id="trackdescribe">
+                                    <el-input type="textarea" :autosize="{ minRows: 4}" v-model="trackdescribe"
+                                        show-word-limit name="trackdescribe" maxlength="950" id="trackdescribe">
                                     </el-input>
 
                                 </div>
                                 <div class="col-md-4 FormPadding">
-                                    <el-input type="textarea" :autosize="{ minRows: 4}" v-model="result" name="result" show-word-limit
-                                        maxlength="950" id="result">
+                                    <el-input type="textarea" :autosize="{ minRows: 4}" v-model="result" name="result"
+                                        show-word-limit maxlength="950" id="result">
                                     </el-input>
 
 
@@ -834,9 +835,8 @@
 
                         <el-dialog title="選擇聯絡人" :visible.sync="outerVisible" width="50%" :before-close="handleClose"
                             :opened="openDialog">
-
                             <br>
-                            <span>&nbsp;&nbsp;&nbsp; 選擇聯絡人</span>
+                            <span>&nbsp;&nbsp;&nbsp; 選擇聯絡人</span>                  
                             <hr>
                             <div class="row">
                                 <div class="col-md-1"></div>
@@ -845,29 +845,28 @@
                                 <div class="col-md-3">手機</div>
                             </div>
                             <div class="CCC">
-                                <!-- append -->
+                                <div v-for="(j, index) in contactList" :key="index">
+                                    <div class="row TTT" style="cursor: pointer;" @click="clickContact(j)">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-3"> {{j.name}} </div>
+                                        <div class="col-md-3"> {{j.phone}} </div>
+                                        <div class="col-md-3"> {{j.moblie}} </div>
+                                    </div>
+                                    <br>
+                                </div>                          
                             </div>
                             <hr>
                             <br>
-                            <span>&nbsp;&nbsp;&nbsp; 輸入聯絡人</span>
+ 
                             <div class="row">
                                 <div class="col-md-1"></div>
-                                <div class="col-md-10">
-                                    <div class="input-group input-group-sm mb-3">
-                                        <span class="input-group-text" id="inputGroup-sizing-sm">名稱</span>
-                                        <input type="text" class="form-control" name="catin">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-1"></div>
-                                <button class="col-md-10 catbtn" onclick="catbtn()" id="catbtn">提交</button>
+                                <button class="col-md-10 catbtn" @click="catbtn" id="catbtn">新增聯絡人</button>
                             </div>
                         </el-dialog>
                         <!-- <%-- 彈窗結束/////////////////////////////////////--%> -->
                         <!-- <%-- 公司彈窗--%> -->
-                        <el-dialog title="搜索不到,請先新增客戶" :visible.sync="dialogVisible" width="30%" :close-on-click-modal="false"
-                            :before-close="handleClose">
+                        <el-dialog title="搜索不到,請先新增客戶" :visible.sync="dialogVisible" width="30%"
+                            :close-on-click-modal="false" :before-close="handleClose">
                             <div style="margin-top: 15px;">
                                 <el-input placeholder="名稱or統編or電話" class="input-with-select" v-model.trim="inclient"
                                     @change="selectclient">
@@ -968,41 +967,18 @@
                 }
             }
 
-            function contact() {
-                $.ajax({
-                    url: '${pageContext.request.contextPath}/Market/selectContactByClientName/' + $("input[name='client']").val(),
-                    type: 'POST',
 
-                    success: function (json) {
-                        $(".CCC").empty();
-
-                        for (var j of json) {
-
-                            $(".CCC").append('<div class="row TTT" onclick="clickContact(`' + j.name + '`,`' + j.phone + '`,`' + j.moblie + '`,`' + j.jobtitle + '`)" >' +
-                                '<div class="col-md-1"></div>' +
-                                '<div class="col-md-3">' + j.name + '</div>' +
-                                '<div class="col-md-3">' + j.phone + '</div>' +
-                                '<div class="col-md-3">' + j.moblie + '</div>' +
-                                '</div>');
-                        }
-                    },
-                    error: function (returndata) {
-                        console.log(returndata);
-                    }
-                });
-            }
-            function clickContact(name, phone, moblie, jobtitle) {
-                vm.bean.contactphone = phone;
-                vm.bean.contactmoblie = moblie;
-                vm.bean.contactname = name;
-                vm.bean.jobtitle = jobtitle;
-                vm.outerVisible = false;
-            }
             function catbtn() {
-                vm.bean.contactname = $("input[name='catin']").val();
-                vm.bean.contactphone = "";
-                vm.bean.contactmoblie = "";
-                vm.outerVisible = false;
+                window.open="  "
+
+               
+
+
+
+                // vm.bean.contactname = $("input[name='catin']").val();
+                // vm.bean.contactphone = "";
+                // vm.bean.contactmoblie = "";
+                // vm.outerVisible = false;
             }
 
             //建立報價單
@@ -1070,7 +1046,7 @@
                         changeTableVisible: false,
                         dialogVisible: false,//公司彈窗
                         clientList: [],//客戶列表
-                        oldClientList:[],
+                        oldClientList: [],
                         bean: {
                             fileforeignid: Math.random() * 1000,
                             createtime: "",//案件類型
@@ -1083,7 +1059,10 @@
                             aaa: new Date(),
                             contacttitle: "",
                             source: "",
+                            contactBean: {},
+                            clientid:"",
                         },
+                        contactList: [],
                         oldBean: {},
                         changeMessageList: [],//修改資訊
                         show: false,
@@ -1155,8 +1134,7 @@
                                 this.bean.phone = formatPhone(this.bean.phone),
                                 this.bean.contactphone = formatPhone(this.bean.contactphone),
                                 this.bean.fax = formatPhone(this.bean.fax),
-                                this.bean.contactmoblie = this.bean.contactmoblie.insert(4, "-"),
-                                this.bean.contactmoblie = this.bean.contactmoblie.insert(8, "-"),
+
                                 this.oldBean = Object.assign({}, this.bean),
                                 this.bosMassageList = response.data.bean.bm
 
@@ -1212,6 +1190,20 @@
                     }
                 },
                 methods: {
+                    //新增聯絡人
+                    catbtn(){
+
+                         if(this.bean.clientid == ""){
+                            this.$message.error("先選擇公司");
+                            return;
+                         }   
+                         window.open("${pageContext.request.contextPath}/Market/newContact/"+this.bean.clientid);
+
+
+
+                        
+                        this.outerVisible = false;
+                    },
                     submitForm() {//送出表單
                         //表單驗證
                         var isok = true;
@@ -1459,9 +1451,30 @@
                     handleClose(done) {
                         done();
                     },
-                    openDialog: function () {
-                        contact();
+                    //打開聯絡人列表
+                    openDialog() {
+                        console.log("json");
+                        $.ajax({
+                            url: '${pageContext.request.contextPath}/Market/selectContactByClientName/' + $("input[name='client']").val(),
+                            type: 'POST',
+                            success: json => {
+                                this.contactList = json.data;
+                            },
+                            error: function (returndata) {
+                                console.log(returndata);
+                            }
+                        });
+
                         this.outerVisible = true;
+                    },
+                    clickContact(contact) {
+                        this.bean.contactBean = contact;
+                        this.bean.contactphone = contact.phone;
+                        this.bean.contactmoblie = contact.moblie;
+                        this.bean.contactname = contact.name;
+                        this.bean.jobtitle = contact.jobtitle;
+                        this.bean.contactid = contact.contactid
+                        this.outerVisible = false;
                     },
                     back: function () {
                         this.show = false;
@@ -1473,6 +1486,7 @@
 
                     },
                     openClient: function () {
+
                         $.ajax({
                             url: '${pageContext.request.contextPath}/CRM/getclientList',
                             type: 'POST',
@@ -1480,7 +1494,7 @@
                             cache: false,//不快取頁面
                             success: (response => (
                                 this.clientList = response,
-                                this.oldClientList =response,
+                                this.oldClientList = response,
                                 this.dialogVisible = true
                             )),
                             error: function (returndata) {
@@ -1500,7 +1514,7 @@
                         this.dialogVisible = false;
                         this.bean.clientid = s.clientid;
                     },
-                    selectclient: function () {                      
+                    selectclient: function () {
                         this.clientList = [];
                         this.oldClientList.forEach(e => {
                             if (e.name.indexOf(this.inclient) > 0 || e.name.indexOf(this.inclient) == 0) {

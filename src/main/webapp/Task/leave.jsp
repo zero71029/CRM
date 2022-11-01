@@ -56,7 +56,8 @@
                         <div class="row " v-cloak>
                             <div class="col-md-12">
                                 <!-- <%-- 中間主體--%> -->
-                                <p style="text-align: center;font-size: 48px;">請假單 <span v-show="bean.del == 1" style="color: red;">(刪除)</span></p>
+                                <p style="text-align: center;font-size: 48px;">請假單 <span v-show="bean.del == 1"
+                                        style="color: red;">(刪除)</span></p>
                                 <div class="row ">
                                     <div class="col-md-2"></div>
                                     <div class="col-md-8 ">
@@ -123,9 +124,10 @@
                                                         <el-radio v-model="bean.leaveName" label="其他"
                                                             @change="changeLeaveName">其他</el-radio>
                                                         <br><br>
-                                                        <el-input v-show="bean.leaveName =='其他'"
-                                                            @change="changeLeaveOther" placeholder="其他"
-                                                            v-model="bean.leaveOther" maxlength="80"></el-input>
+
+                                                        <input class="el-input__inner" v-show="bean.leaveName =='其他'"
+                                                            placeholder="其他" v-model="bean.leaveOther" maxlength="80"
+                                                            type="text">
 
                                                     </td>
                                                     <td>
@@ -297,12 +299,12 @@
                             startDay: "",
                             endDay: "",
                             director: "",
-                            uuid: "",                           
-                            del:0,
+                            uuid: "",
+                            del: 0,
                         },
                         dialogVisible: false,
-                        changeMessageList:[],
-                        oldBean:{},
+                        changeMessageList: [],
+                        oldBean: {},
                     }
                 },
                 created() {
@@ -319,7 +321,7 @@
                             type: 'POST',
                             success: response => {
                                 if (response.code == 200) {
-                                    this.bean = response.data.bean;                               
+                                    this.bean = response.data.bean;
                                     this.bean.leaveOther = this.bean.leaveName
                                     this.bean.startDay = response.data.bean.startday.substring(0, 10);
                                     this.bean.startTime = response.data.bean.startday.substring(10);
@@ -344,11 +346,9 @@
                     }
                 },
                 methods: {
-                    changeLeaveOther() {
-                        this.bean.leaveName = this.bean.leaveOther;
-                    },
                     changeLeaveName() {
                         this.bean.leaveOther = "";
+                        this.$forceUpdate();
                     },
                     changeTime() {//
                         if (this.bean.startDay != undefined) {
@@ -402,6 +402,11 @@
                             $("#leaveTime").css("border", "1px solid red");
                         }
                         if (isok) {
+
+                            if (this.bean.leaveName == '其他' ) {
+                                this.bean.leaveName = this.bean.leaveOther;
+                            }
+
                             //如果不是新資料 就 紀錄修改
                             console.log(this.oldBean)
                             console.log(this.bean)
@@ -446,6 +451,10 @@
                                 contentType: false,
                                 processData: false,
                                 success: response => {
+                                    if (!(this.bean.leaveOther == '事假' || this.bean.leaveOther == '特休' || this.bean.leaveOther == '病假' || this.bean.leaveOther == '')) {
+                                        this.bean.leaveName = "其他";
+                                    }
+
                                     if (response.code == 200) {
                                         this.$alert(response.message, '申請成功', {
                                             confirmButtonText: '確定',
@@ -484,7 +493,7 @@
                                     if (response.code == 300) {
                                         this.$message.error(response.message);
                                     }
-                                    location.href='${pageContext.request.contextPath}/Task/leave.jsp?id='+id;
+                                    location.href = '${pageContext.request.contextPath}/Task/leave.jsp?id=' + id;
                                 },
                                 error: function (returndata) {
                                     console.log(returndata);

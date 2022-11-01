@@ -3,7 +3,10 @@ package com.jetec.CRM;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.jetec.CRM.Tool.ZeroTools;
 import com.jetec.CRM.controler.service.MarketService;
+import com.jetec.CRM.model.ContactBean;
+import com.jetec.CRM.model.MarketBean;
 import com.jetec.CRM.repository.ContactRepository;
+import com.jetec.CRM.repository.MarketRepository;
 import com.jetec.CRM.repository.PotentialCustomerRepository;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -21,6 +24,7 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -39,45 +43,38 @@ public class SpringTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    MarketRepository mr;
+    @Autowired
+    ContactRepository cr;
+
     Logger logger = LoggerFactory.getLogger("SpringTest");
     @Autowired
     MarketService ms;
 
 
-
     @Test
-    public void zeroMail(){
+    public void zeroMail() {
 
         ZeroTools zTools = new ZeroTools();
-        zTools.mail("sales@jetec.com.tw","網管測試.....","網管測試","");
+        zTools.mail("sales@jetec.com.tw", "網管測試.....", "網管測試", "");
 
     }
 
 
     @Test
     public void XXX() throws Exception {
-        logger.info("轉賣 自動結案");
-        ms.AutoCloseCase("轉賣/自用");
-        ms.AutoCloseCase("轉賣");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        System.out.println("現在時間 :" + dateFormat.format(new Date()));
-
-        //////自動備份
-        logger.info("自動備份,輸出SQL");
-        ProcessBuilder builder = new ProcessBuilder(
-                "cmd.exe", "/c", "cd  C:\\MAMP\\bin\\mysql\\bin && mysqldump -uroot -proot crm > C:\\Users\\jetec\\SynologyDrive\\crm" + LocalDate.now() + "自動.sql");
-        //列印執行結果
-        builder.redirectErrorStream(true);
-        Process p = builder.start();
-        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-        String line;
-        while (true) {
-            line = r.readLine();
-            if (line == null) { break; }
-            logger.info(line);
-        }
-
-
+        List<ContactBean> contactList = cr.findAll();
+        contactList.forEach(contactBean -> {
+            List<MarketBean> marketlist = mr.findByContactnameAndClientidIsNull(contactBean.getName());
+            if (marketlist != null) {
+                for (MarketBean marketBean : marketlist) {
+                    System.out.println(marketBean.getName());
+                    marketBean.setContactid(contactBean.getContactid());
+                    mr.save(marketBean);
+                }
+            }
+        });
     }
 
     @Test
@@ -105,6 +102,7 @@ public class SpringTest {
                     }
                 });
     }
+
     @Test
     public void jsonromUrl() throws Exception {
         mockMvc.perform(get("https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=json&date=20220809&stockNo=5871")
