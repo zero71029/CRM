@@ -180,7 +180,8 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-1"></div>
-                                        <div class="col-md-2 cellz">聯絡人 {{customer.contactid}}<span style="color: red;">*</span></div>
+                                        <div class="col-md-2 cellz">聯絡人 {{customer.contactid}}<span
+                                                style="color: red;">*</span></div>
 
                                         <div class="col-md-2 FormPadding">
                                             <select name="contacttitle" class="form-select cellzFrom"
@@ -197,7 +198,10 @@
 
                                         <div class="col-md-3 cellz FormPadding">
                                             <input type="text" class=" form-control cellFrom" name="name"
-                                                v-model.trim="customer.name" maxlength="20" required>
+                                                v-model.trim="customer.name" maxlength="20" required list="contactList">
+                                            <datalist id="contactList">
+                                                <option  v-for="(s, index) in contactList" :key="index"    :value="s.name">                
+                                            </datalist>
                                         </div>
 
                                         <div class="col-md-3 cellz FormPadding">
@@ -899,7 +903,7 @@
                     success: json => {
                         console.log(json)
                         if (json.code == 200) {
-                            
+
                             vm.customer.contactid = json.data;
                             vm.$message({
                                 message: json.message,
@@ -918,36 +922,29 @@
                             }
 
                             if (json.message == "不存在") {
-                            $.ajax({
-                                url: '${pageContext.request.contextPath}/Market/changeContact.action',
-                                type: 'POST',
-                                data: formData,
-                                async: false,
-                                cache: false,
-                                contentType: false,
-                                processData: false,
-                                success: function (json) {
+                                $.ajax({
+                                    url: '${pageContext.request.contextPath}/Market/changeContact.action',
+                                    type: 'POST',
+                                    data: formData,
+                                    async: false,
+                                    cache: false,
+                                    contentType: false,
+                                    processData: false,
+                                    success: function (json) {
 
-                                    vm.customer.contactid = json.data;
-                                    vm.$message({
-                                        message: json.message,
-                                        type: 'success'
-                                    });
-                                },
-                                error: function (returndata) {
-                                    console.log(returndata);
-                                }
-                            });
-                            return;
+                                        vm.customer.contactid = json.data;
+                                        vm.$message({
+                                            message: json.message,
+                                            type: 'success'
+                                        });
+                                    },
+                                    error: function (returndata) {
+                                        console.log(returndata);
+                                    }
+                                });
+                                return;
+                            }
                         }
-
-
-                        }
-
-
-
-
-
                         alert("錯誤");
                     },
                     error: function (returndata) {
@@ -1109,7 +1106,7 @@
                             source: "其他",
                             industry: "尚未分類",
                             receivestate: 3,
-                            contactid:66660,
+                            contactid: 0,
 
                         },//bean
                         bosMassage: "",//主管留言欄位
@@ -1145,6 +1142,7 @@
                             "藝術、娛樂及休閒服務業",
                             "其他服務業"],//產業列表
                         TrackList: {},
+                        contactList:[],
                     }
                 },
                 created() {
@@ -1180,6 +1178,7 @@
                     if (this.customer.callhelp == "1") {
                         this.CallHelpCSS = "col-md-2 bg-danger";
                     }
+                    this.changeCompany();
                 },
                 watch: {
                     company: {
@@ -1344,26 +1343,15 @@
                                 console.log(error);
                             });
                     },
-                    changeCompany() {///公司改變
+                    changeCompany() {///公司改變 取得聯絡人
+                        console.log("公司改變");
                         axios
                             .get('${pageContext.request.contextPath}/Potential/getCompany/' + this.companyName.trim())
                             .then(
-                                response => (
-                                    this.company = response.data.company,
-                                    this.contact = response.data.contact,
-                                    this.name = this.contact.name,
-                                    this.jobtitle = this.contact.jobtitle,
-                                    this.director = this.contact.director,
-                                    this.department = this.contact.department,
-                                    this.email = this.company.email,
-                                    this.industry = this.company.industry,
-                                    this.phone = this.company.phone,
-                                    this.companynum = this.company.peoplenumber,
-                                    this.fax = this.company.fax,
-                                    this.moblie = this.contact.moblie,
-                                    this.line = this.contact.line,
-                                    this.address = this.company.billaddress
-                                ))
+                                response => {
+                                    this.contactList= response.data.contact
+                                    console.log(response.data.contact);
+                                })
                             .catch(function (error) { // 请求失败处理
                                 console.log(error);
                             });

@@ -341,4 +341,8 @@ public class ClientService {
     public List<MarketBean> getMarketListByContactid(Integer contactid) {
 		return mr.findByContactid(contactid);
     }
+
+	public List<ContactBean> getContactByCompany(String company) {
+		return  contactRepository.findByCompany(company);
+	}
 }

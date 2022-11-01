@@ -19,6 +19,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -30,11 +34,23 @@ public class test {
 
 
     @Test
+    public void timeape() throws Exception {
+        long timetamp = 16458000;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time = sdf.format(new Date(timetamp));
+        System.out.println(time);
+
+        System.out.println();
+        LocalDateTime ldtime =   LocalDateTime.ofEpochSecond(timetamp / 1000, 0, ZoneOffset.ofHours(8));
+        System.out.println(ldtime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+    }
+
+    @Test
     public void XXX() throws Exception {
         int[] nums = {0, 9, 0, 8, 1, 7, 1, 15, 1, 2, 2, 13, 13, 4};
 
         List numList = Arrays.stream(nums).distinct().boxed().collect(Collectors.toList());
-        
+
         numList.forEach(System.out::println);
 
 
@@ -48,7 +64,7 @@ public class test {
             }
             b++;
         }
-        int[] result = new int[a+1];
+        int[] result = new int[a + 1];
         for (int i = 0; i < result.length; i++) {
             result[i] = nums[i];
             System.out.print(result[i] + "  ");

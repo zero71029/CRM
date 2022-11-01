@@ -285,8 +285,8 @@
                                 <td>電話</td>
                                 <td>產業</td>
                             </tr>
-                            <c:if test="${not empty clientList}">
-                                <c:forEach varStatus="loop" begin="0" end="${clientList.size()-1}" items="${clientList}"
+                            <c:if test="${not empty client}">
+                                <c:forEach varStatus="loop" begin="0" end="${client.size()-1}" items="${client}"
                                     var="s">
                                     <tr class="item" onclick="clickClient('${s.name}',${s.clientid})"
                                         style="cursor: pointer;">
@@ -389,26 +389,26 @@
                     }
                 });
             }
-            init();
-            function init() {
-                $.ajax({
-                    url: '${pageContext.request.contextPath}/work/clientList',//接受請求的Servlet地址
-                    type: 'POST',
-                    async: true,//同步請求
-                    cache: false,//不快取頁面
-                    success: function (list) {
-                        $(".clientTable").empty();
-                        $(".clientTable").append("<tr><td>客戶名稱</td>  </tr>");
-                        for (var bean of list) {
-                            $(".clientTable").append('<tr class="item" onclick="clickClient(`' + bean.name + '`,' + bean.clientid + ')" style="cursor: pointer;">' +
-                                '<td> ' + bean.name + '</td></tr>');
-                        }
-                    },
-                    error: function (returndata) {
-                        console.log(returndata);
-                    }
-                });
-            }
+            // init();
+            // function init() {
+            //     $.ajax({
+            //         url: '${pageContext.request.contextPath}/work/clientList',
+            //         type: 'POST',
+            //         async: true,//同步請求
+            //         cache: false,//不快取頁面
+            //         success: function (list) {
+            //             $(".clientTable").empty();
+            //             $(".clientTable").append("<tr><td>客戶名稱</td>  </tr>");
+            //             for (var bean of list) {
+            //                 $(".clientTable").append('<tr class="item" onclick="clickClient(`' + bean.name + '`,' + bean.clientid + ')" style="cursor: pointer;">' +
+            //                     '<td> ' + bean.name + '</td></tr>');
+            //             }
+            //         },
+            //         error: function (returndata) {
+            //             console.log(returndata);
+            //         }
+            //     });
+            // }
             //搜索客戶
             function selectclient() {
                 $.ajax({

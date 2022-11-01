@@ -243,8 +243,14 @@ public class PotentialController {
         logger.info("讀取客戶細節byName {}",company);
         if (cBean != null) {
             map.put("company", cBean);
-            map.put("contact", CS.getByNameAndCompany(cBean.getUser(), company));
+            map.put("contact", CS.getContactByCompany(company));
         }
+
+
+
+
+
+
         return map;
     }
 

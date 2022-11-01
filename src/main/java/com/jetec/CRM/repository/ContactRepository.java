@@ -29,4 +29,5 @@ public interface ContactRepository extends JpaRepository<ContactBean, Integer>{
 
 	Object findByNameAndCompany(String name, String company);
 
+	List<ContactBean> findByCompany(String company);
 }
