@@ -273,7 +273,7 @@ public class PublicControl {
         // 刪除授權
         authorizeRepository.deleteById(uuid);
 
-        return "redirect:/billboardReply/" + save.getBillboardid();
+        return "redirect:/billboard/Reply/" + save.getBillboardid();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -434,7 +434,7 @@ public class PublicControl {
 //儲存公佈欄留言
     @RequestMapping("/saveReply/{fileuuid}")
     public String saveReply(@PathVariable("fileuuid") String fileuuid, BillboardReplyBean bean, HttpSession session) {
-        System.out.println("*****儲存公佈欄留言*****");
+        logger.info("儲存公佈欄留言");
         // 儲存留言
         BillboardReplyBean save = ss.SaveReply(bean);
 
@@ -489,7 +489,7 @@ public class PublicControl {
     public String replyChange(BillboardReplyBean bean) {
         logger.info("修改留言 {}", bean.getBillboardid());
         ss.SaveReply(bean);
-        return "redirect:/billboardReply/" + bean.getBillboardid();
+        return "redirect:/billboard/Reply/" + bean.getBillboardid();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

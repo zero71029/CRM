@@ -359,19 +359,10 @@ public class MarketBean implements Serializable {
 
         StringBuffer sb = new StringBuffer(contactmoblie);
         if(sb.length()==10) {
-            sb.insert(3, "-");
-            sb.insert(7, "-");
-        }
-        if(sb.length()==9) {
-            sb.insert(2, "-");
-            sb.insert(6, "-");
-        }
-        if(sb.length()==8) {
-            sb.insert(5, "-");
-        }
-        if(sb.length()==7) {
             sb.insert(4, "-");
+            sb.insert(8, "-");
         }
+
         return sb.toString();
     }
 

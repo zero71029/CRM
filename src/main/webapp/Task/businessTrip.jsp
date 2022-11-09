@@ -200,16 +200,18 @@
                                             </table>
                                         </form>
                                         <p style="text-align: center;">
+                                            <el-button  type="primary" @click="sumbitForm">
+                                                送出出差單</el-button>
+
+
                                             <c:if test="${user.position == '主管'  || user.position == '系統'}">
-                                                <el-button type="primary" v-show="bean.tripid != ''"
-                                                    @click="sumbitForm">送出出差單</el-button>
+
                                                 <el-button type="danger" v-show="bean.tripid != ''" @click="delLeave">
                                                     刪除
                                                 </el-button>
                                             </c:if>
 
-                                            <el-button v-show="bean.tripid == '' " type="primary" @click="sumbitForm">
-                                                送出出差單</el-button>
+
                                         </p>
                                     </div>
                                 </div>

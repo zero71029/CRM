@@ -17,7 +17,7 @@
 
 
             <!-- tiny -->
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.7.6/tinymce.min.js"></script>
+            <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.7.6/tinymce.min.js"></script> -->
             <script src="${pageContext.request.contextPath}/tinymce/js/tinymce/tinymce.min.js"></script>
             <script>
                 tinymce.init({
@@ -81,6 +81,12 @@
             </div>
             <!-- <%-- 彈窗/////////////////////////////////////--%> -->
             <!-- <%-- 插入側邊欄--%> -->
+
+
+
+
+            <div class="container-fluid">
+                <div class="row">
             <jsp:include page="/Sidebar.jsp"></jsp:include>
             <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
             <div class="col-md-11">
@@ -198,6 +204,8 @@
 
                 </div>
             </div>
+        </div>
+    </div>
         </body>
         <!-- 驗證UI -->
         <script src="${pageContext.request.contextPath}/js/jquery.validate.min.js"></script>

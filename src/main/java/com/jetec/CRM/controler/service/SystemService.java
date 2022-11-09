@@ -356,11 +356,13 @@ public class SystemService {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //儲存公佈欄留言
     public BillboardReplyBean SaveReply(BillboardReplyBean bean) {
-        if (bean.getReplyid() == null || bean.getReplyid().length() == 0)
+        if (bean.getReplyid() == null || bean.getReplyid().length() == 0){
             bean.setReplyid(ZeroTools.getUUID());
+        }
+
         // 插入換行
-        String content = bean.getContent();
-        bean.setContent(content.replaceAll("\\n", "<br>"));
+//        String content = bean.getContent();
+//        bean.setContent(content.replaceAll("\\n", "<br>"));
         bean.setLastmodified(new Date());
         return billboardReplyRepository.save(bean);
     }

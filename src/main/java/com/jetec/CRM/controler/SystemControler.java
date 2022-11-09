@@ -249,7 +249,7 @@ public class SystemControler {
             authorizeBean.setUsed("所有人");
             authorizeRepository.save(authorizeBean);
         }
-        return String.format("http://192.168.11.114:8080/CRM/authorize/%s", uuid);
+        return String.format("http://192.168.11.100:8080/CRM/authorize/%s", uuid);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

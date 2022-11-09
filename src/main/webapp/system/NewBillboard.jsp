@@ -611,8 +611,8 @@
 
                         </div>
                     </div>
-
-
+                </div>
+            </div>
         </body>
         <!-- @ -->
         <c:forEach varStatus="loop" begin="0" end="${bean.advice.size()}" items="${bean.advice}" var="ad">
