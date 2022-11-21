@@ -35,8 +35,8 @@
                     <!-- <%-- 插入側邊欄--%> -->
                     <jsp:include page="/Sidebar.jsp"></jsp:include>
                     <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
-                    <div class="col-md-11 app" v-cloak>
-                        <div class="row ">
+                    <div class="col-md-11 app" >
+                        <div class="row " v-cloak >
                             <div class="col-md-12"><br>
                                 <!-- 日期選擇器 -->
                                 <el-date-picker v-model="inDay" type="daterange" align="right" unlink-panels
@@ -48,8 +48,7 @@
                                 <div class="row ">
                                     <div class="col-md-12" v-for="(s, index) in list" :key="index">
                                         <br><br>
-                                        <h5>{{s.name}} 接案數:{{s.接案數}}</h5>
-                                        
+                                        <h5>{{s.name}} 接案數:{{s.接案數}} ( 淺在顧客:{{s.custometNum}} 銷售機會:{{s.marketNum}} 追蹤次數:{{s.trackNum}})</h5>                                        
                                         <div class="row ">
                                             <div class="col-md-4">
                                                 <div class="card">
@@ -186,7 +185,7 @@
                         cache: false,
                         success: response => {
                             this.list = response;
-
+                            console.log(this.list)
                         },
                         error: function (returndata) {
                             console.log(returndata);

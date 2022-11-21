@@ -154,7 +154,7 @@
                                     class="basefrom g-3 ">
                                     <input type="hidden" name="clientid" v-model="bean.clientid">
                                     <input type="hidden" name="customerid" v-model="bean.customerid">
-                                    <input type="hidden" name="aaa" value="${bean.aaa}">
+                                    <input type="hidden" name="aaa" v-model="bean.aaa">
                                     <input type="hidden" name="clicks" value="${bean.clicks}">
                                     <input type="hidden" name="marketid" value="${bean.marketid}">
                                     <input type="hidden" name="opentime" value="${bean.opentime}">

@@ -280,8 +280,11 @@ public class StatisticController {
         } else {
             startDay = startDay + " 00:00";
         }
+
+
         List<AdminBean> Business = ss.getBusiness();
         for (AdminBean a : Business) {
+            //根據業務名稱  先抓'銷售機會'再加上'未轉換的潛在客戶'
             List<MarketBean> marketBeanList = ss.getMarketBYAaaAndUser(startDay, endDay, a.getName());
             List<PotentialCustomerBean> pList = ss.getPotentialCustomerbyBYAaaAndUserNotinMarket(startDay, endDay, a.getName());
             int 接案數 = marketBeanList.size() + pList.size();
@@ -297,6 +300,14 @@ public class StatisticController {
                 int 分配失敗 = 0;
                 int 領取未結案 = 0;
                 int 分配未結案 = 0;
+                //銷售機會數量
+                int marketNum = marketBeanList.size();
+                //淺在顧客數量
+                int custometNum = ss.countCustometNumBYAaaAndUser(startDay, endDay, a.getName());
+                //追蹤數量
+                int trackNum = 0;
+
+
                 Map<String, Object> o = new HashMap<>();
                 for (MarketBean m : marketBeanList) {
                     if (Objects.equals("成功結案", m.getStage())) 成功數++;
@@ -312,6 +323,9 @@ public class StatisticController {
                         領取未結案++;
                     if (Objects.equals(2, m.getReceivestate()) && (Objects.equals("尚未處理", m.getStage()) || Objects.equals("潛在客戶轉", m.getStage()) || Objects.equals("內部詢價中", m.getStage()) || Objects.equals("已報價", m.getStage()) || Objects.equals("提交主管", m.getStage())))
                         分配未結案++;
+                    trackNum += m.getTrackbean().size();
+
+
                 }
                 for (PotentialCustomerBean m : pList) {
                     if (Objects.equals("合格", m.getStatus())) 成功數++;
@@ -341,6 +355,9 @@ public class StatisticController {
                 o.put("分配失敗", 分配失敗);
                 o.put("領取未結案", 領取未結案);
                 o.put("分配未結案", 分配未結案);
+                o.put("marketNum", marketNum);
+                o.put("custometNum", custometNum);
+                o.put("trackNum", trackNum);
                 result.put(a.getName(), o);
             }
         }

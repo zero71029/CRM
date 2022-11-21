@@ -232,4 +232,8 @@ public class StatisticService {
         return pcr.getPotentialCustomerAndUserAndReceivesByAaaAndNotinMarket(user,receives,startDay,endDay);
     }
 
+
+    public int countCustometNumBYAaaAndUser(String startDay, String endDay, String name) {
+        return pcr.countByUserAndAaaBetween(name,startDay,endDay);
+    }
 }

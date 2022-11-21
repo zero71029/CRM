@@ -86,4 +86,6 @@ public interface PotentialCustomerRepository extends JpaRepository<PotentialCust
     List<PotentialCustomerBean> findByMoblieLikeAndAaaBetween(String s, String startDay, String endDay, Sort sort);
 
     List<PotentialCustomerBean> findByFaxLikeAndAaaBetween(String s, String startDay, String endDay, Sort sort);
+
+    int countByUserAndAaaBetween(String name, String startDay, String endDay);
 }

@@ -138,7 +138,7 @@
                     </button>
                     <button class="employee"
                         onclick="javascript:window.open('${pageContext.request.contextPath}/system/AccountApplication.jsp')">
-                        E-Mail/NAS帳號申請表
+                        E-Mail/NAS申請表
                     </button>
 
                     <!--  -->
@@ -180,7 +180,7 @@
                             </button>
                         </c:if>
                         <button class="system"
-                            onclick="javascript:location.href='${pageContext.request.contextPath}/system/AccountApplicationList.jsp'">新進⼈員帳號申請表
+                            onclick="javascript:location.href='${pageContext.request.contextPath}/system/AccountApplicationList.jsp'">E-Mail/NAS申請表
                         </button>
                         <button class="system"
                             onclick="javascript:location.href='${pageContext.request.contextPath}/system/libraryList.jsp'">下拉選單管理

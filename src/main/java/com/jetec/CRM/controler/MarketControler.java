@@ -558,7 +558,7 @@ public class MarketControler {
         bean.setContacttitle(pBean.getContacttitle());
         bean.setOthersource(pBean.getOthersource());
         bean.setOpentime(LocalDateTime.now().toString());
-        bean.setAaa(ZeroTools.getTime(new Date()));
+        bean.setAaa(pBean.getAaa());
         bean.setQuote("");
         bean.setReceivestate(pBean.getReceivestate());
         bean.setReceive(pBean.getReceive());
