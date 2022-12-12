@@ -6,9 +6,11 @@ import com.jetec.CRM.Tool.ZeroFactory;
 import com.jetec.CRM.controler.service.UpfileService;
 import com.jetec.CRM.model.ClientBean;
 import com.jetec.CRM.model.MarketBean;
+import com.jetec.CRM.model.PotentialCustomerBean;
 import com.jetec.CRM.repository.ClientRepository;
 import com.jetec.CRM.repository.ContactRepository;
 import com.jetec.CRM.repository.MarketRepository;
+import com.jetec.CRM.repository.PotentialCustomerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,8 @@ public class MarketingController {
     MarketRepository mr;
     @Autowired
     ContactRepository contactRepository;
+    @Autowired
+    PotentialCustomerRepository pcr;
     @Autowired
     UpfileService US;
     @Autowired
@@ -275,7 +279,7 @@ public class MarketingController {
                 if (Objects.equals("尚未分類", e)) {
                     outClient.addAll(cr.findByIndustryIsNull());
                 }
-                outClient.addAll(cr.findByIndustryAndAaaBetween(e.trim(), finalStart, finalEnd));
+                outClient.addAll(cr.findByIndustryAndAaaBetween(e.trim(), finalStart, finalEnd,Sort.by(Sort.Direction.DESC, "aaa")));
             });
         }
 
@@ -307,8 +311,7 @@ public class MarketingController {
         return "file_output.csv";
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //
+
     @RequestMapping("/SearchMarket")
     @ResponseBody
     public String SearchMarket(@RequestBody Map<String, Object> body) {
@@ -457,6 +460,65 @@ public class MarketingController {
 
 
         return suCompany;
+    }
+
+
+    @RequestMapping("/SearchCustomerOut")
+    @ResponseBody
+    public String SearchCustomerOut(@RequestBody Map<String, Object> body) {
+        logger.info("淺在顧客輸出");
+        logger.info(body.toString());
+        String start = (String) body.get("start");
+        if (start.equals("")){
+            start = "2022-02-02";
+        }
+        String end = (String) body.get("end");
+
+        if (end.equals("")){
+            end = LocalDate.now().toString();
+        }
+        LocalDateTime old = LocalDateTime.now();
+
+        List<String> industryList = (List<String>) body.get("industry");
+        List<PotentialCustomerBean> outClient = new ArrayList<>();
+        start = start + " 00:00";
+        end = end + " 24:00";
+        if (industryList.size() > 0) {
+            String finalStart = start;
+            String finalEnd = end;
+            industryList.forEach(e -> {
+                if (Objects.equals("尚未分類", e)) {
+                    outClient.addAll(pcr.findByIndustryIsNullAndAaaBetween(finalStart, finalEnd, Sort.by(Sort.Direction.DESC, "aaa")));
+                }
+                outClient.addAll(pcr.findByIndustryAndAaaBetween(e.trim(), finalStart, finalEnd, Sort.by(Sort.Direction.DESC, "aaa")));
+            });
+        }
+
+        //輸出
+        try {
+            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("c://CRMfile//file_output.csv"), StandardCharsets.UTF_8);
+//            osw.write(new String(new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF}));
+            osw.write('\ufeff');
+            BufferedWriter bw = new BufferedWriter(osw);//檔案輸出路徑
+            outClient.forEach(clientBean -> {
+                try {
+                    bw.newLine();//新起一行
+                    bw.write(clientBean.getEmail() + "," + clientBean.getCompany() + "," + clientBean.getName() + "," + clientBean.getIndustry());//寫到新檔案中
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        Duration duration = Duration.between(old, LocalDateTime.now());
+        logger.info("輸出 {} 筆資料", outClient.size());
+        logger.info("耗時 : {}", duration.toMillis());
+        return "file_output.csv";
     }
 
 }

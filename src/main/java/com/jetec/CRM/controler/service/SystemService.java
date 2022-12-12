@@ -356,7 +356,7 @@ public class SystemService {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //儲存公佈欄留言
     public BillboardReplyBean SaveReply(BillboardReplyBean bean) {
-        if (bean.getReplyid() == null || bean.getReplyid().length() == 0){
+        if (bean.getReplyid() == null || bean.getReplyid().length() == 0) {
             bean.setReplyid(ZeroTools.getUUID());
         }
 
@@ -498,20 +498,24 @@ public class SystemService {
                 // 插入Advice
                 AdminBean adminBean = ar.getById(a);
                 bab.setAdviceto(a);
-                bab.setAdviceid(zTools.getUUID());
+                bab.setAdviceid(ZeroTools.getUUID());
                 bab.setFormname(adminBean.getName());
-                if (!a.equals(adminid))    //排除自己
+                //排除自己
+                if (!a.equals(adminid)) {
                     bar.save(bab);
+                }
                 // 抓出所有人群發郵件
                 maillist.append(adminBean.getEmail());
                 maillist.append(",");
                 // 抓出所有人插入maill
                 // 如果maill沒資料 就儲存
                 if (!amr.existsByBillboardidAndAdminid(billboardid, a)) {
-                    adminMailBean.setAdminmail(zTools.getUUID());
+                    adminMailBean.setAdminmail(ZeroTools.getUUID());
                     adminMailBean.setAdminid(a);
-                    if (!a.equals(adminid))    //排除自己
+                    //排除自己
+                    if (!a.equals(adminid)) {
                         amr.save(adminMailBean);
+                    }
                 }
             }
         }
@@ -670,7 +674,7 @@ public class SystemService {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //新增圖書館子項
     public void addLibrary(String librarygroup, String libraryoption, String name) {
-        String remark ;
+        String remark;
         switch (librarygroup) {
             case "position":
                 remark = "員工管理 - 職位";

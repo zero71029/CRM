@@ -26,8 +26,8 @@
                     <!-- <%-- 插入側邊欄--%> -->
                     <jsp:include page="/Sidebar.jsp"></jsp:include>
                     <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
-                    <div class="col-md-11 app" v-cloak>
-                        <div class="row ">
+                    <div class="col-md-11 app" >
+                        <div class="row " v-cloak>
                             <div class="col-md-12">
                                 <!-- <%-- 中間主體--%> -->
                                 <div class="row ">

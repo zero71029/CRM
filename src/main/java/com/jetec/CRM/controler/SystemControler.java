@@ -391,6 +391,27 @@ public class SystemControler {
         return "redirect:/system/billboard/" + billboardid;
     }
 
+
+    @RequestMapping("/adviceBody/{adminid}/{billboardid}")
+    @ResponseBody
+    public String adviceBody(@RequestParam("adviceto") Integer[] adviceto, @PathVariable("adminid") Integer adminid,
+                         @PathVariable("billboardid") Integer billboardid) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AdminBean adminBean = (AdminBean) authentication.getPrincipal();
+        logger.info("{} @他人 {}", adminBean.getName(), billboardid);
+        if (adviceto.length == 1 & adviceto[0] == 0) {
+            // 沒有人 就刪除資料
+            ss.saveAdvice(adminid, billboardid);
+        } else {
+            ss.saveAdvice(adviceto, adminid, billboardid);
+        }
+        return "redirect:/system/billboard/" + billboardid;
+    }
+
+
+
+
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //進入新增頁面
     @RequestMapping("/billboard/new")

@@ -258,7 +258,8 @@ public class PublicControl {
 
     // 儲存授權
     @RequestMapping("/saveAuthorize/{uuid}")
-    public String saveAuthorize(@PathVariable("uuid") String uuid, BillboardBean bean, HttpSession session) {
+    @ResponseBody
+    public Integer saveAuthorize(@PathVariable("uuid") String uuid, BillboardBean bean, HttpSession session) {
         logger.info("儲存授權");
         bean.setRemark("(被授權)");
         bean.setUser(bean.getUser());
@@ -272,8 +273,7 @@ public class PublicControl {
         }
         // 刪除授權
         authorizeRepository.deleteById(uuid);
-
-        return "redirect:/billboard/Reply/" + save.getBillboardid();
+        return save.getBillboardid();
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

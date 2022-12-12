@@ -22,6 +22,7 @@
                 [v-cloak] {
                     display: none;
                 }
+
                 .BusinessCase {
                     /* 按鈕顏色 */
                     background-color: #afe3d5;
@@ -35,10 +36,11 @@
                     <!-- <%-- 插入側邊欄--%> -->
                     <jsp:include page="/Sidebar.jsp"></jsp:include>
                     <!-- <%-- 中間主體////////////////////////////////////////////////////////////////////////////////////////--%> -->
-                    <div class="col-md-11 app" >
-                        <div class="row " v-cloak >
+                    <div class="col-md-11 app">
+                        <div class="row " v-cloak>
                             <div class="col-md-12"><br>
                                 <!-- 日期選擇器 -->
+                                默認過去7天 <br>
                                 <el-date-picker v-model="inDay" type="daterange" align="right" unlink-panels
                                     range-separator="到" start-placeholder="開始日期" end-placeholder="結束日期"
                                     :picker-options="pickerOptions" value-format="yyyy-MM-dd">
@@ -48,7 +50,8 @@
                                 <div class="row ">
                                     <div class="col-md-12" v-for="(s, index) in list" :key="index">
                                         <br><br>
-                                        <h5>{{s.name}} 接案數:{{s.接案數}} ( 淺在顧客:{{s.custometNum}} 銷售機會:{{s.marketNum}} 追蹤次數:{{s.trackNum}})</h5>                                        
+                                        <h5>{{s.name}} 接案數:{{s.接案數}} ( 淺在顧客:{{s.custometNum}} 銷售機會:{{s.marketNum}}
+                                            追蹤次數:{{s.trackNum}})</h5>
                                         <div class="row ">
                                             <div class="col-md-4">
                                                 <div class="card">
@@ -56,29 +59,50 @@
                                                         <table
                                                             class="table table-bordered align-middle border border-dark">
                                                             <tr>
-                                                                <td rowspan="2"> <a :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=1&receives=3'+ddd+s.name" target="_blank" >成功數:{{s.成功數}}  ({{zero(s.成功數,s.接案數) }}%)</a>    </td>
-                                                                <td            > <a :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=1&receives=1'+ddd+s.name" target="_blank" >領取成功:{{s.領取成功}}  ({{ zero(s.領取成功,s.接案數) }}%)</a></td>
+                                                                <td rowspan="2"> <a
+                                                                        :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=1&receives=3'+ddd+s.name"
+                                                                        target="_blank">成功數:{{s.成功數}}
+                                                                        ({{zero(s.成功數,s.接案數) }}%)</a> </td>
+                                                                <td> <a :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=1&receives=1'+ddd+s.name"
+                                                                        target="_blank">領取成功:{{s.領取成功}} ({{
+                                                                        zero(s.領取成功,s.接案數) }}%)</a></td>
                                                             </tr>
                                                             <tr>
 
-                                                                <td            > <a :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=1&receives=2'+ddd+s.name" target="_blank" >分配成功:{{s.分配成功}}  ({{ zero(s.分配成功,s.接案數) }}%)</a></td>
+                                                                <td> <a :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=1&receives=2'+ddd+s.name"
+                                                                        target="_blank">分配成功:{{s.分配成功}} ({{
+                                                                        zero(s.分配成功,s.接案數) }}%)</a></td>
                                                             </tr>
                                                             <tr>
-                                                                <td rowspan="2"><a  :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=2&receives=3'+ddd+s.name" target="_blank" >失敗數:{{s.失敗數}}  ({{ zero(s.失敗數,s.接案數)  }}%)</a>
+                                                                <td rowspan="2"><a
+                                                                        :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=2&receives=3'+ddd+s.name"
+                                                                        target="_blank">失敗數:{{s.失敗數}} ({{
+                                                                        zero(s.失敗數,s.接案數) }}%)</a>
                                                                 </td>
-                                                                <td            > <a :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=2&receives=1'+ddd+s.name" target="_blank" >領取失敗:{{s.領取失敗}}  ({{ zero(s.領取失敗,s.接案數)  }}%)</a></td>
+                                                                <td> <a :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=2&receives=1'+ddd+s.name"
+                                                                        target="_blank">領取失敗:{{s.領取失敗}} ({{
+                                                                        zero(s.領取失敗,s.接案數) }}%)</a></td>
                                                             </tr>
                                                             <tr>
 
-                                                                <td            > <a :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=2&receives=2'+ddd+s.name" target="_blank" >分配失敗:{{s.分配失敗}}  ({{ zero(s.分配失敗,s.接案數)  }}%)</a></td>
+                                                                <td> <a :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=2&receives=2'+ddd+s.name"
+                                                                        target="_blank">分配失敗:{{s.分配失敗}} ({{
+                                                                        zero(s.分配失敗,s.接案數) }}%)</a></td>
                                                             </tr>
                                                             <tr>
-                                                                <td rowspan="2"><a :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=3&receives=3'+ddd+s.name" target="_blank" >未結案:{{s.未結案}}  ({{ zero(s.未結案,s.接案數) }}%)</a>
+                                                                <td rowspan="2"><a
+                                                                        :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=3&receives=3'+ddd+s.name"
+                                                                        target="_blank">未結案:{{s.未結案}} ({{
+                                                                        zero(s.未結案,s.接案數) }}%)</a>
                                                                 </td>
-                                                                <td            > <a :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=3&receives=1'+ddd+s.name" target="_blank" >領取未結案:{{s.領取未結案}}  ({{  zero(s.領取未結案,s.接案數)   }}%)</a></td>
+                                                                <td> <a :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=3&receives=1'+ddd+s.name"
+                                                                        target="_blank">領取未結案:{{s.領取未結案}} ({{
+                                                                        zero(s.領取未結案,s.接案數) }}%)</a></td>
                                                             </tr>
                                                             <tr>
-                                                                <td            > <a :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=3&receives=2'+ddd+s.name" target="_blank" >分配未結案:{{s.分配未結案}}  ({{ zero(s.分配未結案,s.接案數)   }}%)</a></td>
+                                                                <td> <a :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=3&receives=2'+ddd+s.name"
+                                                                        target="_blank">分配未結案:{{s.分配未結案}} ({{
+                                                                        zero(s.分配未結案,s.接案數) }}%)</a></td>
                                                             </tr>
 
                                                         </table>
@@ -91,30 +115,48 @@
                                                         <table
                                                             class="table table-bordered align-middle border border-dark">
                                                             <tr>
-                                                                <td rowspan="3"><a :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=4&receives=1'+ddd+s.name" target="_blank" >領取數:{{s.領取數}}  ({{ zero(s.領取數,s.接案數)   }}%)</a>
+                                                                <td rowspan="3"><a
+                                                                        :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=4&receives=1'+ddd+s.name"
+                                                                        target="_blank">領取數:{{s.領取數}} ({{
+                                                                        zero(s.領取數,s.接案數) }}%)</a>
                                                                 </td>
-                                                                <td            > <a :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=1&receives=1'+ddd+s.name" target="_blank" >領取成功:{{s.領取成功}}  ({{ zero(s.領取成功,s.接案數)   }}%)</a></td>
+                                                                <td> <a :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=1&receives=1'+ddd+s.name"
+                                                                        target="_blank">領取成功:{{s.領取成功}} ({{
+                                                                        zero(s.領取成功,s.接案數) }}%)</a></td>
                                                             </tr>
                                                             <tr>
 
-                                                                <td            > <a :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=2&receives=1'+ddd+s.name" target="_blank" > 領取失敗:{{s.領取失敗}}  ({{ zero(s.領取失敗,s.接案數)   }}%)</a></td>
+                                                                <td> <a :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=2&receives=1'+ddd+s.name"
+                                                                        target="_blank"> 領取失敗:{{s.領取失敗}} ({{
+                                                                        zero(s.領取失敗,s.接案數) }}%)</a></td>
                                                             </tr>
                                                             <tr>
 
-                                                                <td            > <a :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=3&receives=1'+ddd+s.name" target="_blank" >領取未結案:{{s.領取未結案}}  ({{ zero(s.領取未結案,s.接案數)   }}%)</a></td>
+                                                                <td> <a :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=3&receives=1'+ddd+s.name"
+                                                                        target="_blank">領取未結案:{{s.領取未結案}} ({{
+                                                                        zero(s.領取未結案,s.接案數) }}%)</a></td>
                                                             </tr>
                                                             <tr>
-                                                                <td rowspan="3"><a :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=4&receives=2'+ddd+s.name" target="_blank" >分配數:{{s.分配數}}  ({{ zero(s.分配數,s.接案數)   }}%)</a>
+                                                                <td rowspan="3"><a
+                                                                        :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=4&receives=2'+ddd+s.name"
+                                                                        target="_blank">分配數:{{s.分配數}} ({{
+                                                                        zero(s.分配數,s.接案數) }}%)</a>
                                                                 </td>
-                                                                <td            > <a :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=1&receives=2'+ddd+s.name" target="_blank" >分配成功:{{s.分配成功}}  ({{ zero(s.分配成功,s.接案數)   }}%)</a></td>
+                                                                <td> <a :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=1&receives=2'+ddd+s.name"
+                                                                        target="_blank">分配成功:{{s.分配成功}} ({{
+                                                                        zero(s.分配成功,s.接案數) }}%)</a></td>
                                                             </tr>
                                                             <tr>
-                                                                <td            > <a :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=2&receives=2'+ddd+s.name" target="_blank" >分配失敗:{{s.分配失敗}}  ({{ zero(s.分配失敗,s.接案數)   }}%)</a></td>
+                                                                <td> <a :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=2&receives=2'+ddd+s.name"
+                                                                        target="_blank">分配失敗:{{s.分配失敗}} ({{
+                                                                        zero(s.分配失敗,s.接案數) }}%)</a></td>
 
                                                             </tr>
                                                             <tr>
 
-                                                                <td            > <a :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=3&receives=2'+ddd+s.name" target="_blank" >分配未結案:{{s.分配未結案}}  ({{ zero(s.分配未結案,s.接案數)   }}%)</a></td>
+                                                                <td> <a :href="'${pageContext.request.contextPath}/statistic/BusinessDetail.jsp?state=3&receives=2'+ddd+s.name"
+                                                                        target="_blank">分配未結案:{{s.分配未結案}} ({{
+                                                                        zero(s.分配未結案,s.接案數) }}%)</a></td>
                                                             </tr>
 
                                                         </table>
@@ -137,7 +179,7 @@
                 data() {
                     return {
                         inDay: [],
-                        ddd:"&startDay=&endDay=&user=",
+                        ddd: "&startDay=&endDay=&user=",
                         list: [],
                         pickerOptions: {
                             shortcuts: [
@@ -211,11 +253,11 @@
                                 console.log(returndata);
                             }
                         });
-                        this.ddd = '&startDay=' + this.inDay[0] + '&endDay=' + this.inDay[1] +'&user=';
+                        this.ddd = '&startDay=' + this.inDay[0] + '&endDay=' + this.inDay[1] + '&user=';
                     },
-                    zero(v1,v2){
-                     return   parseInt(v1*100/v2);
-                     
+                    zero(v1, v2) {
+                        return parseInt(v1 * 100 / v2);
+
                     }
                 },
             })

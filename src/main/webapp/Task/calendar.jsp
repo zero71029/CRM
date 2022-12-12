@@ -37,10 +37,9 @@
                                     <!-- 这里使用的是 2.5 slot 语法，对于新项目请使用 2.6 slot 语法-->
                                     <template slot="dateCell" slot-scope="{date, data}">
                                         <p :class="data.isSelected ? 'is-selected' : ''">
-                                            {{ data.day.split('-').slice(2).join('-') }} {{ data.isSelected ? '✔️' :
-                                            ''}}
+                                            {{ data.day.split('-').slice(2).join('-') }} {{ data.isSelected ? '✔️' :''}}
                                         </p>
-                                        <div v-for="(s, index) in leave" :key="index">
+                                        <div v-for="(s, index) in leave" >
                                             <div v-if="s.leaveday == data.day " draggable="true">
                                                 <a :href="'${pageContext.request.contextPath}/Task/leave.jsp?id='+s.leaveid"
                                                     style="background-color: #FFFFAA;color: #000;margin: 3px;padding: 3px;display: inline-block;width: 100%;">
@@ -48,7 +47,7 @@
                                                 </a>
                                             </div>
                                         </div>
-                                        <div v-for="(s, index) in businessTrip" :key="index">
+                                        <div v-for="(s, index) in businessTrip" >
                                             <div v-if="s.tripday == data.day ">
                                                 <a :href="'${pageContext.request.contextPath}/Task/businessTrip.jsp?id='+s.tripid"
                                                     style="background-color: #d9ecff;color: #000;margin: 3px;padding: 3px;display: inline-block;width: 100%">
@@ -57,7 +56,7 @@
                                             </div>
                                         </div>
 
-                                        <div v-for="(s, index) in calender" :key="index">
+                                        <div v-for="(s, index) in calender" >
                                             <div v-if="s.day == data.day ">
                                                 <a :href="'${pageContext.request.contextPath}/Task/addCalender.jsp?id='+s.calenderid"
                                                     style="background-color: rgb(103, 194, 58);color: #fff;margin: 3px;padding: 3px;display: inline-block;width: 100%">

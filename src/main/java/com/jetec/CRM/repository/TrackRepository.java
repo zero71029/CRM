@@ -23,4 +23,6 @@ public interface TrackRepository extends JpaRepository<TrackBean, String>{
     List<String> setectTrackTime(String start, String end);
 
 	List<TrackBean> findByCustomeridOrderByTracktimeDesc(String customerid);
+
+    int countByRemarkAndTracktimeBetween(String name, String startDay, String endDay);
 }

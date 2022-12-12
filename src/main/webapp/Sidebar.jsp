@@ -78,6 +78,30 @@
                     <button class="market workbar"
                         onclick="javascript:location.href='${pageContext.request.contextPath}/Market/workList.jsp'">工作項目
                     </button>
+
+
+                    <c:if test='${ user.position == "系統" ||user.position == "總經理" ||user.department == "研發"}'>
+
+                    <button class="list-group-item" onclick="laboratory()">
+                        實驗室
+                    </button>
+                    <button class="laboratory customerbar"
+                        onclick="javascript:location.href='${pageContext.request.contextPath}/laboratory/forumList.jsp'">
+                        公佈欄
+                    </button>
+
+
+                    </c:if>
+
+
+
+
+
+
+
+
+
+
                     <!-- <button class="market"
                     onclick="javascript:location.href='${pageContext.request.contextPath}/CRM/QuotationList'">報價單</button> -->
                     <!--  -->
@@ -150,14 +174,18 @@
                             onclick="javascript:location.href='${pageContext.request.contextPath}/Marketing/Mail.jsp'">
                             郵件
                         </button>
-                        <button class="marketing output"
-                            onclick="javascript:location.href='${pageContext.request.contextPath}/Marketing/output.jsp'">
-                            客戶輸出
+                        <button class="marketing CustomerOut"
+                            onclick="javascript:location.href='${pageContext.request.contextPath}/Marketing/CustomerOut.jsp'">
+                            潛在顧客輸出
                         </button>
                         <button class="marketing MarketOutput"
                             onclick="javascript:location.href='${pageContext.request.contextPath}/Marketing/MarketOutput.jsp'">
                             銷售機會輸出
                         </button>
+                        <button class="marketing output"
+                        onclick="javascript:location.href='${pageContext.request.contextPath}/Marketing/output.jsp'">
+                        客戶輸出
+                    </button>
                     </c:if>
 
 
@@ -244,6 +272,21 @@
             $(".client").hide();
             $(".system").hide();
             $(".marketing").hide();
+            $(".laboratory").hide();
+        
+            //實驗室
+            function laboratory() {
+                $(".laboratory").toggle();
+                $(".statistic").hide();
+                $(".employee").hide();
+                $(".market").hide();
+                $(".client").hide();
+                $(".system").hide();
+                $(".marketing").hide();
+            }
+
+
+
 
 
 
@@ -254,6 +297,7 @@
                 $(".client").hide();
                 $(".system").hide();
                 $(".marketing").hide();
+                $(".laboratory").hide();
             }
 
 
@@ -264,6 +308,7 @@
                 $(".client").hide();
                 $(".system").hide();
                 $(".marketing").hide();
+                $(".laboratory").hide();
             }
 
             function marketing() {//行銷部
@@ -273,6 +318,7 @@
                 $(".market").hide();
                 $(".employee").hide();
                 $(".statistic").hide();
+                $(".laboratory").hide();
             }
 
             function market() {//營消磨塊
@@ -282,6 +328,7 @@
                 $(".marketing").hide();
                 $(".employee").hide();
                 $(".statistic").hide();
+                $(".laboratory").hide();
             }
 
             function client() {
@@ -291,6 +338,7 @@
                 $(".marketing").hide();
                 $(".employee").hide();
                 $(".statistic").hide();
+                $(".laboratory").hide();
             }
 
             function system() {
@@ -300,6 +348,7 @@
                 $(".marketing").hide();
                 $(".employee").hide();
                 $(".statistic").hide();
+                $(".laboratory").hide();
             }
 
             var Signout = '${user.name}';

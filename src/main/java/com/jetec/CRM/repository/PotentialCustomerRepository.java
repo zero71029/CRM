@@ -62,7 +62,7 @@ public interface PotentialCustomerRepository extends JpaRepository<PotentialCust
 
 
     @Query(value = "select * from potentialcustomer p where  (aaa between ?1 and ?2) and user = ?3   \n" +
-            "and customerid not in  (select customerid from market m)", nativeQuery = true)
+            "and customerid not in  (select customerid from market m) ", nativeQuery = true)
     List<PotentialCustomerBean> getPotentialCustomerbyBYAaaAndUserNotinMarket(String startDay, String endDay, String name);
 
     @Query(value = "select * from potentialcustomer p where user = ?1  and   status = ?2    and receivestate = ?3    and    (aaa between ?4 and ?5)    \n" +
@@ -88,4 +88,7 @@ public interface PotentialCustomerRepository extends JpaRepository<PotentialCust
     List<PotentialCustomerBean> findByFaxLikeAndAaaBetween(String s, String startDay, String endDay, Sort sort);
 
     int countByUserAndAaaBetween(String name, String startDay, String endDay);
+
+
+    List<PotentialCustomerBean> findByIndustryIsNullAndAaaBetween(String finalStart, String finalEnd, Sort aaa);
 }

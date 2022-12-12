@@ -375,7 +375,6 @@
                                         action="${pageContext.request.contextPath}/system/advice/${user.adminid}/${bean.billboardid}"
                                         method="post">
 
-
                                         <div class="row advice" style="border: #08604f 1px solid;">
                                             <div class="col-lg-12" style="background-color: #569b92;"><input
                                                     type="checkbox" id="all">全部:
@@ -625,6 +624,8 @@
             </script>
         </c:forEach>
 
+        
+        <script>alert("eeeeeeeeeeeeeee");</script>
 
         <!-- 驗證UI -->
         <script src="${pageContext.request.contextPath}/js/jquery.validate.min.js"></script>
@@ -716,11 +717,11 @@
                         }
                     });
                 }
-
-
             }
 
-            //刪除子項
+            //刪除子項...
+
+            
 
             function delOption(a) {
                 $.ajax({

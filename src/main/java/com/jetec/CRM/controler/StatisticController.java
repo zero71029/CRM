@@ -328,15 +328,15 @@ public class StatisticController {
 
                 }
                 for (PotentialCustomerBean m : pList) {
-                    if (Objects.equals("合格", m.getStatus())) 成功數++;
+                    if (Objects.equals("合格", m.getStatus())) 未結案++;
                     if (Objects.equals("不合格", m.getStatus())) 失敗數++;
                     if (!Objects.equals("合格", m.getStatus()) && !Objects.equals("不合格", m.getStatus())) 未結案++;
                     if (Objects.equals(1, m.getReceivestate())) 領取數++;
                     if (Objects.equals(2, m.getReceivestate())) 分配數++;
-                    if (Objects.equals(1, m.getReceivestate()) && Objects.equals("合格", m.getStatus())) 領取成功++;
+                    if (Objects.equals(1, m.getReceivestate()) && Objects.equals("合格", m.getStatus())) 領取未結案++;
                     if (Objects.equals(1, m.getReceivestate()) && Objects.equals("不合格", m.getStatus())) 領取失敗++;
                     if (Objects.equals(2, m.getReceivestate()) && Objects.equals("合格", m.getStatus())) 分配成功++;
-                    if (Objects.equals(2, m.getReceivestate()) && Objects.equals("不合格", m.getStatus())) 分配失敗++;
+                    if (Objects.equals(2, m.getReceivestate()) && Objects.equals("不合格", m.getStatus())) 分配未結案++;
                     if (Objects.equals(1, m.getReceivestate()) && (!Objects.equals("合格", m.getStatus()) && !Objects.equals("不合格", m.getStatus())))
                         領取未結案++;
                     if (Objects.equals(2, m.getReceivestate()) && (!Objects.equals("合格", m.getStatus()) && !Objects.equals("不合格", m.getStatus())))
@@ -373,6 +373,7 @@ public class StatisticController {
     @RequestMapping("/BusinessDetail")
     public Map<String, Object> BusinessDetail(@RequestParam("state") String state, @RequestParam("receives") Integer receives, @RequestParam("startDay") String startDay, @RequestParam("endDay") String endDay, @RequestParam("user") String user) {
         Map<String, Object> result = new HashMap<>();
+        logger.info("業務詳情");
         List<MarketBean> mList;
         List<PotentialCustomerBean> pList;
         System.out.println("state " + state);
@@ -393,24 +394,27 @@ public class StatisticController {
         } else {
             startDay = startDay + " 00:00";
         }
-        //
+        //不算領取分配
         if (Objects.equals(3, receives)) {
+            //成功結案
             if (Objects.equals("1", state)) {
                 mList = ss.getMarketByAaaAndUserAndState(user, "成功結案", startDay, endDay);
-                pList = ss.getPotentialCustomerByUserAndStateAndAaaAndNotinMarket(user, "合格", startDay, endDay);
+//                pList = ss.getPotentialCustomerByUserAndStateAndAaaAndNotinMarket(user, "合格", startDay, endDay);
                 result.put("Market", mList);
-                result.put("Customer", pList);
-                System.out.println(result);
+//                result.put("Customer", pList);
+
                 return result;
             }
+            //失敗結案
             if (Objects.equals("2", state)) {
                 mList = ss.getMarketByAaaAndUserAndState(user, "失敗結案", startDay, endDay);
                 pList = ss.getPotentialCustomerByUserAndStateAndAaaAndNotinMarket(user, "不合格", startDay, endDay);
                 result.put("Market", mList);
                 result.put("Customer", pList);
-                System.out.println("result");
+
                 return result;
             }
+            //未結案
             if (Objects.equals("3", state)) {
                 mList = ss.getMarketByAaaAndUserAndState(user, "尚未處理", startDay, endDay);
                 mList.addAll(ss.getMarketByAaaAndUserAndState(user, "內部詢價中", startDay, endDay));
@@ -419,24 +423,27 @@ public class StatisticController {
                 mList.addAll(ss.getMarketByAaaAndUserAndState(user, "潛在客戶轉", startDay, endDay));
                 pList = ss.getPotentialCustomerByUserAndStateAndAaaAndNotinMarket(user, "未處理", startDay, endDay);
                 pList.addAll(ss.getPotentialCustomerByUserAndStateAndAaaAndNotinMarket(user, "已聯繫", startDay, endDay));
+                pList.addAll(ss.getPotentialCustomerByUserAndStateAndAaaAndNotinMarket(user, "合格", startDay, endDay));
                 pList.addAll(ss.getPotentialCustomerByUserAndStateAndAaaAndNotinMarket(user, "提交主管", startDay, endDay));
                 result.put("Market", mList);
                 result.put("Customer", pList);
                 return result;
             }
-            if (Objects.equals("4", state)) {
-                mList = ss.getMarketBYAaaAndUser(user, startDay, endDay);
-                pList = ss.getPotentialCustomerbyBYAaaAndUserNotinMarket(startDay, endDay, user);
-                result.put("Market", mList);
-                result.put("Customer", pList);
-                return result;
-            }
+            //不算成功失敗
+//            if (Objects.equals("4", state)) {
+//                mList = ss.getMarketBYAaaAndUser(user, startDay, endDay);
+//                pList = ss.getPotentialCustomerbyBYAaaAndUserNotinMarket(startDay, endDay, user);
+//                result.put("Market", mList);
+//                result.put("Customer", pList);
+//                return result;
+//            }
         }
+        //
         if (Objects.equals("1", state)) {
             mList = ss.getMarketByAaaAndUserAndStateAndReceives(user, "成功結案", receives, startDay, endDay);
-            pList = ss.getPotentialCustomerByUserAndStateAndReceivesAndAaaAndNotinMarket(user, "合格", receives, startDay, endDay);
+//            pList = ss.getPotentialCustomerByUserAndStateAndReceivesAndAaaAndNotinMarket(user, "合格", receives, startDay, endDay);
             result.put("Market", mList);
-            result.put("Customer", pList);
+//            result.put("Customer", pList);
             return result;
         }
         if (Objects.equals("2", state)) {
@@ -446,6 +453,7 @@ public class StatisticController {
             result.put("Customer", pList);
             return result;
         }
+        //未結案
         if (Objects.equals("3", state)) {
             mList = ss.getMarketByAaaAndUserAndStateAndReceives(user, "尚未處理", receives, startDay, endDay);
             mList.addAll(ss.getMarketByAaaAndUserAndStateAndReceives(user, "內部詢價中", receives, startDay, endDay));
@@ -455,10 +463,12 @@ public class StatisticController {
             pList = ss.getPotentialCustomerByUserAndStateAndReceivesAndAaaAndNotinMarket(user, "未處理", receives, startDay, endDay);
             pList.addAll(ss.getPotentialCustomerByUserAndStateAndReceivesAndAaaAndNotinMarket(user, "已聯繫", receives, startDay, endDay));
             pList.addAll(ss.getPotentialCustomerByUserAndStateAndReceivesAndAaaAndNotinMarket(user, "提交主管", receives, startDay, endDay));
+            pList.addAll(ss.getPotentialCustomerByUserAndStateAndReceivesAndAaaAndNotinMarket(user, "合格", receives, startDay, endDay));
             result.put("Market", mList);
             result.put("Customer", pList);
             return result;
         }
+        //不算成功失敗
         if (Objects.equals("4", state)) {
             mList = ss.getMarketAndUserAndReceivesByAaa(user, receives, startDay, endDay);
             pList = ss.getPotentialCustomerAndUserAndReceivesByAaaAndNotinMarket(user, receives, startDay, endDay);

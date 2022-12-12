@@ -633,4 +633,7 @@ public class MarketService {
         return mr.findByCustomerid(id);
     }
 
+    public int countTrackNumBYTimeAndRemark(String startDay, String endDay, String name) {
+        return tr.countByRemarkAndTracktimeBetween(name,startDay,endDay);
+    }
 }
