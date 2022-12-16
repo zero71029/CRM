@@ -157,7 +157,6 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
     List<MarketBean> findByStageAndUserAndAaaLessThan(String stage, String user, String day);
 
 
-    List<MarketBean> findByBbbBetween(String startDay, String endDay);
 
     List<MarketBean> findByProducttype(String s);
 
@@ -189,6 +188,10 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
     List<MarketBean> findByContactnameAndClientidIsNull(String name);
 
     List<MarketBean> findByContactid(Integer contactid);
+
+    List<MarketBean> findByEndtimeBetween(String startDay, String endDay);
+
+    List<MarketBean> findByAaaBetween(String startDay, String endDay);
 
 
 //   Strin a = """

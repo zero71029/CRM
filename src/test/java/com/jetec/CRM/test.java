@@ -364,27 +364,37 @@ public class test {
     }
     public String FirstNotRepeatingChar(String[] strs) {
 
-        int rows = strs.length;
-        int len = strs[0].length();
-        for (int i = 0; i < strs.length; i++) {
-            char c = strs[0].charAt(i);
+        // //纵向扫描
+        if(strs.length==0 || strs==null){
+            return "";
+        }
 
-            for (int j = 1; j < strs.length; j++) {
-                if(strs[j].charAt(i) !=c){
+        int rows = strs.length;
+        int cols = strs[0].length();
+        //开始扫描
+        for(int i=0;i<cols;i++){
+            char firstChar = strs[0].charAt(i);
+            for(int j=1;j<rows;j++){
+                if(strs[j].length()==i || strs[j].charAt(i)!=firstChar){
                     return strs[0].substring(0,i);
                 }
             }
-
-
-
-
-
         }
-
-
         return strs[0];
+    }
+
+    @Test
+    void sssss(){
+        String[] aaa = new String[]{"abca","abc","abca","abc","abcc"};
 
     }
+
+
+    public String FngChar(String  str) {
+
+        return str;
+    }
+
 
 
 }

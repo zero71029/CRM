@@ -14,6 +14,8 @@ public class ZeroFactory {
         return new ResultBean(code, message, data);
     }
 
+
+
     public static ResultBean fail(String message){
         return new ResultBean(ZeroCode.ISFAIL, message);
     }
@@ -21,7 +23,7 @@ public class ZeroFactory {
         return new ResultBean(ZeroCode.ISOK, message ,data);
     }
     public static ResultBean success(String message){
-        return new ResultBean(200, message);
+        return new ResultBean(ZeroCode.ISOK, message);
     }
 
 

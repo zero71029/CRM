@@ -11,7 +11,6 @@
             <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap" rel="stylesheet">
             <title>${user.mail.size() > 0 ? ddd:CRM}</title>
             <link rel="stylesheet" href="${pageContext.request.contextPath}\icons\bootstrap-icons.css">
-
         </head>
 
 
@@ -514,7 +513,7 @@
                             type: 'get',
                             success: json => {
                                 this.unread = json.unread,
-                                this.advice = json.advice
+                                    this.advice = json.advice
                             },
                             error: function (returndata) {
                                 console.log(returndata.responseJSON.message);

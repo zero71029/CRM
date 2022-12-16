@@ -209,6 +209,8 @@ public class StatisticController {
         } else {
             startDay = startDay + " 00:00";
         }
+        System.out.println("start" +startDay);
+        System.out.println("end" +endDay);
         result.put("success", ss.getMarketByState("成功結案", startDay, endDay));
         result.put("fail", ss.getMarketByState("失敗結案", startDay, endDay));
         result.put("other", ss.getMarketByCloseNot(startDay, endDay));
@@ -216,27 +218,32 @@ public class StatisticController {
     }
 
     //////////////////////////////////////////////////////////////////////////////
-    //結案狀態
+    //結案狀態2
     @ResponseBody
     @RequestMapping("/CloseState2")
     private Map<String, Object> CloseState2(@RequestParam("from") String startDay, @RequestParam("to") String endDay) {
-        logger.info("結案狀態");
+        logger.info("結案狀態2");
         Map<String, Object> result = new HashMap<>();
+        //時間整理
         if (Objects.equals(endDay, "")) {
             endDay = ZeroTools.getTime(new Date());
         } else {
-            endDay = endDay + "T24:00";
+            endDay = endDay + " 24:00";
         }
         if (startDay == null || "".equals(startDay)) {
             startDay = zTools.addDay(endDay, -7);
             startDay = startDay.substring(0, 10);
-            startDay = startDay + "T00:00";
+            startDay = startDay + " 00:00";
         } else {
-            startDay = startDay + "T00:00";
+            startDay = startDay + " 00:00";
         }
-        List<MarketBean> l = ss.getMarketBYBbb(startDay, endDay);
+        System.out.println("start:  " +startDay);
+        System.out.println("end:  " +endDay);
+        //抓取案件
+        List<MarketBean> l = ss.getMarketByAaaBetween(startDay, endDay);
         System.out.println("活耀案件:" + l.size() + "筆");
 //        List<MarketBean> l = ss.getMarketByAaa( startDay,endDay);
+        //篩選出成功
         List<Map<String, String>> success = new ArrayList<>();
         l.stream().filter(e -> "成功結案".equals(e.getStage())).forEach(e -> {
             Map<String, String> x = new HashMap<>();
@@ -246,6 +253,7 @@ public class StatisticController {
             x.put("marketid", e.getMarketid());
             success.add(x);
         });
+        //篩選出失敗結案
         List<Map<String, String>> fail = new ArrayList<>();
         l.stream().filter(e -> "失敗結案".equals(e.getStage())).forEach(e -> {
             Map<String, String> x = new HashMap<>();

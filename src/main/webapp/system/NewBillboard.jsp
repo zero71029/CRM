@@ -625,7 +625,7 @@
         </c:forEach>
 
         
-        <script>alert("eeeeeeeeeeeeeee");</script>
+
 
         <!-- 驗證UI -->
         <script src="${pageContext.request.contextPath}/js/jquery.validate.min.js"></script>

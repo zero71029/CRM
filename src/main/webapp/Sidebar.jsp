@@ -78,19 +78,15 @@
                     <button class="market workbar"
                         onclick="javascript:location.href='${pageContext.request.contextPath}/Market/workList.jsp'">工作項目
                     </button>
-
-
                     <c:if test='${ user.position == "系統" ||user.position == "總經理" ||user.department == "研發"}'>
-
-                    <button class="list-group-item" onclick="laboratory()">
-                        實驗室
-                    </button>
-                    <button class="laboratory customerbar"
-                        onclick="javascript:location.href='${pageContext.request.contextPath}/laboratory/forumList.jsp'">
-                        公佈欄
-                    </button>
-
-
+                        <button class="list-group-item"
+                            onclick="javascript:location.href='${pageContext.request.contextPath}/laboratory/forumList.jsp?page=1&size=20'">
+                            實驗室
+                        </button>
+                        <button class="laboratory customerbar"
+                            onclick="javascript:location.href='${pageContext.request.contextPath}/laboratory/forumList.jsp?page=1&size=20'">
+                            公佈欄
+                        </button>
                     </c:if>
 
 
@@ -183,9 +179,9 @@
                             銷售機會輸出
                         </button>
                         <button class="marketing output"
-                        onclick="javascript:location.href='${pageContext.request.contextPath}/Marketing/output.jsp'">
-                        客戶輸出
-                    </button>
+                            onclick="javascript:location.href='${pageContext.request.contextPath}/Marketing/output.jsp'">
+                            客戶輸出
+                        </button>
                     </c:if>
 
 
@@ -273,7 +269,7 @@
             $(".system").hide();
             $(".marketing").hide();
             $(".laboratory").hide();
-        
+
             //實驗室
             function laboratory() {
                 $(".laboratory").toggle();

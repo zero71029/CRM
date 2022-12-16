@@ -188,8 +188,8 @@ public class StatisticService {
     }
 
 
-    public List<MarketBean> getMarketBYBbb(String startDay, String endDay) {
-        return mr.findByBbbBetween(startDay,endDay);
+    public List<MarketBean> getMarketByEndtime(String startDay, String endDay) {
+        return mr.findByEndtimeBetween(startDay,endDay);
     }
 
     public List<AdminBean> getBusiness() {
@@ -235,5 +235,9 @@ public class StatisticService {
 
     public int countCustometNumBYAaaAndUser(String startDay, String endDay, String name) {
         return pcr.countByUserAndAaaBetween(name,startDay,endDay);
+    }
+
+    public List<MarketBean> getMarketByAaaBetween(String startDay, String endDay) {
+        return mr.findByAaaBetween(startDay,endDay);
     }
 }
