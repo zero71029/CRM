@@ -27,7 +27,18 @@ public class AdminBean  implements UserDetails {
     private String department;//部門	
     private String 	director;//主管
     private String 	dutyDay;//到職日
-    
+
+	@Transient
+	private String permit;
+
+
+	public String getPermit() {
+		return permit;
+	}
+
+	public void setPermit(String permit) {
+		this.permit = permit;
+	}
 
 	@OneToMany(targetEntity = AdminMailBean.class ,mappedBy = "adminid", cascade = CascadeType.ALL)
 	private List<AdminMailBean> mail;
@@ -203,7 +214,7 @@ public class AdminBean  implements UserDetails {
 				", department='" + department + '\'' +
 				", director='" + director + '\'' +
 				", dutyDay='" + dutyDay + '\'' +
-
+				", permit=" + permit +
 				", top=" + top +
 				", marketstate=" + marketstate +
 				'}';

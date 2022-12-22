@@ -60,6 +60,11 @@ public class SystemService {
     ReplyFileRepository rfr;
     @Autowired
     ForgetAuthorizeRepository far;
+
+    @Autowired
+    AdminPermitRepository apr;
+
+
     @Autowired
     ZeroTools zTools;
 
@@ -452,7 +457,9 @@ public class SystemService {
                     break;
                 }
             }
-            if (boo) result.add(p);
+            if (boo){
+                result.add(p);
+            }
         }
         return result;
     }
@@ -537,7 +544,7 @@ public class SystemService {
             BillboardTopBean btb = new BillboardTopBean();
             btb.setAdminid(adminid);
             btb.setBillboardid(billboardid);
-            btb.setTopid(zTools.getUUID());
+            btb.setTopid(ZeroTools.getUUID());
             btr.save(btb);
             return "追蹤成功";
         }
@@ -556,7 +563,7 @@ public class SystemService {
         // 如果 mail 沒資料 就存儲
         if (!amr.existsByBillboardidAndAdminid(billboardid, adminid)) {
             AdminMailBean adminMailBean = new AdminMailBean();
-            adminMailBean.setAdminmail(zTools.getUUID());
+            adminMailBean.setAdminmail(ZeroTools.getUUID());
             adminMailBean.setAdminid(adminid);
             adminMailBean.setBillboardid(billboardid);
             adminMailBean.setReply(reply);
@@ -568,13 +575,13 @@ public class SystemService {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //儲存留言的留言
     public void saveReplyreply(ReplyreplyBean replyreplyBean) {
-        replyreplyBean.setId(zTools.getUUID());
+        replyreplyBean.setId(ZeroTools.getUUID());
         rrr.save(replyreplyBean);
         BillboardReplyBean bean = billboardReplyRepository.getById(replyreplyBean.getReplyid());// 找到留言bean
         AdminBean adminBean = ar.findByName(bean.getName());// 找到留研發布人Bean
         if (!adminBean.getName().equals(replyreplyBean.getName())) { // 如果留研發布人 不等於 評論人
             AdminMailBean adminMailBean = new AdminMailBean();
-            adminMailBean.setAdminmail(zTools.getUUID());
+            adminMailBean.setAdminmail(ZeroTools.getUUID());
             adminMailBean.setAdminid(adminBean.getAdminid());
             adminMailBean.setBillboardid(bean.getBillboardid());
             adminMailBean.setReply("新回覆");
@@ -627,8 +634,12 @@ public class SystemService {
         System.out.println("********登入驗證***********");
         AdminBean adminBean = (AdminBean) session.getAttribute("user");
         if (adminBean == null) {
-            if (ar.existsByEmail(authentication.getName()))
-                session.setAttribute("user", ar.findByEmail(authentication.getName()));
+            if (ar.existsByEmail(authentication.getName())){
+                AdminBean admin = ar.findByEmail(authentication.getName());
+
+                session.setAttribute("user", zTools.getPermit(admin));
+            }
+
         }
 
     }
@@ -698,9 +709,9 @@ public class SystemService {
                 remark = "錯誤";
         }
         if (!lr.existsByLibrarygroupAndLibraryoption(librarygroup, libraryoption)) {
-            LibraryBean bean = new LibraryBean(zTools.getUUID(), librarygroup, libraryoption, remark);
+            LibraryBean bean = new LibraryBean(ZeroTools.getUUID(), librarygroup, libraryoption, remark);
             lr.save(bean);
-            LibraryChangeBean lcBeam = new LibraryChangeBean(zTools.getUUID(), librarygroup, libraryoption, "新增", zTools.getTime(new Date()));
+            LibraryChangeBean lcBeam = new LibraryChangeBean(ZeroTools.getUUID(), librarygroup, libraryoption, "新增", ZeroTools.getTime(new Date()));
             lcBeam.setAdmin(name);
             lcr.save(lcBeam);
         }
@@ -713,7 +724,7 @@ public class SystemService {
         String librarygroup = null;
         if (op.isPresent()) {
             librarygroup = op.get().getLibrarygroup();
-            LibraryChangeBean lcBeam = new LibraryChangeBean(zTools.getUUID(), op.get().getLibrarygroup(), op.get().getLibraryoption(), "刪除", zTools.getTime(new Date()));
+            LibraryChangeBean lcBeam = new LibraryChangeBean(ZeroTools.getUUID(), op.get().getLibrarygroup(), op.get().getLibraryoption(), "刪除", ZeroTools.getTime(new Date()));
             lcBeam.setAdmin(name);
             lcr.save(lcBeam);
             lr.delete(op.get());

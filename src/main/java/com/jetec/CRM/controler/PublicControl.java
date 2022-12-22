@@ -1,6 +1,7 @@
 package com.jetec.CRM.controler;
 
 import com.jetec.CRM.Tool.ZeroTools;
+import com.jetec.CRM.controler.service.AdminService;
 import com.jetec.CRM.controler.service.DirectorService;
 import com.jetec.CRM.controler.service.SystemService;
 import com.jetec.CRM.controler.service.WorkSerivce;
@@ -56,6 +57,8 @@ public class PublicControl {
     ReplyFileRepository rfr;
     @Autowired
     ReplyTimeRepository rtr;
+    @Autowired
+    AdminService as;
 
     Logger logger = LoggerFactory.getLogger("PublicControl");
 
@@ -98,6 +101,8 @@ public class PublicControl {
         model.addAttribute("TotalPages", page.getTotalPages());
         // 抓取登入者
         AdminBean user = (AdminBean) session.getAttribute("user");
+
+
         // 如果有登入者 更新資料
         if (user != null) {
             // 抓被@的資料
@@ -120,7 +125,13 @@ public class PublicControl {
             if ("reply.lastmodified".equals(sortString)) {
                 model.addAttribute("list", ss.getBillboardList("公開", adminBean, pag, sort));
             }
-            session.setAttribute("user", adminBean);
+
+
+
+
+
+
+            session.setAttribute("user", zTools.getPermit(adminBean));
 //            model.addAttribute("advice", advice);// 抓被@的資料
 //            model.addAttribute("unread", unread);// 抓被未讀的資料
         } else {
@@ -182,7 +193,14 @@ public class PublicControl {
                        HttpSession session) {
         if (ar.existsByEmailAndPassword(username, password)) {
             logger.info("{} 登入", username);
-            session.setAttribute("user", ar.findByEmailAndPassword(username, password));
+
+            AdminBean admin = ar.findByEmailAndPassword(username, password);
+
+
+
+
+
+            session.setAttribute("user",  zTools.getPermit( admin)     );
             return "redirect:/";
         }
         return "redirect:/time.jsp";

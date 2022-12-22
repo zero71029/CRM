@@ -51,7 +51,7 @@
                             <div class="col-md-12" v-loading="loading">
                                 <!-- <%-- 中間主體--%> -->
                                 <div class="row ">
-                                    <div class="col-md-12">{{bean}}</div>
+                                    <!-- <div class="col-md-12">{{bean}}</div> -->
                                 </div>
                                 <div class="row ">
                                     <div class="col-md-2"></div>

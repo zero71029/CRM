@@ -66,11 +66,11 @@
                 <ul class="list-group">
                     <!--  -->
                     <button class="list-group-item" onclick="market()">
-                        營銷模塊
+                        營銷模塊 
                     </button>
                     <button class="market customerbar"
                         onclick="javascript:location.href='${pageContext.request.contextPath}/Market/potentialcustomerList.jsp'">
-                        潛在客戶
+                        潛在客戶 
                     </button>
                     <button class="market marketbar"
                         onclick="javascript:location.href='${pageContext.request.contextPath}/Market/MarketList.jsp'">銷售機會
@@ -78,10 +78,10 @@
                     <button class="market workbar"
                         onclick="javascript:location.href='${pageContext.request.contextPath}/Market/workList.jsp'">工作項目
                     </button>
-                    <c:if test='${ user.position == "系統" ||user.position == "總經理" ||user.department == "研發"}'>
+                    <c:if test='${ user.position == "系統" ||user.position == "總經理" || user.permit.indexOf("實驗室") >= 0}'>
                         <button class="list-group-item"
                             onclick="javascript:location.href='${pageContext.request.contextPath}/laboratory/forumList.jsp?page=1&size=20'">
-                            實驗室
+                            實驗室  
                         </button>
                         <button class="laboratory customerbar"
                             onclick="javascript:location.href='${pageContext.request.contextPath}/laboratory/forumList.jsp?page=1&size=20'">
@@ -189,7 +189,7 @@
 
                     <!--  -->
                     <c:if
-                        test='${user.position == "主管" || user.position == "系統" ||user.position == "總經理" ||user.name == "謝姍妤"}'>
+                        test='${user.position == "主管" || user.position == "系統" ||user.position == "總經理" }'>
                         <button class="list-group-item " onclick="system()">
                             系統管理
                         </button>

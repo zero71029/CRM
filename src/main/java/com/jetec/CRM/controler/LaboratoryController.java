@@ -30,16 +30,24 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/laboratory")
-@PreAuthorize("hasAuthority('系統')")
+@PreAuthorize("hasAuthority('系統') or hasAuthority('實驗室')")
 public class LaboratoryController {
 
-    Logger logger = LoggerFactory.getLogger("SystemControler");
+    Logger logger = LoggerFactory.getLogger("LaboratoryController");
     @Autowired
     LaboratoryForumService lfs;
     @Autowired
     LaboratoryForumContentService lfcs;
 
 
+    /**
+     * 存實驗室公佈欄
+     *
+     * @param lfBean  如果bean
+     * @param forumid forumid
+     * @param content 内容
+     * @return {@link String}
+     */
     @RequestMapping("/saveForum/{forumid}")
     public String saveLaboratoryForum(LaboratoryForumBean lfBean, @PathVariable("forumid") String forumid, @RequestParam("content") String content) {
         logger.info("{} 存實驗室公佈欄 {}", ZeroTools.getAdmin().getName(), forumid);
@@ -54,6 +62,13 @@ public class LaboratoryController {
         return "redirect:/laboratory/forumList.jsp?page=1&size=20";
     }
 
+    /**
+     * 讀取實驗室公佈欄列表
+     *
+     * @param page 页面
+     * @param size 大小
+     * @return {@link ResultBean}
+     */
     @RequestMapping("/getList")
     @ResponseBody
     public ResultBean getList(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
@@ -63,45 +78,58 @@ public class LaboratoryController {
             page = 0;
         }
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "time");
-        Page<LaboratoryForumBean> p = lfs.findByState("公開",pageable);
+        Page<LaboratoryForumBean> p = lfs.findByState("公開", pageable);
         Map<String, Object> result = new HashMap<>(3);
 
-        result.put("list",p.getContent());
+        result.put("list", p.getContent());
         result.put("total", p.getTotalElements());
         result.put("totalPag", p.getTotalPages());
         return ZeroFactory.success("文章列表", result);
     }
 
 
+    /**
+     * 讀取實驗室公佈欄細節
+     *
+     * @param forumid forumid
+     * @return {@link ResultBean}
+     */
     @RequestMapping("/getDetail")
     @ResponseBody
     public ResultBean getDetail(@RequestParam("forumid") String forumid) {
-        logger.info("{} 讀取實驗室公佈欄細節 ", ZeroTools.getAdmin().getName(),forumid);
+        logger.info("{} 讀取實驗室公佈欄細節 ", ZeroTools.getAdmin().getName(), forumid);
         Map<String, Object> result = new HashMap<>(2);
 
         LaboratoryForumBean laboratoryForumBean = lfs.findById(forumid);
-        if(laboratoryForumBean != null){
-            LaboratoryForumContentBean lfcBean =lfcs.findById(forumid);
-            result.put("content",lfcs.findById(forumid).getContent());
+        if (laboratoryForumBean != null) {
+            LaboratoryForumContentBean lfcBean = lfcs.findById(forumid);
+            result.put("content", lfcs.findById(forumid).getContent());
         }
-        result.put("bean",laboratoryForumBean);
+        result.put("bean", laboratoryForumBean);
         return ZeroFactory.success("文章細節", result);
     }
 
+    /**
+     * 刪除公佈欄
+     *
+     * @param list 列表
+     * @return {@link ResultBean}
+     */
     @RequestMapping("/delforum")
     @ResponseBody
-    public ResultBean delForum(@RequestParam("forumid") List<String>  list) {
+    public ResultBean delForum(@RequestParam("forumid") List<String> list) {
         logger.info("{} 刪除公佈欄 {}", ZeroTools.getAdmin().getName(), list);
         System.out.println(list);
-        list.forEach(e->{
-           LaboratoryForumBean lfBean =     lfs.findById(e);
-            if(lfBean != null){
+        list.forEach(e -> {
+            LaboratoryForumBean lfBean = lfs.findById(e);
+            if (lfBean != null) {
                 lfBean.setState("刪除");
                 lfs.save(lfBean);
             }
         });
         return ZeroFactory.success("刪除成功");
     }
+
 
 
 }

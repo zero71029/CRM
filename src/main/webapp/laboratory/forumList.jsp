@@ -48,14 +48,13 @@
 
 
 
-                                                <c:if test="${user.position == '主管' || user.position == '系統'}">
+                                                <c:if test="${user.position == '主管' || user.position == '系統' }">
                                                     <label class="btn btn-outline-primary state2" for="btncheck2"
                                                         @click="delforum">刪除</label>
-                                                    <label class="btn btn-outline-primary" for="btncheck3"
-                                                        onclick="">圖書館</label>
+                                                    <!-- <label class="btn btn-outline-primary" for="btncheck3"
+                                                        onclick="">圖書館</label> -->
                                                 </c:if>
-
-
+          
                                             </div>
                                         </div>
                                         <!-- <%-- 抬頭按鈕結束--%> -->
@@ -64,7 +63,7 @@
                                 <div class="row ">
                                     <div class="col-md-12 text-center">
                                         <!-- 導覽列 -->
-                                        <nav class="navbar navbar-expand-lg navbar-light bg-light"
+                                        <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light"
                                             style="text-align: left;">
                                             <div class="container-fluid">
                                                 <a class="navbar-brand"
@@ -101,7 +100,7 @@
                                                             </ul>
                                                         </li>
                                                     </ul>
-                                                    <!-- search -->
+                                                  
                                                     <form class="d-flex" method="post"
                                                         action="${pageContext.request.contextPath}/selectBillboard">
                                                         <input class="form-control me-2" type="search"
@@ -111,7 +110,7 @@
                                                     </form>
                                                 </div>
                                             </div>
-                                        </nav>
+                                        </nav> -->
                                         <!-- 導覽列結束 -->
                                     </div>
                                 </div>
@@ -208,7 +207,9 @@
 
                                                         <!-- 標提 -->
                                                         <a
-                                                            :href="'${pageContext.request.contextPath}/laboratory/forumDetail.jsp?forumid='+s.forumid">{{s.name}}</a>
+                                                            :href="'${pageContext.request.contextPath}/laboratory/forumDetail.jsp?forumid='+s.forumid">
+                                                            {{s.name}}
+                                                        </a>
 
                                                         <span style="color: #777;">
 
@@ -263,17 +264,12 @@
                 el: ".app",
                 data() {
                     return {
-
                         delList: [],//刪除列表
                         loading: false,
                         currentPage: 1,//當前頁面
                         total: 400,//
                         pageSize: 10,
                         list: [
-                            { id: 1, name: "AAAAA", member: "xxx", time: new Date(), retime: new Date(), reNum: 0 },
-                            { id: 2, name: "BBBBB", member: "xxx", time: new Date(), retime: new Date(), reNum: 0 },
-                            { id: 3, name: "CCCCC", member: "xxx", time: new Date(), retime: new Date(), reNum: 0 },
-                            { id: 4, name: "DDDDD", member: "xxx", time: new Date(), retime: new Date(), reNum: 0 },
                         ],
                     }
                 },
@@ -314,14 +310,6 @@
                         console.log(this.delList);
                         if (confirm("警告 ! 確定修改?")) {
                             var parm = "";
-
-
-
-
-
-
-
-
                             for (var a = 0; a < this.delList.length; a++) {
                                 parm += "forumid=" + this.delList[a];
                                 if (a < this.delList.length - 1) parm += "&";
@@ -346,8 +334,5 @@
                 },
             })
         </script>
-
-
-
 
         </html>
