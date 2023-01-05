@@ -200,7 +200,7 @@
                                             <input type="text" class=" form-control cellFrom" name="name"
                                                 v-model.trim="customer.name" maxlength="20" required list="contactList">
                                             <datalist id="contactList">
-                                                <option  v-for="(s, index) in contactList" :key="index"    :value="s.name">                
+                                                <option v-for="(s, index) in contactList" :key="index" :value="s.name">
                                             </datalist>
                                         </div>
 
@@ -542,6 +542,43 @@
                                             </el-upload>
                                         </div>
                                     </div>
+
+                                    <!--各行業氣體查詢  -->
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-7  bg-warning text-white"
+                                            style="font-size: 1.5rem;border-radius: 5px 5px 0 0 ;">
+                                            各行業氣體查詢
+                                        </div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-md-7 " style="padding: 0%;">
+                                            <el-input v-model="InGasIndustry" placeholder="行業" @change="changeGasDetection"
+                                                list="GasIndustry"></el-input>
+                                            <datalist id="GasIndustry">
+                                                <option :value="s" v-for="(s, index) in GasIndustry" :key="index">
+                                                </option>
+                                            </datalist>
+                                        </div>
+                                    </div>
+                                    <div class="row" v-if="GasIndustry.includes(InGasIndustry)">
+
+                                        <div class="col-md-7 " style="padding: 0%;">
+                                            <el-select v-model="InGasDetection" placeholder="應用" style="width: 100%;" >
+                                                <el-option :value="s.application" v-for="(s, index) in GasDetection"
+                                                    :key="index" v-if="s.Industry == InGasIndustry"></el-option>
+                                            </el-select>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row" v-if="GasIndustry.includes(InGasIndustry)">
+                                        <div class="col-md-12 ">
+                                            <span v-for="(s, index) in GasDetection"
+                                                v-if="s.Industry == InGasIndustry && s.application  == InGasDetection">{{s.gas}}</span>
+                                        </div>
+                                    </div>
+                                    <!--各行業氣體查詢  結束-->
                                 </div>
                                 <p>&nbsp;</p>
                                 <div class="row">
@@ -1142,7 +1179,259 @@
                             "藝術、娛樂及休閒服務業",
                             "其他服務業"],//產業列表
                         TrackList: {},
-                        contactList:[],
+                        contactList: [],
+
+                        // 各行業氣體查詢
+                        InGasIndustry: "",
+                        InGasDetection: "",
+                        GasIndustry: ["航天/國防", "農業", "汽車", "航空", "化工", "塗料和印刷粘合劑", "食品與飲料",
+                            "鑄造廠", "燃料電池製造", "危險品", "重型製造", "暖通空調", "室內空氣質量",
+                            "鋼鐵", "醫療", "礦業", "石油和天然氣", "紙漿", "製藥", "發電"
+                            , "半導體工廠", "造船廠/海洋", "水和廢水", "焊接",],
+                        GasDetection: [
+                            { Industry: "航天/國防", application: "測試室/實驗室", gas: "可燃氣體 二氧化碳 一氧化氮 氧氣 製冷劑 甲苯" },
+                            { Industry: "航天/國防", application: "廠房設施", gas: "可燃氣體 氧氣 製冷劑" },
+                            { Industry: "航天/國防", application: "熱處理", gas: "可燃氣體 二氧化碳 氧氣" },
+                            { Industry: "航天/國防", application: "發射台", gas: "可燃氣體 氨 氧氣 製冷劑" },
+                            { Industry: "農業", application: "冷水機", gas: "氨 二氧化碳 製冷劑" },
+                            { Industry: "農業", application: "水果儲藏區", gas: "氨 二氧化碳 乙烯 氧氣 製冷劑 揮發性有機化合物" },
+                            { Industry: "農業", application: "溫室、筒倉和儲藏區", gas: "二氧化碳 乙烯 氧氣" },
+                            { Industry: "農業", application: "叉車操作", gas: "可燃氣體 一氧化氮 二氧化氮" },
+                            { Industry: "農業", application: "密閉空間（筒倉）", gas: "可燃氣體 二氧化碳 乙烯 一氧化氮 二氧化氮 氧氣" },
+                            { Industry: "農業", application: "糧食儲藏加工", gas: "膦" },
+                            { Industry: "農業", application: "禽舍", gas: "氨 二氧化碳 二氧化硫" },
+                            { Industry: "農業", application: "熏蒸", gas: "二氧化碳 環氧乙烷 氰化氫 硫化氫 膦 二氧化硫" },
+                            { Industry: "農業", application: "牲畜，石油提取過程", gas: "可燃氣體 氨" },
+                            { Industry: "農業", application: "土壤施肥", gas: "氨" },
+                            { Industry: "汽車", application: "研究和發展", gas: "可燃氣體 二氧化碳 一氧化碳 一氧化氮 二氧化氮 氧氣 製冷劑 二氧化硫 揮發性有機化合物" },
+                            { Industry: "汽車", application: "發動機測試", gas: "可燃氣體 二氧化碳 一氧化碳 一氧化氮 二氧化氮 氧氣 製冷劑" },
+                            { Industry: "汽車", application: "環境室", gas: "可燃氣體 二氧化碳 一氧化碳 環氧乙烷 氧氣 製冷劑" },
+                            { Industry: "航空", application: "車身和發動機維修與保養", gas: "可燃氣體 一氧化碳 氰化氫 一氧化氮 二氧化氮 揮發性有機化合物" },
+                            { Industry: "航空", application: "飛機機庫設施", gas: "可燃氣體 揮發性有機化合物" },
+                            { Industry: "航空", application: "燃料和液壓油儲存", gas: "可燃氣體 揮發性有機化合物" },
+                            { Industry: "航空", application: "泵送設施", gas: "可燃氣體 揮發性有機化合物" },
+                            { Industry: "航空", application: "密閉空間（翼）艙維護", gas: "可燃氣體 二氧化碳 一氧化碳 氧氣" },
+                            { Industry: "航空", application: "噴氣燃料蒸汽、溶劑", gas: "可燃氣體 氨 二氧化氮 揮發性有機化合物" },
+                            { Industry: "航空", application: "飛機零件製造", gas: "氰化氫 氧氣 揮發性有機化合物" },
+                            { Industry: "化工", application: "一般檢漏工藝製造", gas: "可燃氣體 氨 二氧化碳 一氧化碳 氯 二氧化氯 乙烯 環氧乙烷 氯化氫 氰化氫 硫化氫 一氧化氮 二氧化氮 氧氣 膦 二氧化硫 揮發性有機化合物" },
+                            { Industry: "化工", application: "密閉空間（液氮載體/儲罐維護、反應堆工作、隧道）", gas: "可燃氣體 二氧化碳 一氧化碳 硫化氫 氧氣" },
+                            { Industry: "化工", application: "實驗室、精細化工製造", gas: "可燃氣體 氨 一氧化碳 氯 二氧化氯 乙烯 環氧乙烷 氰化氫 一氧化氮 二氧化氮 膦 製冷劑 揮發性有機化合物" },
+                            { Industry: "化工", application: "製造，聚合物塑料，洩漏的過程製造", gas: "可燃氣體 氨 一氧化碳 乙烯 環氧乙烷 氰化氫 二氧化氮 氧氣 膦 揮發性有機化合物" },
+                            { Industry: "化工", application: "有機合成操作、液固分離、清洗劑", gas: "可燃氣體 氨 一氧化碳 氯 二氧化氯 乙烯 環氧乙烷 氯化氫 硫化氫 揮發性有機化合物" },
+                            { Industry: "化工", application: "一般檢漏、有機合成", gas: "可燃氣體 氨 一氧化碳 氯 二氧化氯 乙烯 環氧乙烷 氰化氫 一氧化氮 二氧化氮 揮發性有機化合物" },
+                            { Industry: "化工", application: "紡織品", gas: "氨 氯 乙烯 氰化氫 硫化氫 一氧化氮 氧氣 二氧化硫" },
+                            { Industry: "化工", application: "橡膠", gas: "可燃氣體 氨 氰化氫 硫化氫" },
+                            { Industry: "化工", application: "倉儲倉庫", gas: "可燃氣體 氨 二氧化碳 一氧化碳 氯 二氧化氯 乙烯 環氧乙烷 氯化氫 氰化氫 硫化氫 一氧化氮 二氧化氮 氧氣 膦 製冷劑 甲苯 二氧化硫" },
+                            { Industry: "化工", application: "溶劑回收", gas: "可燃氣體 揮發性有機化合物" },
+                            { Industry: "化工", application: "儲罐", gas: "可燃氣體 氨 二氧化碳 一氧化碳 氯 二氧化氯 乙烯 氧氣 揮發性有機化合物" },
+                            { Industry: "化工", application: "轉運區、裝卸區", gas: "可燃氣體 氨 二氧化碳 一氧化碳 氯 二氧化氯 乙烯 氧氣 揮發性有機化合物" },
+                            { Industry: "塗料和印刷粘合劑", application: "印刷機外的生產車間", gas: "可燃氣體 氧氣 揮發性有機化合物" },
+                            { Industry: "塗料和印刷粘合劑", application: "沖壓工序", gas: "可燃氣體 氧氣 揮發性有機化合物" },
+                            { Industry: "食品與飲料", application: "冷藏設施及冷庫", gas: "氨 二氧化碳 乙烯 氧氣 製冷劑 二氧化硫" },
+                            { Industry: "食品與飲料", application: "水果儲藏區", gas: "氨 二氧化碳 乙烯 氧氣 製冷劑 " },
+                            { Industry: "食品與飲料", application: "糧食加工", gas: "可燃氣體 二氧化碳 二氧化硫" },
+                            { Industry: "食品與飲料", application: "食用油加工", gas: "可燃氣體" },
+                            { Industry: "食品與飲料", application: "啤酒廠和釀酒廠", gas: "氨 二氧化碳 製冷劑 二氧化硫" },
+                            { Industry: "食品與飲料", application: "飲料裝瓶", gas: "氨 二氧化碳 製冷劑 二氧化硫" },
+                            { Industry: "食品與飲料", application: "發酵罐", gas: "氨 二氧化碳 製冷劑 二氧化硫" },
+                            { Industry: "食品與飲料", application: "冷藏設施、", gas: "氨 二氧化碳 製冷劑 二氧化硫" },
+                            { Industry: "食品與飲料", application: "肉類包裝", gas: "氨 二氧化碳 製冷劑 二氧化硫" },
+                            { Industry: "食品與飲料", application: "食品加工", gas: "氨 二氧化碳 製冷劑 二氧化硫" },
+                            { Industry: "食品與飲料", application: "加熱器和鍋爐", gas: "可燃氣體 一氧化碳 一氧化氮 二氧化氮" },
+                            { Industry: "食品與飲料", application: "汽油動力設備、車輛和叉車", gas: "可燃氣體 一氧化碳 一氧化氮 二氧化氮" },
+                            { Industry: "食品與飲料", application: "烘焙設施", gas: "可燃氣體 一氧化碳 一氧化氮 二氧化氮" },
+                            { Industry: "食品與飲料", application: "冷卻器", gas: "可燃氣體 氨 一氧化碳 氧氣 製冷劑" },
+                            { Industry: "食品與飲料", application: "密閉空間", gas: "可燃氣體 氨 一氧化碳 氧氣 製冷劑" },
+                            { Industry: "食品與飲料", application: "廢水池、排水和排污區", gas: "可燃氣體 一氧化碳 硫化氫 氧氣 揮發性有機化合物" },
+                            { Industry: "食品與飲料", application: "鍋爐和加熱器", gas: "可燃氣體 一氧化碳 硫化氫  揮發性有機化合物" },
+                            { Industry: "食品與飲料", application: "食品包裝", gas: "可燃氣體 一氧化碳 硫化氫  揮發性有機化合物" },
+                            { Industry: "食品與飲料", application: "發酵過程", gas: "氨 二氧化碳 一氧化碳 乙烯 氧氣 製冷劑" },
+                            { Industry: "食品與飲料", application: "充氣食品包裝", gas: "氨 二氧化碳 一氧化碳 乙烯 氧氣 製冷劑" },
+                            { Industry: "食品與飲料", application: "封閉的空間", gas: "氨 二氧化碳 一氧化碳 乙烯 氧氣 製冷劑" },
+                            { Industry: "食品與飲料", application: "酵母和黴菌孢子的熏蒸消毒", gas: "二氧化碳 氯 二氧化氯 環氧乙烷 二氧化硫" },
+                            { Industry: "食品與飲料", application: "消毒設備和用具", gas: "氯 二氧化氯 環氧乙烷" },
+                            { Industry: "食品與飲料", application: "冷藏運輸", gas: "氨 二氧化碳 氧氣 製冷劑 二氧化硫" },
+                            { Industry: "食品與飲料", application: "肉類加工廠", gas: "氨 二氧化碳 氧氣 製冷劑 二氧化硫" },
+                            { Industry: "食品與飲料", application: "超市、冰箱和儲藏室", gas: "氨 二氧化碳 氧氣 製冷劑 二氧化硫" },
+                            { Industry: "食品與飲料", application: "食品儲存系統監控", gas: "氨 二氧化碳 氧氣 製冷劑 二氧化硫" },
+                            { Industry: "食品與飲料", application: "食品包裝（溶劑蒸氣過程監控）", gas: "可燃氣體 二氧化碳 一氧化碳 氧氣 揮發性有機化合物" },
+                            { Industry: "鑄造廠", application: "熔爐操作", gas: "二氧化碳" },
+                            { Industry: "鑄造廠", application: "制芯", gas: "可燃氣體 一氧化碳 硫化氫 一氧化氮 二氧化氮 二氧化硫" },
+                            { Industry: "鑄造廠", application: "金屬製備和澆注", gas: "二氧化碳" },
+                            { Industry: "鑄造廠", application: "金屬開採，精加工", gas: "可燃氣體 氰化氫 硫化氫" },
+                            { Industry: "鑄造廠", application: "熱處理工藝", gas: "可燃氣體 二氧化碳 一氧化碳" },
+                            { Industry: "鑄造廠", application: "封閉的空間", gas: "可燃氣體 二氧化碳 一氧化碳" },
+                            { Industry: "燃料電池製造", application: "製造車間", gas: "可燃氣體 二氧化碳 一氧化碳 硫化氫 氧氣" },
+                            { Industry: "燃料電池製造", application: "燃料電池", gas: "可燃氣體 二氧化碳 一氧化碳 硫化氫 氧氣" },
+                            { Industry: "危險品", application: "危險品應用", gas: "可燃氣體 氨 一氧化碳 氯 二氧化氯 硫化氫 膦 二氧化硫 揮發性有機化合物" },
+                            { Industry: "危險品", application: "易燃液體/氣體儲存", gas: "可燃氣體 二氧化碳 揮發性有機化合物" },
+                            { Industry: "危險品", application: "抽水設施", gas: "可燃氣體 二氧化碳 揮發性有機化合物" },
+                            { Industry: "危險品", application: "封閉的空間", gas: "可燃氣體 二氧化碳 一氧化碳 氧氣 揮發性有機化合物" },
+                            { Industry: "危險品", application: "地下施工", gas: "可燃氣體 一氧化碳 氧氣" },
+                            { Industry: "危險品", application: "儲存、轉移和處理", gas: "可燃氣體 一氧化碳 揮發性有機化合物" },
+                            { Industry: "重型製造", application: "車輛製造廠", gas: "可燃氣體 一氧化碳 二氧化氮 製冷劑 揮發性有機化合物" },
+                            { Industry: "重型製造", application: "傳熱流體", gas: "製冷劑 揮發性有機化合物" },
+                            { Industry: "重型製造", application: "車輛排放", gas: "二氧化碳 一氧化碳 一氧化氮 二氧化氮 二氧化硫 揮發性有機化合物" },
+                            { Industry: "重型製造", application: "電鍍", gas: "氨 氯化氫 氰化氫" },
+                            { Industry: "重型製造", application: "製造過程排放", gas: "可燃氣體 二氧化碳 硫化氫 一氧化氮 二氧化氮 二氧化硫 揮發性有機化合物" },
+                            { Industry: "重型製造", application: "叉車和起重機操作", gas: "可燃氣體 一氧化碳 二氧化氮" },
+                            { Industry: "重型製造", application: "化學品裝載/卸載", gas: "可燃氣體 氨 氯 揮發性有機化合物" },
+                            { Industry: "重型製造", application: "噴漆房", gas: "可燃氣體 一氧化碳 氧氣 揮發性有機化合物" },
+                            { Industry: "重型製造", application: "除油劑", gas: "可燃氣體 揮發性有機化合物" },
+                            { Industry: "重型製造", application: "機械設備間", gas: "可燃氣體 氨 氧氣 製冷劑" },
+                            { Industry: "暖通空調", application: "加熱鍋爐或管道", gas: "可燃氣體 二氧化碳 一氧化碳" },
+                            { Industry: "暖通空調", application: "一般辦公應用", gas: "可燃氣體 二氧化碳 一氧化碳" },
+                            { Industry: "暖通空調", application: "停車場、倉庫", gas: "氨 一氧化碳 環氧乙烷 二氧化氮" },
+                            { Industry: "暖通空調", application: "被佔用的建築物、辦公樓", gas: "可燃氣體 氨 二氧化碳 氧氣 製冷劑 揮發性有機化合物" },
+                            { Industry: "暖通空調", application: "研究實驗室", gas: "可燃氣體 氨 二氧化碳 氧氣 製冷劑 揮發性有機化合物" },
+                            { Industry: "暖通空調", application: "停車場、隧道、爐房、維修車庫", gas: "可燃氣體 氨 一氧化碳 二氧化氮 氧氣 製冷劑" },
+                            { Industry: "暖通空調", application: "通風管道", gas: "可燃氣體 二氧化碳 一氧化碳 二氧化氮 揮發性有機化合物" },
+                            { Industry: "暖通空調", application: "冷庫", gas: "氨 二氧化碳 環氧乙烷 氧氣 製冷劑" },
+                            { Industry: "暖通空調", application: "交通設施", gas: "氨 二氧化碳 環氧乙烷 氧氣 製冷劑" },
+                            { Industry: "暖通空調", application: "肉類加工廠", gas: "氨 二氧化碳 環氧乙烷 氧氣 製冷劑" },
+                            { Industry: "暖通空調", application: "超市、冰箱存放處", gas: "氨 二氧化碳 環氧乙烷 氧氣 製冷劑" },
+                            { Industry: "暖通空調", application: "食品儲藏系統監控", gas: "氨 二氧化碳 環氧乙烷 氧氣 製冷劑" },
+                            { Industry: "暖通空調", application: "機械室", gas: "可燃氣體 氨 氧氣 製冷劑" },
+                            { Industry: "室內空氣質量", application: "佔用建築物（工業、商業、住宅）", gas: "可燃氣體 二氧化碳 一氧化碳 氧氣 製冷劑 揮發性有機化合物" },
+                            { Industry: "室內空氣質量", application: "辦公樓", gas: "可燃氣體 二氧化碳 一氧化碳 氧氣 製冷劑 揮發性有機化合物" },
+                            { Industry: "室內空氣質量", application: "研究實驗室", gas: "可燃氣體 二氧化碳 一氧化碳 氧氣 製冷劑 揮發性有機化合物" },
+                            { Industry: "室內空氣質量", application: "停車場", gas: "可燃氣體 二氧化碳 一氧化碳 二氧化氮 氧氣 製冷劑" },
+                            { Industry: "室內空氣質量", application: "隧道", gas: "可燃氣體 二氧化碳 一氧化碳 二氧化氮 氧氣 製冷劑" },
+                            { Industry: "室內空氣質量", application: "爐房", gas: "可燃氣體 二氧化碳 一氧化碳 二氧化氮 氧氣 製冷劑" },
+                            { Industry: "室內空氣質量", application: "維修車庫", gas: "可燃氣體 二氧化碳 一氧化碳 二氧化氮 氧氣 製冷劑" },
+                            { Industry: "室內空氣質量", application: "爬行空間", gas: "可燃氣體 二氧化碳 一氧化碳 二氧化氮 氧氣 製冷劑" },
+                            { Industry: "鋼鐵", application: "高爐運行維護", gas: "可燃氣體 一氧化碳 氧氣" },
+                            { Industry: "鋼鐵", application: "轉爐運行", gas: "可燃氣體 一氧化碳 氧氣" },
+                            { Industry: "鋼鐵", application: "爐氣管道洩漏", gas: "可燃氣體 一氧化碳 氧氣" },
+                            { Industry: "鋼鐵", application: "金屬開採", gas: "可燃氣體 氨 二氧化碳 硫化氫" },
+                            { Industry: "鋼鐵", application: "精加工", gas: "可燃氣體 氨 二氧化碳 硫化氫" },
+                            { Industry: "鋼鐵", application: "燃料儲存", gas: "可燃氣體 氨 二氧化碳 硫化氫" },
+                            { Industry: "鋼鐵", application: "焦化操作", gas: "可燃氣體 一氧化碳 硫化氫 二氧化硫" },
+                            { Industry: "鋼鐵", application: "焊接", gas: "可燃氣體 氨 一氧化氮 二氧化氮" },
+                            { Industry: "鋼鐵", application: "封閉的空間", gas: "可燃氣體 一氧化碳 硫化氫 氧氣 揮發性有機化合物" },
+                            { Industry: "鋼鐵", application: "維修室（冷卻器）", gas: "氨 製冷劑" },
+                            { Industry: "鋼鐵", application: "電機維護與清潔", gas: "可燃氣體 二氧化碳 一氧化碳 二氧化氮 二氧化硫 揮發性有機化合物" },
+                            { Industry: "鋼鐵", application: "焦爐排放", gas: "可燃氣體 二氧化碳 一氧化碳 二氧化氮 二氧化硫 揮發性有機化合物" },
+                            { Industry: "醫療", application: "手術室、佔用區域", gas: "二氧化碳 乙烯 環氧乙烷 氧氣" },
+                            { Industry: "醫療", application: "酒精，“病態建築綜合症”", gas: "二氧化碳 乙烯 環氧乙烷 揮發性有機化合物" },
+                            { Industry: "醫療", application: "中央供應、滅菌區", gas: "環氧乙烷 揮發性有機化合物" },
+                            { Industry: "醫療", application: "核磁共振", gas: "氧氣" },
+                            { Industry: "醫療", application: "停車場", gas: "一氧化碳" },
+                            { Industry: "醫療", application: "洗消區", gas: "揮發性有機化合物" },
+                            { Industry: "醫療", application: "機械設備間", gas: "可燃氣體 氨 一氧化碳 製冷劑" },
+                            { Industry: "礦業", application: "封閉的空間", gas: "可燃氣體 二氧化碳 一氧化碳 氧氣" },
+                            { Industry: "礦業", application: "機械化採煤", gas: "可燃氣體" },
+                            { Industry: "礦業", application: "採礦過程", gas: "可燃氣體 二氧化碳 硫化氫" },
+                            { Industry: "礦業", application: "燃燒（火）", gas: "可燃氣體 一氧化碳 二氧化氮" },
+                            { Industry: "礦業", application: "柴油動力機械廢氣", gas: "可燃氣體 一氧化碳 二氧化氮" },
+                            { Industry: "礦業", application: "密閉空間爆破的結果", gas: "可燃氣體 一氧化碳 二氧化氮" },
+                            { Industry: "礦業", application: "金屬礦業", gas: "氨 二氧化碳 一氧化碳 氰化氫 硫化氫 氧氣 製冷劑" },
+                            { Industry: "礦業", application: "柴油機尾氣", gas: "一氧化碳 一氧化氮 二氧化氮" },
+                            { Industry: "礦業", application: "柴油動力機械，爆破", gas: "一氧化碳 一氧化氮 二氧化氮" },
+                            { Industry: "石油和天然氣", application: "石油煉製", gas: "可燃氣體 氨 氯化氫 硫化氫 二氧化硫 揮發性有機化合物" },
+                            { Industry: "石油和天然氣", application: "管道壓縮機站和泵站", gas: "可燃氣體" },
+                            { Industry: "石油和天然氣", application: "煉油廠", gas: "可燃氣體 氨 一氧化碳 氯化氫 硫化氫 二氧化硫 揮發性有機化合物" },
+                            { Industry: "石油和天然氣", application: "煉油廠、石化設施、周邊監控", gas: "可燃氣體 硫化氫 二氧化硫 揮發性有機化合物" },
+                            { Industry: "石油和天然氣", application: "不完全燃燒、轉化、焦化、一般加工、檢漏", gas: "可燃氣體 一氧化碳 硫化氫 二氧化氮" },
+                            { Industry: "石油和天然氣", application: "轉化過程、異構化、催化重整、處理過程、洩漏檢測、儲存容器、周邊監測", gas: "可燃氣體 氯化氫 硫化氫 氧氣 揮發性有機化合物" },
+                            { Industry: "石油和天然氣", application: "煉油過程，一般洩漏檢測，處理過程，原油分離，鑽機", gas: "可燃氣體 二氧化碳 硫化氫 二氧化硫 揮發性有機化合物" },
+                            { Industry: "石油和天然氣", application: "密閉空間（儲罐清洗操作、封閉式建築物或結構）", gas: "可燃氣體 氧氣 揮發性有機化合物" },
+                            { Industry: "石油和天然氣", application: "天然氣管線", gas: "可燃氣體 硫化氫" },
+                            { Industry: "石油和天然氣", application: "海上鑽井平台——存儲和加工區、控制室、生活空間、發電室", gas: "可燃氣體 硫化氫" },
+                            { Industry: "石油和天然氣", application: "精煉工藝、工藝流樣品採集、一般工廠操作", gas: "可燃氣體 二氧化碳 硫化氫 二氧化硫 揮發性有機化合物" },
+                            { Industry: "石油和天然氣", application: "機械設備間", gas: "可燃氣體 製冷劑" },
+                            { Industry: "石油和天然氣", application: "熱氧化器", gas: "可燃氣體 " },
+                            { Industry: "紙漿", application: "造紙（漂白）", gas: "氯 二氧化氯 二氧化氮 製冷劑 二氧化硫" },
+                            { Industry: "紙漿", application: "化學製漿、硫酸鹽法製漿", gas: "氨 硫化氫 二氧化硫" },
+                            { Industry: "紙漿", application: "密閉空間（水箱、坑、污水坑、大桶）", gas: "可燃氣體 氯 硫化氫 氧氣" },
+                            { Industry: "紙漿", application: "造紙（塗層和染色）", gas: "可燃氣體 硫化氫 二氧化氮 揮發性有機化合物" },
+                            { Industry: "紙漿", application: "機械設備間", gas: "可燃氣體 氨 製冷劑" },
+                            { Industry: "製藥", application: "製造、煤氣洩漏", gas: "可燃氣體 氨 氯 二氧化氯 環氧乙烷 氰化氫 二氧化硫" },
+                            { Industry: "製藥", application: "溶劑蒸汽過程監測", gas: "可燃氣體 氨 二氧化碳 乙烯 揮發性有機化合物" },
+                            { Industry: "製藥", application: "化學合成操作", gas: "可燃氣體 氨 環氧乙烷 氰化氫 氧氣 揮發性有機化合物" },
+                            { Industry: "製藥", application: "實驗室、精細化工製造", gas: "可燃氣體 氨 一氧化碳 氯 二氧化氯 環氧乙烷 氰化氫" },
+                            { Industry: "製藥", application: "實驗室，有機合成，", gas: "可燃氣體 氨 二氧化碳 氯 環氧乙烷 製冷劑 揮發性有機化合物" },
+                            { Industry: "製藥", application: "液固分離、複合、", gas: "可燃氣體 氨 二氧化碳 氯 環氧乙烷 製冷劑 揮發性有機化合物" },
+                            { Industry: "製藥", application: "製粒和片劑包衣操作", gas: "可燃氣體 氨 二氧化碳 氯 環氧乙烷 製冷劑 揮發性有機化合物" },
+                            { Industry: "製藥", application: "乾燥和包裝", gas: "可燃氣體 氨 二氧化碳 氯 環氧乙烷 製冷劑 揮發性有機化合物" },
+                            { Industry: "製藥", application: "精細化工製造", gas: "可燃氣體 氨 二氧化碳 氯 環氧乙烷 製冷劑 揮發性有機化合物" },
+                            { Industry: "製藥", application: "儲存容器、反應器和離心機的氮氣覆蓋", gas: "一氧化碳 氧氣" },
+                            { Industry: "製藥", application: "壓縮呼吸空氣", gas: "二氧化碳 一氧化碳 氧氣" },
+                            { Industry: "製藥", application: "公用事業", gas: "可燃氣體 一氧化碳 膦" },
+                            { Industry: "發電", application: "家用爐子洩漏", gas: "可燃氣體 一氧化碳" },
+                            { Industry: "發電", application: "變壓器絕緣", gas: "六氟化硫" },
+                            { Industry: "發電", application: "發電廠", gas: "可燃氣體 氨 二氧化碳 一氧化碳 氯 氯化氫 二氧化氮 氧氣 二氧化硫" },
+                            { Industry: "發電", application: "燃料儲存", gas: "可燃氣體" },
+                            { Industry: "發電", application: "燃料運輸裝卸", gas: "可燃氣體 一氧化碳 揮發性有機化合物" },
+                            { Industry: "發電", application: "化石燃料發電廠", gas: "可燃氣體 氨 一氧化碳 一氧化氮 二氧化氮 二氧化硫" },
+                            { Industry: "發電", application: "封閉的空間", gas: "可燃氣體 二氧化碳 一氧化碳 氧氣 揮發性有機化合物" },
+                            { Industry: "發電", application: "燃燒過程中的煤和燃料油氧化（排放）", gas: "氨 二氧化碳 一氧化碳 氯化氫 二氧化氮 二氧化硫" },
+                            { Industry: "半導體工廠", application: "製造、加工", gas: "可燃氣體 胂 溴 一氧化碳 氯 二氧化氯 乙硼烷 鍺烷 氯化氫 氰化氫 一氧化氮 二氧化氮 矽烷" },
+                            { Industry: "半導體工廠", application: "作為製造、擴散和離子實施、化學氣相沉積中的摻雜劑", gas: "膦" },
+                            { Industry: "半導體工廠", application: "清潔劑、含氟化合物", gas: "可燃氣體 製冷劑 揮發性有機化合物" },
+                            { Industry: "半導體工廠", application: "光刻、蝕刻、氧化、金屬化、組裝和測試", gas: "氯化氫 揮發性有機化合物" },
+                            { Industry: "半導體工廠", application: "冷水機組", gas: "氨 製冷劑" },
+                            { Industry: "半導體工廠", application: "壓縮呼吸空氣", gas: "一氧化碳 氧氣" },
+                            { Industry: "造船廠/海洋", application: "密閉空間（儲藏室）", gas: "可燃氣體 一氧化碳 二氧化氯 氧氣 揮發性有機化合物" },
+                            { Industry: "造船廠/海洋", application: "燃料儲存", gas: "可燃氣體 二氧化碳" },
+                            { Industry: "造船廠/海洋", application: "泵送設施", gas: "可燃氣體 二氧化碳" },
+                            { Industry: "造船廠/海洋", application: "機房", gas: "可燃氣體 氨 一氧化碳 製冷劑" },
+                            { Industry: "造船廠/海洋", application: "廢物處理", gas: "可燃氣體 硫化氫 氧氣" },
+                            { Industry: "造船廠/海洋", application: "冷水機組", gas: "氨 製冷劑" },
+                            { Industry: "造船廠/海洋", application: "液化天然氣運輸", gas: "可燃氣體" },
+                            { Industry: "造船廠/海洋", application: "油輪泵", gas: "可燃氣體" },
+                            { Industry: "造船廠/海洋", application: "美國海軍艦艇", gas: "可燃氣體 氨 一氧化碳 硫化氫 製冷劑 揮發性有機化合物" },
+                            { Industry: "造船廠/海洋", application: "擺渡船", gas: "可燃氣體 氨 一氧化碳 製冷劑" },
+                            { Industry: "水和廢水", application: "加工儲罐", gas: "可燃氣體 氨 氯 二氧化氯 硫化氫 揮發性有機化合物" },
+                            { Industry: "水和廢水", application: "房間和管道", gas: "可燃氣體 氨 氯 二氧化氯 硫化氫 揮發性有機化合物" },
+                            { Industry: "水和廢水", application: "沼氣", gas: "可燃氣體 二氧化碳 硫化氫" },
+                            { Industry: "水和廢水", application: "停滯的氣體，", gas: "可燃氣體 二氧化碳" },
+                            { Industry: "水和廢水", application: "焚化爐", gas: "可燃氣體 二氧化碳" },
+                            { Industry: "水和廢水", application: "工廠泵、工廠污水池監測溶劑洩漏或傾倒", gas: "可燃氣體" },
+                            { Industry: "水和廢水", application: "一般流程", gas: "可燃氣體 硫化氫 氧氣" },
+                            { Industry: "水和廢水", application: "下水道工程", gas: "可燃氣體 硫化氫 氧氣" },
+                            { Industry: "水和廢水", application: "封閉的空間", gas: "可燃氣體 二氧化碳 氯 二氧化氯 硫化氫 氧氣 揮發性有機化合物" },
+                            { Industry: "水和廢水", application: "脫氯、儲罐", gas: "氯 二氧化氯 二氧化硫" },
+                            { Industry: "水和廢水", application: "濕井進水", gas: "可燃氣體 一氧化碳 硫化氫" },
+                            { Industry: "水和廢水", application: "泵站", gas: "可燃氣體 一氧化碳 硫化氫 二氧化氮" },
+                            { Industry: "焊接", application: "封閉的空間", gas: "可燃氣體 氨 二氧化碳 一氧化碳 乙烯 氧氣" },
+                            { Industry: "焊接", application: "電弧空氣切割", gas: "可燃氣體 氨 二氧化碳 一氧化碳 乙烯 氧氣" },
+                            { Industry: "焊接", application: "焊劑保護和氣體保護電弧焊", gas: "可燃氣體 氨 二氧化碳 一氧化碳 乙烯 氧氣" },
+                            { Industry: "焊接", application: "金屬切割和火焰氣刨，", gas: "可燃氣體 氨 二氧化碳 一氧化碳 乙烯 氧氣" },
+                            { Industry: "焊接", application: "氣壓焊", gas: "可燃氣體 氨 二氧化碳 一氧化碳 乙烯 氧氣" },
+                            { Industry: "焊接", application: "鋁熱和螺柱焊接", gas: "可燃氣體 一氧化碳 氧氣" },
+                            { Industry: "焊接", application: "激光焊接和冷卻", gas: "可燃氣體 一氧化碳 氧氣" },
+                            { Industry: "焊接", application: "電弧空氣切割", gas: "可燃氣體 一氧化碳 氧氣" },
+                            { Industry: "焊接", application: "電弧焊", gas: "可燃氣體 一氧化碳 氧氣" },
+                            { Industry: "焊接", application: "電阻和氣壓焊接", gas: "可燃氣體 一氧化碳 氧氣" },
+                            { Industry: "焊接", application: "金屬切割和氣刨、釬焊", gas: "可燃氣體 一氧化碳 氧氣" },
+                            { Industry: "焊接", application: "電弧焊與切割、螺柱焊、電弧+空氣切割、氣壓焊、金屬切割與氣刨", gas: "可燃氣體 二氧化氮 氧氣" },
+                            { Industry: "焊接", application: "密閉空間焊接、電子束焊接", gas: "可燃氣體 一氧化碳 氧氣" },
+                        ],
+                        c: {
+                            "Combustible gases": "可燃氣體",
+                            "Ammonia": "氨",
+                            "Carbon dioxide": "二氧化碳 ",
+                            "Carbon monoxide": "一氧化碳",
+                            "Chlorine": "氯",
+                            "Chlorine dioxide": "二氧化氯",
+                            "Ethylene": "乙烯",
+                            "Ethylene oxide": "環氧乙烷",
+                            "Hydrogen chloride": "氯化氫",
+                            "Hydrogen cyanide": "氰化氫",
+                            "Hydrogen sulfide": "硫化氫",
+                            "Nitric oxide": "一氧化氮",
+                            "Nitrogen dioxide": "二氧化氮",
+                            "O2 deficiency/enrichment": "氧氣",
+                            "Phosphine": "膦",
+                            "Refrigerants": "製冷劑",
+                            "Toluene": "甲苯",
+                            "Sulfur dioxide": "二氧化硫 ",
+                            "Sulfur hexafluoride": "六氟化硫",
+                            "VOCs": "揮發性有機化合物",
+                        },
+
+
                     }
                 },
                 created() {
@@ -1349,7 +1638,7 @@
                             .get('${pageContext.request.contextPath}/Potential/getCompany/' + this.companyName.trim())
                             .then(
                                 response => {
-                                    this.contactList= response.data.contact
+                                    this.contactList = response.data.contact
                                     console.log(response.data.contact);
                                 })
                             .catch(function (error) { // 请求失败处理
@@ -1633,7 +1922,12 @@
                         if (this.customer.user == '無') {
                             this.customer.receivestate = 3;
                         }
-                    }
+                    },
+                    //改變各行業氣體查詢
+                    changeGasDetection(){
+                       this.InGasDetection = "";
+                    },
+
 
 
 

@@ -78,7 +78,7 @@
                     <button class="market workbar"
                         onclick="javascript:location.href='${pageContext.request.contextPath}/Market/workList.jsp'">工作項目
                     </button>
-                    <c:if test='${ user.position == "系統" ||user.position == "總經理" || user.permit.indexOf("實驗室") >= 0}'>
+                    <c:if test='${ user.position == "系統" ||user.position == "總經理" || user.permit.indexOf("實驗室") >= 0}'></c:if>
                         <button class="list-group-item"
                             onclick="javascript:location.href='${pageContext.request.contextPath}/laboratory/forumList.jsp?page=1&size=20'">
                             實驗室  
@@ -87,7 +87,7 @@
                             onclick="javascript:location.href='${pageContext.request.contextPath}/laboratory/forumList.jsp?page=1&size=20'">
                             公佈欄
                         </button>
-                    </c:if>
+                    
 
 
 

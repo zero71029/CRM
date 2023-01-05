@@ -133,7 +133,7 @@
                                 <!-- <%-- 中間主體--%> -->
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <h3>銷售機會</h3>                                  
+                                        <h3>銷售機會</h3>
                                     </div>
                                 </div>
                                 <br>
@@ -200,7 +200,8 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-2 cellz">聯絡人 {{bean.contactid}}<span style="color: red;">*</span>
+                                                <div class="col-md-2 cellz">聯絡人 {{bean.contactid}}<span
+                                                        style="color: red;">*</span>
 
                                                 </div>
 
@@ -639,8 +640,7 @@
                                             </div>
 
                                             <div class="row" v-show="existsCustomer">
-                                                <div class="col-md-1">
-                                                </div>
+                                                <div class="col-md-1"></div>
                                                 <div class="col-md-6 FormPadding">
                                                     <el-link type="primary"
                                                         :href="'${pageContext.request.contextPath}/Market/potentialcustomer/'+bean.customerid">
@@ -652,8 +652,7 @@
 
                                             <br>
                                             <div class="row">
-                                                <div class="col-md-1">
-                                                </div>
+                                                <div class="col-md-1"></div>
                                                 <div class="col-md-6 FormPadding">
                                                     <el-upload class="upload-demo"
                                                         :action="'${pageContext.request.contextPath}/upFileByMarket?authorizeId='+bean.fileforeignid"
@@ -666,6 +665,11 @@
                                                     </el-upload>
                                                 </div>
                                             </div>
+
+                                            <br>
+
+
+
                                         </div>
                                     </div>
                                     <!-- ////////////////////////////////////////////////////////////////////////////////// -->
@@ -836,7 +840,7 @@
                         <el-dialog title="選擇聯絡人" :visible.sync="outerVisible" width="50%" :before-close="handleClose"
                             :opened="openDialog">
                             <br>
-                            <span>&nbsp;&nbsp;&nbsp; 選擇聯絡人</span>                  
+                            <span>&nbsp;&nbsp;&nbsp; 選擇聯絡人</span>
                             <hr>
                             <div class="row">
                                 <div class="col-md-1"></div>
@@ -853,11 +857,11 @@
                                         <div class="col-md-3"> {{j.moblie}} </div>
                                     </div>
                                     <br>
-                                </div>                          
+                                </div>
                             </div>
                             <hr>
                             <br>
- 
+
                             <div class="row">
                                 <div class="col-md-1"></div>
                                 <button class="col-md-10 catbtn" @click="catbtn" id="catbtn">新增聯絡人</button>
@@ -969,9 +973,9 @@
 
 
             function catbtn() {
-                window.open="  "
+                window.open = "  "
 
-               
+
 
 
 
@@ -1060,7 +1064,7 @@
                             contacttitle: "",
                             source: "",
                             contactBean: {},
-                            clientid:"",
+                            clientid: "",
                         },
                         contactList: [],
                         oldBean: {},
@@ -1105,6 +1109,10 @@
                                     }
                                 }]
                         },
+
+                    
+                    
+                    
                     }
                 },
 
@@ -1191,17 +1199,17 @@
                 },
                 methods: {
                     //新增聯絡人
-                    catbtn(){
+                    catbtn() {
 
-                         if(this.bean.clientid == ""){
+                        if (this.bean.clientid == "") {
                             this.$message.error("先選擇公司");
                             return;
-                         }   
-                         window.open("${pageContext.request.contextPath}/Market/newContact/"+this.bean.clientid);
+                        }
+                        window.open("${pageContext.request.contextPath}/Market/newContact/" + this.bean.clientid);
 
 
 
-                        
+
                         this.outerVisible = false;
                     },
                     submitForm() {//送出表單

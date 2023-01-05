@@ -39,24 +39,24 @@
                                 <div class="row ">
                                     <div class="col-md-12">
                                         <!-- <%-- 抬頭按鈕--%> -->
-                                        <div class="row">
-                                            <div class="btn-group" role="group">
-                                                <input type="checkbox" class="btn-check" id="btncheck1"
-                                                    autocomplete="off"
-                                                    onclick="javascript:location.href='${pageContext.request.contextPath}/laboratory/newForum.jsp'">
-                                                <label class="btn btn-outline-primary state1" for="btncheck1">新增</label>
-
-
-
-                                                <c:if test="${user.position == '主管' || user.position == '系統' }">
-                                                    <label class="btn btn-outline-primary state2" for="btncheck2"
-                                                        @click="delforum">刪除</label>
-                                                    <!-- <label class="btn btn-outline-primary" for="btncheck3"
+                                        <c:if
+                                            test='${ user.position == "系統" ||user.position == "總經理" || user.permit.indexOf("實驗室") >= 0}'>
+                                            <div class="row">
+                                                <div class="btn-group" role="group">
+                                                    <input type="checkbox" class="btn-check" id="btncheck1"
+                                                        autocomplete="off"
+                                                        onclick="javascript:location.href='${pageContext.request.contextPath}/laboratory/newForum.jsp'">
+                                                    <label class="btn btn-outline-primary state1"
+                                                        for="btncheck1">新增</label>
+                                                    <c:if test="${user.position == '主管' || user.position == '系統' }">
+                                                        <label class="btn btn-outline-primary state2" for="btncheck2"
+                                                            @click="delforum">刪除</label>
+                                                        <!-- <label class="btn btn-outline-primary" for="btncheck3"
                                                         onclick="">圖書館</label> -->
-                                                </c:if>
-          
+                                                    </c:if>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </c:if>
                                         <!-- <%-- 抬頭按鈕結束--%> -->
                                     </div>
                                 </div>

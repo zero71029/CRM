@@ -30,7 +30,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/laboratory")
-@PreAuthorize("hasAuthority('系統') or hasAuthority('實驗室')")
+//@PreAuthorize("hasAuthority('系統') or hasAuthority('實驗室')")
 public class LaboratoryController {
 
     Logger logger = LoggerFactory.getLogger("LaboratoryController");

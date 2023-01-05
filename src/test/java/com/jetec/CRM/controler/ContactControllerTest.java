@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class ContactControllerTest {
+class   ContactControllerTest {
 
     @Autowired
     private MockMvc mockMvc;

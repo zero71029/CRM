@@ -263,7 +263,6 @@
                     }
                 },
                 created() {
-
                     $.ajax({
                         url: '${pageContext.request.contextPath}/admin/getPermit',
                         type: 'post',
@@ -281,10 +280,6 @@
                             console.log(returndata);
                         }
                     });
-
-
-
-
                 },
                 methods: {
                     changePermit(name) {

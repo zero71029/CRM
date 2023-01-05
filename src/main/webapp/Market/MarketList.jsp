@@ -880,6 +880,7 @@
                                 }
                             }]
                     },
+
                 },
                 created: function () {
                     //讀取url參數name
@@ -1489,5 +1490,34 @@
                 color: blue;
             }
         </style>
+        <script>
+            var c =
+            {
+                "Combustible gases": "可燃氣體",
+                "Ammonia": "氨",
+                "Carbon dioxide": "二氧化碳",
+                "Carbon monoxide": "一氧化碳",
+                "Chlorine": "氯",
+                "Chlorine dioxide": "二氧化氯",
+                "Ethylene": "乙烯",
+                "Ethylene oxide": "環氧乙烷",
+                "Hydrogen chloride": "氯化氫",
+                "Hydrogen cyanide": "氰化氫",
+                "Hydrogen sulfide": "硫化氫",
+                "Nitric oxide": "一氧化氮",
+                "Nitrogen dioxide": "二氧化氮",
+                "O2 deficiency/enrichment": "氧氣",
+                "Phosphine": "膦",
+                "Refrigerants": "製冷劑",
+                "Toluene": "甲苯",
+                "VOCs": "揮發性有機化合物",
+            };
+            var s = [
+                { Industry: "航天/國防", application: "測試室/實驗室", gas: "可燃氣體 二氧化碳 一氧化氮 氧氣 製冷劑 甲苯" },
+                { Industry: "航天/國防", application: "廠房設施", gas: "" },
+                { Industry: "航天/國防", application: "熱處理", gas: "" },
+                { Industry: "航天/國防", application: "發射台", gas: "" },]
+
+        </script>
 
         </html>

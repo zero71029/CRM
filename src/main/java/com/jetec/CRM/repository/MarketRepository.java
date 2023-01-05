@@ -193,6 +193,8 @@ public interface MarketRepository extends JpaRepository<MarketBean, String> {
 
     List<MarketBean> findByAaaBetween(String startDay, String endDay);
 
+    List<MarketBean> findByNameLikeIgnoreCaseOrMessageLikeIgnoreCaseOrProductLikeIgnoreCaseOrQuoteLikeIgnoreCase(String s, String s1, String s2, String s3);
+
 
 //   Strin a = """
 //    select * from market m
